@@ -15,13 +15,14 @@ from Remark.DocumentTree import DocumentTree
 from Remark.TagParsers.Generic_TagParser import Generic_TagParser
 from Remark.TagParsers.Markdown_TagParser import Markdown_TagParser
 from Remark.Convert import convertAll
+from Remark.Common import registerOutputDocumentName
 
 from Remark.Macros import *
 
 def commentParserTags(comment):
     return {'description' : re.compile(r'[ \t]*' + comment + '[ \t]*Description[ \t]*:[ \t]*(.*)'),
             'detail' : re.compile(r'[ \t]*' + comment + '[ \t]*Detail[ \t]*:[ \t]*(.*)'),
-            'parent' : re.compile(r'[ \t]*' + comment + '[ \t]*Documentation!?[ \t]*:[ \t]*(.*)')}
+            'parent' : re.compile(r'[ \t]*' + comment + '[ \t]*Documentation[ \t]*:[ \t]*(.*)')}
 
 if __name__ == '__main__':
     print 'Remark documentation system'
@@ -48,8 +49,9 @@ if __name__ == '__main__':
     cppParser = Generic_TagParser(commentParserTags('//'))
     matlabParser = Generic_TagParser(commentParserTags('%'))
     pythonParser = Generic_TagParser(commentParserTags('#'))
+    emptyParser = Generic_TagParser({})
     
-    txtParser = Markdown_TagParser({'parent' : re.compile(r'[ \t]*\[Parent!?\]:[ \t]*(.*)')})
+    txtParser = Markdown_TagParser({'parent' : re.compile(r'[ \t]*\[Parent\]:[ \t]*(.*)')})
     
     parserMap = {'.txt' : txtParser,
                  '.cc' : cppParser,
@@ -61,34 +63,45 @@ if __name__ == '__main__':
                  '.m' : matlabParser,}
     
     docTemplate = \
-    ['[HtmlBoilerPlate]:',
-    '[MarkdownToHtml]:',
-    '[Body]',
-    '[DocChildren]',
-    '[SourceChildren]',]
-    
+    ['[[HtmlBoilerPlate]]:',
+    '\t[[MarkdownToHtml]]:',
+    '\t\t[[Body]]',
+    '\t\t[[DocChildren]]',
+    '\t\t[[SourceChildren]]',]
+
     cppTemplate = \
-    ['[HtmlBoilerPlate]:',
-    '[MarkdownToHtml]:',
-    '[CppCode]',]
+    ['[[HtmlBoilerPlate]]:',
+    '\t[[MarkdownToHtml]]:',
+    '\t\t[[CppCode]]',]
     
     genericCodeTemplate = \
-    ['[HtmlBoilerPlate]:',
-    '[MarkdownToHtml]:',
-    '[GenericCode]',]
+    ['[[HtmlBoilerPlate]]:',
+    '\t[[MarkdownToHtml]]:',
+    '\t\t[[GenericCode]]',]
 
     indexTemplate = \
-    ['[HtmlBoilerPlate]:',
-    '[MarkdownToHtml]:',
-    '[Index]',]
+    ['[[HtmlBoilerPlate]]:',
+    '\t[[MarkdownToHtml]]:',
+    '\t\t[[Index]]',]
     
     orphanTemplate = \
-    ['[HtmlBoilerPlate]:',
-    '[MarkdownToHtml]:',
-    'Orphans',
-    '=======',
-    '[DocChildren]',
-    '[SourceChildren]',]
+    ['[[HtmlBoilerPlate]]:',
+    '\t[[MarkdownToHtml]]:',
+    '\t\tOrphans',
+    '\t\t=======',
+    '\t\t[[DocChildren]]',
+    '\t\t[[SourceChildren]]',]
+    
+    registerOutputDocumentName('.txt', '.htm')
+    registerOutputDocumentName('.cpp', '.cpp.htm')
+    registerOutputDocumentName('.cc', '.cc.htm')
+    registerOutputDocumentName('.h', '.h.htm')
+    registerOutputDocumentName('.hh', '.hh.htm')
+    registerOutputDocumentName('.hpp', '.hpp.htm')
+    registerOutputDocumentName('.py', '.py.htm')
+    registerOutputDocumentName('.m', '.m.htm')
+    registerOutputDocumentName('.index', '.htm')
+    registerOutputDocumentName('.orphan', '.htm')
     
     templateMap = {'.txt' : docTemplate,   
                    '.cpp' : cppTemplate,

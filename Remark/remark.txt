@@ -28,8 +28,8 @@ The first item means that Markdown covers only structural matters
 (e.g. a section, a sub-section, a table, emphasis, etc). The 
 representation of the content (colors, fonts, etc.) can be 
 arbitrarily changed later without touching the content. Contrast 
-this to common text editing programs with WYSIWYG interfaces.
-For an example, have a look at the Markdown sources of this page.
+this to common text editing programs. For an example, have a look 
+at the Markdown sources of this page.
 
 In its original form, Markdown lacks the ability to typeset mathematics. 
 To remedy this, Remark extends the Markdown syntax with the AsciiMath 
@@ -77,8 +77,8 @@ Remark defines a few implicit deduction rules. These are:
  * Files which reside in the same directory and have the same name without 
  the extension share the same description.
  
- * A file which does not have a description even after the previous rule
- are given (if exists) the description of the file which:
+ * A source file which does not have a description even after the previous rule
+ are given (if exists) the description of the source file which:
  	1. is in the same directory
  	2. has a description
  	3. without the extension has a filename which is the longest prefix 

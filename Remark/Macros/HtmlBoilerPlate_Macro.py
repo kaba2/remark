@@ -4,9 +4,9 @@ import datetime
 from Remark.MacroRegistry import registerMacro
 
 class HtmlBoilerPlate_Macro:
-    def expand(self, parameter, document, documentTree):
+    def expand(self, parameter, document, documentTree, scope):
         text = parameter
-        cssRelativeDirectory = os.path.relpath('remark', document.relativeDirectory)
+        remarkDirectory = os.path.relpath('remark', document.relativeDirectory)
         
         # Add boilerplate code.
         
@@ -19,9 +19,10 @@ class HtmlBoilerPlate_Macro:
         htmlText.append('<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US" lang="en-US">')
         htmlText.append('<head>')
         htmlText.append('<title>' + document.tag('description') + '</title>')
-        htmlText.append('<link rel="stylesheet" type="text/css" href="' + os.path.join(cssRelativeDirectory, 'global.css') + '" />')
-        htmlText.append('<link rel="stylesheet" type="text/css" href="' + os.path.join(cssRelativeDirectory, 'pygments.css') + '" />')
+        htmlText.append('<link rel="stylesheet" type="text/css" href="' + os.path.join(remarkDirectory, 'global.css') + '" />')
+        htmlText.append('<link rel="stylesheet" type="text/css" href="' + os.path.join(remarkDirectory, 'pygments.css') + '" />')
         htmlText.append('<meta http-equiv="Content-Type" content="text/html; charset=utf-8"></meta>')
+        htmlText.append('<script type="text/javascript" src="' + os.path.join(remarkDirectory, 'ASCIIMathMLwFallback.js') + '"></script>')
         htmlText.append('</head>')
         htmlText.append('<body>')
         htmlText.append('<div id = "container">')

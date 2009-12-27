@@ -20,13 +20,16 @@ def readFile(fileName):
             
     return text
 
+_extensionMap = {} 
+def registerOutputDocumentName(inputExtension, outputExtension):
+    global _extensionMap
+    _extensionMap[inputExtension] = outputExtension
+
 def outputDocumentName(name):
-    outputName = ''
-    if os.path.splitext(name)[1] == '.txt':
-        outputName = changeExtension(name, '.htm') 
-    else: 
-        outputName = name + '.htm'
-    return outputName
+    global _extensionMap
+    inputExtension = os.path.splitext(name)[1]
+    outputExtension = _extensionMap[inputExtension]
+    return changeExtension(name, outputExtension)
 
 def unixDirectoryName(name):
     return string.replace(name, '\\', '/')                

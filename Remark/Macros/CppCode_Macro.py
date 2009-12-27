@@ -21,7 +21,7 @@ def _linkConverter(regexMatch, documentTree, document):
     return regexMatch.group(0)
 
 class CppCode_Macro:
-    def expand(self, parameter, document, documentTree):
+    def expand(self, parameter, document, documentTree, scope):
         # If no parameter is given, then the
         # code is read from the document's file.
         # Otherwise, the parameter is assumed to        
@@ -45,10 +45,10 @@ class CppCode_Macro:
             convertedText.append('\n')
             
             # Create parent link.
-            convertedText.append('[Parent]\n')
+            convertedText.append('[[Parent]]\n')
         
             # Create directory link.
-            convertedText += remarkLink(unixDirectoryName(document.relativeDirectory) + '/', 'directory.index.htm')
+            convertedText += remarkLink(unixDirectoryName(document.relativeDirectory) + '/', 'directory.htm')
         
         # This 'div' allows, for example, to create
         # a box around the code.

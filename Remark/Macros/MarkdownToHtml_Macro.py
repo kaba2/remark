@@ -8,7 +8,7 @@ import markdown
 markdownConverter = markdown.Markdown()
 
 class MarkdownToHtml_Macro:
-    def expand(self, parameter, document, documentTree):
+    def expand(self, parameter, document, documentTree, scope):
         text = parameter
         
         # Convert Markdown to html

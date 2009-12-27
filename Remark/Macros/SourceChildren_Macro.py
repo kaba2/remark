@@ -5,7 +5,7 @@ from Remark.MacroRegistry import registerMacro
 from Remark.Common import linkAddress, remarkLink, outputDocumentName
 
 class SourceChildren_Macro:
-    def expand(self, parameter, document, documentTree):
+    def expand(self, parameter, document, documentTree, scope):
         def prefixOf(left, right):
             return string.find(os.path.splitext(right)[0], os.path.splitext(left)[0]) == 0
         
