@@ -6,7 +6,7 @@ from Remark.Common import outputDocumentName, unixDirectoryName
 from Remark.MacroRegistry import registerMacro
 
 class Index_Macro:
-    def expand(self, parameter, document, documentTree):
+    def expand(self, parameter, document, documentTree, scope):
         fullPath = os.path.join(documentTree.rootDirectory, document.relativeDirectory)
         entrySet = ['..'] + os.listdir(fullPath)
         
@@ -28,7 +28,7 @@ class Index_Macro:
         for directory in directorySet:
             linkId = getLinkId()
             text.append('* [' + directory + '/][RemarkLink_' + str(linkId) + ']')
-            linkName = os.path.join(directory, 'directory.index.htm')
+            linkName = os.path.join(directory, 'directory.htm')
             linkSet.append('[RemarkLink_' + str(linkId) + ']: ' + linkName)
        
         for entry in fileSet:
