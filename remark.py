@@ -51,7 +51,7 @@ if __name__ == '__main__':
     pythonParser = Generic_TagParser(commentParserTags('#'))
     emptyParser = Generic_TagParser({})
     
-    txtParser = Markdown_TagParser({'parent' : re.compile(r'[ \t]*\[Parent\]:[ \t]*(.*)')})
+    txtParser = Markdown_TagParser({'parent' : re.compile(r'[ \t]*\[\[Parent\]\]:[ \t]*(.*)')})
     
     parserMap = {'.txt' : txtParser,
                  '.cc' : cppParser,

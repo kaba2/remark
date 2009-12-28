@@ -1,3 +1,7 @@
+# Description: MarkdownToHtml_Macro class
+# Detail: Converts Markdown source to an html source. 
+# Documentation: macros.txt
+
 import string
 
 from Remark.Common import readFile
