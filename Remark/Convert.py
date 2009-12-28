@@ -42,17 +42,16 @@ class Scope:
 class ScopeStack:
     def __init__(self):
         self.stack_ = []
-        self.open('global')
         
-    def open(self, name):
-        #print 'Scope opened:', name
+    def open(self):
+        #print 'Scope opened.'
         parent = None
         if len(self.stack_) > 0:
             parent = self.top()                
         self.stack_.append(Scope(parent))
         
-    def close(self, name):
-        #print 'Scope closed:', name
+    def close(self):
+        #print 'Scope closed.'
         self.stack_.pop()
         
     def top(self):
@@ -172,7 +171,7 @@ def expandMacros(template, document, documentTree, level = 0):
         macroName = match.group(1)
         macroPartSet = string.split(macroName)
         
-        _scopeStack.open(macroName)   
+        _scopeStack.open()   
         scope = _scopeStack.top()
         
         rawParameterSet = []
@@ -221,7 +220,7 @@ def expandMacros(template, document, documentTree, level = 0):
             i += 1
             continue
         
-        _scopeStack.close(macroName)   
+        _scopeStack.close()   
 
 #    if len(scope.nameSet_) > 0:
 #        print 'I has scope variables! They are:'
@@ -286,7 +285,10 @@ def convert(template, document, documentTree, targetRootDirectory):
     resetLinkId()
               
     # Expand macros.
+    global _scopeStack
+    _scopeStack.open()
     text = expandMacros(template, document, documentTree)
+    _scopeStack.close()
     
     # Convert Markdown to html.
     text = convertMarkdownToHtml(text)
