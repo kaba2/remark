@@ -1,5 +1,5 @@
 # Description: GenericCode_Macro class
-# Detail: Generates a colored html file from arbitrary source code.
+# Detail: Generates colored html from arbitrary source code.
 # Documentation: macros.txt
 
 import os.path
