@@ -35,6 +35,7 @@ class SourceChildren_Macro:
         beginIndex = 0
         groupSet = []
         description = ''
+        detail = ''
         for i in range(0, len(sortedMap)):
             document = sortedMap[i]
             reference = sortedMap[beginIndex]
@@ -50,10 +51,22 @@ class SourceChildren_Macro:
                     print 'Warning:', document.relativeName, ': multiple descriptions for a group.'                     
                 description = desc
 
+            det = document.tag('detail')
+            if det == None: 
+                det = ''
+            det = string.strip(det)
+            if det != '':
+                # If there are multiple details, one is chosen
+                # arbitrarily and a warning is emitted.
+                if detail != '':
+                    print 'Warning:', document.relativeName, ': multiple details for a group.'                     
+                detail = det
+
             if i == len(sortedMap) - 1 or not same(sortedMap[i + 1].relativeName, reference.relativeName):
-                groupSet.append([description, sortedMap[beginIndex : i + 1]])
+                groupSet.append([description, detail, sortedMap[beginIndex : i + 1]])
                 beginIndex = i + 1
                 description = ''
+                detail = ''
 
         # If a group does not have a description, it can be
         # joined together with a preceding group, on the condition that
@@ -62,9 +75,9 @@ class SourceChildren_Macro:
 
         i = 0
         while i < len(groupSet) - 1:
-            if groupSet[i + 1][0] == '' and prefixOf(groupSet[i][1][0].relativeName, groupSet[i + 1][1][0].relativeName):
+            if groupSet[i + 1][0] == '' and prefixOf(groupSet[i][2][0].relativeName, groupSet[i + 1][2][0].relativeName):
                     #print 'Join', groupSet[i][1][0].relativeName, groupSet[i + 1][1][0].relativeName
-                    groupSet[i][1] += groupSet[i + 1][1]
+                    groupSet[i][2] += groupSet[i + 1][2]
                     groupSet[i + 1 : i + 2] = []
             else: 
                 i += 1
@@ -93,10 +106,13 @@ class SourceChildren_Macro:
         for group in groupSet:
             # Output description for the group.
             description = group[0]
+            detail = group[1]
             text.append('\n### ' + description + '\n')
+            if detail != '': 
+                text.append('\n_' + detail + '_\n')
                 
             # Output the links in the group.
-            for child in group[1]:
+            for child in group[2]:
                 #detail = child.tag('detail')
                 #if detail != '':
                 #    text.append('\n####' + detail + '\n')

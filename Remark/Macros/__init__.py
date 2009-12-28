@@ -1,5 +1,6 @@
 __all__ = ['Body_Macro',
            'Comment_Macro',
+           'SkipExpansion_Macro',
            'CppCode_Macro',
            'DocChildren_Macro',
            'Index_Macro',

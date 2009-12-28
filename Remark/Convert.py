@@ -59,13 +59,7 @@ class ScopeStack:
 
 _scopeStack = ScopeStack()
 
-def expandMacros(template, document, documentTree, level = 0):
-    maxLevel = 10
-    if level > maxLevel:
-        print 'Error: Macro expansion exceeded recursion limit of', maxLevel
-        print 'Check for infinite recursions!'
-        return []
-    
+def expandMacros(template, document, documentTree):
     if template == []:
         return []
     
@@ -166,19 +160,17 @@ def expandMacros(template, document, documentTree, level = 0):
                 break
         parameterSet = parameterSet[0 : nonEmptyLines]            
         
-        # Recursively expand the parameter to get the raw parameter.
+        # The macros in the parameter are _not_ recursively
+        # expanded. This would lead to problems in those
+        # cases where macro expansion is not meant to happen.
+        
+        # Expand the macro.
         macroHandled = False
         macroName = match.group(1)
         macroPartSet = string.split(macroName)
         
-        _scopeStack.open()   
         scope = _scopeStack.top()
-        
-        rawParameterSet = []
-        if parameterSet != []:
-            rawParameterSet = expandMacros(parameterSet, document, documentTree, level + 1)
-        
-        # Now expand the macro with the raw parameter.
+       
         if len(macroPartSet) == 1:
             macro = findMacro(macroName)
             suppressList = scope.recursiveSearch('suppress_calls_to')
@@ -186,7 +178,7 @@ def expandMacros(template, document, documentTree, level = 0):
                 suppressList = []
             if macro != None:
                 if not macroName in suppressList:
-                    expandedText = macro.expand(rawParameterSet, document, documentTree, scope)
+                    expandedText = macro.expand(parameterSet, document, documentTree, scope)
                     text[i : i] = expandedText
                     if macro.pureOutput():
                         i += len(expandedText) 
@@ -198,16 +190,16 @@ def expandMacros(template, document, documentTree, level = 0):
             #print macroPartSet
             if string.lower(macroPartSet[0]) == 'set':
                 # Setting a scope variable.
-                #print 'Setting stuff!', rawParameterSet
-                scope.parent().insert(macroPartSet[1], rawParameterSet)
+                #print 'Setting stuff!', parameterSet
+                scope.insert(macroPartSet[1], parameterSet)
                 macroHandled = True
             elif string.lower(macroPartSet[0]) == 'add':
                 # Appending to a scope variable.
-                scope.parent().append(macroPartSet[1], rawParameterSet)
+                scope.append(macroPartSet[1], parameterSet)
                 macroHandled = True
             elif string.lower(macroPartSet[0]) == 'get':
                 # Getting a scope variable.
-                result = scope.parent().recursiveSearch(macroPartSet[1])
+                result = scope.recursiveSearch(macroPartSet[1])
                 if result != None:
                     #print result
                     text[i : i] = result
@@ -220,8 +212,6 @@ def expandMacros(template, document, documentTree, level = 0):
             i += 1
             continue
         
-        _scopeStack.close()   
-
 #    if len(scope.nameSet_) > 0:
 #        print 'I has scope variables! They are:'
 #        for (name, data) in scope.nameSet_.iteritems():
