@@ -38,4 +38,7 @@ class DocChildren_Macro:
                 
         return text
 
+    def pureOutput(self):
+        return False
+
 registerMacro('DocChildren', DocChildren_Macro())

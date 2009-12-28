@@ -10,4 +10,7 @@ class Comment_Macro:
         # for commenting.
         return []
 
+    def pureOutput(self):
+        return True
+
 registerMacro('Comment', Comment_Macro())

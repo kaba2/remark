@@ -3,15 +3,15 @@ Problems and solutions
 
 [[Parent]]: remark.txt
 
-How can I write verbatim content directly after a macro?
---------------------------------------------------------
+How can I write verbatim content directly after a multi-line parameter?
+-----------------------------------------------------------------------
 
 Indentation has a double role. It is used both to denote
-verbatim content in Markdown and to denote the parameter of 
-a macro in Remark. Rows of whitespace do not affect the range 
-of the parameter of a macro. Therefore, there needs to be a 
-non-whitespace, non-indented row between a macro parameter and verbatim 
-content. A way to solve this problem without including
+verbatim content in Markdown and to denote the range of a multi-line
+parameter for a macro in Remark. Therefore, if one wants to write
+verbatim content directly after a multi-line parameter, there must
+be some way to tell Remark where the multi-line parameter
+ends. A way to solve this problem without including
 extra content is to use the Comment macro either without
 a parameter or with a one-line parameter. For example:
 
@@ -31,8 +31,8 @@ a parameter or with a one-line parameter. For example:
 		Verbatim content here. 
 
 We expect this to be a rather rare problem. Most of the time
-verbatim content is preceded by an explanation which acts
-to mark end of parameter. For example:
+verbatim content is preceded by an explanation which at the
+same time marks the end of a parameter. For example:
 		
 	[[CppCode]:
 		int square(int x)
@@ -50,4 +50,6 @@ to mark end of parameter. For example:
 	
 		Verbatim content here. 
 	
-	  
+This same technique can also be used to produce subsequent regions 
+of verbatim content.
+ 	  

@@ -5,15 +5,12 @@ Remark
 
 [Back]: http://kaba.hilvi.org
 
-Description
------------
-
 Remark is a Python library designed for generating documentation for software libraries.
 
 Main features
 -------------
 
-### Human readable, non-redundant content description 
+### Human-readable, non-redundant content description 
 
 In Remark, the documentation is written in slightly modified 
 Markdown syntax. This syntax fulfills the following goals:

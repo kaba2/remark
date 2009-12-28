@@ -106,4 +106,7 @@ class SourceChildren_Macro:
             
         return text
 
+    def pureOutput(self):
+        return True
+
 registerMacro('SourceChildren', SourceChildren_Macro())
