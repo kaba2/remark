@@ -15,7 +15,7 @@ class Scope:
         self.nameSet_[name] = data
         
     def append(self, name, data):
-        result = self.search(name)
+        result = self.recursiveSearch(name)
         if result != None:
             result += data
         else:
@@ -74,50 +74,90 @@ def expandMacros(template, document, documentTree, level = 0):
     text = template[:]
     macroText = r'((?:(?!]]).)*)'
     optionalOneLineParameter = r'(?::[ \t]*(.*))?'
-    macroRegex = re.compile(r'(\t*)\[\[' + macroText + r'\]\]' + optionalOneLineParameter)
+    macroRegex = re.compile(r'\[\[' + macroText + r'\]\]' + optionalOneLineParameter)
     i = 0
     while i < len(text):
         line = text[i]
+        
+        # Indented stuff is copied verbatim.
+        if len(line) > 0 and line[0] == '\t':
+            i += 1
+            continue
+        
+        # See if there is a macro somewhere on the line.
         match = re.search(macroRegex, line)
         if match == None:
+            # There is no macro on the line: 
+            # copy the line verbatim.
             i += 1
             continue
 
+        # Check that the macro begins the line.
         if match.start() != 0:
             print 'Warning:', document.relativeName, ': macro', match.group(0), ' has bad indentation. Ignoring it.'
             i += 1
             continue
-   
-        endLine = i + 1
+
+        # Next we want to determine the parameter
+        # of the macro. There are three possibilities:
+        #
+        # 1) There is no parameter. In this case the
+        # entry is of the form '[[Macro]]'.
+        #
+        # 2) There is a one-line parameter. In this case
+        # the entry is of the form '[[Macro]]: parameter here'.
+        #
+        # 3) There is a multi-line parameter. In this case
+        # the entry is of the form:
+        # [[Macro]]:
+        #     Parameters
+        #     here
+        #
+        #     More parameters
+        
         #print 'Found macro:', match.group(2)
         parameterSet = []
-        hasParameters = (match.group(3) != None)
+        
+        # Whether a macro has parameters is given by
+        # whether there is a ':' after the macro.        
+        hasParameters = (match.group(2) != None)
+        
+        # Check whether the parameter is one-line.
         if hasParameters:
-            parameter = string.strip(match.group(3))
+            # A parameter is one-line if:
+            # 1) The regex matched the group 2.
+            # 2) The group 2 is not all whitespace.
+            parameter = string.strip(match.group(2))
             if parameter != '':
                 # One-line parameter
                 parameterSet.append(parameter)
-                
+        
+        # Check whether the parameter is multi-line.
+        # This must be the case if there is a parameter,
+        # but no one-line parameter was given.        
+        endLine = i + 1
         if hasParameters and parameterSet == []:
-            # Multi-line parameter
+            # The parameter is a multi-line.
+            # Next we need to see which of the following
+            # lines are part of the parameter.
+            
             # Find out the extent of the parameter.
-            indentation = len(match.group(1))
             while endLine < len(text):
                 # The end of a multi-line parameter
                 # is marked by a line which is not all whitespace
-                # and has indentation level less than or equal to 
-                # 'indentation'.
-                if _leadingTabs(text[endLine]) <= indentation and string.strip(text[endLine]) != '':
+                # and has no indentation (relative to the
+                # indentation of the macro). 
+                if _leadingTabs(text[endLine]) == 0 and string.strip(text[endLine]) != '':
                     break
                 endLine += 1
                 
             # Copy the parameter and remove the indentation from it.
-            parameterSet = [_removeLeadingTabs(line, indentation + 1) for line in text[i + 1 : endLine]]
-            
+            parameterSet = [_removeLeadingTabs(line, 1) for line in text[i + 1 : endLine]]
+        
         # Remove the macro from further expansion.
         text[i : endLine] = []
         
-        # Remove the empty parameter lines from the end.
+        # Remove the possible empty trailing parameter lines.
         nonEmptyLines = len(parameterSet)
         while nonEmptyLines > 0:
             if string.strip(parameterSet[nonEmptyLines - 1]) == '':
@@ -132,11 +172,11 @@ def expandMacros(template, document, documentTree, level = 0):
             rawParameterSet = expandMacros(parameterSet, document, documentTree, level + 1)
         
         # Now expand the macro with the raw parameter.
-
         macroHandled = False
-        macroName = match.group(2)
+        macroName = match.group(1)
         macroPartSet = string.split(macroName)
-        if len(macroPartSet) == 1:                               
+
+        if len(macroPartSet) == 1:
             macro = findMacro(macroName)
             suppressList = scope.recursiveSearch('suppress_calls_to')
             if suppressList == None:
@@ -172,8 +212,6 @@ def expandMacros(template, document, documentTree, level = 0):
             print 'Warning:', document.relativeName, ': Don\'t know how to handle macro', match.group(0), '. Ignoring it.'
             i += 1
             continue
-        else: 
-            i = 0
 
 #    if len(scope.nameSet_) > 0:
 #        print 'I has scope variables! They are:'
@@ -186,6 +224,9 @@ def expandMacros(template, document, documentTree, level = 0):
 
 def convert(template, document, documentTree, targetRootDirectory):
     #print document.relativeName, '...'
+    
+    if document.fileName != 'documentation.txt':
+        return
     
     resetLinkId()
               

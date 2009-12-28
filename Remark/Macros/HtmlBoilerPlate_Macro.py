@@ -1,3 +1,7 @@
+# Description: HtmlBoilerPlate_Macro class
+# Detail: Generates surrounding html code to include css-stylesheets etc.
+# Documentation: macros.txt
+
 import os.path
 import datetime
 

@@ -1,4 +1,5 @@
-__all__ = ['Body_Macro', 
+__all__ = ['Body_Macro',
+           'Comment_Macro',
            'CppCode_Macro',
            'DocChildren_Macro',
            'HtmlBoilerPlate_Macro',

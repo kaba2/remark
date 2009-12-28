@@ -1,3 +1,7 @@
+# Description: Link_Macro class
+# Detail: Generates a link to another document based on relative filename.
+# Documentation: macros.txt
+
 import os.path
 
 from Remark.MacroRegistry import registerMacro
@@ -8,17 +12,17 @@ class Link_Macro:
         if parameter == []:
             return []
         
-        linkFileName = parameter[0] 
-        linkDocument = documentTree.findDocument(linkFileName, document.relativeDirectory)
-        
         text = []
-        if linkDocument != None:
-            linkDescription = linkDocument.tag('description')
-            linkTarget = linkAddress(document.relativeDirectory, linkDocument.relativeName)
-            text = remarkLink(linkDescription, outputDocumentName(linkTarget))
-        else:
-            print 'Warning:', document.relativeName, ': manual link',
-            print linkFileName, 'not found. Ignoring it.'
+        for linkFileName in parameter:
+            linkDocument = documentTree.findDocument(linkFileName, document.relativeDirectory)
+            
+            if linkDocument != None:
+                linkDescription = linkDocument.tag('description')
+                linkTarget = linkAddress(document.relativeDirectory, linkDocument.relativeName)
+                text += remarkLink(linkDescription, outputDocumentName(linkTarget))
+            else:
+                print 'Warning:', document.relativeName, ': manual link',
+                print linkFileName, 'not found. Ignoring it.'
             
         return text
 

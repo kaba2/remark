@@ -1,3 +1,7 @@
+# Description: DocChildren_Macro class
+# Detail: Generates links to documentation children.
+# Documentation: macros.txt
+
 from Remark.MacroRegistry import registerMacro
 from Remark.Common import linkAddress
 

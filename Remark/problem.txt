@@ -1,0 +1,53 @@
+Problems and solutions
+======================
+
+[[Parent]]: remark.txt
+
+How can I write verbatim content directly after a macro?
+--------------------------------------------------------
+
+Indentation has a double role. It is used both to denote
+verbatim content in Markdown and to denote the parameter of 
+a macro in Remark. Rows of whitespace do not affect the range 
+of the parameter of a macro. Therefore, there needs to be a 
+non-whitespace, non-indented row between a macro parameter and verbatim 
+content. A way to solve this problem without including
+extra content is to use the Comment macro either without
+a parameter or with a one-line parameter. For example:
+
+	[[CppCode]]:
+		int square(int x)
+		{
+			return x * x;
+		}
+		
+		int cube(int x)
+		{
+			return x * x * x;
+		}
+	
+	[[Comment]]: This comment marks the end of the parameter.
+	
+		Verbatim content here. 
+
+We expect this to be a rather rare problem. Most of the time
+verbatim content is preceded by an explanation which acts
+to mark end of parameter. For example:
+		
+	[[CppCode]:
+		int square(int x)
+		{
+			return x * x;
+		}
+		
+		int cube(int x)
+		{
+			return x * x * x;
+		}
+
+	This sentence marks the end of the parameter.
+	Here's some verbatim content:
+	
+		Verbatim content here. 
+	
+	  

@@ -1,7 +1,7 @@
 Remark
 ======
 
-[Back to homepage of Kalle Rutanen][Back]
+[Back to Homepage of Kalle Rutanen][Back]
 
 [Back]: http://kaba.hilvi.org
 
@@ -59,7 +59,7 @@ document.
 
 Most often a documentation has a tree structure. This means that each 
 document has a well-defined parent document with the subject of the 
-matter generalizing towards the parent. Again when building links
+matter generalizing towards the parent. Again, when building links
 between parents and children, one is faced with a maintenance problem:
 if one changes a parent of a document, then one should remember to
 remove a link from the old parent and insert a link to the new parent.

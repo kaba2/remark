@@ -3,4 +3,16 @@ Remark todo
 
 [Parent]: remark.txt
 
-   
+Verbatim stuff and macro parameters
+-----------------------------------
+
+The verbatim content is denoted by indentation.
+However, the parameter of a macro is also denoted by
+indentation. This becomes a problem when one would like
+to write verbatim content directly after a macro.
+
+ * Solution candidate 1: Add a Comment macro which simply
+ eats the parameter which is passed to it. A comment
+ can be used to mark the end of the preceding macro.
+ Commenting is also useful by itself since Markdown has
+ no way to do commenting. 
