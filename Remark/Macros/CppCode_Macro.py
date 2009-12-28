@@ -1,5 +1,5 @@
 # Description: CppCode_Macro class
-# Detail: Generates a colored html file from C++ source code. 
+# Detail: Generates colored html from C++ source code. 
 # Documentation: macros.txt
 
 import os.path

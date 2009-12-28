@@ -49,14 +49,20 @@ the indentation of the macro invocation. For example:
 Some details
 ------------
 
-A multi-line parameter with a single row works equivalently
+ * A multi-line parameter with a single row works equivalently
 to a one-line parameter. A multi-line parameter
 with no rows works equivalently to as if no parameters 
-were given. The functionality of macros is implemented as Python classes.
+were given. 
+
+ * The functionality of macros is implemented as Python classes.
 During its action, a macro has access to the whole
 functionality offered by Remark. Most importantly macros
 have access to the documentation tree. This way macros
 are able to produce the correct descriptions and link
 targets which have been deduced from the Remark source files.
+
+ * No macro expansions are done for the parameter of a macro.
+ 
+ * No macro expansions are done for verbatim content.
 
  

@@ -16,25 +16,27 @@ class DocChildren_Macro:
 
         title = 'Learn more'
         
-        scopeTitle = scope.search('title')
+        scopeTitle = scope.search('DocChildren:title')
         if scopeTitle != None:
             if len(scopeTitle) != 1:
-                print 'Warning: DocChildren: \'title\' should be a one-line parameter. Ignoring it and using the default.'
+                print 'Warning: DocChildren: \'DocChildren:title\' should be a one-line parameter. Ignoring it and using the default.'
             else:
                 title = scopeTitle[0]
             
-        ignoreList = scope.search('no_links_for')
+        ignoreList = scope.search('DocChildren:no_links_for')
         if ignoreList == None:
             ignoreList = []            
         ignoreSet = set(ignoreList)
             
         text = ['\n' + title, '-' * len(title) + '\n']
         
+        text.append('[[Link]]:')
+        
         childSet.sort(lambda x, y: cmp(x.tag('description'), y.tag('description')))        
         for child in childSet:
             if not child.fileName in ignoreSet:
                 linkTarget = linkAddress(targetDirectory, child.relativeName)
-                text.append('[[Link]]: ' + linkTarget)
+                text.append('\t' + linkTarget)
                 
         return text
 

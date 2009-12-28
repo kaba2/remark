@@ -1,0 +1,16 @@
+Todo
+====
+
+[[Parent]]: implementation.txt
+
+AsciiMathML can not be scoped
+-----------------------------
+
+For example, in Python code there might be an
+empty string denoted by two subsequent '.
+This will be erased from the output because
+AsciiMathML interprets this as a start of 
+a mathematical expression.
+Unfortunately I am not aware of any ways to
+scope the AsciiMathML to not consider all
+places.

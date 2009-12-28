@@ -16,13 +16,11 @@ Variables can be defined like this:
 
 	[[set some_filename]]: filename.txt
 	
-	[[Comment]]: Variables can be redefined.
+Variables can also be redefined:
 	
 	[[set some_filename]]: another.txt
 	
-	[[Comment]]: 
-		Variables can be defined using
-		multi-line parameters.
+Variables can be defined using multi-line parameters:
 	
 	[[set some_filename]]:
 		filename.txt
@@ -57,32 +55,33 @@ Yields:
 	another.txt
 	third_file.txt 
 
-Scopes
-------
-
-Each variable lives in some scope which
-defines its visibility and life-time. Each macro
-invocation creates a child-scope into the current
-scope. Variables defined inside the macro invocation
-are placed into this scope. When a macro finishes, its scope
-is closed and all the local variables in the scope are 
-destroyed. When no macro invocations are active, the
-only active scope is the _global scope_. Child scopes
-can refer to variables in the parent scopes, but not
-vice versa.  
-
-For example:
-
-	[[set global_variable]]:
-		Something interesting.
-
-	[[Comment]]:
-		[[set filename]]: some_file.txt
-
-	[[Comment]]: 
-		The 'filename' variable does not exist
-		at this point anymore. However, the
-		'global_variable' is visible since it
-		is in a parent scope:
-		
-		[[get global_variable]]	
+[[Comment]]:
+	Scopes
+	------
+	
+	Each variable lives in some scope which
+	defines its visibility and life-time. Each macro
+	invocation creates a child-scope into the current
+	scope. Variables defined inside the macro invocation
+	are placed into this scope. When a macro finishes, its scope
+	is closed and all the local variables in the scope are 
+	destroyed. When no macro invocations are active, the
+	only active scope is the _global scope_. Child scopes
+	can refer to variables in the parent scopes, but not
+	vice versa.  
+	
+	For example:
+	
+		[[set global_variable]]:
+			Something interesting.
+	
+		[[Comment]]:
+			[[set filename]]: some_file.txt
+	
+		[[Comment]]: 
+			The 'filename' variable does not exist
+			at this point anymore. However, the
+			'global_variable' is visible since it
+			is in a parent scope:
+			
+			[[get global_variable]]	

@@ -1,3 +1,6 @@
+# Description: Macro expansion algorithm, variables, and html conversion.
+# Documentation: implementation.txt
+
 import re
 import string
 import os
@@ -88,7 +91,8 @@ def expandMacros(template, document, documentTree):
 
         # Check that the macro begins the line.
         if match.start() != 0:
-            print 'Warning:', document.relativeName, ': macro', match.group(0), ' has bad indentation. Ignoring it.'
+            print 'Warning:', document.relativeName, ': macro', match.group(0), 
+            print 'has bad indentation. Ignoring it.'
             i += 1
             continue
 
@@ -131,9 +135,9 @@ def expandMacros(template, document, documentTree):
         # but no one-line parameter was given.        
         endLine = i + 1
         if hasParameters and parameterSet == []:
-            # The parameter is a multi-line.
-            # Next we need to see which of the following
-            # lines are part of the parameter.
+            # The parameter is multi-line.
+            # Next we need to see which lines are 
+            # part of the parameter.
             
             # Find out the extent of the parameter.
             while endLine < len(text):

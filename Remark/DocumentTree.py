@@ -1,3 +1,7 @@
+# Description: Documents and documentation tree
+# Detail: Deduction of parent-child relationships and their storage.
+# Documentation: implementation.txt
+
 import os.path
 import string
 import re

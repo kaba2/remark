@@ -1,3 +1,7 @@
+# Description: Remark:Macros package initialization. 
+# Detail: Import declarations for macros.
+# Documentation: macros.txt
+
 __all__ = ['Body_Macro',
            'Comment_Macro',
            'SkipExpansion_Macro',

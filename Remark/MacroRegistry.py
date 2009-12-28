@@ -1,3 +1,6 @@
+# Description: Macro registry
+# Documentation: implementation.txt
+
 _expanderMap = dict()
 
 def registerMacro(name, expander):

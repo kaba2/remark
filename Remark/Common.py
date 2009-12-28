@@ -1,3 +1,6 @@
+# Description: Common stuff used in Remark
+# Documentation: implementation.txt
+
 import os.path
 import string
 
