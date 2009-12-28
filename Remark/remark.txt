@@ -37,9 +37,16 @@ typesetting mathematics. AsciiMath fulfills the following goal:
 
  * The description of the formulas are as human-readable as possible.
 
-An example of the AsciiMath syntax is given by 
-`x = (-b +- sqrt(b^2 - 4ac)) / (2a)`. Contrast this to e.g. Latex.
-Remark inherits the properties of both Markdown and AsciiMath.
+An example of the AsciiMath syntax is given by:
+	
+	x = (-b +- sqrt(b^2 - 4ac)) / (2a) 
+	
+which generates:
+	
+''x = (-b +- sqrt(b^2 - 4ac)) / (2a)''
+
+Contrast this to e.g. Latex. Remark inherits the properties of both 
+Markdown and AsciiMath.
 
 ### Automatic generation of links
 
