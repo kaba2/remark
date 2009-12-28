@@ -63,34 +63,24 @@ if __name__ == '__main__':
                  '.m' : matlabParser,}
     
     docTemplate = \
-    ['[[HtmlBoilerPlate]]:',
-    '\t[[MarkdownToHtml]]:',
-    '\t\t[[Body]]',
-    '\t\t[[DocChildren]]',
-    '\t\t[[SourceChildren]]',]
+    ['[[Body]]',
+    '[[DocChildren]]',
+    '[[SourceChildren]]',]
 
     cppTemplate = \
-    ['[[HtmlBoilerPlate]]:',
-    '\t[[MarkdownToHtml]]:',
-    '\t\t[[CppCode]]',]
+    ['[[CppCode]]',]
     
     genericCodeTemplate = \
-    ['[[HtmlBoilerPlate]]:',
-    '\t[[MarkdownToHtml]]:',
-    '\t\t[[GenericCode]]',]
+    ['[[GenericCode]]',]
 
     indexTemplate = \
-    ['[[HtmlBoilerPlate]]:',
-    '\t[[MarkdownToHtml]]:',
-    '\t\t[[Index]]',]
+    ['[[Index]]',]
     
     orphanTemplate = \
-    ['[[HtmlBoilerPlate]]:',
-    '\t[[MarkdownToHtml]]:',
-    '\t\tOrphans',
-    '\t\t=======',
-    '\t\t[[DocChildren]]',
-    '\t\t[[SourceChildren]]',]
+    ['Orphans',
+    '=======',
+    '[[DocChildren]]',
+    '[[SourceChildren]]',]
     
     registerOutputDocumentName('.txt', '.htm')
     registerOutputDocumentName('.cpp', '.cpp.htm')
@@ -129,8 +119,8 @@ if __name__ == '__main__':
         fullName = os.path.join(documentTree.rootDirectory, relativeName)
         documentTree.insertDocument(Document(relativeName, fullName))
     
-    print '\nExpanding remarks and writing to files'
-    print '--------------------------------------\n'
+    print '\nExpanding macros and writing to files'
+    print '-------------------------------------\n'
     
     convertAll(documentTree, outputDirectory, templateMap)
                    

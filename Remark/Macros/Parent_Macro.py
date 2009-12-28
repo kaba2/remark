@@ -9,8 +9,12 @@ class Parent_Macro:
     def expand(self, parameter, document, documentTree, scope):
         parent = document.parent
         linkTarget = linkAddress(document.relativeDirectory, parent.relativeName)
+
         return remarkLink('Back to ' + parent.tag('description'), 
                           outputDocumentName(linkTarget))
+
+    def pureOutput(self):
+        return True
 
 registerMacro('Parent', Parent_Macro())
 

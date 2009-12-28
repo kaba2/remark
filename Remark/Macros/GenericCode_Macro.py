@@ -77,4 +77,7 @@ class GenericCode_Macro:
         
         return convertedText
 
+    def pureOutput(self):
+        return True
+
 registerMacro('GenericCode', GenericCode_Macro())

@@ -44,6 +44,9 @@ class Index_Macro:
         text += linkSet
 
         return text
+
+    def pureOutput(self):
+        return True
         
 registerMacro('Index', Index_Macro())
         

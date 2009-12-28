@@ -3,10 +3,10 @@ Macros
 
 [[Parent]]: remark.txt
 
-Macros are functions that map input text to output text. 
-To introduce macros, we shall take the Comment macro as an 
-example. This macro takes in arbitrary input but does not 
-output anything. It can be used to comment the Remark source. 
+Macros are functions that map input text in Remark syntax to 
+output text in Remark syntax. To introduce macros, we shall take 
+the Comment macro as an example. This macro takes in arbitrary input 
+but does not output anything. It can be used to comment the Remark source. 
 
 Macro invocation
 ----------------
@@ -29,9 +29,9 @@ And with a multi-line parameter you would write like this:
 		
 The parameter is multi-line whenever:
 
-	* There is the ':' mark after the macro invocation.
-	
-	* There is only white-space after the ':' on the same row.
+ * There is the ':' mark after the macro invocation.
+
+ * There is only white-space after the ':' on the same row.
 
 The range of a multi-line parameter extends downwards
 until there is a line which contains non-white-space
@@ -45,81 +45,6 @@ the indentation of the macro invocation. For example:
 		This is still part of the multi-line parameter.
 		
 	This is not part of the Comment parameter.
-
-Variables
----------
-
-Variables can be used to store text temporarily.
-They are used to parameterize the behavior of macros
-and Remark. Variables can be defined like this:
-
-	[[set some_filename]]: filename.txt
-	
-	[[Comment]]: Variables can be redefined.
-	
-	[[set some_filename]]: another.txt
-	
-	[[Comment]]: 
-		Variables can be defined using
-		multi-line parameters.
-	
-	[[set some_filename]]:
-		filename.txt
-		another.txt 
-
-The text contained in a variable can be obtained
-in this way:
-
-	[[get some_filename]]
-	
-This simply expands into the stored text, i.e.:
-
-	filename.txt
-	another.txt 
-
-Lines can be appended into a variable like this:
-
-	[[add some_filename]]:
-		third_file.txt
-		
-After which invoking
-
-	[[get some_filename]]
-	
-Yields:
-
-	filename.txt
-	another.txt
-	third_file.txt 
-
-### Scopes
-
-Each variable lives in some scope which
-defines its visibility and life-time. Each macro
-invocation creates a child-scope into the current
-scope. Variables defined inside the macro invocation
-are placed into this scope. When a macro finishes, its scope
-is closed and all the local variables in the scope are 
-destroyed. When no macro invocations are active, the
-only active scope is the _global scope_. Child scopes
-can refer to variables in the parent scopes, but not
-vice versa.  
-
-For example:
-
-	[[set global_variable]]:
-		Something interesting.
-
-	[[Comment]]:
-		[[set filename]]: some_file.txt
-
-	[[Comment]: 
-		The 'filename' variable does not exist
-		at this point anymore. However, the
-		'global_variable' is visible since it
-		is in a parent scope:
-		
-		[[get global_variable]]	
 
 Some details
 ------------

@@ -1,0 +1,88 @@
+Variables
+=========
+
+[[Parent]]: remark.txt
+
+Variables can be used to store text temporarily.
+They are used to parameterize the behavior of macros
+and Remark. 
+
+Working with variables
+----------------------
+
+### Defining variables
+
+Variables can be defined like this:
+
+	[[set some_filename]]: filename.txt
+	
+	[[Comment]]: Variables can be redefined.
+	
+	[[set some_filename]]: another.txt
+	
+	[[Comment]]: 
+		Variables can be defined using
+		multi-line parameters.
+	
+	[[set some_filename]]:
+		filename.txt
+		another.txt 
+
+### Retrieving a variable
+
+The text contained in a variable can be obtained
+in this way:
+
+	[[get some_filename]]
+	
+This simply expands into the stored text, i.e.:
+
+	filename.txt
+	another.txt 
+
+### Appending to a variable
+
+Lines can be appended into a variable like this:
+
+	[[add some_filename]]:
+		third_file.txt
+		
+After which invoking
+
+	[[get some_filename]]
+	
+Yields:
+
+	filename.txt
+	another.txt
+	third_file.txt 
+
+Scopes
+------
+
+Each variable lives in some scope which
+defines its visibility and life-time. Each macro
+invocation creates a child-scope into the current
+scope. Variables defined inside the macro invocation
+are placed into this scope. When a macro finishes, its scope
+is closed and all the local variables in the scope are 
+destroyed. When no macro invocations are active, the
+only active scope is the _global scope_. Child scopes
+can refer to variables in the parent scopes, but not
+vice versa.  
+
+For example:
+
+	[[set global_variable]]:
+		Something interesting.
+
+	[[Comment]]:
+		[[set filename]]: some_file.txt
+
+	[[Comment]]: 
+		The 'filename' variable does not exist
+		at this point anymore. However, the
+		'global_variable' is visible since it
+		is in a parent scope:
+		
+		[[get global_variable]]	

@@ -2,6 +2,7 @@ import re
 import string
 import os
 import os.path
+import datetime
 
 from Remark.MacroRegistry import findMacro
 from Remark.Common import changeExtension, outputDocumentName, resetLinkId
@@ -41,14 +42,17 @@ class Scope:
 class ScopeStack:
     def __init__(self):
         self.stack_ = []
+        self.open('global')
         
-    def open(self):
+    def open(self, name):
+        #print 'Scope opened:', name
         parent = None
         if len(self.stack_) > 0:
             parent = self.top()                
         self.stack_.append(Scope(parent))
         
-    def close(self):
+    def close(self, name):
+        #print 'Scope closed:', name
         self.stack_.pop()
         
     def top(self):
@@ -59,7 +63,7 @@ _scopeStack = ScopeStack()
 def expandMacros(template, document, documentTree, level = 0):
     maxLevel = 10
     if level > maxLevel:
-        print 'Error: Remark expansion exceeded recursion limit of', maxLevel
+        print 'Error: Macro expansion exceeded recursion limit of', maxLevel
         print 'Check for infinite recursions!'
         return []
     
@@ -67,9 +71,6 @@ def expandMacros(template, document, documentTree, level = 0):
         return []
     
     global _scopeStack
-    
-    _scopeStack.open()   
-    scope = _scopeStack.top()
     
     text = template[:]
     macroText = r'((?:(?!]]).)*)'
@@ -115,7 +116,7 @@ def expandMacros(template, document, documentTree, level = 0):
         #
         #     More parameters
         
-        #print 'Found macro:', match.group(2)
+        #print 'Found macro:', match.group(1)
         parameterSet = []
         
         # Whether a macro has parameters is given by
@@ -167,15 +168,18 @@ def expandMacros(template, document, documentTree, level = 0):
         parameterSet = parameterSet[0 : nonEmptyLines]            
         
         # Recursively expand the parameter to get the raw parameter.
+        macroHandled = False
+        macroName = match.group(1)
+        macroPartSet = string.split(macroName)
+        
+        _scopeStack.open(macroName)   
+        scope = _scopeStack.top()
+        
         rawParameterSet = []
         if parameterSet != []:
             rawParameterSet = expandMacros(parameterSet, document, documentTree, level + 1)
         
         # Now expand the macro with the raw parameter.
-        macroHandled = False
-        macroName = match.group(1)
-        macroPartSet = string.split(macroName)
-
         if len(macroPartSet) == 1:
             macro = findMacro(macroName)
             suppressList = scope.recursiveSearch('suppress_calls_to')
@@ -183,7 +187,10 @@ def expandMacros(template, document, documentTree, level = 0):
                 suppressList = []
             if macro != None:
                 if not macroName in suppressList:
-                    text[i : i] = macro.expand(rawParameterSet, document, documentTree, scope)
+                    expandedText = macro.expand(rawParameterSet, document, documentTree, scope)
+                    text[i : i] = expandedText
+                    if macro.pureOutput():
+                        i += len(expandedText) 
                 macroHandled = True
                 #print 'Applying', macroName, 'yields:'
                 #for line in text:
@@ -192,9 +199,10 @@ def expandMacros(template, document, documentTree, level = 0):
             #print macroPartSet
             if string.lower(macroPartSet[0]) == 'set':
                 # Setting a scope variable.
+                #print 'Setting stuff!', rawParameterSet
                 scope.parent().insert(macroPartSet[1], rawParameterSet)
                 macroHandled = True
-            if string.lower(macroPartSet[0]) == 'add':
+            elif string.lower(macroPartSet[0]) == 'add':
                 # Appending to a scope variable.
                 scope.parent().append(macroPartSet[1], rawParameterSet)
                 macroHandled = True
@@ -212,6 +220,8 @@ def expandMacros(template, document, documentTree, level = 0):
             print 'Warning:', document.relativeName, ': Don\'t know how to handle macro', match.group(0), '. Ignoring it.'
             i += 1
             continue
+        
+        _scopeStack.close(macroName)   
 
 #    if len(scope.nameSet_) > 0:
 #        print 'I has scope variables! They are:'
@@ -219,19 +229,70 @@ def expandMacros(template, document, documentTree, level = 0):
 #            print name, ':'
 #            print data
                        
-    _scopeStack.close()   
     return text
 
-def convert(template, document, documentTree, targetRootDirectory):
-    #print document.relativeName, '...'
+import markdown
+
+markdownConverter = markdown.Markdown()
+
+def convertMarkdownToHtml(text):
+    global markdownConverter
     
-    if document.fileName != 'documentation.txt':
-        return
+    htmlString = markdownConverter.convert(string.join(text, '\n'))
+    htmlText = string.split(htmlString, '\n')
+        
+    return htmlText
+
+def addHtmlBoilerPlate(text, document):
+    remarkDirectory = os.path.relpath('remark', document.relativeDirectory)
+    
+    # Add boilerplate code.
+    
+    now = datetime.datetime.now()
+    timeText = now.strftime("%d.%m.%Y %H:%M")
+            
+    htmlText = []
+    htmlText.append('<?xml version="1.0" encoding="UTF-8"?>')
+    htmlText.append('<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">')
+    htmlText.append('<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US" lang="en-US">')
+    htmlText.append('<head>')
+    htmlText.append('<title>' + document.tag('description') + '</title>')
+    htmlText.append('<link rel="stylesheet" type="text/css" href="' + os.path.join(remarkDirectory, 'global.css') + '" />')
+    htmlText.append('<link rel="stylesheet" type="text/css" href="' + os.path.join(remarkDirectory, 'pygments.css') + '" />')
+    htmlText.append('<meta http-equiv="Content-Type" content="text/html; charset=utf-8"></meta>')
+    htmlText.append('<script type="text/javascript" src="' + os.path.join(remarkDirectory, 'ASCIIMathMLwFallback.js') + '"></script>')
+    htmlText.append('</head>')
+    htmlText.append('<body>')
+    htmlText.append('<div id = "container">')
+    htmlText.append('<div id = "mark">')
+    htmlText += text
+    htmlText.append('</div>')
+    htmlText.append('<div id="footer">')
+    htmlText.append('<p>Remark documentation system - Page generated ' + timeText + '.</p>')
+    htmlText.append('</div>')
+    htmlText.append('</div>')
+    htmlText.append('</body>')
+    htmlText.append('</html>')
+
+    return htmlText
+
+
+def convert(template, document, documentTree, targetRootDirectory):
+    print document.relativeName, '...'
+    
+    #if document.fileName != 'pastel.txt':
+    #    return
     
     resetLinkId()
               
     # Expand macros.
     text = expandMacros(template, document, documentTree)
+    
+    # Convert Markdown to html.
+    text = convertMarkdownToHtml(text)
+    
+    # Add html boilerplate.
+    text = addHtmlBoilerPlate(text, document)
 
     # Find out some names.
     targetRootDirectory = os.path.normpath(targetRootDirectory)

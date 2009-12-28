@@ -26,4 +26,7 @@ class Link_Macro:
             
         return text
 
+    def pureOutput(self):
+        return True
+
 registerMacro('Link', Link_Macro())

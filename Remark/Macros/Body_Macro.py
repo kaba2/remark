@@ -10,5 +10,8 @@ class Body_Macro:
         text = readFile(document.fullName)
             
         return text
+    
+    def pureOutput(self):
+        return False
 
 registerMacro('Body', Body_Macro())

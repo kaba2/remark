@@ -78,4 +78,7 @@ class CppCode_Macro:
         
         return convertedText
 
+    def pureOutput(self):
+        return True
+
 registerMacro('CppCode', CppCode_Macro())
