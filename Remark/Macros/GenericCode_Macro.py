@@ -17,12 +17,12 @@ class GenericCode_Macro:
         # If no parameter is given, then the
         # code is read from the document's file.
         # Otherwise, the parameter is assumed to        
-        # contain Python code.
+        # contain some source code.
         if parameter == []:
             text = readFile(document.fullName)
         else:
             text = parameter
-                
+
         fileName = os.path.split(document.relativeName)[1]
         
         convertedText = []
@@ -44,7 +44,8 @@ class GenericCode_Macro:
         
         # This 'div' allows, for example, to create
         # a box around the code.
-        convertedText.append('<div class = "codehilite">')
+        convertedText.append('[[SkipExpansion]]:')
+        convertedText.append('\t<div class = "codehilite">')
 
         # Try to guess the type of the code.
         inputText = string.join(text, '\n')
@@ -69,15 +70,15 @@ class GenericCode_Macro:
                 # Empty line. Generate something dummy.
                 # This needs to be done because Markdown
                 # thinks the html-markup ends in a blank line.
-                convertedText.append('<span class="p"></span>')
+                convertedText.append('\t<span class="p"></span>')
             else:
-                convertedText.append(line)
+                convertedText.append('\t' + line)
                                 
-        convertedText.append('</div>\n')
+        convertedText.append('\t</div>\n')
         
         return convertedText
 
     def pureOutput(self):
-        return True
+        return False
 
 registerMacro('GenericCode', GenericCode_Macro())

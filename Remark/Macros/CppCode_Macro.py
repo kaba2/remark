@@ -50,13 +50,15 @@ class CppCode_Macro:
             
             # Create parent link.
             convertedText.append('[[Parent]]\n')
+            #convertedText += expandMacros(['[[Parent]]\n'], document, documentTree)
         
             # Create directory link.
             convertedText += remarkLink(unixDirectoryName(document.relativeDirectory) + '/', 'directory.htm')
         
         # This 'div' allows, for example, to create
         # a box around the code.
-        convertedText.append('<div class = "codehilite">')
+        convertedText.append('[[SkipExpansion]]:')
+        convertedText.append('\t<div class = "codehilite">')
 
         includeRegex = re.compile(r'(#include[ \t]+(?:(?:&quot)|(?:&lt));)(.*)((?:(?:&quot)|(?:&gt));)')
 
@@ -69,16 +71,16 @@ class CppCode_Macro:
                 # Empty line. Generate something dummy.
                 # This needs to be done because Markdown
                 # thinks the html-markup ends in a blank line.
-                convertedText.append('<span class="p"></span>')
+                convertedText.append('\t<span class="p"></span>')
             else:
                 # Replace include file names with links to source files.
-                convertedText.append(re.sub(includeRegex, replacer, line))
+                convertedText.append('\t' + re.sub(includeRegex, replacer, line))
                                 
-        convertedText.append('</div>\n')
+        convertedText.append('\t</div>\n')
         
         return convertedText
 
     def pureOutput(self):
-        return True
+        return False
 
 registerMacro('CppCode', CppCode_Macro())
