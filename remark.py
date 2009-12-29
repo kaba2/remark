@@ -1,5 +1,8 @@
 #! /usr/bin/env python
 
+# Description: Console executable
+# Documentation: ./Remark/implementation.txt 
+
 '''
 Remark documentation system
 Started on 16.11.2009

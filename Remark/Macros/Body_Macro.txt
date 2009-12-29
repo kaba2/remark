@@ -24,8 +24,12 @@ None.
 Example
 -------
 
+This
+
 	[[Body]]
 
-Results of executing this macro can not be given since that would lead to 
-an infinite macro expansion loop. 
+would lead to an an infinite macro expansion loop.
+This macro is used internally by Remark, and should not be
+used by normal users.
+ 
  
