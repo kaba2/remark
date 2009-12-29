@@ -1,0 +1,119 @@
+Basic Markdown syntax
+=====================
+
+[[Parent]]: remark_syntax.txt
+
+Here we provide a brief tutorial to the Markdown syntax
+which is the basis on which Remark syntax has been built.
+We provide an external link to complete documentation below. 
+
+Markdown syntax
+---------------
+
+### Normal text
+
+Normal text is generated simply by writing some.
+Note that in Markdown new-lines do not start new lines
+in the output. That needs an empty line.  
+
+	Once upon a time there was an apple-worm...
+	It was a very green apple-worm.
+	
+	Its home was built into a red apple. 
+
+This produces:
+
+Once upon a time there was an apple-worm...
+It was a very green apple-worm.
+	
+Its home was built into a red apple. 
+
+### Emphasized text
+
+Emphasis can be added by using surrounding 
+underlines:
+
+	It was a _very_ green apple-worm.
+	
+	It was a __very__ green apple-worm.
+
+	It was a ___very___ green apple-worm.
+	
+This produces:	
+
+It was a _very_ green apple-worm.
+
+It was a __very__ green apple-worm.
+
+It was a ___very___ green apple-worm.
+
+### Headings
+
+The headings corresponding to html heading levels 1, 2, and 3,
+respectively, are denoted as follows:
+
+	Remark syntax
+	=============
+	
+	Markdown syntax
+	---------------
+	
+	### Headings
+
+It would confusing to show here what these produce.
+Instead, look at the corresponding headings on this page as 
+examples of these headings.
+
+### Verbatim content
+
+Verbatim content can be written by indenting
+the text. For example, this:
+
+		Indented text.
+
+produces this:
+
+	Indented text.
+
+The verbatim content is what we are using on this
+page to demonstrate the syntax such that it isn't
+interpreted as Remark code.   
+
+### Links
+
+Links are created as follows:
+
+	[Remark syntax][1]
+	
+	[1]: remark_syntax.htm
+
+Here we have mimicked the way literature is cited
+in scientific publications. However, instead of '1' there
+could be an arbitrary link name. The previous
+produces:
+
+[Remark syntax][Remark_Syntax]
+
+[Remark_Syntax]: remark_syntax.htm
+
+While the Markdown linking mechanism is fine
+(and required) for external links, you will want 
+to use the Remark linking mechanism for links internal
+to the documentation. This is because it is
+able to automatically fetch the description 
+of the target documentation for link naming,
+helping to keep documentation in sync. 
+For example:
+
+	[[Link]]: remark_syntax.txt  
+
+produces:
+
+[[Link]]: remark_syntax.txt  
+
+Links
+-----
+
+[Complete Markdown syntax documentation][Markdown_Syntax]
+
+[Markdown_Syntax]: http://daringfireball.net/projects/markdown/syntax

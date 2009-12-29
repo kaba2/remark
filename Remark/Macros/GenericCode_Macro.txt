@@ -1,0 +1,47 @@
+GenericCode macro
+=================
+
+[[Parent]]: macros.txt
+
+Description
+-----------
+
+### Action
+
+Color-encodes many kinds of source code. Outputs corresponding
+html code. Note that Markdown syntax allows for inlined html.
+
+### Macro expansion of the output
+
+Skipped. This is because the source code could
+contain Remark macros which could get erroneously
+expanded. 
+
+### Parameters
+
+The parameter is interpreted as the input source code.
+If the parameter is not given, the content is loaded from 
+the currently processed document file. 
+
+### Variables
+
+None.
+
+### Details
+
+The type of the source code is guessed as follows:
+
+ * If the source code is loaded from a file, its extension
+ is used to take a guess.
+ 
+ * Otherwise some heuristics are run on the source code
+ and a guess is taken based on that.
+ 
+The color-encoding is carried out by the Pygments Python library.
+
+Links
+-----
+
+[Pygments syntax highlighter][Pygments]
+
+[Pygments]: http://pygments.org

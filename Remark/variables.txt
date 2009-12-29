@@ -1,7 +1,7 @@
 Variables
 =========
 
-[[Parent]]: remark.txt
+[[Parent]]: remark_syntax.txt
 
 Variables can be used to store text temporarily.
 They are used to parameterize the behavior of macros

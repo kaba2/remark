@@ -1,0 +1,32 @@
+Parent macro
+============
+
+[[Parent]]: macros.txt
+
+Description
+-----------
+
+This macro has a double role in Remark. As a macro
+it does not use its parameter in anyway. However,
+as a tag it is used to deduce the parent-child
+relations between documents: here the parameter
+is essential.
+
+### Action
+
+Generates a link to the parent document. The labels 
+for the link is set to the description of the parent 
+document. 
+
+### Macro expansion of the output
+
+Allowed.
+
+### Parameters
+
+As a macro: None. As a tag: used to deduce parent-child
+relations.
+
+### Variables
+
+None.

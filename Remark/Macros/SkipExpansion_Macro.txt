@@ -1,0 +1,27 @@
+SkipExpansion macro
+===================
+
+[[Parent]]: macros.txt
+
+Description
+-----------
+
+This macro can be used to prohibit macro
+expansion from taking place over a region
+of text. 
+
+### Action
+
+Copies the input as it is.
+
+### Macro expansion of the output
+
+Skipped.
+
+### Parameters
+
+None.
+
+### Variables
+
+None.

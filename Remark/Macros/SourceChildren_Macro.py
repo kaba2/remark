@@ -1,6 +1,5 @@
 # Description: SourceChildren_Macro class
 # Detail: Generates links to source code children.
-# Documentation: macros.txt
 
 import os.path
 import string
