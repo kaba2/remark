@@ -3,6 +3,9 @@ Todo
 
 [[Parent]]: implementation.txt
 
+This page contains a list of known problems in Remark, discussions of them, 
+and plans for the future.
+
 AsciiMathML can not be scoped
 -----------------------------
 

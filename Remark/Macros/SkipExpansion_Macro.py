@@ -1,6 +1,5 @@
 # Description: SkipExpansion_Macro class
 # Detail: Copies the input to output and skips macro expansion.
-# Documentation: macros.txt
 
 from Remark.MacroRegistry import registerMacro
 

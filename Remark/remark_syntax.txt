@@ -1,0 +1,15 @@
+Remark syntax
+=============
+
+[[Parent]]: remark.txt
+
+Remark syntax is a slightly extended version of the Markdown
+syntax. Therefore, if you can write Markdown, you can also
+write much of Remark. We have decided to introduce
+you only the basics of Markdown syntax here and redirect
+you elsewhere for learning more advanced features of Markdown.
+On the other hand, we will give more attention to the features 
+Remark syntax adds on top of the Markdown syntax.  
+
+
+

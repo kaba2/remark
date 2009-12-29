@@ -1,0 +1,26 @@
+Index macro
+===========
+
+[[Parent]]: macros.txt
+
+Description
+-----------
+
+### Action
+
+Generates a directory listing from the files
+and directories in the same directory as the
+currently processed document file. Each directory
+and file is given as a link.
+
+### Macro expansion of the output
+
+Allowed.
+
+### Parameters
+
+Ignored.
+
+### Variables
+
+None.

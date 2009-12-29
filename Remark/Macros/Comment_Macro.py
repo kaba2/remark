@@ -1,6 +1,5 @@
 # Description: Comment_Macro class
 # Detail: Consumes its input and produces no output.
-# Documentation: macros.txt
 
 from Remark.MacroRegistry import registerMacro
 

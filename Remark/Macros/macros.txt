@@ -1,7 +1,7 @@
 Macros
 ======
 
-[[Parent]]: remark.txt
+[[Parent]]: remark_syntax.txt
 
 Macros are functions that map input text in Remark syntax to 
 output text in Remark syntax. To introduce macros, we shall take 

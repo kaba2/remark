@@ -1,6 +1,5 @@
 # Description: Index_Macro class
 # Detail: Generates a html file to traverse the documentation tree directly. 
-# Documentation: macros.txt
 
 import string
 import os.path

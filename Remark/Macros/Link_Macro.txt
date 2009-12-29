@@ -1,0 +1,26 @@
+Link macro
+==========
+
+[[Parent]]: macros.txt
+
+Description
+-----------
+
+### Action
+
+Generates links to documents in the
+documentation tree. The labels for the links are set
+to the descriptions of the target documents. 
+
+### Macro expansion of the output
+
+Allowed.
+
+### Parameters
+
+A list of relative target document filenames for
+which the links are to be generated. 
+
+### Variables
+
+None.

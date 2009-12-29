@@ -1,6 +1,5 @@
 # Description: Body_Macro class
-# Detail: Reads a document file to memory.
-# Documentation: macros.txt
+# Detail: Reads a document from file.
 
 from Remark.Common import readFile
 from Remark.MacroRegistry import registerMacro

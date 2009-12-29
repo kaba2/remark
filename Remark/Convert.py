@@ -208,11 +208,13 @@ def expandMacros(template, document, documentTree):
                     #print result
                     text[i : i] = result
                 else:
-                    print 'Warning:', document.relativeName, ': get: Variable \'' + macroPartSet[1] + '\' not found. Ignoring it.'
+                    print 'Warning:', document.relativeName, 
+                    print ': get: Variable \'' + macroPartSet[1] + '\' not found. Ignoring it.'
                 macroHandled = True
 
         if not macroHandled:
-            print 'Warning:', document.relativeName, ': Don\'t know how to handle macro', match.group(0), '. Ignoring it.'
+            print 'Warning:', document.relativeName,
+            print ': Don\'t know how to handle macro', match.group(0), '. Ignoring it.'
             i += 1
             continue
         

@@ -1,6 +1,5 @@
 # Description: Link_Macro class
 # Detail: Generates a link to another document based on relative filename.
-# Documentation: macros.txt
 
 import os.path
 
