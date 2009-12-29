@@ -1,31 +1,7 @@
-Overview of Remark
-==================
+Basic concepts
+==============
 
 [[Parent]]: remark.txt
-
-Remark is a Python library designed for generating documentation for software libraries.
-
-Syntax
-------
-
-Remark uses a slightly modified Markdown syntax for documentation. 
-The appealing idea behind Markdown is that the source-text files 
-should also be readable by themself. For an example, 
-[see the source for this page](./overview.txt).
-
-### Mathematical notation
-
-The Markdown syntax has been extended to embed mathematical notation
-via the AsciiMath syntax. This extends the idea of making both 
-the document and the source itself readable. This allows one to use 
-mathematical notation as is common when communicating through an 
-ascii-only medium (newsgroups, emails). For example, using AsciiMath, 
-one can type `int_{-oo}^oo f(x) log(f(x)) dx` to render 
-
-''int_{-oo}^oo f(x) log(f(x)) dx'' 
-
-Compare this to other notations (especially Latex) whose sources are 
-mostly unreadable.
 
 Documentation tree
 ------------------
