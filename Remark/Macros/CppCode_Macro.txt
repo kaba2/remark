@@ -9,7 +9,7 @@ Description
 ### Action
 
 Color-encodes C and C++ source code. Outputs corresponding
-html code. Note that Markdown syntax allows for inlined html.
+html code. 
 
 ### Macro expansion of the output
 
@@ -30,6 +30,7 @@ None.
 ### Details
 
 The color-encoding is carried out by the Pygments Python library.
+Note that Markdown syntax allows for inlined html.
 
 Links
 -----

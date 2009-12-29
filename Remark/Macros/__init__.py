@@ -1,4 +1,4 @@
-# Description: Remark:Macros package initialization. 
+# Description: Remark.Macros package initialization. 
 # Detail: Import declarations for macros.
 # Documentation: macros.txt
 

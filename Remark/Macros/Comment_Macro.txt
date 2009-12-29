@@ -6,15 +6,11 @@ Comment macro
 Description
 -----------
 
-The intent of the comment macro is to allow commenting the Remark source.
+The intent of this macro is to allow commenting of the Remark source.
 
 ### Action
 
 Returns nothing.
-
-### Macro expansion of the output
-
-Allowed. 
 
 ### Parameters
 

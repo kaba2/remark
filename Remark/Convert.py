@@ -1,5 +1,5 @@
 # Description: Macro expansion algorithm, variables, and html conversion.
-# Documentation: implementation.txt
+# Documentation: core_stuff.txt
 
 import re
 import string

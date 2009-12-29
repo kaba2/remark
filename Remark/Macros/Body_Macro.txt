@@ -10,10 +10,6 @@ Description
 
 Reads the currently considered document from a file. Returns its contents.
 
-### Macro expansion of the output
-
-Allowed. 
-
 ### Parameters
 
 Ignored.
