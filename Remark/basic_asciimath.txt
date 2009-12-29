@@ -1,0 +1,229 @@
+Basic AsciiMath syntax
+======================
+
+[[Parent]]: remark_syntax.txt
+
+Here we provide a brief tutorial to AsciiMath syntax
+which is used to typeset mathematics in Remark.
+We provide an external link to complete documentation below.
+
+Some basic examples
+-------------------
+
+I can't think of a better way to introduce AsciiMath syntax
+than to actually type some in and let you inspect the results.
+So here goes. 
+
+### Quadratic equation
+
+This
+
+	x = (-b +- sqrt(b^2 - 4ac)) / (2a)
+
+produces this:
+
+''x = (-b +- sqrt(b^2 - 4ac)) / (2a)''
+
+### Relations
+
+This
+
+	R " is reflexive" harr AA x: x R x
+	
+	R " is transitive" harr AA x, y, z: xRy quad ^^ quad yRz => xRz
+
+produces this: 	
+
+''R " is reflexive" harr AA x: xRx''
+
+''R " is transitive" harr AA x, y, z: xRy quad ^^ quad yRz => xRz''
+
+In this example I had to add the quad's to make the spacing
+look natural. Unfortunately AsciiMathML does not always make
+a perfect work in the conversion...
+
+### Continuity
+
+This
+
+	AA epsilon > 0 in RR: EE delta > 0 in RR: AA y: d_1(x, y) < delta => d_2(f(x), f(y)) < epsilon
+	
+produces this:
+
+''AA epsilon > 0 in RR: EE delta > 0 in RR: AA y: d_1(x, y) < delta => d_2(f(x), f(y)) < epsilon''
+
+A more comprehensive demo
+-------------------------
+
+These examples are a reproduction of the examples
+given in the official AsciiMathML pages (linked below)
+with some additions.
+
+### Basic constructs
+
+This
+
+	(x+1)/(x-1) x^(i+j) x_(ij) sqrt(x) root(n)(x) stackrel(+)(->) text(any) "any"
+
+produces this:
+
+	''(x+1)/(x-1) x^(i+j) x_(ij) sqrt(x) root(n)(x) stackrel(+)(->) text(any) "any"''
+
+### Operation symbols
+
+This
+
+	+ - * ** // \\ xx -: @ o+ ox sum prod ^^ ^^^ vv vvv nn nnn uu uuu
+
+produces this:
+
+	''+ - * ** // \\ xx -: @ o+ ox sum prod ^^ ^^^ vv vvv nn nnn uu uuu''
+
+
+### Relation symbols
+
+This
+
+	= != < <= > >= -< >- in !in sub sup sube supe -= ~= ~~ prop
+
+produces this:
+
+	''= != < <= > >= -< >- in !in sub sup sube supe -= ~= ~~ prop''
+
+### Logical symbols
+
+This
+
+	\and \or \not => if iff AA EE _|_ TT |-- |==
+
+produces this:
+
+	''\and \or \not => if iff AA EE _|_ TT |-- |==''
+
+### Miscellaneous symbols
+
+This
+
+	int oint del grad +- O/ oo aleph ... cdots \ quad qquad diamond square |~ ~| CC NN QQ RR ZZ
+
+produces this:
+
+''int oint del grad +- O/ oo aleph ... cdots \ quad qquad diamond square |~ ~| CC NN QQ RR ZZ''
+
+### Standard functions
+
+This
+
+	sin cos tan csc sec cot sinh cosh tanh log ln det dim lim mod gcd lcm
+
+produces this:
+
+''sin cos tan csc sec cot sinh cosh tanh log ln det dim lim mod gcd lcm''
+
+### Grouping brackets
+
+This
+
+	( ) [ ] { } (: :) {: :}
+	
+produces this:
+
+''( ) [ ] { } (: :) {: :}''
+
+### Arrows
+
+This
+
+	uarr darr rarr -> larr harr rArr lArr hArr
+
+produces this:
+
+''uarr darr rarr -> larr harr rArr lArr hArr''
+
+### Accents
+
+This
+
+	hat x bar x ul x vec x dot x ddot x
+
+	hat(2 + 3 * 4)
+
+	bar(2 + 3 * 4)
+
+	ul(2 + 3 * 4)
+	
+	vec(2 + 3 * 4)
+
+produces this:
+
+''hat x bar x ul x vec x dot x ddot x''
+
+''hat(2 + 3 * 4)''
+
+''bar(2 + 3 * 4)''
+
+''ul(2 + 3 * 4)''
+
+''vec(2 + 3 * 4)''
+
+### Font commands
+
+This
+
+	bb("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
+	
+	bbb("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
+	
+	cc("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
+	
+	tt("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
+	
+	fr("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
+	
+	sf("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
+
+produces this:
+
+''bb("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")''
+	
+''bbb("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")''
+	
+''cc("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")''
+	
+''tt("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")''
+	
+''fr("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")''
+	
+''sf("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")''
+
+### Matrices
+
+This
+
+	[[a,b],[c,d]] ((1,0),(0,1))
+
+produces this:
+
+''[[a,b],[c,d]] ((1,0),(0,1))''
+
+### Greek letters
+
+This
+
+	alpha beta chi delta Delta epsi eta gamma Gamma iota kappa lambda 
+	Lambda mu nu omega Omega phi Phi pi Pi psi rho sigma Sigma tau theta 
+	Theta upsilon xi Xi zeta
+
+produces this:
+
+''alpha beta chi delta Delta epsi eta gamma Gamma iota kappa lambda 
+Lambda mu nu omega Omega phi Phi pi Pi psi rho sigma Sigma tau theta 
+Theta upsilon xi Xi zeta''
+
+Links
+-----
+
+[Complete AsciiMath documentation][AsciiMath]
+
+[AsciiMath]: http://www1.chapman.edu/~jipsen/mathml/asciimathsyntax.html
+ 
