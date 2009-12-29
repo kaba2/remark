@@ -26,3 +26,14 @@ relations.
 ### Variables
 
 None.
+
+Example
+-------
+
+This
+
+	[[Parent]]
+	
+produces this:
+
+[[Parent]]

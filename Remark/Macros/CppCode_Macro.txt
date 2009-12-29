@@ -32,6 +32,25 @@ None.
 The color-encoding is carried out by the Pygments Python library.
 Note that Markdown syntax allows for inlined html.
 
+Example
+-------
+
+This
+
+	[[CppCode]]:
+		int square(int x)
+		{
+			return x * x;
+		}
+
+produces this:
+		
+[[CppCode]]:
+	int square(int x)
+	{
+		return x * x;
+	}
+
 Links
 -----
 
