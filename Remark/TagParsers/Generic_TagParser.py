@@ -1,3 +1,6 @@
+# Description: Generic_TagParser class
+# Documentation: tag_parsers.txt
+
 import string
 
 class Generic_TagParser:

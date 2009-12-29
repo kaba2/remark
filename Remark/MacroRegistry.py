@@ -1,5 +1,5 @@
 # Description: Macro registry
-# Documentation: implementation.txt
+# Documentation: core_stuff.txt
 
 _expanderMap = dict()
 

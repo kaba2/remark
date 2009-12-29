@@ -1,6 +1,6 @@
 # Description: Documents and documentation tree
 # Detail: Deduction of parent-child relationships and their storage.
-# Documentation: implementation.txt
+# Documentation: core_stuff.txt
 
 import os.path
 import string

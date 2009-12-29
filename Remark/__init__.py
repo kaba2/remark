@@ -1,2 +1,2 @@
 # Description: Remark package initialization.
-# Documentation: implementation.txt
+# Documentation: core_stuff.txt

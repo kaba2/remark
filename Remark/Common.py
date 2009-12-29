@@ -1,5 +1,5 @@
 # Description: Common stuff used in Remark
-# Documentation: implementation.txt
+# Documentation: core_stuff.txt
 
 import os.path
 import string
