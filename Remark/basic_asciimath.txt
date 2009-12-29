@@ -7,6 +7,18 @@ Here we provide a brief tutorial to AsciiMath syntax
 which is used to typeset mathematics in Remark.
 We provide an external link to complete documentation below.
 
+Math mode 
+---------
+
+A math mode is activated and deactivated by two subsequent 
+characters of '. Unfortunately, a current unsolved problem in 
+Remark prohibits me from explicitly writing those characters 
+down since they would be interpreted as a mathematical 
+expression independent of whether it is written as verbatim content
+or not. Thus, in the examples below I will be leaving those
+characters out. However, they must be included to produce
+the MathML output. 
+
 Some basic examples
 -------------------
 
