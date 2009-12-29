@@ -20,3 +20,14 @@ Ignored.
 ### Variables
 
 None.
+
+Example
+-------
+
+This
+
+	[[Index]]
+	
+produces this:
+
+[[Index]]

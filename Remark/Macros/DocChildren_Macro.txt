@@ -11,6 +11,8 @@ Description
 Generates a list of links to the documentation
 children of the currently processed document.
 This list is preceded by a level-1 heading.
+The heading is not generated if there are no
+documentation children.
 
 ### Parameters
 
@@ -21,3 +23,19 @@ Ignored.
 'DocChildren:title': The title of the heading. Default 'Learn more'.
 
 'DocChildren:no_links_for': A list of links to not include in the generation. Default empty.
+
+Example
+-------
+
+This
+
+	[[DocChildren]]
+	
+produces
+
+[[DocChildren]]
+
+i.e. nothing because this document has no children.
+For a more interesting example see the parent document
+of this document.
+

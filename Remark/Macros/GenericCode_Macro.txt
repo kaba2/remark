@@ -40,6 +40,31 @@ The type of the source code is guessed as follows:
 The color-encoding is carried out by the Pygments Python library.
 Note that Markdown syntax allows for inlined html.
 
+Example
+-------
+
+This
+
+	[[GenericCode]]:
+		int square(int x)
+		{
+			return x * x;
+		}
+
+produces this:
+		
+[[GenericCode]]:
+	int square(int x)
+	{
+		return x * x;
+	}
+
+If you compare this with the CppCode macro example,
+you'll see that the coloring is different. Possibly
+because of the small size of the code snippet the
+heuristic to guess the programming language has failed
+in this example.
+
 Links
 -----
 

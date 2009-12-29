@@ -1,5 +1,5 @@
-Basic concepts
-==============
+Concepts
+========
 
 [[Parent]]: remark.txt
 
@@ -50,12 +50,12 @@ in the file
 	[[Parent]]: name_of_parent.txt 
 	
 A source-code file specifies its parent file by writing somewhere
-in the file a comment of the form:
+in the file a comment of the form (examples in C++):
 
 	// Documentation: name_of_documentation.txt
 
 The specified file will be first searched from the current directory,
-and then sequantially through parent directories up to the project's 
+and then sequentially through parent directories up to the project's 
 root directory.
 
 ### Specifying a description

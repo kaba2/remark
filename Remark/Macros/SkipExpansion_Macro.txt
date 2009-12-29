@@ -25,3 +25,21 @@ None.
 ### Variables
 
 None.
+
+Examples
+--------
+
+This
+
+	[[SkipExpansion]]:
+		[[Link]]: macros.txt
+		
+		Some more text.
+		
+produces this:
+
+[[SkipExpansion]]:
+	[[Link]]: macros.txt
+
+	Some more text.
+	

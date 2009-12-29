@@ -20,3 +20,18 @@ which the links are to be generated.
 ### Variables
 
 None.
+
+Example
+-------
+
+This
+	
+	[[Link]]: 
+		macros.txt
+		../remark_syntax.txt
+	
+produces this:
+
+[[Link]]: 
+	macros.txt
+	../remark_syntax.txt
