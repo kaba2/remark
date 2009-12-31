@@ -57,6 +57,7 @@ if __name__ == '__main__':
     txtParser = Markdown_TagParser({'parent' : re.compile(r'[ \t]*\[\[Parent\]\]:[ \t]*(.*)')})
     
     parserMap = {'.txt' : txtParser,
+                 '.c' : cppParser,
                  '.cc' : cppParser,
                  '.cpp' : cppParser,
                  '.h'  : cppParser,
@@ -88,6 +89,7 @@ if __name__ == '__main__':
     registerOutputDocumentName('.txt', '.htm')
     registerOutputDocumentName('.cpp', '.cpp.htm')
     registerOutputDocumentName('.cc', '.cc.htm')
+    registerOutputDocumentName('.c', '.c.htm')
     registerOutputDocumentName('.h', '.h.htm')
     registerOutputDocumentName('.hh', '.hh.htm')
     registerOutputDocumentName('.hpp', '.hpp.htm')
@@ -99,6 +101,7 @@ if __name__ == '__main__':
     templateMap = {'.txt' : docTemplate,   
                    '.cpp' : cppTemplate,
                    '.cc' : cppTemplate,
+                   '.c' : cppTemplate,
                    '.h' : cppTemplate,
                    '.hh' : cppTemplate,
                    '.hpp' : cppTemplate,
