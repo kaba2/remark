@@ -1,7 +1,7 @@
 #! /usr/bin/env python
 
 # Description: Console executable
-# Documentation: ./Remark/implementation.txt 
+# Documentation: implementation.txt 
 
 '''
 Remark documentation system
