@@ -1,0 +1,211 @@
+/**
+ * CSS STYLESHEET FOR NATIVEMODE.NET
+ *
+ * as you can see, this is quite a 'work in progress' file.
+ *
+ * 'footer at bottom' technique adapted from example by Matthed Taylor,
+ * <http://matthewjamestaylor.com/blog/keeping-footers-at-the-bottom-of-the-page>
+ *
+ */
+
+html, body {
+	margin: 0;
+	padding: 0;
+	height: 100%;
+}
+
+body {
+	/*background: #fff;*/
+	/*background: #e2dddd;*/
+/*	background: #090E21;*/
+/*	background: url("/static/bg4.png") no-repeat top left #e2dddd scroll;*/
+	font-family: Verdana, sans-serif;
+	font-size: 12px;
+	/*
+	background-repeat: no-repeat;
+	background-position: bottom left;
+	background-image: url(/static/bg3.png);*/
+	line-height: 1.7em;
+	margin-left: 25%;
+	margin-right: 25%;
+}
+
+pre {
+	border-style: dotted;
+	border-color: #555;
+	border-width: 1px;
+	font-size: 12px;
+	margin-top: 0px;
+	margin-bottom: 0px;
+	margin-left: 40px;
+	margin-right: 0px;
+	width: 55em;
+	padding-left: 1em;
+	padding-right: 1em;
+	padding-top: 0.5em;
+	padding-bottom: 0.5em;
+	background: #eaffe8;
+	/*background: #eae8ff;*/
+}
+
+#container {
+	min-height: 100%;
+	position: relative;
+}
+
+#mark {
+	padding: 10px;
+	padding-bottom: 60px;
+}
+
+#footer {
+	position:absolute;
+	bottom: 10px;
+	width: 100%;
+	height: 30px;   /* Height of the footer */
+}
+
+#footer p {
+	margin-left: 20px;
+/*	display: inline;*/
+/*	margin-right: 24%;*/
+	border-top: 1px dotted #716f64;
+	font-size: 11px;
+	font-family:'Trebuchet MS',Arial;
+	color: #716f64;
+}
+#footer a { text-decoration: none; color: #716f64; }
+#footer a:hover { text-decoration: underline; color: #600; }
+
+#mark p {
+	margin-left: 20px;
+/*	margin-right: 24%;*/
+	text-align: justify;
+}
+
+#mark li {
+/*	margin-right: 23%;*/
+}
+
+#mark h1 {
+/*
+	font-size: 18px;
+	font-weight: bolder;
+	margin-left: 30px;
+	border-bottom: 2px dotted black;
+	display: inline;
+	padding-left: 50px;
+	padding-right: 101px;
+	*/
+	margin: 30px 0px 20px 0px;
+	/*margin-right: 23%;*/
+	padding-left: 20px;
+	padding-bottom: 0.4em;
+	letter-spacing: 0.8em;
+	font-size: 20pt;
+	font-family:'Trebuchet MS',Arial;
+	color: #656565;
+	border-bottom: 2px dotted #aca899;
+	line-height: 1.5em;
+}
+
+#mark h2 {
+/*
+	font-size: 16px;
+	font-weight: bolder;
+	margin-left: 30px;
+	padding-top: 1em;
+	padding-bottom: .5em;
+	*/
+	margin: 30px 0px 20px 10px;
+	/*margin-right: 23%;*/
+	padding-left: 10px;
+	padding-bottom: 0.4em;
+	letter-spacing: 0.4em;
+	font-size: 14pt;
+	font-family:'Trebuchet MS',Arial;
+	color: #656565;
+	border-bottom: 1px dotted #aca899;
+}
+
+#mark h3 {
+	margin: 30px 0px 20px 20px;
+	/*letter-spacing: 0.3em;*/
+	font-size: 12pt;
+	font-family:'Trebuchet MS',Arial;
+	color: #356535;
+}
+
+#mark h4 {
+	margin: 0px 0px 0px 20px;
+	font-size: 9pt;
+	color: #255525;
+}
+
+/*
+#mark ul {
+list-style: none;
+}
+#mark li {
+padding-left: 10px;
+background-image: url(/static/arrow.gif);
+background-repeat: no-repeat;
+background-position: 0 .4em;
+}
+*/
+
+#mark ul {
+	list-style: circle;
+}
+#mark li {
+/*	margin-left: 30px;*/
+/*	padding-left: 1em;
+	text-indent: -1em;*/
+}
+/*
+#mark li:before {
+	content: "\00BB \0020";
+}
+*/
+
+#mark a { text-decoration: none; color: #a00000; }
+/*#mark a { text-decoration: none; color: #6E404B; }*/
+#mark a:hover { text-decoration: underline; color: #600000; }
+
+
+
+div.codehilite {
+	/*border-style: solid;*/
+/*
+	border-style: dotted;
+	border-color: #555;
+	border-width: 1px;
+*/
+/*
+	margin-top: 0px;
+	margin-bottom: 0px;
+	margin-left:40px;
+	width: 100%;
+*/
+	/*width: 50em;*/
+/*	padding-left: 1em;
+	padding-right: 1em;
+	padding-top: 0em;
+	padding-bottom: 0em;
+*/
+/*	background: #eee;*/
+/*	background: #fff;*/
+/*	background: #eaffe8;*/
+}
+
+div.codehilite ol {
+}
+
+div.codehilite li {
+	white-space: nowrap;
+}
+
+div.codehilite pre {
+	font-size: 11px;
+}
+

@@ -239,7 +239,7 @@ def convertMarkdownToHtml(text):
     return htmlText
 
 def addHtmlBoilerPlate(text, document):
-    remarkDirectory = os.path.relpath('remark', document.relativeDirectory)
+    remarkDirectory = os.path.relpath('remark_files', document.relativeDirectory)
     
     # Add boilerplate code.
     

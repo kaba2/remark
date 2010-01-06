@@ -5,15 +5,22 @@ Remark
 
 [Back]: http://kaba.hilvi.org
 
-Remark is a Python library designed to generate html documentation for software libraries.
+_Remark_ is a Python library designed to generate html documentation for software libraries.
 Naturally, Remark is documented with Remark, the results of which you are inspecting
-right now. 
+right now. Remark is licensed under the _GNU Lesser GPL_. 
 
-License
--------
+Usage
+-----
 
-Remark is licensed under the _GNU Lesser GPL_. 
-This is a non-restrictive and non-viral license.
+From Windows console: 
+
+	remark.py inputDirectory outputDirectory
+
+From Linux, Unix, etc. console:
+
+	./remark.py inputDirectory outputDirectory
+
+See the installation instructions below.
 
 Download
 --------
@@ -25,37 +32,18 @@ Download
 [Library]: ./files/remark_1.0.zip
 [Executable]: ./files/remark_winexe_1.0.zip
 	
-Usage
------
-
-From Windows console: 
-
-	remark.py inputDirectory outputDirectory
-
-This works because files with the .py extension are associated to
-be run with the installed Python interpreter. 
-	
-From Linux, Unix, etc. console:
-
-	./remark.py inputDirectory outputDirectory
-
-This works because there is a shebang at the start of remark.py
-which associates a Python interpreter to run the file. 
-
 Acknowledgements
 ----------------
 
 Remark was programmed under funding from the 
-_Finnish Foundation for Technology Promotion_.
-
 [Finnish Foundation for Technology Promotion][TES]
 
-[TES]: http://www.kolumbus.fi/tes/ 
-
 Remark was preceded by a similar implementation
-called LightMark programmed by _Juho Hamalainen_.
+called _LightMark_ programmed by [Juho Hamalainen][Juho].
 The ideas gathered and tested in that implementation
 was the basis on which Remark was built.
 He should be attributed the idea of using
 Markdown for writing the documentation.  
  
+[TES]: http://www.kolumbus.fi/tes/ 
+[Juho]: http://jusa.hilvi.org

@@ -52,4 +52,15 @@ same time marks the end of a parameter. For example:
 	
 This same technique can also be used to produce subsequent regions 
 of verbatim content.
- 	  
+
+AsciiMathML can not be scoped
+-----------------------------
+
+For example, in Python code there might be an
+empty string denoted by two subsequent '.
+This will be erased from the output because
+AsciiMathML interprets this as a start of 
+a mathematical expression.
+Unfortunately I am not aware of any ways to
+scope the AsciiMathML to not consider all
+places.

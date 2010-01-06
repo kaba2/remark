@@ -12,6 +12,7 @@ Started on 16.11.2009
 import re
 import sys
 import os
+import shutil
 
 from DocumentTree import Document
 from DocumentTree import DocumentTree
@@ -105,7 +106,24 @@ if __name__ == '__main__':
     print '-------------------------------------\n'
     
     convertAll(documentTree, outputDirectory)
+    
+    # If there are no .css files already in the target directory,
+    # copy the default ones there.
+    
+    remarkDirectory = os.path.join(outputDirectory, 'remark_files');
+    
+    if not os.path.exists(remarkDirectory):
+        os.makedirs(remarkDirectory)
+    
+    if not os.path.exists(os.path.join(remarkDirectory, 'global.css')):
+        shutil.copy('./remark_files/global.css', remarkDirectory)
                    
+    if not os.path.exists(os.path.join(remarkDirectory, 'pygments.css')):
+        shutil.copy('./remark_files/pygments.css', remarkDirectory)
+
+    if not os.path.exists(os.path.join(remarkDirectory, 'ASCIIMathMLwFallback.js')):
+        shutil.copy('./remark_files/ASCIIMathMLwFallback.js', remarkDirectory)
+
     print 'Done.'
     
     print "\nThat's all!"
