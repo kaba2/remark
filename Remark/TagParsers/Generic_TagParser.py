@@ -13,7 +13,7 @@ class Generic_TagParser:
         with open(document.fullName, 'r') as file:
             for fileLine in file:
                 for tagName, tagRegex in self.tagSet.iteritems():
-                    match = tagRegex.search(fileLine)
+                    match = tagRegex.match(fileLine)
                     if match != None:
                         if tagName in document.tagSet and document.tagSet[tagName] != '':
                             print 'Warning:', document.relativeName, 
