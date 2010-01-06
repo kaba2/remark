@@ -1,7 +1,7 @@
 # Description: Comment_Macro class
 # Detail: Consumes its input and produces no output.
 
-from Remark.MacroRegistry import registerMacro
+from MacroRegistry import registerMacro
 
 class Comment_Macro:
     def expand(self, parameter, document, documentTree, scope):

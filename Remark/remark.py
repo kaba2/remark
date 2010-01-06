@@ -13,14 +13,15 @@ import re
 import sys
 import os
 
-from Remark.DocumentTree import Document
-from Remark.DocumentTree import DocumentTree
-from Remark.TagParsers.Generic_TagParser import Generic_TagParser
-from Remark.TagParsers.Markdown_TagParser import Markdown_TagParser
-from Remark.Convert import convertAll
-from Remark.Common import registerOutputDocumentName
+from DocumentTree import Document
+from DocumentTree import DocumentTree
+from TagParsers.Generic_TagParser import Generic_TagParser
+from TagParsers.Markdown_TagParser import Markdown_TagParser
+from TagParsers.Empty_TagParser import Empty_TagParser
+from Convert import convertAll
+from Common import registerDocumentType
 
-from Remark.Macros import *
+from Macros import *
 
 def commentParserTags(comment):
     return {'description' : re.compile(r'[ \t]*' + comment + '[ \t]*Description[ \t]*:[ \t]*(.*)'),
@@ -52,19 +53,9 @@ if __name__ == '__main__':
     cppParser = Generic_TagParser(commentParserTags('//'))
     matlabParser = Generic_TagParser(commentParserTags('%'))
     pythonParser = Generic_TagParser(commentParserTags('#'))
-    emptyParser = Generic_TagParser({})
+    emptyParser = Empty_TagParser()
     
     txtParser = Markdown_TagParser({'parent' : re.compile(r'[ \t]*\[\[Parent\]\]:[ \t]*(.*)')})
-    
-    parserMap = {'.txt' : txtParser,
-                 '.c' : cppParser,
-                 '.cc' : cppParser,
-                 '.cpp' : cppParser,
-                 '.h'  : cppParser,
-                 '.hh'  : cppParser,
-                 '.hpp' : cppParser,
-                 '.py' : pythonParser,
-                 '.m' : matlabParser,}
     
     docTemplate = \
     ['[[Body]]',
@@ -86,35 +77,23 @@ if __name__ == '__main__':
     '[[DocChildren]]',
     '[[SourceChildren]]',]
     
-    registerOutputDocumentName('.txt', '.htm')
-    registerOutputDocumentName('.cpp', '.cpp.htm')
-    registerOutputDocumentName('.cc', '.cc.htm')
-    registerOutputDocumentName('.c', '.c.htm')
-    registerOutputDocumentName('.h', '.h.htm')
-    registerOutputDocumentName('.hh', '.hh.htm')
-    registerOutputDocumentName('.hpp', '.hpp.htm')
-    registerOutputDocumentName('.py', '.py.htm')
-    registerOutputDocumentName('.m', '.m.htm')
-    registerOutputDocumentName('.index', '.htm')
-    registerOutputDocumentName('.orphan', '.htm')
+    registerDocumentType('.txt', '.htm', docTemplate, txtParser)
+    registerDocumentType('.cpp', '.cpp.htm', cppTemplate, cppParser)
+    registerDocumentType('.cc', '.cc.htm', cppTemplate, cppParser)
+    registerDocumentType('.c', '.c.htm', cppTemplate, cppParser)
+    registerDocumentType('.h', '.h.htm', cppTemplate, cppParser)
+    registerDocumentType('.hh', '.hh.htm', cppTemplate, cppParser)
+    registerDocumentType('.hpp', '.hpp.htm', cppTemplate, cppParser)
+    registerDocumentType('.py', '.py.htm', genericCodeTemplate, pythonParser)
+    registerDocumentType('.m', '.m.htm', genericCodeTemplate, matlabParser)
+    registerDocumentType('.index', '.htm', indexTemplate, emptyParser)
+    registerDocumentType('.orphan', '.htm', orphanTemplate, emptyParser)
     
-    templateMap = {'.txt' : docTemplate,   
-                   '.cpp' : cppTemplate,
-                   '.cc' : cppTemplate,
-                   '.c' : cppTemplate,
-                   '.h' : cppTemplate,
-                   '.hh' : cppTemplate,
-                   '.hpp' : cppTemplate,
-                   '.py' : genericCodeTemplate,
-                   '.m' : genericCodeTemplate,
-                   '.index' : indexTemplate,
-                   '.orphan' : orphanTemplate,}
-
-    #print '\nConstructing document tree'
-    #print '--------------------------\n'
+    print '\nConstructing document tree'
+    print '--------------------------\n'
     
     # Construct a document tree from the input directory.
-    documentTree = DocumentTree(inputDirectory, parserMap)
+    documentTree = DocumentTree(inputDirectory)
     #display(documentTree)
 
     # We wish to generate an index to each directory in the
@@ -128,7 +107,7 @@ if __name__ == '__main__':
     print '\nExpanding macros and writing to files'
     print '-------------------------------------\n'
     
-    convertAll(documentTree, outputDirectory, templateMap)
+    convertAll(documentTree, outputDirectory)
                    
     print 'Done.'
     

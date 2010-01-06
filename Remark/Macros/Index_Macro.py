@@ -4,9 +4,9 @@
 import string
 import os.path
 
-from Remark.Common import linkAddress, remarkLink, getLinkId
-from Remark.Common import outputDocumentName, unixDirectoryName
-from Remark.MacroRegistry import registerMacro
+from Common import linkAddress, remarkLink, getLinkId
+from Common import outputDocumentName, unixDirectoryName
+from MacroRegistry import registerMacro
 
 class Index_Macro:
     def expand(self, parameter, document, documentTree, scope):

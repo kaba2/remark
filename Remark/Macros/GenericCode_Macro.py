@@ -4,8 +4,8 @@
 import os.path
 import string
 
-from Remark.MacroRegistry import registerMacro
-from Remark.Common import readFile, remarkLink, unixDirectoryName
+from MacroRegistry import registerMacro
+from Common import readFile, remarkLink, unixDirectoryName
 
 from pygments import highlight
 from pygments.lexers import guess_lexer, guess_lexer_for_filename

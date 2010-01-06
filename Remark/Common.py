@@ -23,15 +23,32 @@ def readFile(fileName):
             
     return text
 
-_extensionMap = {} 
-def registerOutputDocumentName(inputExtension, outputExtension):
-    global _extensionMap
-    _extensionMap[inputExtension] = outputExtension
+class DocumentType:
+    def __init__(self, inputExtension, outputExtension, template, parser):
+        self.inputExtension = inputExtension
+        self.outputExtension = outputExtension
+        self.template = template
+        self.parser = parser
+
+_documentTypeMap = dict()
+
+def registerDocumentType(inputExtension, outputExtension,
+                         template, parser):
+    global _documentTypeMap
+    _documentTypeMap[inputExtension] = DocumentType(inputExtension,
+                                                    outputExtension,
+                                                    template,
+                                                    parser)
+
+def documentType(inputExtension):
+    global _documentTypeMap
+    if inputExtension in _documentTypeMap:
+        return _documentTypeMap[inputExtension]
+    return None
 
 def outputDocumentName(name):
-    global _extensionMap
     inputExtension = os.path.splitext(name)[1]
-    outputExtension = _extensionMap[inputExtension]
+    outputExtension = documentType(inputExtension).outputExtension
     return changeExtension(name, outputExtension)
 
 def unixDirectoryName(name):

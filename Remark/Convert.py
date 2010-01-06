@@ -7,8 +7,8 @@ import os
 import os.path
 import datetime
 
-from Remark.MacroRegistry import findMacro
-from Remark.Common import changeExtension, outputDocumentName, resetLinkId
+from MacroRegistry import findMacro
+from Common import changeExtension, outputDocumentName, resetLinkId, documentType
 
 class Scope:
     def __init__(self, parent):
@@ -308,12 +308,12 @@ def convert(template, document, documentTree, targetRootDirectory):
             outputFile.write(line)
             outputFile.write('\n')
 
-def convertAll(documentTree, targetRootDirectory, templateMap):
+def convertAll(documentTree, targetRootDirectory):
     for document in documentTree.documentMap.itervalues():
-        template = templateMap[document.extension]
-        if not document.extension in templateMap:
+        type = documentType(document.extension) 
+        if type == None:
             continue
-        convert(template, document, documentTree, targetRootDirectory)
+        convert(type.template, document, documentTree, targetRootDirectory)
 
 def _leadingTabs(text):
     tabs = 0

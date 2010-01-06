@@ -1,8 +1,8 @@
 # Description: Body_Macro class
 # Detail: Reads a document from file.
 
-from Remark.Common import readFile
-from Remark.MacroRegistry import registerMacro
+from Common import readFile
+from MacroRegistry import registerMacro
 
 class Body_Macro:
     def expand(self, parameter, document, documentTree, scope):

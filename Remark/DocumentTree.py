@@ -5,6 +5,7 @@
 import os.path
 import string
 import re
+from Common import documentType
 
 def fileSuffix(relativeName):
     index = string.rfind(relativeName, '.')
@@ -38,7 +39,7 @@ class Document:
         return ''
 
 class DocumentTree:
-    def __init__(self, rootDirectory, parserMap):
+    def __init__(self, rootDirectory):
         assert os.path.isdir(rootDirectory)
         
         self.rootDirectory = os.path.normpath(rootDirectory)
@@ -47,12 +48,12 @@ class DocumentTree:
         self.documentMap = dict({'orphan.orphan' : self.orphan})
 
         print '\nGathering files...',
-        self._gatherFiles(parserMap)
+        self._gatherFiles()
         print 'Done.'
         
         print '\nParsing tags'
         print '------------\n'
-        self._parseTags(parserMap)
+        self._parseTags()
         print 'Done.'
         
         print '\nResolving explicit links'
@@ -138,7 +139,7 @@ class DocumentTree:
     def _relativeName(self, fullName):
         return os.path.normpath(os.path.relpath(fullName, self.rootDirectory))
     
-    def _gatherFiles(self, parserMap):
+    def _gatherFiles(self):
         '''
         Recursively gathers files starting from the root directory
         that was passed in the constructor. A Document object is created
@@ -148,12 +149,12 @@ class DocumentTree:
         '''
         for pathName, directorySet, fileNameSet in os.walk(self.rootDirectory):
             for fileName in fileNameSet:
-                if fileSuffix(fileName) in parserMap:
+                if documentType(fileSuffix(fileName)) != None:
                     fullName = os.path.normpath(os.path.join(pathName, fileName))
                     relativeName = self._relativeName(fullName)               
                     self.documentMap[relativeName] = Document(relativeName, fullName)
         
-        # Gather the set of directories that in which the files reside at
+        # Gather the set of directories in which the files reside at
         # (and their parent directories).
         
         self.directorySet = set()
@@ -166,16 +167,16 @@ class DocumentTree:
                     break
                 directory = newDirectory
         
-    def _parseTags(self, parserMap):
+    def _parseTags(self):
         '''
         For each document in 'self.documentMap', runs its
         associated parser.
         '''        
         for document in self.documentMap.itervalues():
             key = fileSuffix(document.relativeName)
-            if key in parserMap:
-                parser = parserMap[key]
-                parser.parse(document)
+            type = documentType(key)
+            if type != None:
+                type.parser.parse(document)
             
     def _resolveExplicitLinks(self):
         '''

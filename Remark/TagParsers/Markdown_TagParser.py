@@ -1,8 +1,7 @@
 # Description: Markdown_TagParser class
 # Documentation: tag_parsers.txt
 
-from Remark.DocumentTree import DocumentTree
-from Remark.TagParsers.Generic_TagParser import Generic_TagParser
+from Generic_TagParser import Generic_TagParser
 
 import string
 import re

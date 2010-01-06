@@ -5,8 +5,8 @@ import os.path
 import string
 import re
 
-from Remark.MacroRegistry import registerMacro
-from Remark.Common import readFile, remarkLink, unixDirectoryName
+from MacroRegistry import registerMacro
+from Common import readFile, remarkLink, unixDirectoryName
 
 from pygments import highlight
 from pygments.lexers import CppLexer

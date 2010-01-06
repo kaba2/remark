@@ -1,8 +1,8 @@
 # Description: DocChildren_Macro class
 # Detail: Generates links to documentation children.
 
-from Remark.MacroRegistry import registerMacro
-from Remark.Common import linkAddress
+from MacroRegistry import registerMacro
+from Common import linkAddress
 
 class DocChildren_Macro:
     def expand(self, parameter, document, documentTree, scope):
