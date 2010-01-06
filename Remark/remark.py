@@ -106,6 +106,9 @@ if __name__ == '__main__':
     print '-------------------------------------\n'
     
     convertAll(documentTree, outputDirectory)
+
+    print '\nStyle files and AsciiMathML'
+    print '---------------------------\n'
     
     # If there are no .css files already in the target directory,
     # copy the default ones there.
@@ -116,12 +119,15 @@ if __name__ == '__main__':
         os.makedirs(remarkDirectory)
     
     if not os.path.exists(os.path.join(remarkDirectory, 'global.css')):
+        print 'Moving global.css...'
         shutil.copy('./remark_files/global.css', remarkDirectory)
                    
     if not os.path.exists(os.path.join(remarkDirectory, 'pygments.css')):
+        print 'Moving pygments.css...'
         shutil.copy('./remark_files/pygments.css', remarkDirectory)
 
     if not os.path.exists(os.path.join(remarkDirectory, 'ASCIIMathMLwFallback.js')):
+        print 'Moving ASCIIMathMLwFallback.js...'
         shutil.copy('./remark_files/ASCIIMathMLwFallback.js', remarkDirectory)
 
     print 'Done.'
