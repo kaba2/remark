@@ -1,8 +1,11 @@
+# -*- coding: utf-8 -*-
+
 # Description: Common stuff used in Remark
 # Documentation: core_stuff.txt
 
 import os.path
 import string
+import codecs
 
 def linkAddress(fromDirectory, toFile):
     relativeName = os.path.relpath(toFile, fromDirectory)
@@ -13,9 +16,14 @@ def readFile(fileName):
     text = []
 
     # Read the file into memory
-    with open(fileName, 'rU') as file:
-        text = file.readlines()
-        
+    try:
+        with codecs.open(fileName, mode = 'rU', encoding = 'utf-8') as file:
+            text = file.readlines()
+    except UnicodeDecodeError:
+        print 'Warning: file \'' + fileName + '\' is not UTF-8 encoded. Assuming Latin-1 encoding.'
+        with codecs.open(fileName, mode = 'rU', encoding = 'latin-1') as file:
+            text = file.readlines()
+            
     # Remove possible newlines from the ends of the lines.
     for i in range(0, len(text)):
         if text[i][-1] == '\n':

@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 # Description: Remark.Macros package initialization. 
 # Detail: Import declarations for macros.
 # Documentation: macros.txt

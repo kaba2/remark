@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 # Description: CppCode_Macro class
 # Detail: Generates colored html from C++ source code. 
 

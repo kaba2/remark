@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 # Description: GenericCode_Macro class
 # Detail: Generates colored html from many kinds of source code.
 

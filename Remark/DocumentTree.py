@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 # Description: Documents and documentation tree
 # Detail: Deduction of parent-child relationships and their storage.
 # Documentation: core_stuff.txt

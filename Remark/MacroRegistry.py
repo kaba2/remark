@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 # Description: Macro registry
 # Documentation: core_stuff.txt
 

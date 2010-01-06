@@ -39,7 +39,7 @@ Remark was programmed under funding from the
 [Finnish Foundation for Technology Promotion][TES]
 
 Remark was preceded by a similar implementation
-called _LightMark_ programmed by [Juho Hamalainen][Juho].
+called _LightMark_ programmed by [Juho Hämäläinen][Juho].
 The ideas gathered and tested in that implementation
 was the basis on which Remark was built.
 He should be attributed the idea of using

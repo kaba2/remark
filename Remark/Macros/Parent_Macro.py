@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 # Description: Parent_Macro class
 # Detail: Generates a link to the parent documentation.
 
