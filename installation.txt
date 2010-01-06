@@ -1,0 +1,38 @@
+Installation
+============
+
+[[Parent]]: remark.txt
+
+The installation procedure depends on whether you want to
+run Remark through the Python interpreter or through an
+executable.
+
+Using a Python interpreter
+--------------------------
+
+Remark was programmed using Python 2.6. Thus it should run in any
+Python 2.x interpreter, where ''x >= 6''. Note that the syntaxes of 
+Python 3.x and Python 2.x are not compatible.
+
+The dependencies to other libraries are as follows:
+ 
+ * [Markdown 2.0][PythonMarkdown] (Python, presumably newer versions also work)
+ 
+ * [AsciiMathML][AsciiMathML] (Javascript, we distribute this along Remark)
+ 
+[PythonMarkdown]: http://www.freewisdom.org/projects/python-markdown/
+[AsciiMathML]: http://www1.chapman.edu/~jipsen/asciimath.html
+
+After installing a Python interpreter and Markdown Python library you should
+be ready to use Remark.
+
+Using an executable
+-------------------
+
+Using _py2exe_, a Python program can be converted to an executable
+so that one does not need to install a Python interpreter or the
+dependencies. In this case one does not need to anything to
+install Remark in addition to downloading the package.
+This conversion simply encapsulates all the needed stuff into
+an executable. Note that this process does not speed up the execution 
+of Remark.   

@@ -89,9 +89,6 @@ if __name__ == '__main__':
     registerDocumentType('.index', '.htm', indexTemplate, emptyParser)
     registerDocumentType('.orphan', '.htm', orphanTemplate, emptyParser)
     
-    print '\nConstructing document tree'
-    print '--------------------------\n'
-    
     # Construct a document tree from the input directory.
     documentTree = DocumentTree(inputDirectory)
     #display(documentTree)

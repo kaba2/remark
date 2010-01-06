@@ -1,0 +1,144 @@
+Main features
+=============
+
+[[Parent]]: remark.txt
+
+### Unicode source files 
+
+In Remark, the documentation is written in plain UTF-8 text files. UTF-8 is a (Unicode) 
+text encoding scheme which is compatible with ASCII encoding in the sense that ASCII 
+encoded text files are automatically valid UTF-8 text files. However,
+in contrast to ASCII text files, a UTF-8 text file can also represent
+the more exotic characters if needed. A UTF-8 text file consist of nothing else than 
+a sequence of Unicode characters, which you can edit using the text editor 
+of your choice.
+
+### Human-readable, non-redundant content description 
+
+The Remark syntax used to write the documentation is just a slightly extended 
+version of the _Markdown_ syntax. This syntax fulfills the following goals:
+ 
+ * The representation is decoupled from the content.  
+ 
+ * The content description (i.e. Remark source) is as human-readable 
+ as possible.
+ 
+ * There is minimal redundancy. 
+
+The first item means that the Remark syntax covers only structural matters 
+(e.g. a section, a sub-section, a table, emphasis, etc). The 
+representation of the content (colors, fonts, etc.) can be 
+arbitrarily changed later without touching the content (using _Cascading
+Style Sheets_). Here's an example of the Remark syntax from the source of this page:
+
+	### Human-readable, non-redundant content description 
+	
+	The Remark syntax used to write the documentation is just a slightly extended 
+	version of the _Markdown_ syntax. This syntax fulfills the following goals:
+	 
+	 * The representation is decoupled from the content.  
+	 
+	 * The content description (i.e. Remark source) is as human-readable 
+	 as possible.
+	 
+	 * There is minimal redundancy. 
+
+The source code is first converted from Remark syntax to Markdown syntax
+by expanding the Remark macros. After that the Markdown syntax is converted 
+to html using the _Markdown_ Python library. 
+
+### Human-readable typesetting of mathematics
+
+In its original form, Markdown syntax lacks the ability to typeset mathematics. 
+To remedy this, Remark extends the Markdown syntax with the _AsciiMath_ 
+syntax. AsciiMath is a syntax which formalizes a commonly used notation 
+for mathematical formulas. Similar notations have been used for decades 
+in newsgroup discussions where only ASCII characters are available for 
+typesetting mathematics. AsciiMath fulfills the following goal:
+
+ * The description of the formulas are as human-readable as possible.
+
+An example of the AsciiMath syntax is given by:
+	
+	x = (-b +- sqrt(b^2 - 4ac)) / (2a) 
+	
+which generates:
+	
+''x = (-b +- sqrt(b^2 - 4ac)) / (2a)''
+
+Contrast this to e.g. Latex syntax. The conversion of the AsciiMath syntax 
+to MathML is handled on the fly via the _AsciiMathML_ java-script library.
+
+### Color-encoding of source code
+
+Remark integrates the browsing of source code into the documentation.
+When viewing source code, it is color-encoded using the _Pygments_
+Python library. As an example, here's how to embed a source code snippet (C++ code):
+
+	[[CppCode]]:
+		int square(int x)
+		{
+			return x * x;
+		}
+
+And here's how it looks like:
+		
+[[CppCode]]:
+	int square(int x)
+	{
+		return x * x;
+	}
+
+### Automatic generation of links
+
+Usually each document in documentation can be given a title or some 
+kind of a description. When building documentation manually, one
+faces the task of building links between documents and naming
+each of them with the description of the target document. However,
+this quickly becomes a maintenance problem because the link 
+descriptions will need to be corrected every time the target 
+document's description changes. Remark solves this problem by
+embedding to each document its description. This way links can be
+named automatically by fetching the description of the target
+document. 
+
+Most often a documentation has a tree structure. This means that each 
+document has a well-defined parent document with the subject of the 
+matter generalizing towards the parent. Again, when building links
+between parents and children, one is faced with a maintenance problem:
+if one changes a parent of a document, then one should remember to
+remove a link from the old parent and insert a link to the new parent.
+Remark solves this problem by embedding to each document its parent.
+This way the links between a parent and a child can be generated
+(and named) automatically. 
+
+Documentation files such as this page have their descriptions set to 
+their first heading from the top. Their parent documentation is given
+like this:
+
+	[[Parent]]: name_of_parent.txt 
+
+The description and parent documentation for a source code file are 
+embedded into it using comments. For example, here's
+what reads at the start of the file _Convert.py_ (a Python source code 
+file of Remark):
+
+	# Description: Macro expansion algorithm, variables, and html conversion.
+	# Documentation: implementation.txt
+
+### Implicit deduction of parent-child relationships and descriptions
+
+Often a group of documents can be described by a single description or
+a single parent. This is the case e.g. with implementations that take 
+several code files. To reduce the number of tag embeddings in these cases, 
+Remark defines a few implicit deduction rules. These are:
+
+ * Files which reside in the same directory and have the same name without 
+ the extension share the same description.
+ 
+ * A source file which does not have a description even after the previous rule
+ are given (if exists) the description of the source file which:
+ 	1. is in the same directory
+ 	2. has a description
+ 	3. without the extension has a filename which is the longest prefix 
+ 	of the name of the to-be-described file.
