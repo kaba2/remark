@@ -28,10 +28,10 @@ This
 	
 	[[Link]]: 
 		macros.txt
-		../remark_syntax.txt
+		../../remark_syntax.txt
 	
 produces this:
 
 [[Link]]: 
 	macros.txt
-	../remark_syntax.txt
+	../../remark_syntax.txt

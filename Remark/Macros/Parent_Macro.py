@@ -1,8 +1,8 @@
 # Description: Parent_Macro class
 # Detail: Generates a link to the parent documentation.
 
-from Remark.MacroRegistry import registerMacro
-from Remark.Common import remarkLink, linkAddress, outputDocumentName
+from MacroRegistry import registerMacro
+from Common import remarkLink, linkAddress, outputDocumentName
 
 class Parent_Macro:
     def expand(self, parameter, document, documentTree, scope):

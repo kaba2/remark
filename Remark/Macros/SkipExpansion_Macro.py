@@ -1,7 +1,7 @@
 # Description: SkipExpansion_Macro class
 # Detail: Copies the input to output and skips macro expansion.
 
-from Remark.MacroRegistry import registerMacro
+from MacroRegistry import registerMacro
 
 class SkipExpansion_Macro:
     def expand(self, parameter, document, documentTree, scope):

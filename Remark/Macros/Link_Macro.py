@@ -3,8 +3,8 @@
 
 import os.path
 
-from Remark.MacroRegistry import registerMacro
-from Remark.Common import linkAddress, remarkLink, outputDocumentName
+from MacroRegistry import registerMacro
+from Common import linkAddress, remarkLink, outputDocumentName
 
 class Link_Macro:
     def expand(self, parameter, document, documentTree, scope):

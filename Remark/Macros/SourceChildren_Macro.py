@@ -4,8 +4,8 @@
 import os.path
 import string
 
-from Remark.MacroRegistry import registerMacro
-from Remark.Common import linkAddress, remarkLink, outputDocumentName
+from MacroRegistry import registerMacro
+from Common import linkAddress, remarkLink, outputDocumentName
 
 class SourceChildren_Macro:
     def expand(self, parameter, document, documentTree, scope):
