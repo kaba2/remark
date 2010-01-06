@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 # Description: SkipExpansion_Macro class
 # Detail: Copies the input to output and skips macro expansion.
 

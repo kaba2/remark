@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 # Description: Macro expansion algorithm, variables, and html conversion.
 # Documentation: core_stuff.txt
 
@@ -6,6 +8,7 @@ import string
 import os
 import os.path
 import datetime
+import codecs
 
 from MacroRegistry import findMacro
 from Common import changeExtension, outputDocumentName, resetLinkId, documentType
@@ -303,7 +306,7 @@ def convert(template, document, documentTree, targetRootDirectory):
         os.makedirs(targetDirectory)
         
     # Save the text to a file.
-    with open(targetFullName, 'w') as outputFile:
+    with codecs.open(targetFullName, mode = 'w', encoding = 'utf-8') as outputFile:
         for line in text:
             outputFile.write(line)
             outputFile.write('\n')

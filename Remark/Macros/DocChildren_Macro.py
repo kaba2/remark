@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 # Description: DocChildren_Macro class
 # Detail: Generates links to documentation children.
 

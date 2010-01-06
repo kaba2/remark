@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 # Description: SourceChildren_Macro class
 # Detail: Generates links to source code children.
 

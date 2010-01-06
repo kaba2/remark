@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 # Description: Index_Macro class
 # Detail: Generates a html file to traverse the documentation tree directly. 
 

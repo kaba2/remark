@@ -3,6 +3,27 @@ Problems and solutions
 
 [[Parent]]: remark.txt
 
+What will happen if I pass a non-UTF-8 encoded file to Remark?
+--------------------------------------------------------------
+
+If you pass Remark a file that is not UTF-8 encoded, Remark
+emits a warning and assumes the file has been encoded in Latin-1.
+This process is a bit inefficient since in this case the file has 
+to be read twice. Rather than relying on this backup scheme,
+encode your input files UTF-8 to begin with. 
+
+It seems some expressions in source code and verbatim content 
+are incorrectly interpreted as mathematical expressions. Why is this? 
+---------------------------------------------------------------------
+
+Unfortunately, the AsciiMathML Javascript library affects the whole 
+generated page and can't be scoped. This is problematic in some cases. 
+For example, in Python code an empty string is denoted by two 
+subsequent '. This will be erased from the output because AsciiMathML 
+interprets it as a start of a mathematical expression.
+It would be nice to have a Python library that did AsciiMath to
+MathML conversion off-line during Remark's generation.
+
 How can I write verbatim content directly after a multi-line parameter?
 -----------------------------------------------------------------------
 
@@ -52,15 +73,3 @@ same time marks the end of a parameter. For example:
 	
 This same technique can also be used to produce subsequent regions 
 of verbatim content.
-
-AsciiMathML can not be scoped
------------------------------
-
-For example, in Python code there might be an
-empty string denoted by two subsequent '.
-This will be erased from the output because
-AsciiMathML interprets this as a start of 
-a mathematical expression.
-Unfortunately I am not aware of any ways to
-scope the AsciiMathML to not consider all
-places.

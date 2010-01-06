@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 # Description: Empty_TagParser class
 # Documentation: tag_parsers.txt
 

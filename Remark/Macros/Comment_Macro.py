@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 # Description: Comment_Macro class
 # Detail: Consumes its input and produces no output.
 
