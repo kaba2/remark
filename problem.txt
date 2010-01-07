@@ -3,26 +3,24 @@ Problems and solutions
 
 [[Parent]]: remark.txt
 
-What will happen if I pass a non-UTF-8 encoded file to Remark?
---------------------------------------------------------------
+What if I pass a non-UTF-8 encoded file to Remark?
+--------------------------------------------------
 
-If you pass Remark a file that is not UTF-8 encoded, Remark
-emits a warning and assumes the file has been encoded in Latin-1.
-This process is a bit inefficient since in this case the file has 
-to be read twice. Rather than relying on this backup scheme,
-encode your input files UTF-8 to begin with. 
+If you pass Remark a file that is not a valid UTF-8 encoding, Remark 
+emits a warning and assumes that the file has been encoded in Latin-1. 
+This process is a bit inefficient since in this case the file has to be 
+read twice.  
 
-It seems some expressions in source code and verbatim content 
-are incorrectly interpreted as mathematical expressions. Why is this? 
----------------------------------------------------------------------
+Why are some parts incorrectly interpreted as mathematical expressions?
+-----------------------------------------------------------------------
 
 Unfortunately, the AsciiMathML Javascript library affects the whole 
 generated page and can't be scoped. This is problematic in some cases. 
 For example, in Python code an empty string is denoted by two 
 subsequent '. This will be erased from the output because AsciiMathML 
 interprets it as a start of a mathematical expression.
-It would be nice to have a Python library that did AsciiMath to
-MathML conversion off-line during Remark's generation.
+It would be nice if there were a Python library that did AsciiMath to
+MathML conversion...
 
 How can I write verbatim content directly after a multi-line parameter?
 -----------------------------------------------------------------------
@@ -71,5 +69,3 @@ same time marks the end of a parameter. For example:
 	
 		Verbatim content here. 
 	
-This same technique can also be used to produce subsequent regions 
-of verbatim content.

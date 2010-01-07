@@ -3,62 +3,64 @@ Concepts
 
 [[Parent]]: remark.txt
 
-Documentation tree
-------------------
+Documents
+---------
 
-Every file under Remark is associated with a unique parent file.
-This parent-child relation induces a tree where the files are
-nodes and edges denote a parent-child relation.
-This tree is used to generate various useful information 
-automatically to the webpages.
+A file with the extension '.txt' is called a _documentation file_. 
+In contrast, a file which contains source-code of some programming 
+language is called a _source-code file_. A _document_ is either a 
+documentation file or a source-code-file.  
 
-### Viewing a documentation page
+Every document under Remark is associated with a unique parent 
+documentation file. This parent-child relation induces a tree where 
+the documents are nodes and the edges denote a parent-child relation.
+This tree is called the _document tree_ and is used to 
+generate various useful information automatically to the webpages.
 
-For a documentation page, a _Back_ link is automatically generated to refer to 
-its parent file. The documentation children are automatically generated links 
-to under the _Learn more_ heading. Such links are named after their first 
-heading. The source-code children are automatically generated links to under the 
-_Files_ heading. These links are preceded by a description which 
-can be specified in the source-code file. The source-code files are grouped
-under a single description according to the following logic:
+Tags
+----
 
- * If a source-code file inherits a parent file from another source-code file,
- then these two files belong to the same group.
-
-### Viewing a source-code file
-
-When viewing a source-code file or the source of a documentation file,
-the text is color-coded appropriately. The include commands that refer to the same library 
-are converted into links, which allows to browse the source-code associatively. 
-The _Documentation_ link is automatically generated to refer to the parent documentation page 
-of the source-code file. There is also a link to the containing directory in the directory view.
-
-### Viewing the documentation tree
-
-When browsing the source-code through the directory view, the documentation tree is 
-explicitly shown in the directory view, where source-code files in a directory are grouped 
-further based on their parent files, showing their descriptions.
-
-Specifying meta-information
----------------------------
+_Tags_ embed information relevant to Remark in the input files 
+themselves. In the case of source-code files, the embedding is done
+by using special kind of comments (whatever the programming
+language). The embedding of tags for documentation files is 
+done specially. The purpose of tags is to deliver three bits 
+of information:
+ 
+ * The name of the parent documentation file.
+ 
+ * A rough description of the file (one line).
+ 
+ * A more detailed description of the file (one line).
+ 
+Tags allow to deduce the form of the document tree 
+(via parent documents), and to automatically name links 
+(via descriptions). 
 
 ### Specifying a parent file
 
-A documentation file specifies its parent file by writing somewhere
+A documentation file specifies its parent document by writing somewhere
 in the file 
 
 	[[Parent]]: name_of_parent.txt 
+
+You might notice that this is also a macro invocation.
+This is indeed the case: the Parent macro has been given
+a double-role both as a tag and a macro.   
 	
-A source-code file specifies its parent file by writing somewhere
+A source-code file specifies its parent document by writing somewhere
 in the file a comment of the form (examples in C++):
 
 	// Documentation: name_of_documentation.txt
 
 The specified file will be first searched from the current directory,
-and then sequentially through parent directories up to the project's 
-root directory.
+and if not found, sequentially through parent directories up to the 
+project's root directory.
 
-### Specifying a description
+### Specifying descriptions
+
+The description of a documentation file is given by its title.
+A documentation file can not be given a detailed description.
 
 A source-code file can be given a description by writing somewhere
 in the file a comment of the form:
@@ -71,19 +73,26 @@ a comment of the form:
 
 	// Detail: A more detailed description here
 
-These tags are best placed at the beginning of a file for 
-Remark to find them quickly.
+Implicit description
+--------------------
 
-### Manual linking
+Often a group of documents can be described by a single description. 
+This is the case e.g. with implementations that take 
+several code files. To reduce the number of tag embeddings in these cases, 
+Remark defines a few implicit deduction rules. These are:
 
-A link to a source-code file or a documentation file can be specified 
-manually to generate a link that has a description as with the automatically
-generated links. This is done by the following syntax:
+ * Files which reside in the same directory and have the same name without 
+ the extension share the same description.
+ 
+ * A source file which does not have a description after the previous rule
+ are given (if exists) the description of the source file which:
+ 	1. is in the same directory
+ 	2. has a description
+ 	3. without the extension has a filename which is the longest prefix 
+ 	of the name of the to-be-described file.
 
-	[[Link]]: ./pastel/sys/allocators.txt
-
-Implicitly-defined parent file
-------------------------------
+Implicit parent document
+------------------------
 
 If a documentation file does not specify a parent file, it is assigned
 a special orphan file as the parent file. If a source-code file does not 
@@ -102,4 +111,5 @@ file. The logic for this goes as follows:
  * If a source-code file is found, use its parent as a parent file. 
 
  * Otherwise use a special orphan file as a parent file.
+
 

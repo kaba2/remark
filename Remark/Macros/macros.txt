@@ -35,8 +35,9 @@ The parameter is multi-line whenever:
 
 The range of a multi-line parameter extends downwards
 until there is a line which contains non-white-space
-characters _and_ which has indentation equal to or less than
-the indentation of the macro invocation. For example:
+characters _and_ which has indentation (counted in _tabs_) 
+equal to or less than the indentation of the macro invocation. 
+For example:
     
 	[[Comment]]:
 		This is a multi-line parameter

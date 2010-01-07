@@ -126,19 +126,3 @@ file of Remark):
 	# Description: Macro expansion algorithm, variables, and html conversion.
 	# Documentation: implementation.txt
 
-### Implicit deduction of parent-child relationships and descriptions
-
-Often a group of documents can be described by a single description or
-a single parent. This is the case e.g. with implementations that take 
-several code files. To reduce the number of tag embeddings in these cases, 
-Remark defines a few implicit deduction rules. These are:
-
- * Files which reside in the same directory and have the same name without 
- the extension share the same description.
- 
- * A source file which does not have a description even after the previous rule
- are given (if exists) the description of the source file which:
- 	1. is in the same directory
- 	2. has a description
- 	3. without the extension has a filename which is the longest prefix 
- 	of the name of the to-be-described file.
