@@ -88,8 +88,6 @@ if __name__ == '__main__':
     registerDocumentType('.hpp', '.hpp.htm', cppTemplate, cppParser)
     registerDocumentType('.py', '.py.htm', genericCodeTemplate, pythonParser)
     registerDocumentType('.m', '.m.htm', genericCodeTemplate, matlabParser)
-    registerDocumentType('.index', '.htm', indexTemplate, emptyParser)
-    registerDocumentType('.orphan', '.htm', orphanTemplate, emptyParser)
     
     # Construct a document tree from the input directory.
     documentTree = DocumentTree(inputDirectory)
@@ -103,6 +101,9 @@ if __name__ == '__main__':
         fullName = os.path.join(documentTree.rootDirectory, relativeName)
         documentTree.insertDocument(Document(relativeName, fullName))
     
+    registerDocumentType('.index', '.htm', indexTemplate, emptyParser)
+    registerDocumentType('.orphan', '.htm', orphanTemplate, emptyParser)
+
     print '\nExpanding macros and writing to files'
     print '-------------------------------------\n'
     
