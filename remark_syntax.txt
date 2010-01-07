@@ -5,11 +5,12 @@ Remark syntax
 
 Remark syntax is a slightly extended version of the Markdown
 syntax. Therefore, if you can write Markdown, you can also
-write much of Remark. We have decided to introduce
-you only the basics of Markdown syntax here and redirect
-you elsewhere for learning more advanced features of Markdown.
-We will be giving more attention to the features 
-Remark syntax adds on top of the Markdown syntax.  
+write much of Remark. To write Remark, you must be able to
+write Markdown, AsciiMathML, and use the Remark macros.
+In these pages we will give you just the basics of the former two,
+and direct more advanced usage to dedicated tutorials. Remark 
+syntax is quite simple and intuitive and shouldn't take you 
+much time to get a good grasp on.  
 
 
 

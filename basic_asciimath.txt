@@ -6,11 +6,7 @@ Basic AsciiMath syntax
 Here we provide a brief tutorial to AsciiMath syntax
 which is used to typeset mathematics in Remark.
 We provide an external link to complete documentation below.
-
-Math mode 
----------
-
-A math mode is activated and deactivated by two subsequent 
+The _math mode_ is activated and deactivated by two subsequent 
 characters of '. Unfortunately, a current unsolved problem in 
 Remark prohibits me from explicitly writing those characters 
 down since they would be interpreted as a mathematical 
@@ -21,10 +17,6 @@ the MathML output.
 
 Some basic examples
 -------------------
-
-I can't think of a better way to introduce AsciiMath syntax
-than to actually type some in and let you inspect the results.
-So here goes. 
 
 ### Quadratic equation
 
