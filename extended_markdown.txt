@@ -1,0 +1,78 @@
+Markdown extensions
+===================
+
+[[Parent]]: remark_syntax.txt
+
+Remark uses the Python-Markdown library to convert Markdown
+syntax to html. In addition to supporting the standard Markdown
+syntax, it also supports useful syntactic extensions.
+We have decided to enable some, but not all, of them.
+Specifically, the extensions we have enabled are:
+tables, abbreviations, and definition lists.
+This page summarizes their use. A link to more information 
+is given below. Some of the following examples have been copied 
+from the Python-Markdown homepages.
+
+Tables
+------
+
+This
+
+	First Header  | Second Header
+	------------- | -------------
+	Content Cell  | Content Cell
+	Content Cell  | Content Cell
+
+produces this:
+
+First Header  | Second Header
+------------- | -------------
+Content Cell  | Content Cell
+Content Cell  | Content Cell
+
+Definition lists
+----------------
+
+This
+
+	Apple
+	:   Pomaceous fruit of plants of the genus Malus in 
+	    the family Rosaceae.
+	
+	Orange
+	:   The fruit of an evergreen tree of the genus Citrus.
+
+produces this:
+
+Apple
+:   Pomaceous fruit of plants of the genus Malus in 
+    the family Rosaceae.
+
+Orange
+:   The fruit of an evergreen tree of the genus Citrus.
+
+Abbreviations
+-------------
+
+This
+
+	The HTML specification 
+	is maintained by the W3C.
+	
+	*[HTML]: Hyper Text Markup Language
+	*[W3C]:  World Wide Web Consortium
+
+produces this:
+
+The HTML specification 
+is maintained by the W3C.
+
+*[HTML]: Hyper Text Markup Language
+*[W3C]:  World Wide Web Consortium
+
+Links
+-----
+
+[Python-Markdown library extensions][PythonMarkdown]
+
+[PythonMarkdown]: http://www.freewisdom.org/projects/python-markdown/Extensions
