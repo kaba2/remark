@@ -139,7 +139,7 @@ Copying some files
 At the end, three files are copied (if they don't exist) to the 
 remark_files directory of the output directory. These are:
 
- * global.css : To control the styling of the webpages in general.
+ * remark.css : To control the styling of the webpages in general.
  
  * pygments.css : To control the styling of the source-code bits.
  

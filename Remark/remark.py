@@ -120,9 +120,9 @@ if __name__ == '__main__':
     if not os.path.exists(remarkDirectory):
         os.makedirs(remarkDirectory)
     
-    if not os.path.exists(os.path.join(remarkDirectory, 'global.css')):
-        print 'Moving global.css...'
-        shutil.copy('./remark_files/global.css', remarkDirectory)
+    if not os.path.exists(os.path.join(remarkDirectory, 'remark.css')):
+        print 'Moving remark.css...'
+        shutil.copy('./remark_files/remark.css', remarkDirectory)
                    
     if not os.path.exists(os.path.join(remarkDirectory, 'pygments.css')):
         print 'Moving pygments.css...'
