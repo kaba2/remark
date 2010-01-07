@@ -25,12 +25,9 @@ See the installation instructions below.
 Download
 --------
 
-[Download Remark as a Python library][Library]
+[Download Remark][Library]
 
-[Download Remark as a Windows executable][Executable]
-
-[Library]: ./files/remark_1.0.zip
-[Executable]: ./files/remark_winexe_1.0.zip
+[Library]: ./files/remark-1.0.zip
 	
 Acknowledgements
 ----------------
