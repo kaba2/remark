@@ -231,7 +231,7 @@ def expandMacros(template, document, documentTree):
 
 import markdown
 
-markdownConverter = markdown.Markdown()
+markdownConverter = markdown.Markdown(extensions = ['tables', 'abbr', 'def_list',])
 
 def convertMarkdownToHtml(text):
     global markdownConverter
