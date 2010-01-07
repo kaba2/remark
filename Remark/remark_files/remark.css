@@ -164,7 +164,8 @@ pre
     /* We would like to indent tables a bit. 
     Note the amount of indentation matches with the amount
     for the verbatim content.*/
-    margin-left: 40px
+    margin-left: 40px;
+    font-size: 0.75em;
 }
 
 /* Tables and cells*/
@@ -178,7 +179,16 @@ pre
 #mark td, th
 {
     /* Give some empty space around the content of a cell. */
-    padding: 5px
+    padding: 5px;
+}
+
+#mark th
+{
+    color: Maroon;
+}
+
+#mark td
+{
 }
 
 /* Definition lists */
