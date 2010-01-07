@@ -3,3 +3,7 @@ Tag parsers
 
 [[Parent]]: implementation.txt
 
+Tag parsers are responsible for extracting the
+tag information from documents. Each file type extension
+has its own associated tag parser. Parsing the tags
+is quite trivial, and mostly consists of regex searhces.
