@@ -1,0 +1,149 @@
+Algorithm
+=========
+
+[[Parent]]: remark.txt
+
+This page describes the algorithm Remark uses to generate the
+resulting web-pages. Before reading this page you should be
+familiar with:
+
+[[Link]]: concepts.txt
+
+Document types
+--------------
+
+Documents are treated differently based on their filename extension.
+Each supported filename extension is given a mapping which associates
+the extension to a _document type_. A document type contains the
+following information:
+
+ * input filename extension
+ 
+ * output filename extension
+ 
+ * tag parser object
+ 
+ * document template
+
+A _document template_ is a piece of text written in Remark syntax.
+It contains a small set of macros which, when expanded,
+generate the output file.
+
+### Supported document types
+
+The supported document types are registered at the start of Remark.  
+Currently these document types are (given in the form
+input extension : output extension : description):
+
+ * .txt : .htm : Documentation file, such as this page.  
+
+ * .cpp : .cpp.htm : Source-code file (C++).
+
+ * .cc : .cc.htm : Source-code file (C++).
+
+ * .hpp : .hpp.htm : Source-code file (C++).
+
+ * .hh : .hh.htm : Source-code file (C++).
+
+ * .c : .c.htm : Source-code file (C++).
+
+ * .h : .h.htm : Source-code file (C++).
+ 
+ * .py : .py.htm : Source-code file (Python).
+ 
+ * .m : .m.htm : Source-code file (Matlab).
+
+ * .index : .htm : Directory view.
+ 
+ * .orphan : .htm : List of files which have no parent document.
+
+The last two document types are meant to be internal to Remark
+and not be found from the file system (they are not searched).
+
+Constructing the document tree
+------------------------------
+
+### Gathering files and directories
+
+This step gathers a linear list of those files that are located
+in the input directory or its sub-directories. Only registered
+file extensions are accepted. Files are identified with their 
+location relative to the input directory (a _relative filename_).
+
+After the files have been gathered, their containing directories
+are gathered. If a directory is gathered, then so is its parent 
+directory (unless the directory is the input directory). 
+This set of directories is useful when one wants to generate
+a directory view.
+
+### Parsing files
+
+Each file in the set of input files is parsed for tags using its 
+own associated tag parser. The purpose of this phase is to
+find out for a file its parent document, description, and a
+detailed description.
+
+### Resolving explicit links
+
+If a file specifies a parent document, then it is used to
+construct a part of the document tree. The parent document
+is allowed to be given as a simple filename only. If the
+file is not found in the current directory, then parent directories
+are searched repeatedly until a match is found or one reaches
+the input directory. If the parent file is not found, a warning
+is emitted (the filename might be misspelled or the file really missing).  
+If a documentation file (.txt) does not specify a parent document,
+a warning is emitted. Other types of documents might still be
+deduced a parent implicitly.
+
+### Resolving implicit links
+
+If a file does not have a parent document at this point, it
+is attempted to give an implicit parent. This procedure is described
+in:
+
+[[Link]]: concepts.txt 
+
+### Linking orphans
+
+If a file does not have parent document even after implicit linking,
+it is linked to a special orphan document. This guarantees that each
+file has a parent document. By generating a web-page that contains all 
+the orphans, the user has a useful list of those files
+which are not linked to the documentation. This is what the .orphan
+document type is used for.
+
+Generating output
+-----------------
+
+This phase is quite trivially described. For each file in the
+document tree:
+
+ * Recursively expand the Remark macros in its document template 
+ (given by the document type).  
+
+ * Convert the resulting Markdown source to html.
+ 
+ * Add html boilerplate code around the generated html 
+ (such as defining the .css files to use).
+ 
+ * Create the directories leading to the output file if they 
+ don't exist.
+ 
+ * Save the generated html to the output file 
+ (with the input extension replaced with the output extension). 
+
+Copying some files
+------------------
+
+At the end, three files are copied (if they don't exist) to the 
+remark_files directory of the output directory. These are:
+
+ * global.css : To control the styling of the webpages in general.
+ 
+ * pygments.css : To control the styling of the source-code bits.
+ 
+ * ASCIIMathMLwFallback.js : To convert AsciiMath to MathML on the fly.
+
+
+
