@@ -32,21 +32,23 @@ def readFile(fileName):
     return text
 
 class DocumentType:
-    def __init__(self, inputExtension, outputExtension, template, parser):
+    def __init__(self, inputExtension, outputExtension, template, parser, mathEnabled):
         self.inputExtension = inputExtension
         self.outputExtension = outputExtension
         self.template = template
         self.parser = parser
+        self.mathEnabled = mathEnabled
 
 _documentTypeMap = dict()
 
 def registerDocumentType(inputExtension, outputExtension,
-                         template, parser):
+                         template, parser, mathEnabled):
     global _documentTypeMap
     _documentTypeMap[inputExtension] = DocumentType(inputExtension,
                                                     outputExtension,
                                                     template,
-                                                    parser)
+                                                    parser,
+                                                    mathEnabled)
 
 def documentType(inputExtension):
     global _documentTypeMap

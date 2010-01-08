@@ -5,6 +5,6 @@ User documentation
 
 This section gives you the necessary information to use Remark
 (and a bit more). My suggestion is that you first read
-_Concepts_, then go for _Remark syntax_. This order will get
-you quickly started. The others contain a bit deeper information
-which I however recommend to read at some point.  
+_Concepts_, then go for _Remark syntax_. This will get
+you quickly started. The other subsections contain a bit deeper 
+information which I however recommend you to read at some point.  

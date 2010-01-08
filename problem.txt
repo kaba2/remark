@@ -19,8 +19,10 @@ generated page and can't be scoped. This is problematic in some cases.
 For example, in Python code an empty string is denoted by two 
 subsequent '. This will be erased from the output because AsciiMathML 
 interprets it as a start of a mathematical expression.
-It would be nice if there were a Python library that did AsciiMath to
-MathML conversion...
+Remark solves this problem partially by making it configurable per 
+document type whether AsciiMath should be interpreted or not: currently
+only documentation files (.txt) are interpreted. It would be nice if 
+there were a Python library that did AsciiMath to MathML conversion...
 
 How can I write verbatim content directly after a multi-line parameter?
 -----------------------------------------------------------------------
