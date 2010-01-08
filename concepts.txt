@@ -1,15 +1,28 @@
 Concepts
 ========
 
-[[Parent]]: remark.txt
+[[Parent]]: user_documentation.txt
 
 Documents
 ---------
 
+Remark treats files based on their filename extension.
+Each supported filename extension is mapped to a _document type_. 
+A document type contains (among other things) the following information:
+
+ * input filename extension
+ 
+ * output filename extension
+ 
+ * document template
+
+A _document template_ is a piece of text written in Remark syntax
+which, when expanded, generates the output file.
+
 A file with the extension '.txt' is called a _documentation file_. 
-In contrast, a file which contains source-code of some programming 
-language is called a _source-code file_. A _document_ is either a 
-documentation file or a source-code-file.  
+A file which contains source-code of some programming language is 
+called a _source-code file_. A _document_ is a file which has an
+associated document type in Remark.  
 
 Every document under Remark is associated with a unique parent 
 documentation file. This parent-child relation induces a tree where 
@@ -20,8 +33,8 @@ generate various useful information automatically to the webpages.
 Tags
 ----
 
-_Tags_ embed information relevant to Remark in the input files 
-themselves. In the case of source-code files, the embedding is done
+_Tags_ embed information relevant to Remark into the documents.  
+In the case of source-code files, the embedding is done
 by using special kind of comments (whatever the programming
 language). The embedding of tags for documentation files is 
 done specially. The purpose of tags is to deliver three bits 
@@ -53,7 +66,7 @@ in the file a comment of the form (examples in C++):
 
 	// Documentation: name_of_documentation.txt
 
-The specified file will be first searched from the current directory,
+The specified parent file will be first searched from the current directory,
 and if not found, sequentially through parent directories up to the 
 project's root directory.
 

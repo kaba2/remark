@@ -1,7 +1,7 @@
 Remark syntax
 =============
 
-[[Parent]]: remark.txt
+[[Parent]]: user_documentation.txt
 
 Remark syntax is a slightly extended version of the Markdown
 syntax. Therefore, if you can write Markdown, you can also

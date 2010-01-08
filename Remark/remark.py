@@ -61,14 +61,10 @@ if __name__ == '__main__':
     
     docTemplate = \
     ['[[Body]]',
-     '[[get body_epilogue]]',
-    '[[get doc_children_prologue]]',
     '[[DocChildren]]',
-    '[[get doc_children_epilogue]]',
-    '[[get source_children_prologue]]',
+    '[[get mid_text]]',
     '[[SourceChildren]]',
-    '[[get source_children_epilogue]]',
-    '[[get epilogue]]',]
+    '[[get end_text]]',]
 
     cppTemplate = \
     ['[[CppCode]]',]
@@ -142,6 +138,8 @@ if __name__ == '__main__':
     print '----------------------------------\n'
 
     remarkDirectory = os.path.join(outputDirectory, 'remark_files')
+    if not os.path.exists(remarkDirectory):
+        os.makedirs(remarkDirectory)
 
     if not os.path.exists(os.path.join(remarkDirectory, 'remark.css')):
         print 'remark.css'
