@@ -7,6 +7,7 @@ from Generic_TagParser import Generic_TagParser
 
 import string
 import re
+import codecs
          
 class Markdown_TagParser:
     def __init__(self, tagSet):
@@ -24,7 +25,7 @@ class Markdown_TagParser:
                 
         lineRegex = re.compile(r'[ \t]*((==+=)|(--+-))')
         previousLine = ''
-        with open(document.fullName, 'rU') as file:
+        with codecs.open(document.fullName, mode = 'rU', encoding = 'utf-8-sig') as file:
             for fileLine in file:
                 # Search for a description
                 

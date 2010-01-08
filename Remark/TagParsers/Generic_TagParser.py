@@ -4,13 +4,14 @@
 # Documentation: tag_parsers.txt
 
 import string
+import codecs
 
 class Generic_TagParser:
     def __init__(self, tagSet):
         self.tagSet = tagSet
 
     def parse(self, document):
-        with open(document.fullName, 'r') as file:
+        with codecs.open(document.fullName, mode = 'rU', encoding = 'utf-8-sig') as file:
             for fileLine in file:
                 for tagName, tagRegex in self.tagSet.iteritems():
                     match = tagRegex.match(fileLine)

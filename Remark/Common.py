@@ -17,7 +17,7 @@ def readFile(fileName):
 
     # Read the file into memory
     try:
-        with codecs.open(fileName, mode = 'rU', encoding = 'utf-8') as file:
+        with codecs.open(fileName, mode = 'rU', encoding = 'utf-8-sig') as file:
             text = file.readlines()
     except UnicodeDecodeError:
         print 'Warning: file \'' + fileName + '\' is not UTF-8 encoded. Assuming Latin-1 encoding.'

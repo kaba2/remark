@@ -24,10 +24,9 @@ class Document:
         self.relativeDirectory, self.fileName = os.path.split(relativeName)
         self.relativeDirectory = os.path.normpath(self.relativeDirectory)
         self.extension = os.path.splitext(self.fileName)[1]
-        self.tagSet = dict({'description' : '', 'detail' : ''})
+        self.tagSet = {'description' : '', 'detail' : ''}
         self.parent = None
         self.childSet = dict()
-        self.visible = True
         
     def insertChild(self, child):
         if child.parent != None:
@@ -47,7 +46,8 @@ class DocumentTree:
         self.rootDirectory = os.path.normpath(rootDirectory)
         self.root = Document('root', 'root')
         self.orphan = Document('orphan.orphan', 'orphan.orphan')
-        self.documentMap = dict({'orphan.orphan' : self.orphan})
+        self.documentMap = {'orphan.orphan' : self.orphan}
+        self.otherFileSet = []
 
         print '\nGathering files...',
         self._gatherFiles()
@@ -151,10 +151,12 @@ class DocumentTree:
         '''
         for pathName, directorySet, fileNameSet in os.walk(self.rootDirectory):
             for fileName in fileNameSet:
+                fullName = os.path.normpath(os.path.join(pathName, fileName))
+                relativeName = self._relativeName(fullName)               
                 if documentType(fileSuffix(fileName)) != None:
-                    fullName = os.path.normpath(os.path.join(pathName, fileName))
-                    relativeName = self._relativeName(fullName)               
                     self.documentMap[relativeName] = Document(relativeName, fullName)
+                else:
+                    self.otherFileSet.append(relativeName)
         
         # Gather the set of directories in which the files reside at
         # (and their parent directories).
