@@ -1,7 +1,7 @@
 Problems and solutions
 ======================
 
-[[Parent]]: remark.txt
+[[Parent]]: user_documentation.txt
 
 What if I pass a non-UTF-8 encoded file to Remark?
 --------------------------------------------------

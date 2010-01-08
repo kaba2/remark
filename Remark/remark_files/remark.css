@@ -14,9 +14,8 @@ html, body
 body 
 {
     /* Fonts from the sans-serif generic family are easier to read. 
-    Sans-serif means roughly 'without wiggles'. Verdana is an example
-    of a cool sans-serif font.*/
-	font-family: Verdana, sans-serif;
+    Sans-serif means roughly 'without wiggles'. */
+	font-family: sans-serif;
 	/* See the W3C CSS School for this trick. */
 	font-size: 100%;
 	/* Using more space between lines of text makes it easier to read. */
@@ -39,8 +38,6 @@ pre
     /* Its background is colored light green. */
 	background-color: rgb(234, 255, 232);
 
-	font-size: 1em;
-	
 	/* The verbatim content should be indented somewhat. */
 	margin-top: 0px;
 	margin-bottom: 0px;
@@ -60,12 +57,6 @@ pre
 	padding-bottom: 0.5em;
 }
 
-#container 
-{
-	min-height: 100%;
-	position: relative;
-}
-
 #mark 
 {
     /* There should be some empty space before the footer. */
@@ -75,7 +66,6 @@ pre
 /* Normal text */
 #mark p 
 {
-    font-size: 0.75em;
 	margin-left: 0px;
 	text-align: justify;
 }
@@ -113,7 +103,7 @@ pre
 #mark h3 
 {
 	margin: 1.5em 0em 1em 0em;
-	font-size: 1em;
+	/*font-size: 1em;*/
 	font-family:'Trebuchet MS',Arial;
 	color: #356535;
 }
@@ -182,11 +172,13 @@ pre
     padding: 5px;
 }
 
+/* Table: Cells: Headers */
 #mark th
 {
     color: Maroon;
 }
 
+/* Table: Cells: Data */
 #mark td
 {
 }
@@ -199,15 +191,14 @@ pre
 /* Definition lists: The thing to define. */
 #mark dt
 {
-    font-weight: bold;
-    font-size: 1em;
+    /*font-weight: bold;*/
+    /*font-size: 1em;*/
     color: Maroon;
 }
 
 /* Definition lists: The definition of the thing. */
 #mark dd
 {
-	font-size: 0.75em;
 }
 
 /* Remark generates some stuff in the 'footer' div. */
@@ -237,4 +228,10 @@ pre
 { 
     text-decoration: underline; 
     color: #600; 
+}
+
+#container 
+{
+	min-height: 100%;
+	position: relative;
 }

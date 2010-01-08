@@ -4,10 +4,9 @@ Implementation
 [[Parent]]: remark.txt
 
 These pages contain documentation for the implementation
-of Remark. Some of this documentation is also scattered
-elsewhere (e.g. macros) on the user documentation side. 
+of Remark. You do not need this documentation to use Remark.
+Before reading this section, be sure to read everything from 
+the user documentation. In addition to describing the concepts 
+and algorithms, the macro implementations are also documented 
+there.  
 
-See also
---------
-
-[[Link]]: ./Macros/macros.txt

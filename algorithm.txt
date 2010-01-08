@@ -1,64 +1,13 @@
 Algorithm
 =========
 
-[[Parent]]: remark.txt
+[[Parent]]: user_documentation.txt
 
 This page describes the algorithm Remark uses to generate the
 resulting web-pages. Before reading this page you should be
-familiar with:
+familiar with [concepts][Concepts].
 
-[[Link]]: concepts.txt
-
-Document types
---------------
-
-Documents are treated differently based on their filename extension.
-Each supported filename extension is given a mapping which associates
-the extension to a _document type_. A document type contains the
-following information:
-
- * input filename extension
- 
- * output filename extension
- 
- * tag parser object
- 
- * document template
-
-A _document template_ is a piece of text written in Remark syntax.
-It contains a small set of macros which, when expanded,
-generate the output file.
-
-### Supported document types
-
-The supported document types are registered at the start of Remark.  
-Currently these document types are (given in the form
-input extension : output extension : description):
-
- * .txt : .htm : Documentation file, such as this page.  
-
- * .cpp : .cpp.htm : Source-code file (C++).
-
- * .cc : .cc.htm : Source-code file (C++).
-
- * .hpp : .hpp.htm : Source-code file (C++).
-
- * .hh : .hh.htm : Source-code file (C++).
-
- * .c : .c.htm : Source-code file (C++).
-
- * .h : .h.htm : Source-code file (C++).
- 
- * .py : .py.htm : Source-code file (Python).
- 
- * .m : .m.htm : Source-code file (Matlab).
-
- * .index : .htm : Directory view.
- 
- * .orphan : .htm : List of files which have no parent document.
-
-The last two document types are meant to be internal to Remark
-and not be found from the file system (they are not searched).
+[Concepts]: concepts.htm
 
 Constructing the document tree
 ------------------------------
@@ -100,9 +49,7 @@ deduced a parent implicitly.
 
 If a file does not have a parent document at this point, it
 is attempted to give an implicit parent. This procedure is described
-in:
-
-[[Link]]: concepts.txt 
+in [concepts][Concepts].
 
 ### Linking orphans
 
@@ -127,31 +74,39 @@ Generating output
 This phase is quite trivially described. For each file in the
 document tree:
 
- * Recursively expand the Remark macros in its document template 
- (given by the document type).  
+1. Recursively expand the Remark macros in its document template (given by the document type).  
 
- * Convert the resulting Markdown source to html.
+2. Convert the resulting Markdown source to html.
  
- * Add html boilerplate code around the generated html 
+3. Add html boilerplate code around the generated html 
  (such as defining the .css files to use).
  
- * Create the directories leading to the output file if they 
+4. Create the directories leading to the output file if they 
  don't exist.
  
- * Save the generated html to the output file 
+5. Save the generated html to the output file 
  (with the input extension replaced with the output extension). 
 
 Copying some files
 ------------------
 
+Those files which have no associated document type, but are
+located at the documented directories, are simply copied
+to the corresponding output directories. However, if a
+particular file already exists at the output directory,
+it is _not_ copied over.
+
 At the end, three files are copied (if they don't exist) to the 
 remark_files directory of the output directory. These are:
 
- * remark.css : To control the styling of the webpages in general.
+remark.css 
+: To control the styling of the generated web-pages in general.
  
- * pygments.css : To control the styling of the source-code bits.
+pygments.css 
+: To control the styling of the source-code bits.
  
- * ASCIIMathMLwFallback.js : To convert AsciiMath to MathML on the fly.
+ASCIIMathMLwFallback.js 
+: To convert AsciiMath to MathML on the fly.
 
 
 

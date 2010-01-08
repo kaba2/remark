@@ -9,12 +9,15 @@ Python 3.x and Python 2.x are not compatible.
 
 The dependencies to other libraries are as follows:
  
- * [Markdown 2.0][PythonMarkdown] (Python, presumably newer versions also work)
+ * [Python Markdown 2.0][PythonMarkdown] (presumably newer versions also work)
+ 
+ * [Pygments 1.2.2][Pygments] (presumably newer versions also work)
  
  * [AsciiMathML][AsciiMathML] (Javascript, we distribute this along Remark)
  
 [PythonMarkdown]: http://www.freewisdom.org/projects/python-markdown/
+[Pygments]: http://pygments.org/
 [AsciiMathML]: http://www1.chapman.edu/~jipsen/asciimath.html
 
-After installing a Python interpreter and Markdown Python library you should
-be ready to use Remark.
+After installing a Python interpreter, Python Markdown, and Pygments 
+you should be ready to use Remark.
