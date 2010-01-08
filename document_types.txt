@@ -63,13 +63,13 @@ Input extensions
 Output extensions (respectively)
 :	.py.htm, .m.htm
 
+AsciiMath interpretation
+:	Disabled
+
 Document template
 :
 
 		[[GenericCode]]
-
-AsciiMath interpretation
-:	Disabled
 
 ### Directory view
 
