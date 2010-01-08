@@ -48,10 +48,10 @@ if __name__ == '__main__':
     if not os.path.exists(inputDirectory):
         print 'Error: Input directory \'' + inputDirectory + '\' does not exist.'
         sys.exit(1)
-    
+
     print 'Input directory:', inputDirectory
     print 'Output directory:', outputDirectory
-    
+
     cppParser = Generic_TagParser(commentParserTags('//'))
     matlabParser = Generic_TagParser(commentParserTags('%'))
     pythonParser = Generic_TagParser(commentParserTags('#'))
@@ -61,8 +61,14 @@ if __name__ == '__main__':
     
     docTemplate = \
     ['[[Body]]',
+     '[[get body_epilogue]]',
+    '[[get doc_children_prologue]]',
     '[[DocChildren]]',
-    '[[SourceChildren]]',]
+    '[[get doc_children_epilogue]]',
+    '[[get source_children_prologue]]',
+    '[[SourceChildren]]',
+    '[[get source_children_epilogue]]',
+    '[[get epilogue]]',]
 
     cppTemplate = \
     ['[[CppCode]]',]
@@ -104,32 +110,49 @@ if __name__ == '__main__':
     registerDocumentType('.index', '.htm', indexTemplate, emptyParser)
     registerDocumentType('.orphan', '.htm', orphanTemplate, emptyParser)
 
-    print '\nExpanding macros and writing to files'
-    print '-------------------------------------\n'
+    print '\nGenerating documents'
+    print '--------------------\n'
     
     convertAll(documentTree, outputDirectory)
 
-    print '\nStyle files and AsciiMathML'
-    print '---------------------------\n'
+    # Those files which don't have an associated document type
+    # are simply copied.
+   
+    print '\nMoving files with no associated document type'
+    print '---------------------------------------------\n'
+
+    otherFileSet = documentTree.otherFileSet
     
+    for relativeName in otherFileSet:
+        targetName = os.path.join(outputDirectory, relativeName);
+        targetDirectory = os.path.split(targetName)[0]
+        if not os.path.exists(targetDirectory):
+            os.makedirs(targetDirectory)
+        if not os.path.exists(targetName):
+            print relativeName
+            sourceName = os.path.join(inputDirectory, relativeName)
+            shutil.copy(sourceName, targetDirectory)
+                   
+    print 'Done.'
+
     # If there are no .css files already in the target directory,
     # copy the default ones there.
-    
-    remarkDirectory = os.path.join(outputDirectory, 'remark_files');
-    
-    if not os.path.exists(remarkDirectory):
-        os.makedirs(remarkDirectory)
-    
+
+    print '\nMoving style files and AsciiMathML'
+    print '----------------------------------\n'
+
+    remarkDirectory = os.path.join(outputDirectory, 'remark_files')
+
     if not os.path.exists(os.path.join(remarkDirectory, 'remark.css')):
-        print 'Moving remark.css...'
+        print 'remark.css'
         shutil.copy('./remark_files/remark.css', remarkDirectory)
-                   
+
     if not os.path.exists(os.path.join(remarkDirectory, 'pygments.css')):
-        print 'Moving pygments.css...'
+        print 'pygments.css'
         shutil.copy('./remark_files/pygments.css', remarkDirectory)
 
     if not os.path.exists(os.path.join(remarkDirectory, 'ASCIIMathMLwFallback.js')):
-        print 'Moving ASCIIMathMLwFallback.js...'
+        print 'ASCIIMathMLwFallback.js'
         shutil.copy('./remark_files/ASCIIMathMLwFallback.js', remarkDirectory)
 
     print 'Done.'

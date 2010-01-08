@@ -211,8 +211,10 @@ def expandMacros(template, document, documentTree):
                     #print result
                     text[i : i] = result
                 else:
-                    print 'Warning:', document.relativeName, 
-                    print ': get: Variable \'' + macroPartSet[1] + '\' not found. Ignoring it.'
+                    None
+                    #print 'Warning:', document.relativeName, 
+                    #print ': get: Variable \'' + macroPartSet[1] + '\' not found. Ignoring it.'
+                    
                 macroHandled = True
 
         if not macroHandled:
@@ -277,9 +279,6 @@ def addHtmlBoilerPlate(text, document):
 
 def convert(template, document, documentTree, targetRootDirectory):
     print document.relativeName, '...'
-    
-    #if document.fileName != 'pastel.txt':
-    #    return
     
     resetLinkId()
               
