@@ -4,7 +4,7 @@ Installation
 [[Parent]]: remark.txt
 
 Remark was programmed using Python 2.6. Thus it should run in any
-Python 2.x interpreter, where ''x >= 6''. Note that the syntaxes of 
+Python 2.x interpreter, where x is at least 6. Note that the syntaxes of 
 Python 3.x and Python 2.x are not compatible.
 
 The dependencies to other libraries are as follows:
@@ -14,10 +14,13 @@ The dependencies to other libraries are as follows:
  * [Pygments 1.2.2][Pygments] (presumably newer versions also work)
  
  * [AsciiMathML][AsciiMathML] (Javascript, we distribute this along Remark)
- 
+
+The AsciiMathML dependency is on a per-page basis depending on whether
+the page contains mathematical expressions or not. After installing a 
+Python interpreter, Python Markdown, and Pygments you should be ready 
+to use Remark.
+
 [PythonMarkdown]: http://www.freewisdom.org/projects/python-markdown/
 [Pygments]: http://pygments.org/
 [AsciiMathML]: http://www1.chapman.edu/~jipsen/asciimath.html
 
-After installing a Python interpreter, Python Markdown, and Pygments 
-you should be ready to use Remark.

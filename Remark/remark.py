@@ -81,15 +81,15 @@ if __name__ == '__main__':
     '[[DocChildren]]',
     '[[SourceChildren]]',]
     
-    registerDocumentType('.txt', '.htm', docTemplate, txtParser)
-    registerDocumentType('.cpp', '.cpp.htm', cppTemplate, cppParser)
-    registerDocumentType('.cc', '.cc.htm', cppTemplate, cppParser)
-    registerDocumentType('.c', '.c.htm', cppTemplate, cppParser)
-    registerDocumentType('.h', '.h.htm', cppTemplate, cppParser)
-    registerDocumentType('.hh', '.hh.htm', cppTemplate, cppParser)
-    registerDocumentType('.hpp', '.hpp.htm', cppTemplate, cppParser)
-    registerDocumentType('.py', '.py.htm', genericCodeTemplate, pythonParser)
-    registerDocumentType('.m', '.m.htm', genericCodeTemplate, matlabParser)
+    registerDocumentType('.txt', '.htm', docTemplate, txtParser, True)
+    registerDocumentType('.cpp', '.cpp.htm', cppTemplate, cppParser, False)
+    registerDocumentType('.cc', '.cc.htm', cppTemplate, cppParser, False)
+    registerDocumentType('.c', '.c.htm', cppTemplate, cppParser, False)
+    registerDocumentType('.h', '.h.htm', cppTemplate, cppParser, False)
+    registerDocumentType('.hh', '.hh.htm', cppTemplate, cppParser, False)
+    registerDocumentType('.hpp', '.hpp.htm', cppTemplate, cppParser, False)
+    registerDocumentType('.py', '.py.htm', genericCodeTemplate, pythonParser, False)
+    registerDocumentType('.m', '.m.htm', genericCodeTemplate, matlabParser, False)
     
     # Construct a document tree from the input directory.
     documentTree = DocumentTree(inputDirectory)
@@ -103,8 +103,8 @@ if __name__ == '__main__':
         fullName = os.path.join(documentTree.rootDirectory, relativeName)
         documentTree.insertDocument(Document(relativeName, fullName))
     
-    registerDocumentType('.index', '.htm', indexTemplate, emptyParser)
-    registerDocumentType('.orphan', '.htm', orphanTemplate, emptyParser)
+    registerDocumentType('.index', '.htm', indexTemplate, emptyParser, False)
+    registerDocumentType('.orphan', '.htm', orphanTemplate, emptyParser, False)
 
     print '\nGenerating documents'
     print '--------------------\n'

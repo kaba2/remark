@@ -15,7 +15,7 @@ A document type contains (among other things) the following information:
  * output filename extension
  
  * document template
-
+ 
 A _document template_ is a piece of text written in Remark syntax
 which, when expanded, generates the output file.
 

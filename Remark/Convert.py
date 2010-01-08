@@ -248,6 +248,16 @@ def addHtmlBoilerPlate(text, document):
     
     # Add boilerplate code.
     
+    includeAsciiMathML = False
+    if documentType(document.extension).mathEnabled:
+        # Search the text for mathematical expressions.
+        # The AsciiMathML script is only included if the
+        # page contains at least one expression.
+        for line in text:
+            if line.find("''") != -1:
+                includeAsciiMathML = True
+                break
+    
     now = datetime.datetime.now()
     timeText = now.strftime("%d.%m.%Y %H:%M")
             
@@ -260,7 +270,8 @@ def addHtmlBoilerPlate(text, document):
     htmlText.append('<link rel="stylesheet" type="text/css" href="' + os.path.join(remarkDirectory, 'remark.css') + '" />')
     htmlText.append('<link rel="stylesheet" type="text/css" href="' + os.path.join(remarkDirectory, 'pygments.css') + '" />')
     htmlText.append('<meta http-equiv="Content-Type" content="text/html; charset=utf-8"></meta>')
-    htmlText.append('<script type="text/javascript" src="' + os.path.join(remarkDirectory, 'ASCIIMathMLwFallback.js') + '"></script>')
+    if includeAsciiMathML:
+        htmlText.append('<script type="text/javascript" src="' + os.path.join(remarkDirectory, 'ASCIIMathMLwFallback.js') + '"></script>')
     htmlText.append('</head>')
     htmlText.append('<body>')
     htmlText.append('<div id = "container">')

@@ -14,6 +14,9 @@ Input extension
 Output extension
 : 	.htm
 
+AsciiMath interpretation
+:	Enabled
+
 Document template
 : 
 
@@ -44,6 +47,9 @@ Input extensions
 Output extensions (respectively)
 :	.cpp.htm, .cc.htm, .hpp.htm, .hh.htm, .c.htm, .h.htm
 
+AsciiMath interpretation
+: Disabled
+
 Document template
 :	
 		
@@ -62,6 +68,9 @@ Document template
 
 		[[GenericCode]]
 
+AsciiMath interpretation
+:	Disabled
+
 ### Directory view
 
 Input extension
@@ -69,6 +78,9 @@ Input extension
 
 Output extension
 : .htm
+
+AsciiMath interpretation
+:	Disabled
 
 Document template
 : 
@@ -83,6 +95,9 @@ Input Extension
 Output extension
 : .htm
 
+AsciiMath interpretation
+:	Disabled
+
 Document template
 : 
 
@@ -90,4 +105,5 @@ Document template
     	=======
     	[[DocChildren]]
     	[[SourceChildren]]
+ 
  
