@@ -71,7 +71,7 @@ This
 
 produces this:
 
-	''(x+1)/(x-1) x^(i+j) x_(ij) sqrt(x) root(n)(x) stackrel(+)(->) text(any) "any"''
+''(x+1)/(x-1) x^(i+j) x_(ij) sqrt(x) root(n)(x) stackrel(+)(->) text(any) "any"''
 
 ### Operation symbols
 
@@ -81,8 +81,7 @@ This
 
 produces this:
 
-	''+ - * ** // \\ xx -: @ o+ ox sum prod ^^ ^^^ vv vvv nn nnn uu uuu''
-
+''+ - * \** // \\\\ xx -: @ o+ ox sum prod ^^ ^^^ vv vvv nn nnn uu uuu''
 
 ### Relation symbols
 
@@ -92,7 +91,7 @@ This
 
 produces this:
 
-	''= != < <= > >= -< >- in !in sub sup sube supe -= ~= ~~ prop''
+''= != < <= > >= -< >- in !in sub sup sube supe -= ~= ~~ prop''
 
 ### Logical symbols
 
@@ -102,7 +101,7 @@ This
 
 produces this:
 
-	''\and \or \not => if iff AA EE _|_ TT |-- |==''
+''\and \or \not => if iff AA EE _|_ TT |-- |==''
 
 ### Miscellaneous symbols
 

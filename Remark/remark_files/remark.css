@@ -8,118 +8,123 @@ bottom which is under '#footer'.
 
 html, body 
 {
-	height: 100%;
+    height: 100%;
 }
 
 body 
 {
     /* Fonts from the sans-serif generic family are easier to read. 
     Sans-serif means roughly 'without wiggles'. */
-	font-family: sans-serif;
-	/* See the W3C CSS School for this trick. */
-	font-size: 100%;
-	/* Using more space between lines of text makes it easier to read. */
-	line-height: 1.3em;
-	/* Using margins, the text concentrates more tighly
+    font-family: sans-serif;
+    /* See the W3C CSS School for this trick. */
+    font-size: 100%;
+    /* Using more space between lines of text makes it easier to read. */
+    line-height: 1.3em;
+    /* Using margins, the text concentrates more tighly
     towards the center. There will be empty regions on both 
     sides. I find this easier to read. */
-	margin-left: 25%;
-	margin-right: 25%;
+    margin-left: 25%;
+    margin-right: 25%;
 }
 
 /* Verbatim content */
 pre 
 {
     /* Verbatim content is bordered with a dotted, one-pixel wide rectangle. */
-	border-style: dotted;
-	border-width: 1px;
-	border-color: rgb(85, 85, 85);
+    border-style: dotted;
+    border-width: 1px;
+    border-color: rgb(85, 85, 85);
 
     /* Its background is colored light green. */
-	background-color: rgb(234, 255, 232);
+    background-color: rgb(234, 255, 232);
 
-	/* The verbatim content should be indented somewhat. */
-	margin-top: 0px;
-	margin-bottom: 0px;
-	margin-left: 40px;
-	margin-right: 0px;
-	
-	/* The verbatim content box should always have the same width.
+    /* The verbatim content should be indented somewhat. */
+    margin-top: 0px;
+    margin-bottom: 0px;
+    margin-left: 40px;
+    margin-right: 0px;
+    
+    /* The verbatim content box should always have the same width.
     This is because it must be able to hold some 70 characters
     of source code per line. Yes, it is ugly when resizing, but
     what can you do... */
-	width: 55em;
-	
-	/* The content should not be near the border. */
-	padding-left: 1em;
-	padding-right: 1em;
-	padding-top: 0.5em;
-	padding-bottom: 0.5em;
+    width: 55em;
+    
+    /* The content should not be near the border. */
+    padding-left: 1em;
+    padding-right: 1em;
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
 }
 
 #mark 
 {
     /* There should be some empty space before the footer. */
-	padding-bottom: 60px;
+    padding-bottom: 60px;
 }
 
 /* Normal text */
 #mark p 
 {
-	margin-left: 0px;
-	text-align: justify;
+    margin-left: 0px;
+    text-align: justify;
 }
 
 /* Level 1 headings */
 #mark h1 
 {
-	margin: 1.5em 0em 1em 0em;
-	/* Draw a dotted line under the heading. */
-	border-bottom: 2px dotted #aca899;
-	/* Make some space between the heading and the line under it.*/ 
-	padding-bottom: 0.4em;
-	letter-spacing: 0.7em;
-	font-size: 1.6em;
-	font-family: 'Trebuchet MS',Arial;
-	color: #656565;
-	line-height: 1.5em;
+    margin: 1.5em 0em 1em 0em;
+    /* Draw a dotted line under the heading. */
+    border-bottom: 2px dotted #aca899;
+    /* Make some space between the heading and the line under it.*/ 
+    padding-bottom: 0.4em;
+    letter-spacing: 0.7em;
+    font-size: 1.6em;
+    font-weight: normal;
+    font-family: 'Trebuchet MS',Arial;
+    color: #656565;
+    line-height: 1.5em;
 }
 
 /* Level 2 headings */
 #mark h2 
 {
-	margin: 1.5em 0em 1em 0em;
-	/* Draw a dotted line under the heading. */
-	border-bottom: 1px dotted #aca899;
-	/* Make some space between the heading and the line under it.*/ 
-	padding-bottom: 0.4em;
-	letter-spacing: 0.3em;
-	font-size: 1.2em;
-	font-family:'Trebuchet MS',Arial;
-	color: #656565;
+    margin: 1.5em 0em 1em 0em;
+    /* Draw a dotted line under the heading. */
+    border-bottom: 1px dotted #aca899;
+    /* Make some space between the heading and the line under it.*/ 
+    padding-bottom: 0.4em;
+    letter-spacing: 0.3em;
+    font-size: 1.4em;
+    font-weight: normal;
+    font-family:'Trebuchet MS',Arial;
+    color: #656565;
 }
 
 /* Level 3 headings */
 #mark h3 
 {
-	margin: 1.5em 0em 1em 0em;
-	/*font-size: 1em;*/
-	font-family:'Trebuchet MS',Arial;
-	color: #356535;
+    margin: 1.5em 0em 1em 0em;
+    font-size: 1.2em;
+    font-weight: normal;
+    font-family:'Trebuchet MS',Arial;
+    color: #356535;
 }
 
 /* Level 4 headings */
 #mark h4 
 {
-	margin: 0px 0px 0px 20px;
-	font-size: 0.9em;
-	color: #255525;
+    margin: 1.5em 0em 1em 0em;
+    font-size: 1.0em;
+    font-weight: normal;
+    font-family:'Trebuchet MS',Arial;
+    color: #255525;
 }
 
 /* Unordered lists (bullets) */
 #mark ul 
 {
-	list-style: disk;
+    list-style: disk;
 }
 
 /* Ordered lists */
@@ -205,18 +210,18 @@ pre
 
 #footer 
 {
-	position: absolute;
-	bottom: 10px;
-	width: 100%;
-	height: 30px;
+    position: absolute;
+    bottom: 10px;
+    width: 100%;
+    height: 30px;
 }
 
 #footer p 
 {
-	border-top: 1px dotted #716f64;
-	font-size: 0.7em;
-	font-family:'Trebuchet MS',Arial;
-	color: #716f64;
+    border-top: 1px dotted #716f64;
+    font-size: 0.7em;
+    font-family:'Trebuchet MS',Arial;
+    color: #716f64;
 }
 #footer a 
 { 
@@ -232,6 +237,6 @@ pre
 
 #container 
 {
-	min-height: 100%;
-	position: relative;
+    min-height: 100%;
+    position: relative;
 }

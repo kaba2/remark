@@ -120,6 +120,7 @@ class SourceChildren_Macro:
                 linkDescription = child.fileName
                 linkTarget = linkAddress(targetDirectory, child.relativeName)
                 text += remarkLink(linkDescription, outputDocumentName(linkTarget))
+                text.append('')
             
         return text
 
