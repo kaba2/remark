@@ -11,7 +11,7 @@ import datetime
 import codecs
 
 from MacroRegistry import findMacro
-from Common import changeExtension, outputDocumentName, resetLinkId, documentType
+from Common import changeExtension, outputDocumentName, resetLinkId, documentType, unixDirectoryName
 
 class Scope:
     def __init__(self, parent):
@@ -260,6 +260,10 @@ def addHtmlBoilerPlate(text, document):
     
     now = datetime.datetime.now()
     timeText = now.strftime("%d.%m.%Y %H:%M")
+    
+    remarkCss = unixDirectoryName(os.path.normpath(os.path.join(remarkDirectory, 'remark.css')))
+    pygmentsCss = unixDirectoryName(os.path.normpath(os.path.join(remarkDirectory, 'pygments.css')))
+    asciiMathML = unixDirectoryName(os.path.normpath(os.path.join(remarkDirectory, 'ASCIIMathMLwFallback.js')))
             
     htmlText = []
     htmlText.append('<?xml version="1.0" encoding="UTF-8"?>')
@@ -267,11 +271,11 @@ def addHtmlBoilerPlate(text, document):
     htmlText.append('<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US" lang="en-US">')
     htmlText.append('<head>')
     htmlText.append('<title>' + document.tag('description') + '</title>')
-    htmlText.append('<link rel="stylesheet" type="text/css" href="' + os.path.join(remarkDirectory, 'remark.css') + '" />')
-    htmlText.append('<link rel="stylesheet" type="text/css" href="' + os.path.join(remarkDirectory, 'pygments.css') + '" />')
+    htmlText.append('<link rel="stylesheet" type="text/css" href="' + remarkCss + '" />')
+    htmlText.append('<link rel="stylesheet" type="text/css" href="' + pygmentsCss + '" />')
     htmlText.append('<meta http-equiv="Content-Type" content="text/html; charset=utf-8"></meta>')
     if includeAsciiMathML:
-        htmlText.append('<script type="text/javascript" src="' + os.path.join(remarkDirectory, 'ASCIIMathMLwFallback.js') + '"></script>')
+        htmlText.append('<script type="text/javascript" src="' + asciiMathML + '"></script>')
     htmlText.append('</head>')
     htmlText.append('<body>')
     htmlText.append('<div id = "container">')

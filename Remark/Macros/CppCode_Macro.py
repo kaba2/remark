@@ -22,7 +22,7 @@ def _linkConverter(regexMatch, documentTree, document):
     linkDocument = documentTree.findDocumentByName(searchName)
     if linkDocument != None:
         linkName = os.path.normpath(os.path.relpath(linkDocument.relativeName, document.relativeDirectory)) + '.htm'
-        return regexMatch.group(1) + '<a href = "' + linkName + '">' + includeName + '</a>' + string.rstrip(regexMatch.group(3))
+        return regexMatch.group(1) + '<a href = "' + unixDirectoryName(linkName) + '">' + includeName + '</a>' + string.rstrip(regexMatch.group(3))
     return regexMatch.group(0)
 
 class CppCode_Macro:
