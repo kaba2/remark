@@ -78,7 +78,7 @@ _linkList = []
 def remarkLink(description, target):
     name = 'RemarkLink_' + str(getLinkId())
     text = ['[' + description + '][' + name + ']']
-    _linkList.append((name, target))
+    _linkList.append((name, unixDirectoryName(target)))
     
     return text
 
