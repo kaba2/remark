@@ -9,8 +9,25 @@ from Common import linkAddress
 class DocChildren_Macro:
     def expand(self, parameter, document, documentTree, scope):
         targetDirectory = document.relativeDirectory
-        
-        childSet = [child for child in document.childSet.itervalues() if child.extension == '.txt']
+
+        # Construct the ignore set.
+        ignoreList = scope.search('DocChildren:no_links_for')
+        if ignoreList == None:
+            ignoreList = []
+        # The files to ignore are given by relative names
+        # and may use the implicit parent directory search.
+        # Therefore we need to first find the document which
+        # is meant.
+        for i in range(0, len(ignoreList)):
+            ignoreDocument = documentTree.findDocumentOutwards(ignoreList[i], document.relativeDirectory)
+            if ignoreDocument != None:
+                # Only now do we have a comparable relative name.
+                ignoreList[i] = ignoreDocument.relativeName
+            else:
+                ignoreList[i] = None 
+        ignoreSet = set(ignoreList)
+
+        childSet = [child for child in document.childSet.itervalues() if child.extension == '.txt' and not child.relativeName in ignoreSet]
         
         if len(childSet) == 0:
             return []
@@ -24,20 +41,15 @@ class DocChildren_Macro:
             else:
                 title = scopeTitle[0]
             
-        ignoreList = scope.search('DocChildren:no_links_for')
-        if ignoreList == None:
-            ignoreList = []            
-        ignoreSet = set(ignoreList)
-            
+           
         text = ['\n' + title, '-' * len(title) + '\n']
         
         text.append('[[Link]]:')
         
         childSet.sort(lambda x, y: cmp(x.tag('description'), y.tag('description')))        
         for child in childSet:
-            if not child.fileName in ignoreSet:
-                linkTarget = linkAddress(targetDirectory, child.relativeName)
-                text.append('\t' + linkTarget)
+            linkTarget = linkAddress(targetDirectory, child.relativeName)
+            text.append('\t' + linkTarget)
                 
         return text
 

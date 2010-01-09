@@ -47,14 +47,16 @@ class CppCode_Macro:
             # Create the title
             convertedText.append(fileName)
             convertedText.append('=' * len(fileName))
-            convertedText.append('\n')
+            convertedText.append('')
             
             # Create parent link.
-            convertedText.append('[[Parent]]\n')
+            convertedText.append('[[Parent]]')
+            convertedText.append('')
             #convertedText += expandMacros(['[[Parent]]\n'], document, documentTree)
         
             # Create directory link.
             convertedText += remarkLink(unixDirectoryName(document.relativeDirectory) + '/', 'directory.htm')
+            convertedText.append('')
         
         # This 'div' allows, for example, to create
         # a box around the code.
