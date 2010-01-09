@@ -3,8 +3,6 @@ User documentation
 
 [[Parent]]: remark.txt
 
-This section gives you the necessary information to use Remark
-(and a bit more). My suggestion is that you first read
-_Concepts_, then go for _Remark syntax_. This will get
-you quickly started. The other subsections contain a bit deeper 
-information which I however recommend you to read at some point.  
+This section gives the necessary information to use Remark
+(and a bit more). For a quick start, read _Concepts_ and 
+_Remark syntax_ first.  

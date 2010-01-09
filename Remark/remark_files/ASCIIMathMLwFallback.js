@@ -35,7 +35,7 @@ var checkForMathML = true;   // check if browser can display MathML
 var notifyIfNoMathML = false; // display note if no MathML capability
 var alertIfNoMathML = false;  // show alert box if no MathML capability
 var mathcolor = "";       // change it to "" (to inherit) or any other color
-var mathfontsize = "1.4em";
+var mathfontsize = "1.0em";
 var mathfontfamily = "serif"; // change to "" to inherit (works in IE) 
                               // or another family (e.g. "arial")
 var displaystyle = true;      // puts limits above and below large operators
