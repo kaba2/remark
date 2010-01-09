@@ -14,6 +14,7 @@ class Link_Macro:
             return []
         
         text = []
+        
         for linkFileName in parameter:
             linkDocument = documentTree.findDocument(linkFileName, document.relativeDirectory)
             
@@ -21,6 +22,8 @@ class Link_Macro:
                 linkDescription = linkDocument.tag('description')
                 linkTarget = linkAddress(document.relativeDirectory, linkDocument.relativeName)
                 text += remarkLink(linkDescription, outputDocumentName(linkTarget))
+                if len(parameter) > 1:                
+                    text += ['']
             else:
                 print 'Warning:', document.relativeName, ': manual link',
                 print linkFileName, 'not found. Ignoring it.'

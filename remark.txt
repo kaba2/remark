@@ -1,11 +1,11 @@
-Remark
+﻿Remark
 ======
 
 [Back to Homepage of Kalle Rutanen][Back]
 
 [Back]: http://kaba.hilvi.org
 
-_Remark_ is a Python library designed to generate html documentation for software libraries.
+_Remark_ is a Python library to generate html documentation for software libraries.
 Naturally, Remark is documented with Remark, the results of which you are inspecting
 right now. Remark is licensed under the _GNU Lesser GPL_. 
 

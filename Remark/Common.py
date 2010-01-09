@@ -74,11 +74,21 @@ def resetLinkId():
     global _linkId
     _linkId = 0
 
+_linkList = []
 def remarkLink(description, target):
     name = 'RemarkLink_' + str(getLinkId())
-    text = ['[' + description + '][' + name + ']',
-            '[' + name + ']: ' + target + '\n']
+    text = ['[' + description + '][' + name + ']']
+    _linkList.append((name, target))
+    
     return text
+
+def linkList():
+    global _linkList
+    return _linkList
+
+def clearLinkList():
+    global _linkList
+    _linkList = []
 
 def changeExtension(fileName, newExtension):
     return os.path.splitext(fileName)[0] + newExtension

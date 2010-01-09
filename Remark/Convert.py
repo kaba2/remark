@@ -288,15 +288,21 @@ def addHtmlBoilerPlate(text, document):
     return htmlText
 
 
+from Common import linkList, clearLinkList
 def convert(template, document, documentTree, targetRootDirectory):
     print document.relativeName, '...'
     
     resetLinkId()
+    clearLinkList()
               
     # Expand macros.
     global _scopeStack
     _scopeStack.open()
     text = expandMacros(template, document, documentTree)
+    # Add link definitions
+    linkSet = linkList()
+    for link in linkSet:
+        text += ['[' + link[0] + ']: ' + link[1]]
     _scopeStack.close()
     
     # Convert Markdown to html.
