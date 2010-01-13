@@ -33,7 +33,7 @@ class Index_Macro:
         for directory in directorySet:
             linkId = getLinkId()
             text.append('* [' + directory + '/][RemarkLink_' + str(linkId) + ']')
-            linkName = os.path.join(directory, 'directory.htm')
+            linkName = unixDirectoryName(os.path.join(directory, 'directory.htm'))
             linkSet.append('[RemarkLink_' + str(linkId) + ']: ' + linkName)
        
         for entry in fileSet:
