@@ -62,7 +62,7 @@ def outputDocumentName(name):
     return changeExtension(name, outputExtension)
 
 def unixDirectoryName(name):
-    return string.replace(name, '\\', '/')                
+    return string.replace(os.path.normpath(name), '\\', '/')                
 
 _linkId = 0
 def getLinkId():
