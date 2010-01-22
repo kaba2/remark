@@ -303,6 +303,7 @@ def convert(template, document, documentTree, targetRootDirectory):
     global _scopeStack
     _scopeStack.open()
     text = expandMacros(template, document, documentTree)
+    
     # Add link definitions
     linkSet = linkList()
     for link in linkSet:
