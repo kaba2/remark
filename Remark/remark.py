@@ -14,6 +14,7 @@ import re
 import sys
 import os
 import shutil
+import fnmatch
 
 from DocumentTree import Document
 from DocumentTree import DocumentTree
@@ -22,7 +23,7 @@ from TagParsers.Markdown_TagParser import Markdown_TagParser
 from TagParsers.Empty_TagParser import Empty_TagParser
 from Convert import convertAll
 from Common import registerDocumentType
-
+from optparse import OptionParser
 from Macros import *
 
 def commentParserTags(comment):
@@ -31,16 +32,43 @@ def commentParserTags(comment):
             'parent' : re.compile(r'[ \t]*' + comment + '[ \t]*Documentation[ \t]*:[ \t]*(.*)')}
 
 if __name__ == '__main__':
+    optionParser = OptionParser(usage = """\
+%prog [options] inputDirectory outputDirectory [filesToCopy...]
+
+The filesToCopy-list contains a list of those files which
+should be copied if they are not converted. This list can 
+use wildcards (e.g. *.png).""")
+    
+    #===========================================================================
+    # optionParser.add_option('-o', '--orphan',
+    #    action = 'store_true',
+    #    dest = 'orphan',
+    #    default = False,
+    #    help = """generates a list of those files which don't specify a parent to orphan.htm""")
+    #===========================================================================
+
+    optionParser.add_option('-l', '--lines',
+        dest = 'lines',
+        type = 'int',
+        default = 100,
+        help = """maximum number of lines for a tag-parser to scan a file for tags (default 100)""")
+
+    options, args = optionParser.parse_args()
+    
+    if len(args) < 2:
+        optionParser.print_help()
+        sys.exit(1)
+        
+    if options.lines <= 0:
+        print 'The maximum number of lines to scan for tags must be at least 1.'
+        sys.exit(1)
+    
     print 'Remark documentation system'
     print '===========================\n'
 
-    if len(sys.argv) != 3:
-        print 'Usage:'
-        print 'remark.py inputDirectory outputDirectory'
-        sys.exit(1)
-    
-    inputDirectory = sys.argv[1]
-    outputDirectory = sys.argv[2]
+    inputDirectory = args[0]
+    outputDirectory = args[1]
+    filesToCopySet = args[2:]
     
     inputDirectory = os.path.normpath(os.path.join(os.getcwd(), inputDirectory))
     outputDirectory = os.path.normpath(os.path.join(os.getcwd(), outputDirectory))
@@ -52,12 +80,12 @@ if __name__ == '__main__':
     print 'Input directory:', inputDirectory
     print 'Output directory:', outputDirectory
 
-    cppParser = Generic_TagParser(commentParserTags('//'))
-    matlabParser = Generic_TagParser(commentParserTags('%'))
-    pythonParser = Generic_TagParser(commentParserTags('#'))
+    cppParser = Generic_TagParser(commentParserTags('//'), options.lines)
+    matlabParser = Generic_TagParser(commentParserTags('%'), options.lines)
+    pythonParser = Generic_TagParser(commentParserTags('#'), options.lines)
     emptyParser = Empty_TagParser()
     
-    txtParser = Markdown_TagParser({'parent' : re.compile(r'\[\[Parent\]\]:[ \t]*(.*)')})
+    txtParser = Markdown_TagParser({'parent' : re.compile(r'\[\[Parent\]\]:[ \t]*(.*)')}, options.lines)
     
     docTemplate = \
     ['[[Body]]',
@@ -104,6 +132,8 @@ if __name__ == '__main__':
         documentTree.insertDocument(Document(relativeName, fullName))
     
     registerDocumentType('.index', '.htm', indexTemplate, emptyParser, False)
+    
+    #if options.orphan == True:
     registerDocumentType('.orphan', '.htm', orphanTemplate, emptyParser, False)
 
     print '\nGenerating documents'
@@ -111,25 +141,37 @@ if __name__ == '__main__':
     
     convertAll(documentTree, outputDirectory)
 
-    # Those files which don't have an associated document type
-    # are simply copied.
-   
-    print '\nMoving files with no associated document type'
-    print '---------------------------------------------\n'
+    if len(filesToCopySet) > 0:
+        # Those files which don't have an associated document type
+        # are simply copied.
+       
+        print '\nMoving files with no associated document type'
+        print '---------------------------------------------\n'
 
-    otherFileSet = documentTree.otherFileSet
-    
-    for relativeName in otherFileSet:
-        targetName = os.path.join(outputDirectory, relativeName);
-        targetDirectory = os.path.split(targetName)[0]
-        if not os.path.exists(targetDirectory):
-            os.makedirs(targetDirectory)
-        if not os.path.exists(targetName):
-            print relativeName
-            sourceName = os.path.join(inputDirectory, relativeName)
-            shutil.copy(sourceName, targetDirectory)
+        copySet = documentTree.otherFileSet
+        
+        # Only copy those files which correspond to the filename
+        # patterns given in the command line.
+        
+        for filenamePattern in filesToCopySet:
+            newCopySet = []
+            for relativeName in copySet:
+                filename = os.path.split(relativeName)[1]
+                if fnmatch.fnmatch(filename, filenamePattern):
+                    newCopySet.append(relativeName)
+            copySet = newCopySet
+        
+        for relativeName in copySet:
+            targetName = os.path.join(outputDirectory, relativeName);
+            targetDirectory = os.path.split(targetName)[0]
+            if not os.path.exists(targetDirectory):
+                os.makedirs(targetDirectory)
+            if not os.path.exists(targetName):
+                print relativeName
+                sourceName = os.path.join(inputDirectory, relativeName)
+                shutil.copy(sourceName, targetDirectory)
                    
-    print 'Done.'
+        print 'Done.'
 
     # If there are no .css files already in the target directory,
     # copy the default ones there.

@@ -10,8 +10,9 @@ import re
 import codecs
          
 class Markdown_TagParser:
-    def __init__(self, tagSet):
-        self.genericParser = Generic_TagParser(tagSet)
+    def __init__(self, tagSet, maxLines):
+        self.genericParser = Generic_TagParser(tagSet, maxLines)
+        self.maxLines = maxLines
         
     def parse(self, document):
         # Let the generic parser handle those tags
@@ -25,7 +26,9 @@ class Markdown_TagParser:
                 
         lineRegex = re.compile(r'[ \t]*((==+=)|(--+-))')
         previousLine = ''
+        
         with codecs.open(document.fullName, mode = 'rU', encoding = 'utf-8-sig') as file:
+            lineNumber = 0
             for fileLine in file:
                 # Search for a description
                 
@@ -40,3 +43,7 @@ class Markdown_TagParser:
                 # we detect a header line.
                 
                 previousLine = fileLine
+                lineNumber += 1
+                if lineNumber >= self.maxLines:
+                    # All tags must appear within 'maxLines' lines. 
+                    break
