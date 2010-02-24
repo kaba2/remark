@@ -1,4 +1,4 @@
-# Remark 1.1.0
+# Remark 1.2.0
 # Kalle Rutanen
 # http://kaba.hilvi.org
 # Copyright (c) 2009, 2010

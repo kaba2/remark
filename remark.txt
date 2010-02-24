@@ -53,9 +53,9 @@ News
 Download
 --------
 
-[Download Remark 1.1][Library]
+[Download Remark 1.2.0][Library]
 
-[Library]: ./files/remark-1.1.0.zip
+[Library]: ./files/remark-1.2.0.zip
 
 Note on web-browsers
 --------------------
