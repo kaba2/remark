@@ -11,11 +11,23 @@ but does not output anything. It can be used to comment the Remark source.
 Macro invocation
 ----------------
 
-A macro can be invoked in three ways: with no parameters,
-with a one-line parameter, or with a multi-line parameter.
+A macro can be invoked in four ways:
+ 
+ * with no parameters,
+ 
+ * with an inline parameter,
+ 
+ * with a one-line parameter,
+ 
+ * or with a multi-line parameter.
+
 The Comment macro is invoked with no parameters as follows:
 
 	[[Comment]]
+	
+With an inline parameter you would write like this:
+
+	[[Comment: This is an inline parameter.]]
 	
 With a one-line parameter you would write like this:
 
@@ -50,10 +62,22 @@ For example:
 Some details
 ------------
 
+ * Macros which are invoked with a one-line or multi-line parameter
+ must be written at the start of the row. 
+ 
+ * Macros with no parameters or with inline parameters be written
+ in the middle of normal text. 
+ 
  * A multi-line parameter with a single row works equivalently
-to a one-line parameter. A multi-line parameter
-with no rows works equivalently to as if no parameters 
-were given. 
+to a one-line parameter. 
+
+ * A multi-line parameter with no rows works equivalently to as 
+ if no parameters were given.
+ 
+ * A one-line parameter works equivalently to an inline parameter.
+ 
+ * Specification of both a one-line parameter and an inline
+ parameter is disallowed and will emit a warning. 
 
  * The functionality of macros is implemented as Python classes.
 During its action, a macro has access to the whole

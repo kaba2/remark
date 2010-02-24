@@ -9,6 +9,7 @@ import os
 import os.path
 import datetime
 import codecs
+import copy
 
 from MacroRegistry import findMacro
 from Common import changeExtension, outputDocumentName, resetLinkId, documentType, unixDirectoryName
@@ -72,9 +73,18 @@ def expandMacros(template, document, documentTree):
     global _scopeStack
     
     text = template[:]
-    macroText = r'((?:(?!]]).)*)'
-    optionalOneLineParameter = r'(?::[ \t]*(.*))?'
-    macroRegex = re.compile(r'\[\[' + macroText + r'\]\]' + optionalOneLineParameter)
+    macroIdentifier = r'([a-zA-Z_ ][a-zA-Z0-9_ ]*)'
+    whitespace = r'[ \t]*'
+    optionalInlineParameter = r'(?::' + whitespace + r'((?:(?!]]).)*))?'
+    optionalOneLineParameter = r'(?::' + whitespace + r'(.*))?'
+    macroRegex = re.compile(r'\[\[' + macroIdentifier + optionalInlineParameter + r'\]\]' + optionalOneLineParameter)
+    
+    macroIdentifierGroup = 1
+    inlineParameterGroup = 2
+    externalParameterGroup = 3
+    
+    #macroText = r'((?:(?!]]).)*)'
+    #macroRegex = re.compile(r'\[\[' + macroText + r'\]\]' + optionalOneLineParameter)
     i = 0
     while i < len(text):
         line = text[i]
@@ -92,57 +102,120 @@ def expandMacros(template, document, documentTree):
             i += 1
             continue
 
-        # Check that the macro begins the line.
-        if match.start() != 0:
-            print 'Warning:', document.relativeName, ': macro', match.group(0), 
-            print 'has bad indentation. Ignoring it.'
-            i += 1
-            continue
-
+        # There is at least one macro on the line.
+        
         # Next we want to determine the parameter
-        # of the macro. There are three possibilities:
+        # of the macro. There are four possibilities:
         #
         # 1) There is no parameter. In this case the
         # entry is of the form '[[Macro]]'.
         #
-        # 2) There is a one-line parameter. In this case
+        # 2) There is an inline parameter. In this case
+        # the entry is of the form '[[Macro: parameter here]]'.
+        #
+        # 3) There is a one-line parameter. In this case
         # the entry is of the form '[[Macro]]: parameter here'.
         #
-        # 3) There is a multi-line parameter. In this case
+        # 4) There is a multi-line parameter. In this case
         # the entry is of the form:
         # [[Macro]]:
         #     Parameters
         #     here
         #
         #     More parameters
+        #
+        # Options 3 and 4 are together called external parameters.
+        
+        # Macros that give an external parameter
+        # are required to start at the beginning of the line.
+        hasExternalParameters = (match.group(externalParameterGroup) != None)        
+        if hasExternalParameters and match.start() != 0:
+            print 'Warning:', document.relativeName, ':', match.group(0), '.' 
+            print 'Macro invocation with an external parameter must start at the',
+            print 'beginning of the line. Ignoring the macro.'
+            i += 1
+            continue
         
         #print 'Found macro:', match.group(1)
         parameterSet = []
         
-        # Whether a macro has parameters is given by
-        # whether there is a ':' after the macro.        
-        hasParameters = (match.group(2) != None)
+        hasInlineParameters = (match.group(inlineParameterGroup) != None)
+
+        # Macros that give both an external parameter and
+        # an inline parameter are disallowed.
+        if hasInlineParameters and hasExternalParameters:
+            print 'Warning:', document.relativeName, ':', match.group(0), '.' 
+            print 'Inline parameters and external parameters can not be used together.',
+            print 'Ignoring the macro.'
+            i += 1
+            continue
         
+        # Check whether the parameter is inline.
+        # A parameter is inline if the regex matched 
+        # the inlineParameterGroup and it is not all 
+        # whitespace.
+        if hasInlineParameters:
+            parameter = string.strip(match.group(inlineParameterGroup))
+            if parameter != '':
+                # Inline parameter
+                parameterSet.append(parameter)
+                #print 'Inline parameter!', match.group(0)
+                #print match.start(0), match.end(0)
+
         # Check whether the parameter is one-line.
-        if hasParameters:
-            # A parameter is one-line if:
-            # 1) The regex matched the group 2.
-            # 2) The group 2 is not all whitespace.
-            parameter = string.strip(match.group(2))
+        # A parameter is one-line if the regex matched 
+        # the externalParameterGroup and it is not all 
+        # whitespace.
+        hasOnelineParameter = False
+        if hasExternalParameters:
+            parameter = string.strip(match.group(externalParameterGroup))
             if parameter != '':
                 # One-line parameter
+                hasOnelineParameter = True
                 parameterSet.append(parameter)
         
+        hasParameters = hasInlineParameters or hasExternalParameters 
+        
+        if hasOnelineParameter:
+            # Remove the macro from further expansion.
+            text[i : i + 1] = []
+            
+        if hasInlineParameters or not hasParameters:
+            # There either is no parameter or
+            # there is an inline parameter.
+
+            # Store the text before and after the macro.
+            textBefore = text[i][0 : match.start(0)]
+            textAfter = text[i][match.end(0) : ]
+            #print textBefore
+            #print textAfter
+            
+            # Add the text after if its not all whitespace. 
+            if string.strip(textAfter) != '':
+                text[i + 1 : i + 1] = [textAfter] 
+                #print textAfter
+
+            # Remove the macro from the text.
+            if string.strip(textBefore) != '':
+                text[i] = textBefore
+                #print textBefore
+                i += 1
+            else:
+                text[i : i + 1] = []
+
+              
         # Check whether the parameter is multi-line.
-        # This must be the case if there is a parameter,
-        # but no one-line parameter was given.        
-        endLine = i + 1
-        if hasParameters and parameterSet == []:
+        # This must be the case if there is an external parameter,
+        # but no one-line parameter was given.
+        hasMultilineParameter = (hasExternalParameters and not hasOnelineParameter)         
+                
+        if hasMultilineParameter: 
             # The parameter is multi-line.
             # Next we need to see which lines are 
             # part of the parameter.
             
             # Find out the extent of the parameter.
+            endLine = i + 1
             while endLine < len(text):
                 # The end of a multi-line parameter
                 # is marked by a line which is not all whitespace
@@ -155,17 +228,17 @@ def expandMacros(template, document, documentTree):
             # Copy the parameter and remove the indentation from it.
             parameterSet = [_removeLeadingTabs(line, 1) for line in text[i + 1 : endLine]]
         
-        # Remove the macro from further expansion.
-        text[i : endLine] = []
-        
-        # Remove the possible empty trailing parameter lines.
-        nonEmptyLines = len(parameterSet)
-        while nonEmptyLines > 0:
-            if string.strip(parameterSet[nonEmptyLines - 1]) == '':
-                nonEmptyLines -= 1
-            else:
-                break
-        parameterSet = parameterSet[0 : nonEmptyLines]            
+            # Remove the macro from further expansion.
+            text[i : endLine] = []
+            
+            # Remove the possible empty trailing parameter lines.
+            nonEmptyLines = len(parameterSet)
+            while nonEmptyLines > 0:
+                if string.strip(parameterSet[nonEmptyLines - 1]) == '':
+                    nonEmptyLines -= 1
+                else:
+                    break
+            parameterSet = parameterSet[0 : nonEmptyLines]            
         
         # The macros in the parameter are _not_ recursively
         # expanded. This would lead to problems in those
@@ -173,7 +246,7 @@ def expandMacros(template, document, documentTree):
         
         # Expand the macro.
         macroHandled = False
-        macroName = match.group(1)
+        macroName = match.group(macroIdentifierGroup)
         macroPartSet = string.split(macroName)
         
         scope = _scopeStack.top()
