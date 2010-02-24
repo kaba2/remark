@@ -259,6 +259,16 @@ def expandMacros(template, document, documentTree):
             if macro != None:
                 if not macroName in suppressList:
                     expandedText = macro.expand(parameterSet, document, documentTree, scope)
+                    if macro.outputType() == 'html':
+                        for j in range(0, len(expandedText)):
+                            if string.strip(expandedText[j]) == '':
+                                # The Markdown syntax interprets
+                                # empty lines as ending the html
+                                # block. This tricks avoids that
+                                # behaviour. Note that it is not
+                                # equivalent to simply remove the 
+                                # line.
+                                expandedText[j] = '<p></p>'                    
                     text[i : i] = expandedText
                     if macro.pureOutput():
                         i += len(expandedText) 

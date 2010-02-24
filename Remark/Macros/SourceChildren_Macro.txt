@@ -12,6 +12,10 @@ Generates a list of links to the source code
 children of the currently processed document.
 This list is preceded by a level-1 heading.
 
+### Output type
+
+Remark
+
 ### Parameters
 
 Ignored.

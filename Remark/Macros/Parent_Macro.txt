@@ -18,6 +18,10 @@ Generates a link to the parent document. The labels
 for the link is set to the description of the parent 
 document. 
 
+### Output type
+
+Remark
+
 ### Parameters
 
 As a macro: None. As a tag: used to deduce parent-child

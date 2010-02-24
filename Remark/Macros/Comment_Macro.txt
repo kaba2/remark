@@ -12,6 +12,10 @@ The intent of this macro is to allow commenting of the Remark source.
 
 Returns nothing.
 
+### Output type
+
+Remark
+
 ### Parameters
 
 Ignored.

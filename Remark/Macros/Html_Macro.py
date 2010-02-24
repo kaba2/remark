@@ -1,18 +1,18 @@
 # -*- coding: utf-8 -*-
 
-# Description: SkipExpansion_Macro class
-# Detail: Copies the input to output and skips macro expansion.
+# Description: Html_Macro class
+# Detail: Copies the input to output and treats it as html.
 
 from MacroRegistry import registerMacro
 
-class SkipExpansion_Macro:
+class Html_Macro:
     def expand(self, parameter, document, documentTree, scope):
         return parameter
 
     def outputType(self):
-        return 'remark'
+        return 'html'
 
     def pureOutput(self):
         return True
 
-registerMacro('SkipExpansion', SkipExpansion_Macro())
+registerMacro('Html', Html_Macro())

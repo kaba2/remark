@@ -124,6 +124,9 @@ class SourceChildren_Macro:
             
         return text
 
+    def outputType(self):
+        return 'remark'
+
     def pureOutput(self):
         return True
 

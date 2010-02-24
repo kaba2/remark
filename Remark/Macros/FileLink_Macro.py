@@ -29,6 +29,9 @@ class FileLink_Macro:
                 print linkFileName, 'not found. Ignoring it.'
             
         return text
+    
+    def outputType(self):
+        return 'remark'
 
     def pureOutput(self):
         return True

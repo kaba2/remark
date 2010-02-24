@@ -12,6 +12,10 @@ Generates links to documents in the
 documentation tree. The labels for the links are set
 to the descriptions of the target documents. 
 
+### Output type
+
+Remark
+
 ### Parameters
 
 A list of relative target document filenames for
