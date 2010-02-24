@@ -21,6 +21,16 @@ See the installation instructions below.
 News
 ----
 
+### 24.02.2010: Released Remark 1.2.0
+
+ * Feature: Added the ability to invoke macros via inline parameters.
+ 
+ * Feature: Added FileLink macro to generate links with the link 
+ description set to the filename of the target.
+ 
+ * Change: Allowed inline placement of Remark macros for inline
+ parameters and empty parameters. 
+ 
 ### 23.01.2010: Released Remark 1.1.0
 
  * Feature: Added option parsing to console interface.
