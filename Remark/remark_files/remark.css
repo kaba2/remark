@@ -121,6 +121,16 @@ pre
     color: #255525;
 }
 
+/* Images */
+img 
+{
+    /* We would like to add a 1 pixel border
+    around the image to make it stand out. */
+    border-style: solid;
+    border-width: 1px;
+    border-color: rgb(0, 0, 0);
+}
+
 /* Unordered lists (bullets) */
 #mark ul 
 {

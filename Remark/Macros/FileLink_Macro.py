@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Description: Link_Macro class
+# Description: FileLink_Macro class
 # Detail: Generates a link to a document based on relative filename.
 
 import os.path
@@ -8,7 +8,7 @@ import os.path
 from MacroRegistry import registerMacro
 from Common import linkAddress, remarkLink, outputDocumentName
 
-class Link_Macro:
+class FileLink_Macro:
     def expand(self, parameter, document, documentTree, scope):
         if parameter == []:
             return []
@@ -19,7 +19,7 @@ class Link_Macro:
             linkDocument = documentTree.findDocument(linkFileName, document.relativeDirectory)
             
             if linkDocument != None:
-                linkDescription = linkDocument.tag('description')
+                linkDescription = linkDocument.fileName
                 linkTarget = linkAddress(document.relativeDirectory, linkDocument.relativeName)
                 text += remarkLink(linkDescription, outputDocumentName(linkTarget))
                 if len(parameter) > 1:                
@@ -33,4 +33,4 @@ class Link_Macro:
     def pureOutput(self):
         return True
 
-registerMacro('Link', Link_Macro())
+registerMacro('FileLink', FileLink_Macro())

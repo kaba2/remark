@@ -13,4 +13,5 @@ __all__ = ['Body_Macro',
            'Link_Macro',
            'Parent_Macro',
            'SourceChildren_Macro',
-           'GenericCode_Macro',]
+           'GenericCode_Macro',
+           'FileLink_Macro']

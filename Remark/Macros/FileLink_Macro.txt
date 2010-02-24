@@ -1,0 +1,37 @@
+FileLink macro
+==============
+
+[[Parent]]: macros.txt
+
+Description
+-----------
+
+### Action
+
+Generates links to documents in the
+documentation tree. The labels for the links are set
+to the filenames of the target documents. 
+
+### Parameters
+
+A list of relative target document filenames for
+which the links are to be generated. 
+
+### Variables
+
+None.
+
+Example
+-------
+
+This
+	
+	[[FileLink]]: 
+		macros.txt
+		../../remark_syntax.txt
+	
+produces this:
+
+[[FileLink]]: 
+	macros.txt
+	../../remark_syntax.txt
