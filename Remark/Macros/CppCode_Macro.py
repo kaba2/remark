@@ -60,7 +60,7 @@ class CppCode_Macro:
         
         # This 'div' allows, for example, to create
         # a box around the code.
-        convertedText.append('[[SkipExpansion]]:')
+        convertedText.append('[[Html]]:')
         convertedText.append('\t<div class = "codehilite">')
 
         includeRegex = re.compile(r'(#include[ \t]+(?:(?:&quot)|(?:&lt));)(.*)((?:(?:&quot)|(?:&gt));)')
@@ -70,18 +70,15 @@ class CppCode_Macro:
         hilightedText = highlight(string.join(text, '\n'), CppLexer(), HtmlFormatter())
         hilightedText = string.split(hilightedText, '\n')
         for line in hilightedText:
-            if string.strip(line) == '':
-                # Empty line. Generate something dummy.
-                # This needs to be done because Markdown
-                # thinks the html-markup ends in a blank line.
-                convertedText.append('\t<span class="p"></span>')
-            else:
-                # Replace include file names with links to source files.
-                convertedText.append('\t' + re.sub(includeRegex, replacer, line))
+            # Replace include file names with links to source files.
+            convertedText.append('\t' + re.sub(includeRegex, replacer, line))
                                 
         convertedText.append('\t</div>\n')
         
         return convertedText
+
+    def outputType(self):
+        return 'remark'
 
     def pureOutput(self):
         return False

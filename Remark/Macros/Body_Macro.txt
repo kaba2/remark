@@ -13,6 +13,10 @@ used by normal users.
 
 Reads the currently considered document from a file. Returns its contents.
 
+### Output type
+
+Remark
+
 ### Parameters
 
 Ignored.

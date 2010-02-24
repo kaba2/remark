@@ -47,7 +47,7 @@ class GenericCode_Macro:
         
         # This 'div' allows, for example, to create
         # a box around the code.
-        convertedText.append('[[SkipExpansion]]:')
+        convertedText.append('[[Html]]:')
         convertedText.append('\t<div class = "codehilite">')
 
         # Try to guess the type of the code.
@@ -69,17 +69,14 @@ class GenericCode_Macro:
         
         # Replace every empty line with dummy html.
         for line in hilightedText:
-            if string.strip(line) == '':
-                # Empty line. Generate something dummy.
-                # This needs to be done because Markdown
-                # thinks the html-markup ends in a blank line.
-                convertedText.append('\t<span class="p"></span>')
-            else:
-                convertedText.append('\t' + line)
+            convertedText.append('\t' + line)
                                 
         convertedText.append('\t</div>\n')
         
         return convertedText
+
+    def outputType(self):
+        return 'remark'
 
     def pureOutput(self):
         return False

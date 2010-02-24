@@ -21,17 +21,25 @@ A macro can be invoked in four ways:
  
  * or with a multi-line parameter.
 
+### Invoking with no parameters
+
 The Comment macro is invoked with no parameters as follows:
 
 	[[Comment]]
+
+### Invoking with an inline parameter
 	
 With an inline parameter you would write like this:
 
 	[[Comment: This is an inline parameter.]]
 	
+### Invoking with a one-line parameter
+
 With a one-line parameter you would write like this:
 
 	[[Comment]]: This is a one-line parameter.
+
+### Invoking with a multi-line parameter
 	
 And with a multi-line parameter you would write like this:
 

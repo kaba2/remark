@@ -14,13 +14,17 @@ of text.
 
 Copies the input as it is.
 
+### Output type
+
+Remark
+
 ### Macro expansion of the output
 
 Skipped.
 
 ### Parameters
 
-None.
+The text to copy.
 
 ### Variables
 

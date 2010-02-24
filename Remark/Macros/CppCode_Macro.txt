@@ -11,6 +11,10 @@ Description
 Color-encodes C and C++ source code. Outputs corresponding
 html code. 
 
+### Output type
+
+Html
+
 ### Macro expansion of the output
 
 Skipped. This is because the C++ source code could

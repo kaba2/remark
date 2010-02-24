@@ -14,6 +14,9 @@ class Parent_Macro:
         return remarkLink('Back to ' + parent.tag('description'), 
                           outputDocumentName(linkTarget))
 
+    def outputType(self):
+        return 'remark'
+
     def pureOutput(self):
         return True
 

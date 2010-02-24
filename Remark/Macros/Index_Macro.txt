@@ -13,6 +13,10 @@ and directories in the same directory as the
 currently processed document file. Each directory
 and file is given as a link.
 
+### Output type
+
+Remark
+
 ### Parameters
 
 Ignored.

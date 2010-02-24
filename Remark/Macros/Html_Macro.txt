@@ -1,0 +1,50 @@
+Html macro
+==========
+
+[[Parent]]: macros.txt
+
+Description
+-----------
+
+This macro can be used to embed html directly into the
+generated html page. Note that Markdown syntax also allows 
+embedding html directly, however, the problem with that
+approach is that newlines are interpreted as ending the 
+html block. 
+
+### Action
+
+Copies the input as it is.
+
+### Output type
+
+Html
+
+### Macro expansion of the output
+
+Skipped.
+
+### Parameters
+
+The text to copy.
+
+### Variables
+
+None.
+
+Examples
+--------
+
+This
+
+	[[Html]]:
+		<p>Some text</p>
+		
+		<p>Some more text</p>
+		
+produces this:
+
+[[Html]]:
+	<p>Some text</p>
+	
+	<p>Some more text</p>

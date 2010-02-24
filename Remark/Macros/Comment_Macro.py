@@ -11,6 +11,9 @@ class Comment_Macro:
         # for commenting.
         return []
 
+    def outputType(self):
+        return 'remark'
+
     def pureOutput(self):
         return True
 
