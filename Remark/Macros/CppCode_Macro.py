@@ -8,7 +8,7 @@ import string
 import re
 
 from MacroRegistry import registerMacro
-from Common import readFile, remarkLink, unixDirectoryName
+from Common import readFile, unixDirectoryName, linkAddress
 
 from pygments import highlight
 from pygments.lexers import CppLexer
@@ -21,12 +21,17 @@ def _linkConverter(regexMatch, documentTree, document):
     #print "My name:", document.relativeName
     linkDocument = documentTree.findDocumentByName(searchName)
     if linkDocument != None:
-        linkName = os.path.normpath(os.path.relpath(linkDocument.relativeName, document.relativeDirectory)) + '.htm'
-        return regexMatch.group(1) + '<a href = "' + unixDirectoryName(linkName) + '">' + includeName + '</a>' + string.rstrip(regexMatch.group(3))
+        #linkName = os.path.normpath(os.path.relpath(linkDocument.relativeName, document.relativeDirectory)) + '.htm'
+        #linkName = unixDirectoryName(linkName)
+        linkName = linkAddress(document.relativeDirectory, linkDocument.relativeName) + '.htm'
+        return regexMatch.group(1) + '<a href = "' + linkName + '">' + includeName + '</a>' + string.rstrip(regexMatch.group(3))
     return regexMatch.group(0)
 
 class CppCode_Macro:
-    def expand(self, parameter, document, documentTree, scope):
+    def expand(self, parameter, remarkConverter):
+        document = remarkConverter.document
+        documentTree = remarkConverter.documentTree 
+        
         # If no parameter is given, then the
         # code is read from the document's file.
         # Otherwise, the parameter is assumed to        
@@ -55,7 +60,7 @@ class CppCode_Macro:
             #convertedText += expandMacros(['[[Parent]]\n'], document, documentTree)
         
             # Create directory link.
-            convertedText += remarkLink(unixDirectoryName(document.relativeDirectory) + '/', 'directory.htm')
+            convertedText += remarkConverter.remarkLink(unixDirectoryName(document.relativeDirectory) + '/', 'directory.htm')
             convertedText.append('')
         
         # This 'div' allows, for example, to create
@@ -82,5 +87,8 @@ class CppCode_Macro:
 
     def pureOutput(self):
         return False
+
+    def htmlHead(self, remarkConverter):
+        return []                
 
 registerMacro('CppCode', CppCode_Macro())

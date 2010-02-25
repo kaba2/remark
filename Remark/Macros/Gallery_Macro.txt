@@ -1,0 +1,72 @@
+Gallery macro
+=============
+
+[[Parent]]: macros.txt
+
+Description
+-----------
+
+### Action
+
+Generates an image gallery with thumbnails. 
+The thumbnails are automatically generated from the listed full-size
+images. A thumbnail is sized so that its maximum edge length is greater
+than `thumb_min_length` and less than `thumb_max_length`. 
+
+### Output type
+
+html
+
+### Parameters
+
+A list of the following form:
+
+	image1.png
+	- Caption for the first image.
+	image2.jpg
+	- Caption for the second image.
+	image3.bmp
+	image4.tiff
+	...
+
+Captions needs not be given.
+
+### Variables
+
+thumbnail_max_width 
+: 	A maximum for the width of a thumbnail in pixels.
+	Default 256.
+
+thumbnail_max_height
+: 	A maximum for the height of a thumbnail in pixels.
+	Default 256.
+	
+Example
+-------
+
+This
+
+	[[set_many Gallery]]:
+		thumbnail_max_width 200
+		thumbnail_max_height 180
+	
+	[[Gallery]]:
+		../../images/hsv.png
+		- A visualization of the HSV color space (with full saturation). 
+		../../images/hsv.png
+		../../images/hsv.png
+		../../images/hsv.png
+	
+produces this:
+
+[[set_many Gallery]]:
+	thumbnail_max_width 200
+	thumbnail_max_height 180
+
+[[Gallery]]:
+	../../images/hsv.png
+	- A visualization of the HSV color space (with full saturation). 
+	../../images/hsv.png
+	../../images/hsv.png
+	../../images/hsv.png
+	

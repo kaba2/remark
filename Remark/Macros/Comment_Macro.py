@@ -6,7 +6,7 @@
 from MacroRegistry import registerMacro
 
 class Comment_Macro:
-    def expand(self, parameter, document, documentTree, scope):
+    def expand(self, parameter, remarkConverter):
         # This macro simply eats its parameter. This allows
         # for commenting.
         return []
@@ -16,5 +16,8 @@ class Comment_Macro:
 
     def pureOutput(self):
         return True
+
+    def htmlHead(self, remarkConverter):
+        return []                
 
 registerMacro('Comment', Comment_Macro())

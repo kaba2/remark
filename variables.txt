@@ -12,48 +12,75 @@ Working with variables
 
 ### Defining variables
 
-Variables can be defined like this:
+Variables can be defined and redefined as follows.
 
-	[[set some_filename]]: filename.txt
-	
-Variables can also be redefined:
-	
-	[[set some_filename]]: another.txt
-	
-Variables can be defined using multi-line parameters:
-	
-	[[set some_filename]]:
+	[[set Gallery.thumb_min_length: 50]]
+
+	[[set Gallery.thumb_min_length]]: 50
+
+	[[set some_file_list]]:
 		filename.txt
-		another.txt 
+		another.txt
+		
+	[[set_many]]:
+		Gallery.thumb_min_length 50
+		Gallery.thumb_max_length 70
+		
+	[[set_many Gallery]]:
+		thumb_min_length 55
+		thumb_max_length 75
+		
+[[set Gallery.thumb_min_length: 50]]
+
+[[set Gallery.thumb_min_length]]: 50
+
+[[set some_file_list]]:
+	filename.txt
+	another.txt
+	
+[[set_many]]:
+	Gallery.thumb_min_length 50
+	Gallery.thumb_max_length 70
+	
+[[set_many Gallery]]:
+	thumb_min_length 55
+	thumb_max_length 75
+
+Note that with `set_many` it is not possible to
+assign multi-line parameters.
 
 ### Retrieving a variable
 
 The text contained in a variable can be obtained
 in this way:
 
-	[[get some_filename]]
-	
-This simply expands into the stored text, i.e.:
+	[[get Gallery.thumb_min_length]]
 
-	filename.txt
-	another.txt 
+	[[get some_file_list]]
+	
+This simply expands into the stored text:
+
+[[get Gallery.thumb_min_length]]
+
+[[get some_file_list]]
 
 ### Appending to a variable
 
 Lines can be appended into a variable like this:
 
-	[[add some_filename]]:
+	[[add some_file_list]]:
 		third_file.txt
 		
+[[add some_file_list]]:
+	third_file.txt
+
 After which invoking
 
-	[[get some_filename]]
+	[[get some_file_list]]
 	
 Yields:
 
-	filename.txt
-	another.txt
-	third_file.txt 
+[[get some_file_list]]
 
 [[Comment]]:
 	Scopes

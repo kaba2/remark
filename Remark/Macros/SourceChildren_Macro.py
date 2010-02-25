@@ -7,10 +7,12 @@ import os.path
 import string
 
 from MacroRegistry import registerMacro
-from Common import linkAddress, remarkLink, outputDocumentName
+from Common import linkAddress, outputDocumentName
 
 class SourceChildren_Macro:
-    def expand(self, parameter, document, documentTree, scope):
+    def expand(self, parameter, remarkConverter):
+        document = remarkConverter.document
+                
         def prefixOf(left, right):
             return string.find(os.path.splitext(right)[0], os.path.splitext(left)[0]) == 0
         
@@ -119,7 +121,7 @@ class SourceChildren_Macro:
                 #    text.append('\n####' + detail + '\n')
                 linkDescription = child.fileName
                 linkTarget = linkAddress(targetDirectory, child.relativeName)
-                text += remarkLink(linkDescription, outputDocumentName(linkTarget))
+                text += remarkConverter.remarkLink(linkDescription, outputDocumentName(linkTarget))
                 text.append('')
             
         return text
@@ -129,5 +131,8 @@ class SourceChildren_Macro:
 
     def pureOutput(self):
         return True
+
+    def htmlHead(self, remarkConverter):
+        return []                
 
 registerMacro('SourceChildren', SourceChildren_Macro())

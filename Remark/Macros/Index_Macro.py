@@ -6,12 +6,15 @@
 import string
 import os.path
 
-from Common import linkAddress, remarkLink, getLinkId
+from Common import linkAddress
 from Common import outputDocumentName, unixDirectoryName
 from MacroRegistry import registerMacro
 
 class Index_Macro:
-    def expand(self, parameter, document, documentTree, scope):
+    def expand(self, parameter, remarkConverter):
+        document = remarkConverter.document
+        documentTree = remarkConverter.documentTree
+        
         fullPath = os.path.join(documentTree.rootDirectory, document.relativeDirectory)
         entrySet = ['..'] + os.listdir(fullPath)
         
@@ -31,13 +34,13 @@ class Index_Macro:
                 
         linkSet = []
         for directory in directorySet:
-            linkId = getLinkId()
+            linkId = remarkConverter.linkId()
             text.append('* [' + directory + '/][RemarkLink_' + str(linkId) + ']')
             linkName = unixDirectoryName(os.path.join(directory, 'directory.htm'))
             linkSet.append('[RemarkLink_' + str(linkId) + ']: ' + linkName)
        
         for entry in fileSet:
-            linkId = getLinkId()
+            linkId = remarkConverter.linkId()
             text.append('* [' + entry + '][RemarkLink_' + str(linkId) + ']')
             linkName = outputDocumentName(entry)
             linkSet.append('[RemarkLink_' + str(linkId) + ']: ' + linkName)
@@ -51,6 +54,9 @@ class Index_Macro:
 
     def pureOutput(self):
         return True
+
+    def htmlHead(self, remarkConverter):
+        return []                
         
 registerMacro('Index', Index_Macro())
         

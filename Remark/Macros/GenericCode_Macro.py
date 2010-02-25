@@ -7,14 +7,16 @@ import os.path
 import string
 
 from MacroRegistry import registerMacro
-from Common import readFile, remarkLink, unixDirectoryName
+from Common import readFile, unixDirectoryName
 
 from pygments import highlight
 from pygments.lexers import guess_lexer, guess_lexer_for_filename
 from pygments.formatters import HtmlFormatter
 
 class GenericCode_Macro:
-    def expand(self, parameter, document, documentTree, scope):
+    def expand(self, parameter, remarkConverter):
+        document = remarkConverter.document
+        
         # If no parameter is given, then the
         # code is read from the document's file.
         # Otherwise, the parameter is assumed to        
@@ -42,7 +44,7 @@ class GenericCode_Macro:
             convertedText.append('')
         
             # Create directory link.
-            convertedText += remarkLink(unixDirectoryName(document.relativeDirectory) + '/', 'directory.htm')
+            convertedText += remarkConverter.remarkLink(unixDirectoryName(document.relativeDirectory) + '/', 'directory.htm')
             convertedText.append('')
         
         # This 'div' allows, for example, to create
@@ -80,5 +82,8 @@ class GenericCode_Macro:
 
     def pureOutput(self):
         return False
+
+    def htmlHead(self, remarkConverter):
+        return []                
 
 registerMacro('GenericCode', GenericCode_Macro())

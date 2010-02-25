@@ -39,14 +39,6 @@ The filesToCopy-list contains a list of those files which
 should be copied if they are not converted. This list can 
 use wildcards (e.g. *.png).""")
     
-    #===========================================================================
-    # optionParser.add_option('-o', '--orphan',
-    #    action = 'store_true',
-    #    dest = 'orphan',
-    #    default = False,
-    #    help = """generates a list of those files which don't specify a parent to orphan.htm""")
-    #===========================================================================
-
     optionParser.add_option('-l', '--lines',
         dest = 'lines',
         type = 'int',
@@ -139,7 +131,7 @@ use wildcards (e.g. *.png).""")
     print '\nGenerating documents'
     print '--------------------\n'
     
-    convertAll(documentTree, outputDirectory)
+    convertAll(documentTree, inputDirectory, outputDirectory)
 
     if len(filesToCopySet) > 0:
         # Those files which don't have an associated document type

@@ -6,7 +6,7 @@
 from MacroRegistry import registerMacro
 
 class SkipExpansion_Macro:
-    def expand(self, parameter, document, documentTree, scope):
+    def expand(self, parameter, remarkConverter):
         return parameter
 
     def outputType(self):
@@ -14,5 +14,8 @@ class SkipExpansion_Macro:
 
     def pureOutput(self):
         return True
+
+    def htmlHead(self, remarkConverter):
+        return []                
 
 registerMacro('SkipExpansion', SkipExpansion_Macro())

@@ -20,9 +20,11 @@ Ignored.
 
 ### Variables
 
-'DocChildren:title': The title of the heading. Default 'Learn more'.
+DocChildren.title
+:	The title of the heading. Default 'Learn more'.
 
-'DocChildren:no_links_for': A list of links to not include in the generation. Default empty.
+DocChildren.no_links_for
+: 	A list of links to not include in the generation. Default empty.
 
 Example
 -------

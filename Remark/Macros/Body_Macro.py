@@ -7,9 +7,9 @@ from Common import readFile
 from MacroRegistry import registerMacro
 
 class Body_Macro:
-    def expand(self, parameter, document, documentTree, scope):
-        text = readFile(document.fullName)
-                        
+    def expand(self, parameter, remarkConverter):
+        document = remarkConverter.document
+        text = readFile(document.fullName)                        
         return text
     
     def outputType(self):
@@ -17,5 +17,8 @@ class Body_Macro:
 
     def pureOutput(self):
         return False
+    
+    def htmlHead(self, remarkConverter):
+        return []                
 
 registerMacro('Body', Body_Macro())

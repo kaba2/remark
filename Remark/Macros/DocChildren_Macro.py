@@ -7,11 +7,15 @@ from MacroRegistry import registerMacro
 from Common import linkAddress
 
 class DocChildren_Macro:
-    def expand(self, parameter, document, documentTree, scope):
+    def expand(self, parameter, remarkConverter):
+        document = remarkConverter.document
+        documentTree = remarkConverter.documentTree
+        scope = remarkConverter.scopeStack.top()
+        
         targetDirectory = document.relativeDirectory
 
         # Construct the ignore set.
-        ignoreList = scope.search('DocChildren:no_links_for')
+        ignoreList = scope.search('DocChildren.no_links_for')
         if ignoreList == None:
             ignoreList = []
         # The files to ignore are given by relative names
@@ -34,10 +38,10 @@ class DocChildren_Macro:
 
         title = 'Learn more'
         
-        scopeTitle = scope.search('DocChildren:title')
+        scopeTitle = scope.search('DocChildren.title')
         if scopeTitle != None:
             if len(scopeTitle) != 1:
-                print 'Warning: DocChildren: \'DocChildren:title\' should be a one-line parameter. Ignoring it and using the default.'
+                print 'Warning: DocChildren: \'DocChildren.title\' should be a one-line parameter. Ignoring it and using the default.'
             else:
                 title = scopeTitle[0]
             
@@ -58,5 +62,8 @@ class DocChildren_Macro:
 
     def pureOutput(self):
         return False
+
+    def htmlHead(self, remarkConverter):
+        return []                
 
 registerMacro('DocChildren', DocChildren_Macro())
