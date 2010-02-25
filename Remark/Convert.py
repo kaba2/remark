@@ -493,7 +493,7 @@ def addHtmlBoilerPlate(text, document, htmlHead):
     htmlText += text
     htmlText.append('</div>')
     htmlText.append('<div id="footer">')
-    htmlText.append('<p>Remark documentation system - Page generated ' + timeText + '.</p>')
+    htmlText.append('<p><a href="http://kaba.hilvi.org/remark">Remark</a> documentation system - Page generated ' + timeText + '.</p>')
     htmlText.append('</div>')
     htmlText.append('</div>')
     htmlText.append('</body>')
