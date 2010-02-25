@@ -18,4 +18,7 @@ class Html_Macro:
     def htmlHead(self, remarkConverter):
         return []                
 
+    def postConversion(self, inputDirectory, outputDirectory):
+        None
+
 registerMacro('Html', Html_Macro())

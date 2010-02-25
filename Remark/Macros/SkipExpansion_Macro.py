@@ -18,4 +18,7 @@ class SkipExpansion_Macro:
     def htmlHead(self, remarkConverter):
         return []                
 
+    def postConversion(self, inputDirectory, outputDirectory):
+        None
+
 registerMacro('SkipExpansion', SkipExpansion_Macro())

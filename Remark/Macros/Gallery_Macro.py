@@ -114,4 +114,10 @@ class Gallery_Macro:
                 'hs.showCredits = false;',
                 '</script>',]
         
+    def postConversion(self, inputDirectory, outputDirectory):
+        highslideSource = './remark_files/highslide'
+        highslideTarget = os.path.join(outputDirectory, 'remark_files/highslide')
+        if not os.path.exists(highslideTarget):
+            shutil.copytree(highslideSource, highslideTarget)                
+        
 registerMacro('Gallery', Gallery_Macro())

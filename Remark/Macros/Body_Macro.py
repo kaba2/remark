@@ -21,4 +21,7 @@ class Body_Macro:
     def htmlHead(self, remarkConverter):
         return []                
 
+    def postConversion(self, inputDirectory, outputDirectory):
+        None
+
 registerMacro('Body', Body_Macro())

@@ -91,4 +91,7 @@ class CppCode_Macro:
     def htmlHead(self, remarkConverter):
         return []                
 
+    def postConversion(self, inputDirectory, outputDirectory):
+        None
+
 registerMacro('CppCode', CppCode_Macro())

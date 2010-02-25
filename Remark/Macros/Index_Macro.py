@@ -57,6 +57,9 @@ class Index_Macro:
 
     def htmlHead(self, remarkConverter):
         return []                
+
+    def postConversion(self, inputDirectory, outputDirectory):
+        None
         
 registerMacro('Index', Index_Macro())
         

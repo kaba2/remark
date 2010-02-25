@@ -42,4 +42,7 @@ class FileLink_Macro:
     def htmlHead(self, remarkConverter):
         return []                
 
+    def postConversion(self, inputDirectory, outputDirectory):
+        None
+
 registerMacro('FileLink', FileLink_Macro())

@@ -25,5 +25,8 @@ class Parent_Macro:
     def htmlHead(self, remarkConverter):
         return []                
 
+    def postConversion(self, inputDirectory, outputDirectory):
+        None
+
 registerMacro('Parent', Parent_Macro())
 
