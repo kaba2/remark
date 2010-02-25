@@ -28,7 +28,7 @@ A list of the following form:
 	image4.tiff
 	...
 
-Captions needs not be given.
+Specification of captions is not required.
 
 ### Variables
 
