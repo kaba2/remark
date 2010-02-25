@@ -144,24 +144,26 @@ use wildcards (e.g. *.png).""")
         
         # Only copy those files which correspond to the filename
         # patterns given in the command line.
-        
+
+        matchCountSet = [0] * len(copySet)        
         for filenamePattern in filesToCopySet:
-            newCopySet = []
-            for relativeName in copySet:
+            for i in range(0, len(copySet)):
+                relativeName = copySet[i]
                 filename = os.path.split(relativeName)[1]
                 if fnmatch.fnmatch(filename, filenamePattern):
-                    newCopySet.append(relativeName)
-            copySet = newCopySet
+                    matchCountSet[i] += 1
         
-        for relativeName in copySet:
-            targetName = os.path.join(outputDirectory, relativeName);
-            targetDirectory = os.path.split(targetName)[0]
-            if not os.path.exists(targetDirectory):
-                os.makedirs(targetDirectory)
-            if not os.path.exists(targetName):
-                print relativeName
-                sourceName = os.path.join(inputDirectory, relativeName)
-                shutil.copy(sourceName, targetDirectory)
+        for i in range(0, len(copySet)):
+            if matchCountSet[i] > 0: 
+                relativeName = copySet[i]
+                targetName = os.path.join(outputDirectory, relativeName);
+                targetDirectory = os.path.split(targetName)[0]
+                if not os.path.exists(targetDirectory):
+                    os.makedirs(targetDirectory)
+                if not os.path.exists(targetName):
+                    print relativeName
+                    sourceName = os.path.join(inputDirectory, relativeName)
+                    shutil.copy(sourceName, targetDirectory)
                    
         print 'Done.'
 
