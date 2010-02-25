@@ -103,7 +103,7 @@ class Gallery_Macro:
 
     def htmlHead(self, remarkConverter):
         document = remarkConverter.document;
-        scriptFile = linkAddress(document.relativeDirectory, 'remark_files/highslide/highslide.js')
+        scriptFile = linkAddress(document.relativeDirectory, 'remark_files/highslide/highslide-full.js')
         styleFile = linkAddress(document.relativeDirectory, 'remark_files/highslide/highslide.css')
         graphicsDir = linkAddress(document.relativeDirectory, 'remark_files/highslide/graphics')
         
@@ -114,31 +114,4 @@ class Gallery_Macro:
                 'hs.showCredits = false;',
                 '</script>',]
         
-                #===============================================================
-                # "hs.align = 'center';",
-                # "hs.transitions = ['expand', 'crossfade'];",
-                # "hs.outlineType = 'rounded-white';",
-                # 'hs.fadeInOut = true;',
-                # 'hs.dimmingOpacity = 0.75;',
-                # '',                
-                # '// define the restraining box',
-                # 'hs.useBox = true;',
-                # 'hs.width = 640;',
-                # 'hs.height = 480;',
-                # '',                
-                # '// Add the controlbar',
-                # 'hs.addSlideshow({',
-                # "    //slideshowGroup: 'group1',",
-                # '    interval: 5000,',
-                # '    repeat: false,',
-                # '    useControls: true,',
-                # "    fixedControls: 'fit',",
-                # '    overlayOptions: {',
-                # '        opacity: 1,',
-                # "        position: 'bottom center',",
-                # '        hideOnMouseOut: true',
-                # '    }',
-                # '});',
-                #===============================================================
-
 registerMacro('Gallery', Gallery_Macro())

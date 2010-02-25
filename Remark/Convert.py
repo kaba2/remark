@@ -84,6 +84,7 @@ class RemarkConverter:
     def __init__(self, document, template, documentTree, 
                  inputRootDirectory, targetRootDirectory):
         self.scopeStack = ScopeStack()
+        self.scopeStack.open()
         self.document = document
         self.documentTree = documentTree
         self.linkIndex = 0
@@ -388,7 +389,6 @@ class RemarkConverter:
         # expands so it is important to iterate
         # by index.
         
-        self.scopeStack.open()
         self.currentLine = 0
         while self.currentLine < len(self.text):
             line = self.text[self.currentLine]
@@ -424,8 +424,6 @@ class RemarkConverter:
             # Expand the macro to the current position.
             self.expandMacro(macroIdentifier, parameterSet)
         
-        self.scopeStack.close()
-
         # Add link definitions
         for link in self.linkSet:
             self.text += ['[' + link[0] + ']: ' + link[1]]
@@ -510,6 +508,10 @@ def convert(template, document, documentTree,
     text = remarkConverter.convert()
     
     headText = remarkConverter.htmlHeader()
+    
+    userHeadText = remarkConverter.scopeStack.top().search('html_head')
+    if userHeadText != None:
+        headText += userHeadText
               
     # Convert Markdown to html.
     text = convertMarkdownToHtml(text)

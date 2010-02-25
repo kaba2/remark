@@ -69,4 +69,3 @@ produces this:
 	../../images/hsv.png
 	../../images/hsv.png
 	../../images/hsv.png
-	
