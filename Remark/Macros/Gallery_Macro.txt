@@ -10,8 +10,7 @@ Description
 
 Generates an image gallery with thumbnails. 
 The thumbnails are automatically generated from the listed full-size
-images. A thumbnail is sized so that its maximum edge length is greater
-than `thumb_min_length` and less than `thumb_max_length`. 
+images. 
 
 ### Output type
 
@@ -54,6 +53,7 @@ This
 		../../images/hsv.png
 		- A visualization of the HSV color space (with full saturation). 
 		../../images/hsv.png
+		- Another caption.
 		../../images/hsv.png
 		../../images/hsv.png
 	
@@ -67,5 +67,6 @@ produces this:
 	../../images/hsv.png
 	- A visualization of the HSV color space (with full saturation). 
 	../../images/hsv.png
+	- Another caption.
 	../../images/hsv.png
 	../../images/hsv.png

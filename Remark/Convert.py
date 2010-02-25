@@ -427,6 +427,10 @@ class RemarkConverter:
         # Add link definitions
         for link in self.linkSet:
             self.text += ['[' + link[0] + ']: ' + link[1]]
+            
+        for macro in self.usedMacroSet:
+            macro.postConversion(self.inputRootDirectory, 
+                                 self.targetRootDirectory)
         
         return self.text
     

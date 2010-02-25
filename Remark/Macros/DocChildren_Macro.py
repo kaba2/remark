@@ -66,4 +66,7 @@ class DocChildren_Macro:
     def htmlHead(self, remarkConverter):
         return []                
 
+    def postConversion(self, inputDirectory, outputDirectory):
+        None
+
 registerMacro('DocChildren', DocChildren_Macro())
