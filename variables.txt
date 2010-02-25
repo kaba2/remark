@@ -112,3 +112,14 @@ Yields:
 			is in a parent scope:
 			
 			[[get global_variable]]	
+
+Special variables
+-----------------
+
+The following variable is treated specially:
+
+html_head
+:	This text is appended to the head section of the html-page,
+	after the text that is possibly appended by macros.
+
+	

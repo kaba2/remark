@@ -3,10 +3,10 @@ Macros
 
 [[Parent]]: remark_syntax.txt
 
-Macros are functions that map input text in Remark syntax to 
-output text in Remark syntax. To introduce macros, we shall take 
-the Comment macro as an example. This macro takes in arbitrary input 
-but does not output anything. It can be used to comment the Remark source. 
+Macros are functions that map input text to output text in Remark syntax. 
+To introduce macros, we shall take the Comment macro as an example. 
+This macro takes in arbitrary input but does not output anything. 
+It can be used to comment the Remark source. 
 
 Macro invocation
 ----------------
