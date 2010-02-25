@@ -10,7 +10,7 @@ import codecs
 def linkAddress(fromDirectory, toFile):
     relativeName = os.path.relpath(toFile, fromDirectory)
     newRelativeName = relativeName
-    return os.path.normpath(newRelativeName)
+    return unixDirectoryName(os.path.normpath(newRelativeName))
 
 def readFile(fileName):
     text = []
@@ -63,32 +63,6 @@ def outputDocumentName(name):
 
 def unixDirectoryName(name):
     return string.replace(os.path.normpath(name), '\\', '/')                
-
-_linkId = 0
-def getLinkId():
-    global _linkId
-    _linkId += 1
-    return _linkId
-
-def resetLinkId():
-    global _linkId
-    _linkId = 0
-
-_linkList = []
-def remarkLink(description, target):
-    name = 'RemarkLink_' + str(getLinkId())
-    text = ['[' + description + '][' + name + ']']
-    _linkList.append((name, unixDirectoryName(target)))
-    
-    return text
-
-def linkList():
-    global _linkList
-    return _linkList
-
-def clearLinkList():
-    global _linkList
-    _linkList = []
 
 def changeExtension(fileName, newExtension):
     return os.path.splitext(fileName)[0] + newExtension

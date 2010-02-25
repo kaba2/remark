@@ -6,10 +6,13 @@
 import os.path
 
 from MacroRegistry import registerMacro
-from Common import linkAddress, remarkLink, outputDocumentName
+from Common import linkAddress, outputDocumentName
 
 class FileLink_Macro:
-    def expand(self, parameter, document, documentTree, scope):
+    def expand(self, parameter, remarkConverter):
+        document = remarkConverter.document
+        documentTree = remarkConverter.documentTree
+        
         if parameter == []:
             return []
         
@@ -21,7 +24,7 @@ class FileLink_Macro:
             if linkDocument != None:
                 linkDescription = linkDocument.fileName
                 linkTarget = linkAddress(document.relativeDirectory, linkDocument.relativeName)
-                text += remarkLink(linkDescription, outputDocumentName(linkTarget))
+                text += remarkConverter.remarkLink(linkDescription, outputDocumentName(linkTarget))
                 if len(parameter) > 1:                
                     text += ['']
             else:
@@ -35,5 +38,8 @@ class FileLink_Macro:
 
     def pureOutput(self):
         return True
+
+    def htmlHead(self, remarkConverter):
+        return []                
 
 registerMacro('FileLink', FileLink_Macro())

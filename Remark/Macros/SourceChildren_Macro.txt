@@ -18,13 +18,11 @@ Remark
 
 ### Parameters
 
-Ignored.
+Title. Default 'Files'.
 
 ### Variables
 
-'SourceChildren:title': The title of the heading. Default 'Files'.
-
-'SourceChildren:no_links_for': A list of links to not include in the generation. Default empty.
+None
 
 Example
 -------
