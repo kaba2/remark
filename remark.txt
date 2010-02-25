@@ -37,6 +37,9 @@ News
  * Allowed inline placement of Remark macros for inline
  parameters and empty parameters. 
  
+ * Fixed a bug in `filesToCopy` pattern matching:
+ a file was copied only if it matched all patterns. 
+ 
 [[Link]]: more_news.txt
 
 [[set DocChildren.no_links_for]]: 
