@@ -67,15 +67,39 @@ For example:
 		
 	This is not part of the Comment parameter.
 
+Macro expansion
+---------------
+
+Whether the output of a macro invocation is recursively
+expanded is decided by the given macro. By default, the
+parameter of a macro invocation is not expanded. One can
+change this behavior by prefixing the macro name with a +.
+For example, this:
+
+	[[set a: Nom]]
+	[[set b]]: [[get a]]
+	[[get b]]
+	[[+set b]]: [[get a]]
+	[[get b]]
+	
+produces this:
+ 
+[[set a: Nom]]
+[[set b]]: [[get a]]
+[[get b]]
+[[+set b]]: [[get a]]
+[[get b]]
+
+The macros can be placed freely as shown in the following
+example:
+
+	Nom[[get b]] [[get b]]Nom[[get b]] Nom[[get b]]
+
+Nom[[get b]] [[get b]]Nom[[get b]] Nom[[get b]]
+
 Some details
 ------------
 
- * Macros which are invoked with a one-line or multi-line parameter
- must be written at the start of the row. 
- 
- * Macros with no parameters or with inline parameters be written
- in the middle of normal text. 
- 
  * A multi-line parameter with a single row works equivalently
 to a one-line parameter. 
 
@@ -84,8 +108,9 @@ to a one-line parameter.
  
  * A one-line parameter works equivalently to an inline parameter.
  
- * Specification of both a one-line parameter and an inline
- parameter is disallowed and will emit a warning. 
+ * If both an inline parameter and an external parameter is given, 
+ then the latter follows the former and they work equivalently
+ to a corresponding multi-line parameter. 
 
  * The functionality of macros is implemented as Python classes.
 During its action, a macro has access to the whole
@@ -94,8 +119,5 @@ have access to the documentation tree. This way macros
 are able to produce the correct descriptions and link
 targets which have been deduced from the Remark source files.
 
- * No macro expansions are done for the parameter of a macro.
- 
  * No macro expansions are done for verbatim content.
 
- 

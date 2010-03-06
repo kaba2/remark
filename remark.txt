@@ -23,20 +23,13 @@ News
 
 ### 24.02.2010: Released Remark 1.2.0
 
+ * Allowed free positioning of Remark macros. 
  * Added the ability to invoke macros via inline parameters.
- 
+ * Added `set_many` command to set variables easily.
  * Added FileLink macro to generate links with the link 
  description set to the filename of the target.
- 
  * Added Html macro to embed html directly.
- 
  * Added Gallery macro to generate image galleries.
- 
- * Added `set_many` command to set variables easily.
- 
- * Allowed inline placement of Remark macros for inline
- parameters and empty parameters. 
- 
  * Fixed a bug in `filesToCopy` pattern matching:
  a file was copied only if it matched all patterns. 
  
