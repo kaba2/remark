@@ -80,6 +80,18 @@ class ScopeStack:
     def top(self):
         return self.stack_[-1]        
 
+class MacroInvocation:
+    def __init__(self, name,
+                 parameterSet,
+                 beginRow, beginColumn,
+                 endRow, endColumn):
+        self.name = name
+        self.parameterSet = parameterSet
+        self.beginRow = beginRow
+        self.beginColumn = beginColumn
+        self.endRow = endRow
+        self.endColumn = endColumn
+        
 class RemarkConverter:
     def __init__(self, document, template, documentTree, 
                  inputRootDirectory, targetRootDirectory):
@@ -90,13 +102,33 @@ class RemarkConverter:
         self.linkIndex = 0
         self.linkSet = []
         self.usedMacroSet = []
-        self.currentLine = 0
-        self.text = []
         self.template = template
         self.inputRootDirectory = inputRootDirectory
         self.targetRootDirectory = targetRootDirectory
-        self.used = False
+
+        # Here we form regular expressions to identify
+        # Remark macro invocations in the text.
+        self.macroIdentifier = r'([a-zA-Z_. ][a-zA-Z0-9_. ]*)'
+        self.whitespace = r'[ \t]*'
+        self.optionalInlineParameter = r'(?::' + self.whitespace + r'((?:(?!]]).)*))?'
+        self.optionalOneLineParameter = r'(?::' + self.whitespace + r'(.*))?'
+        self.optionalParameterExpansion = r'(\+)?'
+        self.macroRegex = re.compile(r'\[\[' + 
+                                     self.optionalParameterExpansion + 
+                                     self.macroIdentifier + 
+                                     self.optionalInlineParameter + r'\]\]' 
+                                     + self.optionalOneLineParameter)
         
+        #macroText = r'((?:(?!]]).)*)'
+        #macroRegex = re.compile(r'\[\[' + macroText + r'\]\]' + optionalOneLineParameter)
+        self.wholeGroupId = 0
+        self.optionalParameterExpansion = 1
+        self.identifierGroupId = 2
+        self.inlineGroupId = 3
+        self.externalGroupId = 4
+        
+        self.used = False
+
     def linkId(self):
         result = self.linkIndex
         self.linkIndex += 1
@@ -125,12 +157,9 @@ class RemarkConverter:
         print 'Warning:', self.document.relativeName, ':'
         print text 
     
-    def extractMacro(self, matchBegin, matchEnd, 
-                     wholeGroup, identifierGroup, 
-                     inlineGroup, externalGroup):
-        # This function finds out the parameter
-        # of the macro and then removes the macro
-        # invocation from 'text'.
+    def extractMacro(self, row, match, text): 
+        # This function extracts the information from
+        # a macro invocation.
 
         # There are four possibilities for the
         # macro invocation:
@@ -154,33 +183,21 @@ class RemarkConverter:
         #
         # Options 3 and 4 are together called external parameters.
         
-        # Macros that give an external parameter
-        # are required to start at the beginning of the line.
-        hasExternalParameters = (externalGroup != None)        
-        if hasExternalParameters and matchBegin != 0:
-            self.reportWarning(wholeGroup + ': ' + 
-                          'Macro invocation with an external parameter must start at the ' +
-                          'beginning of the line. Ignoring the macro.')
-            self.currentLine += 1
-            return None
+        matchBegin = match.start(self.wholeGroupId)
+        matchEnd = match.end(self.wholeGroupId)
+        macroName = match.group(self.identifierGroupId) 
+        inlineParameter = match.group(self.inlineGroupId)
+        onelineParameter = match.group(self.externalGroupId)
         
-        #print 'Found macro:', match.group(1)
+        hasExternalParameters = (onelineParameter != None)
+                
         parameterSet = []
         
-        hasInlineParameters = (inlineGroup != None)
+        hasInlineParameters = (inlineParameter != None)
 
-        # Macros that give both an external parameter and
-        # an inline parameter are disallowed.
-        if hasInlineParameters and hasExternalParameters:
-            self.reportWarning(wholeGroup + ': ' + 
-                               'Inline parameters and external parameters can not be used together. ' +
-                               'Ignoring the macro.')
-            self.currentLine += 1
-            return None
-        
         # Extract an inline parameter.
         if hasInlineParameters:
-            parameter = string.strip(inlineGroup)
+            parameter = string.strip(inlineParameter)
             parameterSet.append(parameter)
 
         # Extract a one-line parameter.
@@ -189,85 +206,51 @@ class RemarkConverter:
             # If the parameter consists of all
             # whitespace, it is a multi-line parameter
             # so ignore that case here.
-            parameter = string.strip(externalGroup)
+            parameter = string.strip(onelineParameter)
             if parameter != '':
                 # One-line parameter
                 hasOnelineParameter = True
                 parameterSet.append(parameter)
         
-        # A macro invocation has parameters if
-        # it has either an inline parameter or
-        # an external parameter.
-        hasParameters = hasInlineParameters or hasExternalParameters 
-        
-        if hasOnelineParameter:
-            # Remove the macro from further expansion.
-            # Note that the macro is required to start
-            # the line and thus no other text is destroyed here.
-            self.text[self.currentLine : self.currentLine + 1] = []
-            
-        if hasInlineParameters or not hasParameters:
-            # Macro invocations with no parameters or with an
-            # inline parameter do not necessarily have to be
-            # placed at the start of the line.  
-
-            # Store the text before and after the macro.
-            textBefore = self.text[self.currentLine][0 : matchBegin]
-            textAfter = self.text[self.currentLine][matchEnd : ]
-            #print textBefore
-            #print textAfter
-            
-            # Add the text after if its not all whitespace. 
-            if string.strip(textAfter) != '':
-                self.text[self.currentLine + 1 : self.currentLine + 1] = [textAfter] 
-                #print textAfter
-
-            # Remove the macro from the text.
-            if string.strip(textBefore) != '':
-                self.text[self.currentLine] = textBefore
-                #print textBefore
-                self.currentLine += 1
-            else:
-                self.text[self.currentLine : self.currentLine + 1] = []
-
         # A parameter is multi-line if its external but
         # not one-line.
-        hasMultilineParameter = (hasExternalParameters and not hasOnelineParameter)         
-                
-        if hasMultilineParameter: 
-            # The parameter is multi-line.
-            # Find out the extent of the parameter.
-            endLine = self.currentLine + 1
-            while endLine < len(self.text):
-                # The end of a multi-line parameter
-                # is marked by a line which is not all whitespace
-                # and has no indentation (relative to the
-                # indentation of the macro). 
-                if _leadingTabs(self.text[endLine]) == 0 and string.strip(self.text[endLine]) != '':
-                    break
-                endLine += 1
-                
-            # Copy the parameter and remove the indentation from it.
-            parameterSet = [_removeLeadingTabs(line, 1) for line in self.text[self.currentLine + 1 : endLine]]
-        
-            # Remove the macro from further expansion.
-            self.text[self.currentLine : endLine] = []
-            
-            # Remove the possible empty trailing parameter lines.
-            nonEmptyLines = len(parameterSet)
-            while nonEmptyLines > 0:
-                if string.strip(parameterSet[nonEmptyLines - 1]) == '':
-                    nonEmptyLines -= 1
-                else:
-                    break
-            parameterSet = parameterSet[0 : nonEmptyLines]
-        
-        return parameterSet            
+        hasMultilineParameter = (hasExternalParameters and not hasOnelineParameter)
 
-    def addText(self, newText, skipExpansion = False):
-        self.text[self.currentLine : self.currentLine] = newText
-        if skipExpansion:
-            self.currentLine += len(newText)
+        # If the parameter is not multi-line, we are done.
+        if not hasMultilineParameter:
+            return MacroInvocation(macroName,
+                                   parameterSet,
+                                   row, matchBegin,
+                                   row, matchEnd)
+        
+        # The parameter is multi-line.
+        # Find out the extent of the parameter.
+        endRow = row + 1
+        while endRow < len(text):
+            # The end of a multi-line parameter
+            # is marked by a line which is not all whitespace
+            # and has no indentation. 
+            if _leadingTabs(text[endRow]) == 0 and string.strip(text[endRow]) != '':
+                break
+            endRow += 1
+            
+        # Copy the parameter and remove the indentation from it.
+        parameterSet = [_removeLeadingTabs(line, 1) for line in text[row + 1 : endRow]]
+    
+        # Remove the possible empty trailing parameter lines.
+        nonEmptyLines = len(parameterSet)
+        while nonEmptyLines > 0:
+            if string.strip(parameterSet[nonEmptyLines - 1]) == '':
+                nonEmptyLines -= 1
+            else:
+                break
+            
+        parameterSet[nonEmptyLines :] = []
+            
+        return MacroInvocation(macroName,
+                               parameterSet,
+                               row, matchBegin,
+                               row + nonEmptyLines, len(text[row + nonEmptyLines]))        
 
     def addDummyHtmlNewLines(self, htmlText):
         for j in range(0, len(htmlText)):
@@ -280,26 +263,30 @@ class RemarkConverter:
                 # line.
                 htmlText[j] = '<span class="p"></span>'
 
-    def expandMacro(self, macroIdentifier, parameterSet):
+    def expandMacro(self, macroInvocation):
         # This function expands the given macro in
         # the current position.
         scope = self.scopeStack.top()
         
         macroHandled = False
-        macroPartSet = string.split(macroIdentifier)
-        macroName = macroPartSet[0]        
+        macroNameSet = string.split(macroInvocation.name)
+        macroName = macroNameSet[0]
+        parameterSet = macroInvocation.parameterSet
+        
+        macroText = ['']        
       
         if macroName == 'set':
             # Setting a scope variable.
-            if len(macroPartSet) < 2:
+            if len(macroNameSet) < 2:
                 self.reportWarning('set command is missing the variable name. Ignoring it.')
             else:
-                scope.insert(macroPartSet[1], parameterSet)
+                #print 'set', macroNameSet, 'to', parameterSet 
+                scope.insert(macroNameSet[1], parameterSet)
             macroHandled = True
         elif macroName == 'set_many':
             prefix = ''
-            if len(macroPartSet) >= 2:
-                prefix = macroPartSet[1] + '.'
+            if len(macroNameSet) >= 2:
+                prefix = macroNameSet[1] + '.'
             # Setting to many scope variables.
             for line in parameterSet:
                 if line.strip() != '':
@@ -312,127 +299,161 @@ class RemarkConverter:
             macroHandled = True
         elif macroName == 'add':
             # Appending to a scope variable.
-            if len(macroPartSet) < 2:
+            if len(macroNameSet) < 2:
                 self.reportWarning('add command is missing the variable name. Ignoring it.')
             else:
-                scope.append(macroPartSet[1], parameterSet)
+                scope.append(macroNameSet[1], parameterSet)
             macroHandled = True
         elif macroName == 'get':
             # Getting a scope variable.
-            if len(macroPartSet) < 2:
+            if len(macroNameSet) < 2:
                 self.reportWarning('get command is missing the variable name. Ignoring it.')
             else:
-                result = scope.recursiveSearch(macroPartSet[1])
+                result = scope.recursiveSearch(macroNameSet[1])
                 if result != None:
-                    self.addText(result)
+                    macroText = result
+                    #print 'get', macroText
                 else:
                     None
                     #print 'Warning:', document.relativeName, 
-                    #print ': get: Variable \'' + macroPartSet[1] + '\' not found. Ignoring it.'
+                    #print ': get: Variable \'' + macroNameSet[1] + '\' not found. Ignoring it.'
             macroHandled = True
         else:
+            # Search for the macro.
             macro = findMacro(macroName)
+
+            # Get the macro suppress list.
             suppressList = scope.recursiveSearch('suppress_calls_to')
             if suppressList == None:
                 suppressList = []
+            
             if macro != None:
+                # The macro is not run if it is
+                # in suppress list.
                 if not macroName in suppressList:
+                    # Run the actual macro.
                     expandedText = macro.expand(parameterSet, self)
+                    if expandedText == []:
+                        expandedText = ['']
+                    
+                    # Mark the macro as used.
                     self.usedMacroSet.append(macro)
+                    
+                    # If the output is meant to be html,
+                    # we need to add some dummy html newlines
+                    # for Markdown.
                     if macro.outputType() == 'html':
                         self.addDummyHtmlNewLines(expandedText)
-                    self.addText(expandedText, macro.pureOutput())                    
+                        
+                    if macro.pureOutput():
+                        # The recursive expansion of the
+                        # output is skipped because of the
+                        # request by the macro.
+                        macroText = expandedText
+                    else:
+                        # Recursively expand the output
+                        # of the macro.
+                        macroText = self.convertRecurse(expandedText) 
                 macroHandled = True
-                #print 'Applying', macroName, 'yields:'
-                #for line in text:
-                #    print line
 
         if not macroHandled:
-            self.reportWarning('Don\'t know how to handle macro ' + macroIdentifier + '. Ignoring it.')
+            self.reportWarning('Don\'t know how to handle macro ' + macroInvocation.name + '. Ignoring it.')
+        
+        return macroText            
 
-    def convert(self):
+    def convert(self, text):
         if self.used:
-            print 'Error: RemarkConverter object was already used.'
+            self.reportWarning('The conversion object was already used.')
             return []
-            
-        # Mark this converter as used.    
-        self.used = True
-
-        # In case the template is empty, we have nothing
-        # to do.
-        if self.template == []:
-            return []
-
-        # The 'text' variable will be our working
-        # area for the conversion. The conversion is
-        # started from the given template text.
-        self.text = self.template[:]
         
-        # Here we form regular expressions to identify
-        # Remark macro invocations in the text.
-        macroIdentifier = r'([a-zA-Z_. ][a-zA-Z0-9_. ]*)'
-        whitespace = r'[ \t]*'
-        optionalInlineParameter = r'(?::' + whitespace + r'((?:(?!]]).)*))?'
-        optionalOneLineParameter = r'(?::' + whitespace + r'(.*))?'
-        macroRegex = re.compile(r'\[\[' + macroIdentifier + optionalInlineParameter + r'\]\]' + optionalOneLineParameter)
-        #macroText = r'((?:(?!]]).)*)'
-        #macroRegex = re.compile(r'\[\[' + macroText + r'\]\]' + optionalOneLineParameter)
-        
-        wholeGroupId = 0
-        identifierGroupId = 1
-        inlineGroupId = 2
-        externalGroupId = 3
-        
-        # Our strategy is to trace the 'text' line
-        # by line while expanding the macros to new
-        # text. In this process 'text' shrinks and
-        # expands so it is important to iterate
-        # by index.
-        
-        self.currentLine = 0
-        while self.currentLine < len(self.text):
-            line = self.text[self.currentLine]
-            
-            # Indented stuff is copied verbatim.
-            if len(line) > 0 and line[0] == '\t':
-                self.currentLine += 1
-                continue
-            
-            # See if there is a macro somewhere on the line.
-            match = re.search(macroRegex, line)
-            if match == None:
-                # There is no macro on the line: 
-                # copy the line verbatim.
-                self.currentLine += 1
-                continue
-    
-            # There is at least one macro on the line.
-            macroIdentifier = match.group(identifierGroupId)
-            
-            # Find out its parameter and remove the macro
-            # from 'text'.
-            parameterSet = self.extractMacro(match.start(0), match.end(0),
-                                             match.group(wholeGroupId),
-                                             macroIdentifier,
-                                             match.group(inlineGroupId),
-                                             match.group(externalGroupId))
-    
-            # The macros in the parameter are _not_ recursively
-            # expanded. This would lead to problems in those
-            # cases where macro expansion is not meant to happen.
-
-            # Expand the macro to the current position.
-            self.expandMacro(macroIdentifier, parameterSet)
+        newText = self.convertRecurse(text)
         
         # Add link definitions
         for link in self.linkSet:
-            self.text += ['[' + link[0] + ']: ' + link[1]]
+            newText.append('[' + link[0] + ']: ' + link[1])
             
         for macro in self.usedMacroSet:
             macro.postConversion(self.inputRootDirectory, 
                                  self.targetRootDirectory)
+
+        self.used = True
+        return newText
+
+    def convertRecurse(self, text):
+        # Our strategy is to trace the 'text' line
+        # by line while expanding the macros to 'newText'.
         
-        return self.text
+        newText = ['']
+        row = 0
+        column = 0
+        while row < len(text):
+            # Replace the first characters with spaces
+            # so that the previous macros won't interfere
+            # with the rest of the processing.
+            line = ' ' * column + text[row][column :]
+            
+            # Indented stuff is copied verbatim.
+            if len(line) > 0 and line[0] == '\t':
+                newText[-1] += line
+                newText.append('')
+                row += 1
+                column = 0              
+                continue
+            
+            # See if there is a macro somewhere on the line.
+            match = re.search(self.macroRegex, line)
+            if match == None:
+                # There is no macro on the line: 
+                # copy the line verbatim.
+                newText[-1] += line[column :]
+                newText.append('')
+                row += 1
+                column = 0              
+                continue
+    
+            #print 'I read:'
+            #print line
+            #print match.group(0)
+
+            # Yes, there is a macro on the line.
+            # First copy the possible verbatim content.
+            matchBegin = match.start(0)
+            newText[-1] += line[column : matchBegin]
+            column = matchBegin
+            
+            # Find out the whole macro invocation.
+            macroInvocation = self.extractMacro(row, match, text)
+            #print 'Macro invocation:'
+            #print macroInvocation.name
+            #print macroInvocation.beginRow, macroInvocation.beginColumn
+            #print macroInvocation.endRow, macroInvocation.endColumn
+            #for parameterLine in macroInvocation.parameterSet:
+            #    print parameterLine
+            
+            # The parameter of the macro will be expanded 
+            # before invocation only if the user explicitly 
+            # requests so.
+            requestParameterExpansion = (match.group(self.optionalParameterExpansion) != None)
+            if requestParameterExpansion:
+                macroInvocation.parameterSet = self.convertRecurse(macroInvocation.parameterSet)
+
+            # Recursively expand the macro.
+            macroText = self.expandMacro(macroInvocation)
+            #print macroText
+           
+            # Append the resulting text to 'newText'.
+            newText[-1] += macroText[0]
+            newText += macroText[1 :]
+            
+            # Move on.
+            row = macroInvocation.endRow
+            column = macroInvocation.endColumn
+            
+        # The last '' is extraneous.
+        if newText[-1] == '':
+            return newText[0 : -1]
+        
+        return newText
     
     def htmlHeader(self):
         htmlText = []
@@ -509,7 +530,9 @@ def convert(template, document, documentTree,
     # Convert Remark to Markdown
     remarkConverter = RemarkConverter(document, template, documentTree, 
                                       inputRootDirectory, targetRootDirectory)
-    text = remarkConverter.convert()
+    text = remarkConverter.convert(template)
+    #for line in text:
+    #    print line
     
     headText = remarkConverter.htmlHeader()
     
@@ -542,6 +565,7 @@ def convert(template, document, documentTree,
 def convertAll(documentTree, inputRootDirectory, targetRootDirectory):
     for document in documentTree.documentMap.itervalues():
         type = documentType(document.extension) 
+        #if type == None or document.fileName != 'macros.txt':
         if type == None:
             continue
         convert(type.template, document, documentTree, 
