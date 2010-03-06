@@ -28,6 +28,8 @@ News
  * Added `set_many` command to set variables easily.
  * Added FileLink macro to generate links with the link 
  description set to the filename of the target.
+ * Added implicit searching rules for pure filenames 
+ into the Link and FileLink macros. 
  * Added Html macro to embed html directly.
  * Added Gallery macro to generate image galleries.
  * Fixed a bug in `filesToCopy` pattern matching:

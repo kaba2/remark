@@ -1,9 +1,5 @@
 /*
 Default stylesheet for Remark.
-
-'#mark' only affects the stuff that Markdown has generated. 
-That includes almost everything... Except the footer at the 
-bottom which is under '#footer'.
 */
 
 html, body 
@@ -28,7 +24,7 @@ body
 }
 
 /* Verbatim content */
-pre 
+#remark pre
 {
     /* Verbatim content is bordered with a dotted, one-pixel wide rectangle. */
     border-style: dotted;
@@ -57,21 +53,21 @@ pre
     padding-bottom: 0.5em;
 }
 
-#mark 
+#remark
 {
     /* There should be some empty space before the footer. */
     padding-bottom: 60px;
 }
 
 /* Normal text */
-#mark p 
+#remark p
 {
     margin-left: 0px;
     text-align: justify;
 }
 
 /* Level 1 headings */
-#mark h1 
+#remark h1
 {
     margin: 1.5em 0em 1em 0em;
     /* Draw a dotted line under the heading. */
@@ -87,7 +83,7 @@ pre
 }
 
 /* Level 2 headings */
-#mark h2 
+#remark h2 
 {
     margin: 1.5em 0em 1em 0em;
     /* Draw a dotted line under the heading. */
@@ -102,7 +98,7 @@ pre
 }
 
 /* Level 3 headings */
-#mark h3 
+#remark h3 
 {
     margin: 1.5em 0em 1em 0em;
     font-size: 1.2em;
@@ -112,7 +108,7 @@ pre
 }
 
 /* Level 4 headings */
-#mark h4 
+#remark h4 
 {
     margin: 1.5em 0em 1em 0em;
     font-size: 1.0em;
@@ -122,7 +118,7 @@ pre
 }
 
 /* Images */
-img 
+#remark img 
 {
     /* We would like to add a 1 pixel border
     around the image to make it stand out. */
@@ -132,79 +128,99 @@ img
 }
 
 /* Unordered lists (bullets) */
-#mark ul 
+#remark ul 
 {
     list-style: disk;
 }
 
 /* Ordered lists */
-#mark ol
+#remark ol
 {
     list-style-type: decimal;
 }
 
 /* A list item */
-#mark li 
+#remark li 
 {
 }
 
 /* Links */
-#mark a 
+#remark a 
 { 
     text-decoration: none; 
     color: #a00000; 
 }
 
 /* Links when the mouse is hold over them */
-#mark a:hover 
+#remark a:hover 
 { 
     text-decoration: underline; 
     color: #600000; 
 }
 
 /* Tables */
-#mark table
+#remark table
 {
     border-collapse: collapse;
     /* We would like to indent tables a bit. 
     Note the amount of indentation matches with the amount
     for the verbatim content.*/
     margin-left: 40px;
-    font-size: 0.75em;
 }
 
 /* Tables and cells*/
-#mark table, th, td
+#remark table, th, td
 {
     /* Give them a one-pixel wide border. */
     border: 1px solid black;
 }
 
 /* Tables: Cells */
-#mark td, th
+#remark td, th
 {
     /* Give some empty space around the content of a cell. */
     padding: 5px;
 }
 
 /* Table: Cells: Headers */
-#mark th
+#remark th
 {
     color: Maroon;
 }
 
 /* Table: Cells: Data */
-#mark td
+#remark td
 {
 }
 
 /* Definition lists */
-#mark dl
+#remark dl
 {
 }
 
+/* Tables */
+#remark table.division
+{
+    border-collapse: collapse;
+    width: 100%;
+    margin-left: 0px;
+}
+
+/* Tables: Cells */
+#remark td.division, th.division
+{
+    padding: 0px;
+}
+
+/* Tables and cells*/
+#remark table.division, th.division, td.division
+{
+    /* Give them a one-pixel wide border. */
+    border-style: none;
+}
+
 /* Definition lists: The thing to define. */
-#mark dt
+#remark dt
 {
     /*font-weight: bold;*/
     /*font-size: 1em;*/
@@ -212,7 +228,7 @@ img
 }
 
 /* Definition lists: The definition of the thing. */
-#mark dd
+#remark dd
 {
 }
 

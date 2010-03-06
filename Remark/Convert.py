@@ -510,7 +510,7 @@ def addHtmlBoilerPlate(text, document, htmlHead):
     htmlText.append('</head>')
     htmlText.append('<body>')
     htmlText.append('<div id = "container">')
-    htmlText.append('<div id = "mark">')
+    htmlText.append('<div id = "remark">')
     htmlText += text
     htmlText.append('</div>')
     htmlText.append('<div id="footer">')

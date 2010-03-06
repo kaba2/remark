@@ -19,7 +19,9 @@ class Link_Macro:
         text = []
         
         for linkFileName in parameter:
-            linkDocument = documentTree.findDocument(linkFileName, document.relativeDirectory)
+            linkDocument, unique = documentTree.findDocumentHard(linkFileName, document.relativeDirectory)
+            if not unique:
+                remarkConverter.reportWarning('Link: "' + linkFileName + '" is ambiguous. Picking arbitrarily.')
             
             if linkDocument != None:
                 linkDescription = linkDocument.tag('description')
@@ -28,8 +30,7 @@ class Link_Macro:
                 if len(parameter) > 1:                
                     text += ['']
             else:
-                print 'Warning:', document.relativeName, ': manual link',
-                print linkFileName, 'not found. Ignoring it.'
+                remarkConverter.reportWarning('Link: "' + linkFileName + '" not found. Ignoring it.')
             
         return text
 
