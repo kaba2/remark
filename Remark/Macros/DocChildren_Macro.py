@@ -4,7 +4,7 @@
 # Detail: Generates links to documentation children.
 
 from MacroRegistry import registerMacro
-from Common import linkAddress
+from Common import linkAddress, outputDocumentName
 
 class DocChildren_Macro:
     def expand(self, parameter, remarkConverter):
@@ -48,13 +48,38 @@ class DocChildren_Macro:
            
         text = ['\n' + title, '-' * len(title) + '\n']
         
-        text.append('[[Link]]:')
-        
+        linkSet = []
+                
         childSet.sort(lambda x, y: cmp(x.tag('description'), y.tag('description')))        
         for child in childSet:
             linkTarget = linkAddress(targetDirectory, child.relativeName)
-            text.append('\t' + linkTarget)
-                
+            linkDescription = child.tag('description')
+            #linkSet.append('[[Link: ' + linkTarget + ']]')
+            linkSet.append('<p><a href="' + outputDocumentName(linkTarget) + '">' + linkDescription + '</a></p>')
+            
+
+        if len(linkSet) <= 6:
+            for link in linkSet:
+                text.append(link)
+                text.append('')
+        else:
+            tableColumns = 2
+            tableRow = 0
+            tableColumn = 0
+            text.append('<table class = "division">')
+            for link in linkSet:
+                if tableColumn == 0:
+                    text.append('<tr>')
+                    
+                text.append('<td class = "division">' + link + '</td>')                                
+                    
+                tableColumn += 1
+                if tableColumn == tableColumns:
+                    text.append('</tr>')
+                    tableColumn = 0
+                    tableRow += 1             
+            text.append('</table>')
+                                
         return text
 
     def outputType(self):

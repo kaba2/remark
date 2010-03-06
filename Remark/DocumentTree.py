@@ -47,6 +47,7 @@ class DocumentTree:
         self.root = Document('root', 'root')
         self.orphan = Document('orphan.orphan', 'orphan.orphan')
         self.documentMap = {'orphan.orphan' : self.orphan}
+        self.fileNameMap = {}
         self.otherFileSet = []
 
         print '\nGathering files...',
@@ -71,6 +72,11 @@ class DocumentTree:
         print '\nLinking orphans...',
         self._linkOrphans()
         print 'Done.'
+        
+        print '\nConstructing fileName map...',
+        self._constructFileNameMap()
+        print 'Done.'
+        
         
     def insertDocument(self, document):
         self.documentMap[document.relativeName] = document
@@ -118,6 +124,13 @@ class DocumentTree:
         '''
         #assert os.path.isdir(relativeDirectory)
             
+        fileName = os.path.split(documentName)[1]
+        if fileName != documentName:
+            # This is a relative path: don't
+            # search from anywhere else.
+            document = self.findDocument(documentName, relativeDirectory) 
+            return (document, True)
+
         while True:
             document = self.findDocument(documentName, relativeDirectory)
             if document != None:
@@ -132,6 +145,45 @@ class DocumentTree:
         
         # Document file was not found.
         return None                           
+
+    def findDocumentHard(self, documentName, relativeDirectory):
+        '''
+        Returns: A pair (document, unique), such that 'document'
+        contains the found document (possibly None) and
+        'unique' is a boolean that tells whether the choice
+        was unique or not.
+        '''
+                
+        fileName = os.path.split(documentName)[1]
+        if fileName != documentName:
+            # This is a relative path: don't
+            # search from anywhere else.
+            document = self.findDocument(documentName, relativeDirectory) 
+            return (document, True)
+         
+        # See if there is a document of such name at all.
+        if not fileName in self.fileNameMap:
+            return (None, True)
+             
+        documentSet = self.fileNameMap[fileName]
+        
+        if len(documentSet) == 1:
+            # There is a unique document with this
+            # filename. Return it.
+            return (documentSet[0], True)
+        
+        # There are multiple files with this filename.
+        # Priority is given in the following order:
+        # 1) Current directory
+        # 2) Parent directories
+        # 3) Other directories
+        
+        document = self.findDocumentOutwards(documentName, relativeDirectory)
+        if document != None:
+            return (document, True)
+            
+        # Return an arbitrary file.
+        return (documentSet[0], False)
 
     # Private stuff
     
@@ -378,6 +430,19 @@ class DocumentTree:
         for document in self.documentMap.itervalues():
             if document.parent == None:
                 self.orphan.insertChild(document)
+                
+    def _constructFileNameMap(self):
+        '''
+        Construct a map from filenames to documents.
+        There can be multiple documents for a single
+        filename and thus the documents are stored
+        in a list.
+        '''
+        for document in self.documentMap.itervalues():
+            if document.fileName in self.fileNameMap:
+                self.fileNameMap[document.fileName].append(document)
+            else:
+                self.fileNameMap[document.fileName] = [document]
             
 def display(documentTree):
     _display(documentTree, documentTree.root, 0)
