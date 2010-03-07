@@ -23,17 +23,24 @@ News
 
 ### 24.02.2010: Released Remark 1.2.0
 
+#### Core
+
  * Allowed free positioning of Remark macros. 
  * Added the ability to invoke macros via inline parameters.
  * Added `set_many` command to set variables easily.
+ * Fixed a bug in `filesToCopy` pattern matching:
+ a file was copied only if it matched all patterns. 
+ 
+#### Macros
+
  * Added FileLink macro to generate links with the link 
  description set to the filename of the target.
  * Added implicit searching rules for pure filenames 
  into the Link and FileLink macros. 
+ * DocChildren macro now uses 2 or 3 columns to list
+ the children if there are more than 7 of them.
  * Added Html macro to embed html directly.
  * Added Gallery macro to generate image galleries.
- * Fixed a bug in `filesToCopy` pattern matching:
- a file was copied only if it matched all patterns. 
  
 [[Link]]: more_news.txt
 
