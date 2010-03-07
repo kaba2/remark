@@ -129,7 +129,7 @@ class DocumentTree:
             # This is a relative path: don't
             # search from anywhere else.
             document = self.findDocument(documentName, relativeDirectory) 
-            return (document, True)
+            return document
 
         while True:
             document = self.findDocument(documentName, relativeDirectory)
