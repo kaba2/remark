@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 # Description: Link_Macro class
-# Detail: Generates a link to a document based on relative filename.
+# Detail: Generates a link to a document in the document tree.
 
 import os.path
 
