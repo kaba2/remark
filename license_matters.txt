@@ -1,0 +1,44 @@
+License matters
+===============
+
+[[Parent]]: remark.txt
+
+Remark is licensed under the GNU Lesser GPL, which makes using it
+quite free. However, Remark uses some third-party libraries
+whose licenses have to be taken into account also. 
+
+Third-party libraries
+---------------------
+
+The Python Markdown and Pygments libraries are licensed under
+the BSD license, which is very allowing. These libraries are
+firmly integrated into Remark and therefore have essential
+roles in Remark. The other libraries are optional as follows.
+
+ * The AsciiMathML javascript library is referred to in an html
+ page if and only if one uses the math mode in the Remark source
+ of that page.
+ 
+ * The AsciiMathML javascript library is copied to the output
+ directory if and only if some generated html page refers to it.
+ 
+ * The Highslide javascript library is referred to in an html 
+ page if and only if one invokes the Gallery macro to generate 
+ that page.
+ 
+ * The Highslide javascript library is copied to the output
+ directory if and only if some generated html page refers to it.
+
+The Python Imaging Library is used by the Gallery macro to
+create thumbnails automatically.
+
+Commercial use
+--------------
+
+Remark is free for use in commercial products for the most part. 
+The only exception is the use of Gallery macro which depends on
+Python Imaging Library and the Highslide library. To use the
+Gallery macro in commercial products, you need to obtain the 
+commercial licenses for those products.
+
+ 

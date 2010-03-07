@@ -7,7 +7,7 @@
 
 _Remark_ is a Python library to generate html documentation for software libraries.
 Naturally, Remark is documented with Remark, the results of which you are inspecting
-right now. Remark is licensed under the _GNU Lesser GPL_. 
+right now. 
 
 Usage
 -----
@@ -41,6 +41,12 @@ News
  the children if there are more than 7 of them.
  * Added Html macro to embed html directly.
  * Added Gallery macro to generate image galleries.
+
+#### Additional dependencies
+
+ * Dependence to _Python Imaging Library_ via Gallery macro.
+ * Optional dependence to _Highslide_ javascript library
+ via Gallery macro.
  
 [[Link]]: more_news.txt
 

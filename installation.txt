@@ -38,15 +38,19 @@ We distribute it with Remark.
  
 ### [AsciiMathML][AsciiMathML]
 
-This library is used to convert 
-AsciiMath to MathML. We distribute it with Remark.
+This library is used to convert AsciiMath to MathML. 
+We distribute it with Remark.
  
-
 Installation
 ------------
 
 After installing a Python interpreter, Python Markdown, Pygments, 
 and the Python Imaging Library you should be ready to use Remark. 
+
+See also
+--------
+
+[[Link]]: license_matters.txt
 
 [PythonMarkdown]: http://www.freewisdom.org/projects/python-markdown/
 [Pygments]: http://pygments.org/

@@ -525,7 +525,7 @@ def addHtmlBoilerPlate(text, document, htmlHead):
 
 def convert(template, document, documentTree, 
             inputRootDirectory, targetRootDirectory):
-    print document.relativeName, '...'
+    #print document.relativeName, '...'
 
     # Convert Remark to Markdown
     remarkConverter = RemarkConverter(document, template, documentTree, 
@@ -568,9 +568,12 @@ def convertAll(documentTree, inputRootDirectory, targetRootDirectory):
         #if type == None or document.fileName != 'macros.txt':
         if type == None:
             continue
+        print '.',
         convert(type.template, document, documentTree, 
                 inputRootDirectory, targetRootDirectory)
 
+    print
+    
 def _leadingTabs(text):
     tabs = 0
     for c in text:
