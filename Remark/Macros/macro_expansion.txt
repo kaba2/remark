@@ -39,6 +39,9 @@ The example above produces:
 
 [[-+Verbatim]]: [[get description]]
 
+If only one sign is given, then that sign is assumed
+for both expansions, i.e. - = -- and + = ++.
+
 ### Default behaviors
 
 If the expansions signs are not given, then

@@ -6,7 +6,6 @@
 
 __all__ = ['Body_Macro',
            'Comment_Macro',
-           'SkipExpansion_Macro',
            'CppCode_Macro',
            'DocChildren_Macro',
            'Index_Macro',
@@ -18,4 +17,5 @@ __all__ = ['Body_Macro',
            'Html_Macro',
            'Gallery_Macro',
            'Verbatim_Macro',
-           'DirectoryLink_Macro',]
+           'DirectoryLink_Macro',
+           'Copy_Macro']

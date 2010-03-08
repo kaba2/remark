@@ -34,11 +34,10 @@ class Index_Macro:
                 
         for directory in directorySet:
             linkDescription = directory + '/'
-            linkTarget = directory + '/directory.index'
+            linkTarget = os.path.join(directory, 'directory.index')
             text.append('* ' + remarkConverter.remarkLink(linkDescription, outputDocumentName(linkTarget)))
        
         for entry in fileSet:
-            print entry
             text.append('* [[FileLink]]: ' + entry)
             
         text.append('')

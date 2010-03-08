@@ -28,8 +28,10 @@ News
  * Allowed free positioning of Remark macros. 
  * Added the ability to invoke macros via inline parameters.
  * Added `set_many` command to set variables easily.
+ * Added explicit control over parameter and output
+  expansion behavior in macro invocation.
  * Fixed a bug in `filesToCopy` pattern matching:
- a file was copied only if it matched all patterns. 
+ a file was copied only if it matched all patterns.
  
 #### Macros
 
@@ -41,6 +43,13 @@ News
  the children if there are more than 7 of them.
  * Added Html macro to embed html directly.
  * Added Gallery macro to generate image galleries.
+ * Added Verbatim macro to reinterpret text as
+ verbatim content.
+ * Added DirectoryLink macro to generate links to
+ the containing directories of files.
+ * Added Copy macro to copy the input without changes.
+ * Removed SkipExpansion macro. Its effect can
+ be obtained with the Copy macro.
 
 #### Additional dependencies
 

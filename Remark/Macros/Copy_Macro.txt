@@ -1,0 +1,40 @@
+Copy macro
+==========
+
+[[Parent]]: macros.txt
+
+Description
+-----------
+
+### Action
+
+Copies the input as it is. The usefulness
+of this macro lies in being able to prohibit
+macro expansion.
+
+### Output type
+
+Remark
+
+### Output expansion default
+
+Disabled.
+
+### Parameters
+
+The text to copy.
+
+### Variables
+
+None.
+
+Examples
+--------
+
+This
+
+	[[--Copy]]: [[Parent]]
+		
+produces this:
+
+[[--Copy]]: [[Parent]]

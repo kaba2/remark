@@ -8,7 +8,7 @@ Description
 
 ### Action
 
-Color-encodes many kinds of source code. Outputs corresponding
+Highlights many kinds of source code. Outputs corresponding
 html code. 
 
 ### Output type
@@ -21,9 +21,7 @@ Disabled.
 
 ### Parameters
 
-The parameter is interpreted as the input source code.
-If the parameter is not given, the content is loaded from 
-the currently processed document file. 
+The source code to highlight.
 
 ### Variables
 
@@ -31,16 +29,7 @@ None.
 
 ### Details
 
-The type of the source code is guessed as follows:
-
- * If the source code is loaded from a file, its extension
- is used to take a guess.
- 
- * Otherwise some heuristics are run on the source code
- and a guess is taken based on that.
- 
-The color-encoding is carried out by the Pygments Python library.
-Note that Markdown syntax allows for inlined html.
+The color-encoding is carried out by the Pygments library.
 
 Example
 -------
