@@ -9,25 +9,41 @@ import re
 
 from MacroRegistry import registerMacro
 
-from Common import linkAddress
+from Common import linkAddress, unixDirectoryName
 
 from pygments import highlight
 from pygments.lexers import CppLexer
 from pygments.formatters import HtmlFormatter
 
 def _linkConverter(regexMatch, documentTree, document):
-    searchName = os.path.normpath(regexMatch.group(2))
+    searchName = unixDirectoryName(regexMatch.group(2))
     includeName = regexMatch.group(2)
-    #print "Include name:", includeName
-    #print "My name:", document.relativeName
-    linkDocument = documentTree.findDocumentByName(searchName)
-    if linkDocument != None:
-        #linkName = os.path.normpath(os.path.relpath(linkDocument.relativeName, document.relativeDirectory)) + '.htm'
-        #linkName = unixDirectoryName(linkName)
-        linkName = linkAddress(document.relativeDirectory, linkDocument.relativeName) + '.htm'
-        return regexMatch.group(1) + '<a href = "' + linkName + '">' + includeName + '</a>' + string.rstrip(regexMatch.group(3))
-    return regexMatch.group(0)
+    
+    # First interpret the include filename as
+    # a relative path w.r.t. the current directory.
+    linkDocument = documentTree.findDocument(searchName, document.relativeDirectory)
+    
+    if linkDocument == None:
+        # No file was found. Now interpret the
+        # include filename as a relative path w.r.t.
+        # the input root directory.
+        linkDocument = documentTree.findDocumentByName(searchName)
+        
+    if linkDocument == None:
+        # Still no file was found. Try hard.
+        linkDocument, unique = documentTree.findDocumentHard(searchName, document.relativeDirectory)
+        if not unique:
+            # We don't accept ambiguous links.
+            print 'Warning: CppCode: Include filename', searchName, 'is ambiguous. Skipping linking.' 
+            linkDocument = None
+        
+    if linkDocument == None:
+        # No file was found. Skip linking.
+        return regexMatch.group(0)
 
+    linkName = linkAddress(document.relativeDirectory, linkDocument.relativeName) + '.htm'
+    return regexMatch.group(1) + '<a href = "' + linkName + '">' + includeName + '</a>' + string.rstrip(regexMatch.group(3))
+    
 class CppCode_Macro:
     def expand(self, parameter, remarkConverter):
         document = remarkConverter.document

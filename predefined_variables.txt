@@ -1,0 +1,59 @@
+Predefined variables
+====================
+
+[[Parent]]: variables.txt
+
+Remark predefines several variables. Those variables are listed here.
+
+### Predefined variables
+
+The following variables are predefined by Remark:
+
+description
+:	Description of the current document.
+
+detail
+:	Detailed description of the current document.
+
+file_name
+: 	The filename of the current document.
+
+relative_name
+:	Relative path to the current document from the
+    input directory root. 
+
+### Special variables
+
+The following variables have a special meaning:
+
+html_head
+:	This text is appended to the head section of the html-page,
+	after the text that is possibly appended by macros.
+
+Examples
+--------
+
+This:
+
+	1. [[get description]]
+	
+	2. [[get file_name]]
+
+	3. [[get relative_name]]
+
+	4. [[get detail]]
+	
+produces this:
+
+[[+Verbatim]]:
+	1. [[get description]]
+	
+	2. [[get file_name]]
+
+	3. [[get relative_name]]
+
+	4. [[get detail]]
+	
+Note that Remark source files do not have a detailed description
+and that is why nothing is output for it.
+	

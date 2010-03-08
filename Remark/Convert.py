@@ -50,12 +50,15 @@ class Scope:
         value = None
         text = self.search(name)
         
-        if text != None and len(text) == 1:
-            try:
-                value = int(text[0])
-            except ValueError:
-                None
-                
+        if text != None:
+            if len(text) == 1:
+                try:
+                    value = int(text[0])
+                except ValueError:
+                    value = None
+        else:
+            value = defaultValue
+        
         if value == None:
             print 'Warning: Could not convert', name, 'to an integer. Using default.'
             value = defaultValue
@@ -136,11 +139,18 @@ class RemarkConverter:
         self.externalGroupId = 5
         self.recursionDepth = 0
         
+        scope = self.scopeStack.top() 
         # All the tags that a parser collects
         # are available as variables for Remark.
         for key, value in document.tagSet.items(): 
-            self.scopeStack.top().insert(key, [value])
+            scope.insert(key, [value])
         
+        scope.insert('file_name', [document.fileName])
+        scope.insert('relative_name', [document.relativeName])
+        scope.insert('parent_file_name', [document.parent.fileName])
+        scope.insert('parent_relative_name', [document.parent.relativeName])
+        
+        self.lastReportFrom = ''
         self.used = False
 
     def linkId(self):
@@ -168,9 +178,21 @@ class RemarkConverter:
         return text
     
     def reportWarning(self, text):
-        print 'Warning:', self.document.relativeName, ':'
-        print text 
+        if self.lastReportFrom != self.document.relativeName:
+            self.lastReportFrom = self.document.relativeName
+            print
+            print self.document.relativeName, ':'
+            
+        print 'Warning:', text
+        
+    def report(self, text):
+        if self.lastReportFrom != self.document.relativeName:
+            self.lastReportFrom = self.document.relativeName
+            print
+            print self.document.relativeName, ':'
     
+        print text
+        
     def extractMacro(self, row, match, text): 
         # This function extracts the information from
         # a macro invocation.

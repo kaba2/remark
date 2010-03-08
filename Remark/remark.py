@@ -87,7 +87,7 @@ use wildcards (e.g. *.png).""")
     '[[get end_text]]',]
 
     cppTemplate = \
-    ['[[get description]]',
+    ['[[get file_name]]',
      '===',
      '',
      '[[Parent]]',
@@ -98,7 +98,7 @@ use wildcards (e.g. *.png).""")
      
     
     genericCodeTemplate = \
-    ['[[get description]]',
+    ['[[get file_name]]',
      '===',
      '',
      '[[Parent]]',
