@@ -20,9 +20,9 @@ Copies the input as it is.
 
 Html
 
-### Macro expansion of the output
+### Output expansion default
 
-Skipped.
+Disabled.
 
 ### Parameters
 

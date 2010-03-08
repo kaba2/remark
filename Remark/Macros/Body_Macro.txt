@@ -6,9 +6,6 @@ Body macro
 Description
 -----------
 
-This macro is used internally by Remark, and should not be
-used by normal users.
-
 ### Action
 
 Reads the currently considered document from a file. Returns its contents.
@@ -16,6 +13,10 @@ Reads the currently considered document from a file. Returns its contents.
 ### Output type
 
 Remark
+
+### Output expansion default
+
+Enabled.
 
 ### Parameters
 
@@ -33,7 +34,14 @@ This
 	[[Body]]
 
 would lead to an an infinite macro expansion loop.
-This macro is used internally by Remark, and should not be
-used by normal users.
+This form of the macro invocation is seen only on
+document templates. For demonstration purposes,
+we can use:
+
+	[[-+Verbatim]]: [[-Body]]
+
+which produces this:
+
+[[-+Verbatim]]: [[-Body]]
  
  

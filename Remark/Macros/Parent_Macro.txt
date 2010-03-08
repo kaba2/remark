@@ -22,6 +22,10 @@ document.
 
 Remark
 
+### Output expansion default
+
+Disabled.
+
 ### Parameters
 
 As a macro: None. As a tag: used to deduce parent-child

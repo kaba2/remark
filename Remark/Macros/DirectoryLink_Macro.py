@@ -1,14 +1,14 @@
 # -*- coding: utf-8 -*-
 
-# Description: FileLink_Macro class
-# Detail: Generates a link to a document in the document tree.
+# Description: DirectoryLink_Macro class
+# Detail: Generates a relative link to the containing directory.
 
 import os.path
 
 from MacroRegistry import registerMacro
 from Common import linkAddress, outputDocumentName
 
-class FileLink_Macro:
+class DirectoryLink_Macro:
     def expand(self, parameter, remarkConverter):
         document = remarkConverter.document
         documentTree = remarkConverter.documentTree
@@ -21,16 +21,16 @@ class FileLink_Macro:
         for linkFileName in parameter:
             linkDocument, unique = documentTree.findDocumentHard(linkFileName, document.relativeDirectory)
             if not unique:
-                remarkConverter.reportWarning('FileLink: "' + linkFileName + '" is ambiguous. Picking arbitrarily.')
+                remarkConverter.reportWarning('DirectoryLink: "' + linkFileName + '" is ambiguous. Picking arbitrarily.')
             
             if linkDocument != None:
-                linkDescription = linkDocument.fileName
+                linkDescription = linkDocument.relativeDirectory + '/'
                 linkTarget = linkAddress(document.relativeDirectory, linkDocument.relativeName)
                 text.append(remarkConverter.remarkLink(linkDescription, outputDocumentName(linkTarget)))
                 if len(parameter) > 1:                
                     text += ['']
             else:
-                remarkConverter.reportWarning('FileLink: "' + linkFileName + '" not found. Ignoring it.')
+                remarkConverter.reportWarning('DirectoryLink: "' + linkFileName + '" not found. Ignoring it.')
             
         return text
     
@@ -46,4 +46,4 @@ class FileLink_Macro:
     def postConversion(self, inputDirectory, outputDirectory):
         None
 
-registerMacro('FileLink', FileLink_Macro())
+registerMacro('DirectoryLink', DirectoryLink_Macro())

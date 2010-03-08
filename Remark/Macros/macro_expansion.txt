@@ -1,0 +1,62 @@
+Macro expansion
+===============
+
+[[Parent]]: macro.txt
+
+Macro expansion refers to the process of taking a
+macro invocation and replacing it with the output
+of the macro. In Remark, this process can be carried
+out in different ways depending on the need. 
+Nevertheless, the following rule always holds:
+
+_No macro expansions are done for verbatim content
+(i.e. indented text)._
+
+Controlling expansion
+---------------------
+
+In a macro invocation the user has explicit control 
+over
+
+ 1. whether the macros in the parameter should be 
+ recursively expanded before invoking the macro.
+ 
+ 2. whether the output of the macro expansion should
+ be recursively expanded. 
+
+These behaviors can be set by using a pair of signs
+(+ or -) before the name of the macro. In this notation
++ means _yes_ and - means _no_. The first sign refers
+to the expansion of the output, while the second sign 
+refers to the expansion of the parameter. For example,
+the following invocation of the Verbatim macro 
+explicitly disables the expansion of the output and 
+enables the expansion of the parameter. 
+	
+	[[-+Verbatim]]: [[get description]] 
+
+The example above produces:
+
+[[-+Verbatim]]: [[get description]]
+
+### Default behaviors
+
+If the expansions signs are not given, then
+the expansions assume default behaviors. 
+The default behavior for the parameter expansion
+is not to do it. The default behavior 
+for output expansion is determined by the invoked 
+macro.
+
+Placement of macros
+-------------------
+
+The macros can be placed freely as shown in the following
+example:
+	
+	[[set b: Nom]]Nom[[get b]] [[get b]]Nom[[get b]] Nom[[get b]]
+
+[[set b: Nom]]Nom[[get b]] [[get b]]Nom[[get b]] Nom[[get b]]
+
+
+

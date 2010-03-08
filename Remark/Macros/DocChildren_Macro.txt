@@ -14,6 +14,14 @@ This list is preceded by a level-1 heading.
 The heading is not generated if there are no
 documentation children.
 
+### Output type
+
+Remark
+
+### Output expansion default
+
+Disabled.
+
 ### Parameters
 
 Ignored.

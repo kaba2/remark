@@ -8,7 +8,8 @@ import string
 import re
 
 from MacroRegistry import registerMacro
-from Common import readFile, unixDirectoryName, linkAddress
+
+from Common import linkAddress
 
 from pygments import highlight
 from pygments.lexers import CppLexer
@@ -32,61 +33,27 @@ class CppCode_Macro:
         document = remarkConverter.document
         documentTree = remarkConverter.documentTree 
         
-        # If no parameter is given, then the
-        # code is read from the document's file.
-        # Otherwise, the parameter is assumed to        
-        # contain C++ code.
-        if parameter == []:
-            text = readFile(document.fullName)
-        else:
-            text = parameter
-                
-        fileName = os.path.split(document.relativeName)[1]
-        
-        convertedText = []
+        # Hilight the text.
+        hilightedText = highlight(string.join(parameter, '\n'), CppLexer(), HtmlFormatter())
 
-        # In the case the code is read from a file,
-        # we want to include a title, a back-link,
-        # and a directory link.
-        if parameter == []:
-            # Create the title
-            convertedText.append(fileName)
-            convertedText.append('=' * len(fileName))
-            convertedText.append('')
-            
-            # Create parent link.
-            convertedText.append('[[Parent]]')
-            convertedText.append('')
-            #convertedText += expandMacros(['[[Parent]]\n'], document, documentTree)
-        
-            # Create directory link.
-            convertedText += remarkConverter.remarkLink(unixDirectoryName(document.relativeDirectory) + '/', 'directory.htm')
-            convertedText.append('')
-        
-        # This 'div' allows, for example, to create
-        # a box around the code.
-        convertedText.append('[[Html]]:')
-        convertedText.append('\t<div class = "codehilite">')
-
-        includeRegex = re.compile(r'(#include[ \t]+(?:(?:&quot)|(?:&lt));)(.*)((?:(?:&quot)|(?:&gt));)')
-
-        # Copy the source.
-        replacer = lambda match: _linkConverter(match, documentTree, document)
-        hilightedText = highlight(string.join(text, '\n'), CppLexer(), HtmlFormatter())
+        # Prepare for Remark output.
         hilightedText = string.split(hilightedText, '\n')
+        
+        # Copy the source and replace the includes with links.
+        includeRegex = re.compile(r'(#include[ \t]+(?:(?:&quot)|(?:&lt));)(.*)((?:(?:&quot)|(?:&gt));)')
+        replacer = lambda match: _linkConverter(match, documentTree, document)
+        convertedText = []
         for line in hilightedText:
             # Replace include file names with links to source files.
-            convertedText.append('\t' + re.sub(includeRegex, replacer, line))
-                                
-        convertedText.append('\t</div>\n')
+            convertedText.append(re.sub(includeRegex, replacer, line))
         
         return convertedText
 
     def outputType(self):
-        return 'remark'
+        return 'html'
 
     def pureOutput(self):
-        return False
+        return True
 
     def htmlHead(self, remarkConverter):
         return []                

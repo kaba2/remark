@@ -16,6 +16,10 @@ Returns nothing.
 
 Remark
 
+### Output expansion default
+
+Disabled.
+
 ### Parameters
 
 Ignored.

@@ -13,8 +13,8 @@ class Parent_Macro:
         parent = document.parent
         linkTarget = linkAddress(document.relativeDirectory, parent.relativeName)
 
-        return remarkConverter.remarkLink('Back to ' + parent.tag('description'), 
-                                          outputDocumentName(linkTarget))
+        return [remarkConverter.remarkLink('Back to ' + parent.tag('description'), 
+                                          outputDocumentName(linkTarget))]
 
     def outputType(self):
         return 'remark'

@@ -1,0 +1,40 @@
+Verbatim macro
+==============
+
+[[Parent]]: macros.txt
+
+Description
+-----------
+
+### Action
+
+Inserts a tab in front of each line of the
+input parameter, thus reinterpreting text
+as verbatim content. 
+
+### Output type
+
+Remark
+
+### Output expansion default
+
+Disabled.
+
+### Parameters
+
+The text to reinterpret.
+
+### Variables
+
+None.
+
+Examples
+--------
+
+This
+
+	[[+Verbatim]]: [[get description]]
+		
+produces this:
+
+[[+Verbatim]]: [[get description]]

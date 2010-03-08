@@ -9,8 +9,7 @@ import codecs
 
 def linkAddress(fromDirectory, toFile):
     relativeName = os.path.relpath(toFile, fromDirectory)
-    newRelativeName = relativeName
-    return unixDirectoryName(os.path.normpath(newRelativeName))
+    return unixDirectoryName(relativeName)
 
 def readFile(fileName):
     text = []

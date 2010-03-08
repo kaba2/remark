@@ -83,10 +83,14 @@ class ScopeStack:
 class MacroInvocation:
     def __init__(self, name,
                  parameterSet,
+                 outputExpansion,
+                 parameterExpansion,
                  beginRow, beginColumn,
                  endRow, endColumn):
         self.name = name
         self.parameterSet = parameterSet
+        self.outputExpansion = outputExpansion
+        self.parameterExpansion = parameterExpansion
         self.beginRow = beginRow
         self.beginColumn = beginColumn
         self.endRow = endRow
@@ -112,20 +116,30 @@ class RemarkConverter:
         self.whitespace = r'[ \t]*'
         self.optionalInlineParameter = r'(?::' + self.whitespace + r'((?:(?!]]).)*))?'
         self.optionalOneLineParameter = r'(?::' + self.whitespace + r'(.*))?'
-        self.optionalParameterExpansion = r'(\+)?'
+        self.optionalOutputExpansion = r'(\+|-)?'
+        self.optionalParameterExpansion = r'(\+|-)?'
         self.macroRegex = re.compile(r'\[\[' + 
+                                     self.optionalOutputExpansion +
                                      self.optionalParameterExpansion + 
                                      self.macroIdentifier + 
-                                     self.optionalInlineParameter + r'\]\]' 
-                                     + self.optionalOneLineParameter)
+                                     self.optionalInlineParameter + 
+                                     r'\]\]' + 
+                                     self.optionalOneLineParameter)
         
         #macroText = r'((?:(?!]]).)*)'
         #macroRegex = re.compile(r'\[\[' + macroText + r'\]\]' + optionalOneLineParameter)
         self.wholeGroupId = 0
-        self.optionalParameterExpansion = 1
-        self.identifierGroupId = 2
-        self.inlineGroupId = 3
-        self.externalGroupId = 4
+        self.outputExpansionGroupId = 1
+        self.parameterExpansionGroupId = 2
+        self.identifierGroupId = 3
+        self.inlineGroupId = 4
+        self.externalGroupId = 5
+        self.recursionDepth = 0
+        
+        # All the tags that a parser collects
+        # are available as variables for Remark.
+        for key, value in document.tagSet.items(): 
+            self.scopeStack.top().insert(key, [value])
         
         self.used = False
 
@@ -142,7 +156,7 @@ class RemarkConverter:
         name = 'RemarkLink_' + str(self.linkId())
         
         # Form the Markdown link.
-        text = ['[' + description + '][' + name + ']']
+        text = '[' + description + '][' + name + ']'
         
         # We defer defining the link because the link
         # could be an inline link. Instead we store the
@@ -188,6 +202,23 @@ class RemarkConverter:
         macroName = match.group(self.identifierGroupId) 
         inlineParameter = match.group(self.inlineGroupId)
         onelineParameter = match.group(self.externalGroupId)
+        outputExpansion = match.group(self.outputExpansionGroupId)
+        if outputExpansion != None:
+            if outputExpansion == '+':
+                outputExpansion = True
+            else:
+                outputExpansion = False
+        parameterExpansion = match.group(self.parameterExpansionGroupId)
+        if parameterExpansion != None:
+            if parameterExpansion == '+':
+                parameterExpansion = True
+            else:
+                parameterExpansion = False
+        else:
+            if outputExpansion != None: 
+                parameterExpansion = outputExpansion
+            else:
+                parameterExpansion = False
         
         hasExternalParameters = (onelineParameter != None)
                 
@@ -220,6 +251,8 @@ class RemarkConverter:
         if not hasMultilineParameter:
             return MacroInvocation(macroName,
                                    parameterSet,
+                                   outputExpansion,
+                                   parameterExpansion,                                   
                                    row, matchBegin,
                                    row, matchEnd)
         
@@ -249,6 +282,8 @@ class RemarkConverter:
             
         return MacroInvocation(macroName,
                                parameterSet,
+                               outputExpansion,
+                               parameterExpansion,                                   
                                row, matchBegin,
                                row + nonEmptyLines, len(text[row + nonEmptyLines]))        
 
@@ -344,16 +379,24 @@ class RemarkConverter:
                     # for Markdown.
                     if macro.outputType() == 'html':
                         self.addDummyHtmlNewLines(expandedText)
-                        
-                    if macro.pureOutput():
-                        # The recursive expansion of the
-                        # output is skipped because of the
-                        # request by the macro.
-                        macroText = expandedText
-                    else:
-                        # Recursively expand the output
-                        # of the macro.
+
+                    # The output of the macro is either
+                    # recursively expanded or not.
+                    # The macro suggests a default for this
+                    # behavior.
+                    expandMore = not macro.pureOutput()
+                    
+                    # However, the invocation can override
+                    # this suggestion.
+                    if macroInvocation.outputExpansion != None:
+                        expandMore = macroInvocation.outputExpansion
+                    
+                    if expandMore:
+                        # Expand recursively.
                         macroText = self.convertRecurse(expandedText) 
+                    else:
+                        # No expansion, simply copy text.
+                        macroText = expandedText
                 macroHandled = True
 
         if not macroHandled:
@@ -382,6 +425,7 @@ class RemarkConverter:
     def convertRecurse(self, text):
         # Our strategy is to trace the 'text' line
         # by line while expanding the macros to 'newText'.
+        self.recursionDepth += 1
         
         newText = ['']
         row = 0
@@ -412,7 +456,6 @@ class RemarkConverter:
                 continue
     
             #print 'I read:'
-            #print line
             #print match.group(0)
 
             # Yes, there is a macro on the line.
@@ -433,13 +476,15 @@ class RemarkConverter:
             # The parameter of the macro will be expanded 
             # before invocation only if the user explicitly 
             # requests so.
-            requestParameterExpansion = (match.group(self.optionalParameterExpansion) != None)
-            if requestParameterExpansion:
+            if macroInvocation.parameterExpansion:
                 macroInvocation.parameterSet = self.convertRecurse(macroInvocation.parameterSet)
 
             # Recursively expand the macro.
             macroText = self.expandMacro(macroInvocation)
-            #print macroText
+            
+            #print 'I write:'
+            #for line in macroText:
+            #    print line
            
             # Append the resulting text to 'newText'.
             newText[-1] += macroText[0]
@@ -448,6 +493,8 @@ class RemarkConverter:
             # Move on.
             row = macroInvocation.endRow
             column = macroInvocation.endColumn
+        
+        self.recursionDepth -= 1
             
         # The last '' is extraneous.
         if newText[-1] == '':
@@ -525,7 +572,15 @@ def addHtmlBoilerPlate(text, document, htmlHead):
 
 def convert(template, document, documentTree, 
             inputRootDirectory, targetRootDirectory):
-    #print document.relativeName, '...'
+    # Find out some names.
+    targetRootDirectory = os.path.normpath(targetRootDirectory)
+    targetRelativeName = outputDocumentName(document.relativeName)
+    targetFullName = os.path.join(targetRootDirectory, targetRelativeName)
+
+    # If the directories do not exist, create them.
+    targetDirectory = os.path.split(targetFullName)[0]
+    if not os.path.exists(targetDirectory):
+        os.makedirs(targetDirectory)
 
     # Convert Remark to Markdown
     remarkConverter = RemarkConverter(document, template, documentTree, 
@@ -533,6 +588,12 @@ def convert(template, document, documentTree,
     text = remarkConverter.convert(template)
     #for line in text:
     #    print line
+    
+    # Save the text to a file.
+    #with codecs.open(targetFullName + '.txt', mode = 'w', encoding = 'utf-8') as outputFile:
+    #    for line in text:
+    #        outputFile.write(line)
+    #        outputFile.write('\n')
     
     headText = remarkConverter.htmlHeader()
     
@@ -545,17 +606,7 @@ def convert(template, document, documentTree,
     
     # Add html boilerplate.
     text = addHtmlBoilerPlate(text, document, headText)
-
-    # Find out some names.
-    targetRootDirectory = os.path.normpath(targetRootDirectory)
-    targetRelativeName = outputDocumentName(document.relativeName)
-    targetFullName = os.path.join(targetRootDirectory, targetRelativeName)
-
-    # If the directories do not exist, create them.
-    targetDirectory = os.path.split(targetFullName)[0]
-    if not os.path.exists(targetDirectory):
-        os.makedirs(targetDirectory)
-        
+       
     # Save the text to a file.
     with codecs.open(targetFullName, mode = 'w', encoding = 'utf-8') as outputFile:
         for line in text:
@@ -565,9 +616,10 @@ def convert(template, document, documentTree,
 def convertAll(documentTree, inputRootDirectory, targetRootDirectory):
     for document in documentTree.documentMap.itervalues():
         type = documentType(document.extension) 
-        #if type == None or document.fileName != 'macros.txt':
+        #if type == None or document.fileName != 'Body_Macro.txt':
         if type == None:
             continue
+        #print document.relativeName, '...'
         print '.',
         convert(type.template, document, documentTree, 
                 inputRootDirectory, targetRootDirectory)
