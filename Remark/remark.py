@@ -22,7 +22,7 @@ from TagParsers.Generic_TagParser import Generic_TagParser
 from TagParsers.Markdown_TagParser import Markdown_TagParser
 from TagParsers.Empty_TagParser import Empty_TagParser
 from Convert import convertAll
-from Common import registerDocumentType, unixDirectoryName, linkAddress
+from Common import registerDocumentType, unixDirectoryName, linkAddress, documentType
 from optparse import OptionParser
 from Macros import *
 
@@ -130,6 +130,7 @@ use wildcards (e.g. *.png).""")
     registerDocumentType('.py', '.py.htm', genericCodeTemplate, pythonParser, False)
     registerDocumentType('.m', '.m.htm', genericCodeTemplate, matlabParser, False)
     registerDocumentType('.index', '.htm', indexTemplate, emptyParser, False)
+    registerDocumentType('.orphan', '.htm', orphanTemplate, emptyParser, False)
     
     # Construct a document tree from the input directory.
     documentTree = DocumentTree(inputDirectory)
@@ -141,52 +142,26 @@ use wildcards (e.g. *.png).""")
         for fileName in fileNameSet:
             fullName = os.path.normpath(os.path.join(pathName, fileName))
             relativeName = linkAddress(inputDirectory, fullName)
-            documentTree.insertDocument(relativeName)
+            if documentType(os.path.splitext(fileName)[1]) != None:
+                # The file has an associated document type,
+                # take it in.            
+                documentTree.insertDocument(relativeName)
+            else: 
+                for filenamePattern in filesToCopySet:
+                    if fnmatch.fnmatch(fileName, filenamePattern):
+                        # The file matches a pattern for copying,
+                        # take it in.
+                        documentTree.insertDocument(relativeName)
+                        break
+
     print 'Done.'
 
     documentTree.compute()
    
-    #if options.orphan == True:
-    registerDocumentType('.orphan', '.htm', orphanTemplate, emptyParser, False)
-
     print '\nGenerating documents'
     print '--------------------\n'
     
     convertAll(documentTree, inputDirectory, outputDirectory)
-
-    if len(filesToCopySet) > 0:
-        # Those files which don't have an associated document type
-        # are simply copied.
-       
-        print '\nMoving files with no associated document type'
-        print '---------------------------------------------\n'
-
-        copySet = documentTree.otherFileSet
-        
-        # Only copy those files which correspond to the filename
-        # patterns given in the command line.
-
-        matchCountSet = [0] * len(copySet)        
-        for filenamePattern in filesToCopySet:
-            for i in range(0, len(copySet)):
-                relativeName = copySet[i]
-                filename = os.path.split(relativeName)[1]
-                if fnmatch.fnmatch(filename, filenamePattern):
-                    matchCountSet[i] += 1
-        
-        for i in range(0, len(copySet)):
-            if matchCountSet[i] > 0: 
-                relativeName = copySet[i]
-                targetName = os.path.join(outputDirectory, relativeName);
-                targetDirectory = os.path.split(targetName)[0]
-                if not os.path.exists(targetDirectory):
-                    os.makedirs(targetDirectory)
-                if not os.path.exists(targetName):
-                    print relativeName
-                    sourceName = os.path.join(inputDirectory, relativeName)
-                    shutil.copy(sourceName, targetDirectory)
-                   
-        print 'Done.'
 
     # If there are no .css files already in the target directory,
     # copy the default ones there.

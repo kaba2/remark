@@ -6,7 +6,7 @@
 import string
 import os.path
 
-from Common import linkAddress
+from Common import linkAddress, linkTable
 from Common import outputDocumentName, unixDirectoryName
 from MacroRegistry import registerMacro
 
@@ -31,15 +31,21 @@ class Index_Macro:
                     directorySet.append(entry)
             elif documentTree.findDocumentByName(relativeName):
                 fileSet.append(entry)
-                
+        
+        linkSet = []        
+        
         for directory in directorySet:
             linkDescription = directory + '/'
             linkTarget = os.path.join(directory, 'directory.index')
-            text.append('* ' + remarkConverter.remarkLink(linkDescription, outputDocumentName(linkTarget)))
+            linkSet.append((outputDocumentName(linkTarget), linkDescription))
        
-        for entry in fileSet:
-            text.append('* [[FileLink]]: ' + entry)
+        for fileName in fileSet:
+            linkTarget = outputDocumentName(fileName)
+            linkDescription = fileName
+            linkSet.append((linkTarget, linkDescription))
             
+        text += linkTable(linkSet)
+                    
         text.append('')
 
         return text

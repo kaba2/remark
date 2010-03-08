@@ -6,6 +6,7 @@
 import os.path
 import string
 import codecs
+import shutil
 
 def linkAddress(fromDirectory, toFile):
     relativeName = os.path.relpath(toFile, fromDirectory)
@@ -55,13 +56,82 @@ def documentType(inputExtension):
         return _documentTypeMap[inputExtension]
     return None
 
+def copyIfNecessary(inputFilePath, outputFilePath):
+    targetDirectory = os.path.split(outputFilePath)[0]
+    if not os.path.exists(targetDirectory):
+        os.makedirs(targetDirectory)
+    if not os.path.exists(outputFilePath):
+        shutil.copy(inputFilePath, outputFilePath)
+
 def outputDocumentName(name):
     inputExtension = os.path.splitext(name)[1]
-    outputExtension = documentType(inputExtension).outputExtension
-    return changeExtension(name, outputExtension)
+    type = documentType(inputExtension)
+    if type == None:
+        return name
+    return changeExtension(name, type.outputExtension)
 
 def unixDirectoryName(name):
     return string.replace(os.path.normpath(name), '\\', '/')                
 
 def changeExtension(fileName, newExtension):
     return os.path.splitext(fileName)[0] + newExtension
+
+def linkTable(linkSet):
+    text = []
+    links = len(linkSet)
+    if links <= 7:
+        # If there are at most 7 documentation
+        # children, they are simply listed below each other.
+        for link in linkSet:
+            linkTarget = link[0]
+            linkDescription = link[1]
+            # For some reason the <p></p> has to be there, or
+            # otherwise the result is garbage. I think it's
+            # Python Markdown which can't digest it without
+            # them.
+            tableEntry = '<p><a href="' + linkTarget + '">' + linkDescription + '</a></p>'
+            text.append(tableEntry)
+    else:
+        # Otherwise the children are shown
+        # using a table of 2 or 3 columns. 
+        
+        tableColumns = 0
+        tableRows = 0
+        if links <= 10:
+            tableColumns = 2
+            tableRows = 5
+        elif links < 13:
+            tableColumns = 2
+            tableRows = (links + tableColumns - 1) / tableColumns
+        elif links < 15:
+            tableColumns = 3
+            tableRows = 5
+        else:
+            tableColumns = 3
+            tableRows = (links + tableColumns - 1) / tableColumns
+            
+        tableRow = 0
+        tableColumn = 0
+        text.append('<table class = "division">')
+        text.append('<tr class = "division">')
+        
+        while tableRow < tableRows:
+            tableIndex = tableRow + tableColumn * tableRows
+            tableEntry = ''
+            if tableIndex < links:
+                link = linkSet[tableIndex] 
+                linkTarget = link[0]
+                linkDescription = link[1]
+                tableEntry = '<a href="' + linkTarget + '">' + linkDescription + '</a>'
+            text.append('<td class = "division">' + tableEntry + '</td>')                                
+                
+            tableColumn += 1
+            if tableColumn == tableColumns:
+                text.append('</tr>')
+                text.append('<tr>')
+                tableRow += 1
+                tableColumn = 0             
+        text.append('</tr>')
+        text.append('</table>')
+    return text
+    
