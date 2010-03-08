@@ -10,15 +10,15 @@ import re
 import codecs
          
 class Markdown_TagParser:
-    def __init__(self, tagSet, maxLines):
-        self.genericParser = Generic_TagParser(tagSet, maxLines)
+    def __init__(self, tagRegexMap, maxLines):
+        self.genericParser = Generic_TagParser(tagRegexMap, maxLines)
         self.maxLines = maxLines
         
-    def parse(self, document):
+    def parse(self, fileName):
         # Let the generic parser handle those tags
         # which can be found via regular expressions.
         
-        self.genericParser.parse(document)
+        tagSet = self.genericParser.parse(fileName)
         
         # This way we only have to handle the description.
         # The description is a file line which precedes
@@ -27,7 +27,7 @@ class Markdown_TagParser:
         lineRegex = re.compile(r'[ \t]*((==+=)|(--+-))')
         previousLine = ''
         
-        with codecs.open(document.fullName, mode = 'rU', encoding = 'utf-8-sig') as file:
+        with codecs.open(fileName, mode = 'rU', encoding = 'utf-8-sig') as file:
             lineNumber = 0
             for fileLine in file:
                 # Search for a description
@@ -35,8 +35,8 @@ class Markdown_TagParser:
                 match = lineRegex.search(fileLine)
                 if match != None:
                     # We have found a header!
-                    document.tagSet['description'] = string.strip(previousLine)
-                    return
+                    tagSet['description'] = string.strip(previousLine)
+                    break
                     
                 # We want to remember the previous line
                 # to be able to give the description when
@@ -47,3 +47,4 @@ class Markdown_TagParser:
                 if lineNumber >= self.maxLines:
                     # All tags must appear within 'maxLines' lines. 
                     break
+        return tagSet

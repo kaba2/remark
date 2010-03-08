@@ -121,7 +121,7 @@ class SourceChildren_Macro:
                 #    text.append('\n####' + detail + '\n')
                 linkDescription = child.fileName
                 linkTarget = linkAddress(targetDirectory, child.relativeName)
-                text += remarkConverter.remarkLink(linkDescription, outputDocumentName(linkTarget))
+                text.append(remarkConverter.remarkLink(linkDescription, outputDocumentName(linkTarget)))
                 text.append('')
             
         return text

@@ -1,27 +1,29 @@
 # -*- coding: utf-8 -*-
 
-# Description: Body_Macro class
-# Detail: Reads a document from file.
+# Description: Verbatim_Macro class
+# Detail: Reinterprets input as preformatted text.
 
-from Common import readFile
 from MacroRegistry import registerMacro
 
-class Body_Macro:
+class Verbatim_Macro:
     def expand(self, parameter, remarkConverter):
-        document = remarkConverter.document
-        text = readFile(remarkConverter.documentTree._fullName(document.relativeName))                        
+        text = []
+        
+        for line in parameter:
+            text.append('\t' + line)
+        
         return text
-    
+
     def outputType(self):
         return 'remark'
 
     def pureOutput(self):
-        return False
-    
+        return True
+
     def htmlHead(self, remarkConverter):
         return []                
 
     def postConversion(self, inputDirectory, outputDirectory):
         None
 
-registerMacro('Body', Body_Macro())
+registerMacro('Verbatim', Verbatim_Macro())

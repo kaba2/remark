@@ -17,6 +17,10 @@ and file is given as a link.
 
 Remark
 
+### Output expansion default
+
+Disabled.
+
 ### Parameters
 
 Ignored.

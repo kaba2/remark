@@ -16,6 +16,10 @@ to the descriptions of the target documents.
 
 Remark
 
+### Output expansion default
+
+Disabled.
+
 ### Parameters
 
 A list of target document paths for which the links are to be generated.
@@ -58,6 +62,7 @@ This
 		macros.txt
 		remark_syntax.txt
 		../../remark_syntax.txt
+		directory.index
 	
 produces this:
 
@@ -65,4 +70,5 @@ produces this:
 	macros.txt
 	remark_syntax.txt
 	../../remark_syntax.txt
+	directory.index
 	

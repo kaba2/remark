@@ -17,71 +17,25 @@ class GenericCode_Macro:
     def expand(self, parameter, remarkConverter):
         document = remarkConverter.document
         
-        # If no parameter is given, then the
-        # code is read from the document's file.
-        # Otherwise, the parameter is assumed to        
-        # contain some source code.
-        if parameter == []:
-            text = readFile(document.fullName)
-        else:
-            text = parameter
-
-        fileName = os.path.split(document.relativeName)[1]
-        
-        convertedText = []
-
-        # In the case the code is read from a file,
-        # we want to include a title, a back-link,
-        # and a directory link.
-        if parameter == []:
-            # Create the title
-            convertedText.append(fileName)
-            convertedText.append('=' * len(fileName))
-            convertedText.append('')
-            
-            # Create parent link.
-            convertedText.append('[[Parent]]')
-            convertedText.append('')
-        
-            # Create directory link.
-            convertedText += remarkConverter.remarkLink(unixDirectoryName(document.relativeDirectory) + '/', 'directory.htm')
-            convertedText.append('')
-        
-        # This 'div' allows, for example, to create
-        # a box around the code.
-        convertedText.append('[[Html]]:')
-        convertedText.append('\t<div class = "codehilite">')
+        # Prepare for Pygments input.
+        inputText = string.join(parameter, '\n')
 
         # Try to guess the type of the code.
-        inputText = string.join(text, '\n')
-        lexer = None
-        if parameter == []:
-            # In the case the code was loaded from a file, we
-            # primarily use its extension to guess the type
-            # of the code file. If this does not succeed,
-            # then the content of the code is examined.
-            lexer = guess_lexer_for_filename(document.fileName, inputText)
-        else:
-            # Otherwise we can only examine the code. 
-            lexer = guess_lexer(inputText)
+        lexer = guess_lexer_for_filename(document.fileName, inputText)
         
         # Highlight the code.
         hilightedText = highlight(inputText, lexer, HtmlFormatter())
+
+        # Prepare for Remark output.
         hilightedText = string.split(hilightedText, '\n')
         
-        # Replace every empty line with dummy html.
-        for line in hilightedText:
-            convertedText.append('\t' + line)
-                                
-        convertedText.append('\t</div>\n')
-        
-        return convertedText
+        return hilightedText
 
     def outputType(self):
-        return 'remark'
+        return 'html'
 
     def pureOutput(self):
-        return False
+        return True
 
     def htmlHead(self, remarkConverter):
         return []                

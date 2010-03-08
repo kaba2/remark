@@ -7,7 +7,7 @@
 import os.path
 import string
 import re
-from Common import documentType
+from Common import documentType, unixDirectoryName
 
 def fileSuffix(relativeName):
     index = string.rfind(relativeName, '.')
@@ -18,15 +18,14 @@ def filePrefix(relativeName):
     return relativeName[0 : index]
 
 class Document:
-    def __init__(self, relativeName, fullName):
-        self.fullName = os.path.normpath(fullName)
-        self.relativeName = os.path.normpath(relativeName)
+    def __init__(self, relativeName):
+        self.relativeName = unixDirectoryName(relativeName)
         self.relativeDirectory, self.fileName = os.path.split(relativeName)
-        self.relativeDirectory = os.path.normpath(self.relativeDirectory)
         self.extension = os.path.splitext(self.fileName)[1]
         self.tagSet = {'description' : '', 'detail' : ''}
         self.parent = None
         self.childSet = dict()
+        self.directorySet = set()
         
     def insertChild(self, child):
         if child.parent != None:
@@ -43,17 +42,22 @@ class DocumentTree:
     def __init__(self, rootDirectory):
         assert os.path.isdir(rootDirectory)
         
-        self.rootDirectory = os.path.normpath(rootDirectory)
-        self.root = Document('root', 'root')
-        self.orphan = Document('orphan.orphan', 'orphan.orphan')
+        self.rootDirectory = rootDirectory
+        self.root = Document('root')
+        self.orphan = Document('orphan.orphan')
         self.documentMap = {'orphan.orphan' : self.orphan}
         self.fileNameMap = {}
         self.otherFileSet = []
-
-        print '\nGathering files...',
-        self._gatherFiles()
-        print 'Done.'
         
+    def compute(self):        
+        print '\nGathering directories...',
+        self._gatherDirectories();
+        print 'Done.'
+
+        print '\nGenerating index files...',
+        self._generateIndexFiles();
+        print 'Done.'
+
         print '\nParsing tags'
         print '------------\n'
         self._parseTags()
@@ -77,9 +81,16 @@ class DocumentTree:
         self._constructFileNameMap()
         print 'Done.'
         
-        
-    def insertDocument(self, document):
-        self.documentMap[document.relativeName] = document
+    def insertDocument(self, relativeName):
+        fileName = os.path.split(relativeName)[1]
+        #print relativeName
+        if documentType(fileSuffix(fileName)) != None:
+            document = Document(relativeName)
+            self.documentMap[document.relativeName] = document
+            return document
+        else:
+            self.otherFileSet.append(relativeName)
+        return None
 
     def findDocument(self, documentName, relativeDirectory):
         '''
@@ -89,14 +100,7 @@ class DocumentTree:
         documentTree.findDocument('spam.txt', 'eggs/bar/') 
         See also: findDocumentOutwards().
         '''
-        #assert os.path.isdir(relativeDirectory)
-        relativeName = os.path.normpath(os.path.join(relativeDirectory, documentName))
-        if relativeName in self.documentMap:
-            # Found the document file!
-            return self.documentMap[relativeName]
-        
-        # Document file was not found.
-        return None
+        return self.findDocumentByName(unixDirectoryName(os.path.join(relativeDirectory, documentName)))
 
     def findDocumentByName(self, relativeName):
         '''
@@ -106,6 +110,7 @@ class DocumentTree:
         documentTree.findDocument('eggs/bar/spam.txt') 
         See also: findDocumentOutwards().
         '''
+        #relativeName = unixDirectoryName(relativeName)
         if relativeName in self.documentMap:
             # Found the document file!
             return self.documentMap[relativeName]
@@ -153,6 +158,8 @@ class DocumentTree:
         'unique' is a boolean that tells whether the choice
         was unique or not.
         '''
+        
+        documentName = unixDirectoryName(documentName)
                 
         fileName = os.path.split(documentName)[1]
         if fileName != documentName:
@@ -188,41 +195,31 @@ class DocumentTree:
     # Private stuff
     
     def _fullName(self, relativeName):
-        return os.path.normpath(os.path.join(self.path, relativeName))
-    
-    def _relativeName(self, fullName):
-        return os.path.normpath(os.path.relpath(fullName, self.rootDirectory))
-    
-    def _gatherFiles(self):
-        '''
-        Recursively gathers files starting from the root directory
-        that was passed in the constructor. A Document object is created
-        for each gathered file and stored in 'self.documentMap', a dictionary
-        keyed with the relative file path of the file. Only files with
-        a suffix with an associated parser are gathered.
-        '''
-        for pathName, directorySet, fileNameSet in os.walk(self.rootDirectory):
-            for fileName in fileNameSet:
-                fullName = os.path.normpath(os.path.join(pathName, fileName))
-                relativeName = self._relativeName(fullName)               
-                if documentType(fileSuffix(fileName)) != None:
-                    self.documentMap[relativeName] = Document(relativeName, fullName)
-                else:
-                    self.otherFileSet.append(relativeName)
-        
+        return os.path.normpath(os.path.join(self.rootDirectory, relativeName))
+
+    def _gatherDirectories(self):
         # Gather the set of directories in which the files reside at
         # (and their parent directories).
-        
-        self.directorySet = set()
+        directorySet = set()
         for document in self.documentMap.itervalues():
             directory = document.relativeDirectory
             while True:
-                self.directorySet.add(directory)
+                directorySet.add(directory)
                 newDirectory = os.path.normpath(os.path.split(directory)[0])
                 if newDirectory == directory:
                     break
                 directory = newDirectory
         
+        self.directorySet = directorySet
+
+    def _generateIndexFiles(self):
+        # We wish to generate an index to each directory in the
+        # directory tree.
+        for directory in self.directorySet:
+            relativeName = os.path.join(directory, 'directory.index')
+            document = self.insertDocument(relativeName)
+            document.tagSet['description'] = unixDirectoryName(document.relativeDirectory) + '/'
+
     def _parseTags(self):
         '''
         For each document in 'self.documentMap', runs its
@@ -232,7 +229,8 @@ class DocumentTree:
             key = fileSuffix(document.relativeName)
             type = documentType(key)
             if type != None:
-                type.parser.parse(document)
+                tagSet = type.parser.parse(self._fullName(document.relativeName))
+                document.tagSet.update(tagSet)
             
     def _resolveExplicitLinks(self):
         '''

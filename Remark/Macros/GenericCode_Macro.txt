@@ -15,11 +15,9 @@ html code.
 
 Html
 
-### Macro expansion of the output
+### Output expansion default
 
-Skipped. This is because the source code could
-contain Remark macros which could get erroneously
-expanded. 
+Disabled.
 
 ### Parameters
 

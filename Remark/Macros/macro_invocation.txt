@@ -1,0 +1,89 @@
+Macro invocation
+================
+
+[[Parent]]: macro.txt
+
+A macro can be invoked in four ways:
+ 
+ * with no parameters,
+ 
+ * with an inline parameter,
+ 
+ * with a one-line parameter,
+ 
+ * or with a multi-line parameter.
+ 
+To introduce invocation, we shall take the Comment macro as an example. 
+This macro takes in arbitrary input but does not output anything. 
+It can be used to comment the Remark source. 
+
+Styles of macro invocation 
+--------------------------
+
+### Invoking with no parameters
+
+The Comment macro is invoked with no parameters as follows:
+
+	[[Comment]]
+
+### Invoking with an inline parameter
+	
+With an inline parameter you would write like this:
+
+	[[Comment: This is an inline parameter.]]
+	
+### Invoking with a one-line parameter
+
+With a one-line parameter you would write like this:
+
+	[[Comment]]: This is a one-line parameter.
+
+### Invoking with a multi-line parameter
+	
+And with a multi-line parameter you would write like this:
+
+	[[Comment]]:
+		This is a multi-line parameter
+		which can use as many rows as needed.
+		
+The parameter is multi-line whenever:
+
+ * There is the ':' mark after the macro invocation.
+
+ * There is only white-space after the ':' on the same row.
+
+Range of a multi-line parameter
+-------------------------------
+
+The range of a multi-line parameter extends downwards
+until there is a line which contains non-white-space
+characters _and_ which has indentation (counted in _tabs_) 
+equal to or less than the indentation of the macro invocation. 
+For example:
+    
+	[[Comment]]:
+		This is a multi-line parameter
+		which can use as many rows as needed.
+		
+		This is still part of the multi-line parameter.
+		
+	This is not part of the Comment parameter.
+	
+Equivalence of invocation styles
+--------------------------------
+
+All styles of invocation are equivalent by the
+following rules:
+
+ * A multi-line parameter with a single row works equivalently
+to a one-line parameter. 
+
+ * A multi-line parameter with no rows works equivalently to as 
+ if no parameters were given.
+ 
+ * A one-line parameter works equivalently to an inline parameter.
+ 
+ * If both an inline parameter and an external parameter is given, 
+ then the latter follows the former and they work equivalently
+ to a corresponding multi-line parameter. 
+

@@ -16,4 +16,6 @@ __all__ = ['Body_Macro',
            'GenericCode_Macro',
            'FileLink_Macro',
            'Html_Macro',
-           'Gallery_Macro',]
+           'Gallery_Macro',
+           'Verbatim_Macro',
+           'DirectoryLink_Macro',]

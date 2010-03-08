@@ -16,6 +16,10 @@ images.
 
 html
 
+### Output expansion default
+
+Disabled.
+
 ### Parameters
 
 A list of the following form:

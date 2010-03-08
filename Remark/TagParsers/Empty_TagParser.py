@@ -7,5 +7,5 @@ class Empty_TagParser:
     def __init(self):
         None
         
-    def parse(self, document):
-        None
+    def parse(self, fileName):
+        return {}

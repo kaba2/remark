@@ -22,7 +22,7 @@ from TagParsers.Generic_TagParser import Generic_TagParser
 from TagParsers.Markdown_TagParser import Markdown_TagParser
 from TagParsers.Empty_TagParser import Empty_TagParser
 from Convert import convertAll
-from Common import registerDocumentType
+from Common import registerDocumentType, unixDirectoryName, linkAddress
 from optparse import OptionParser
 from Macros import *
 
@@ -87,17 +87,36 @@ use wildcards (e.g. *.png).""")
     '[[get end_text]]',]
 
     cppTemplate = \
-    ['[[CppCode]]',]
+    ['[[get description]]',
+     '===',
+     '',
+     '[[Parent]]',
+     '',
+     '[[Link]]: directory.index',
+     '',
+     '[[-+CppCode]]: [[-Body]]',]
+     
     
     genericCodeTemplate = \
-    ['[[GenericCode]]',]
+    ['[[get description]]',
+     '===',
+     '',
+     '[[Parent]]',
+     '',
+     '[[Link]]: directory.index',
+     '',
+     '[[-+GenericCode]]: [[-Body]]',]
 
     indexTemplate = \
-    ['[[Index]]',]
+    ['[[get description]]',
+     '===',
+     '',
+     '[[Index]]',]
     
     orphanTemplate = \
     ['Orphans',
     '=======',
+    '',
     '[[DocChildren]]',
     '[[SourceChildren]]',]
     
@@ -110,21 +129,23 @@ use wildcards (e.g. *.png).""")
     registerDocumentType('.hpp', '.hpp.htm', cppTemplate, cppParser, False)
     registerDocumentType('.py', '.py.htm', genericCodeTemplate, pythonParser, False)
     registerDocumentType('.m', '.m.htm', genericCodeTemplate, matlabParser, False)
+    registerDocumentType('.index', '.htm', indexTemplate, emptyParser, False)
     
     # Construct a document tree from the input directory.
     documentTree = DocumentTree(inputDirectory)
     #display(documentTree)
 
-    # We wish to generate an index to each directory in the
-    # directory tree.
-    
-    for directory in documentTree.directorySet:
-        relativeName = os.path.join(directory, 'directory.index')
-        fullName = os.path.join(documentTree.rootDirectory, relativeName)
-        documentTree.insertDocument(Document(relativeName, fullName))
-    
-    registerDocumentType('.index', '.htm', indexTemplate, emptyParser, False)
-    
+    # Recursively gather files starting from the input directory.
+    print '\nGathering files...',
+    for pathName, directorySet, fileNameSet in os.walk(inputDirectory):
+        for fileName in fileNameSet:
+            fullName = os.path.normpath(os.path.join(pathName, fileName))
+            relativeName = linkAddress(inputDirectory, fullName)
+            documentTree.insertDocument(relativeName)
+    print 'Done.'
+
+    documentTree.compute()
+   
     #if options.orphan == True:
     registerDocumentType('.orphan', '.htm', orphanTemplate, emptyParser, False)
 

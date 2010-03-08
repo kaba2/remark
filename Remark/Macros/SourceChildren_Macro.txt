@@ -16,6 +16,10 @@ This list is preceded by a level-1 heading.
 
 Remark
 
+### Output expansion default
+
+Disabled.
+
 ### Parameters
 
 Title. Default 'Files'.

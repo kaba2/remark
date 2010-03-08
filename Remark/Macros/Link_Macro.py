@@ -26,7 +26,7 @@ class Link_Macro:
             if linkDocument != None:
                 linkDescription = linkDocument.tag('description')
                 linkTarget = linkAddress(document.relativeDirectory, linkDocument.relativeName)
-                text += remarkConverter.remarkLink(linkDescription, outputDocumentName(linkTarget))
+                text.append(remarkConverter.remarkLink(linkDescription, outputDocumentName(linkTarget)))
                 if len(parameter) > 1:                
                     text += ['']
             else:
