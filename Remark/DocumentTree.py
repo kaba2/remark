@@ -45,9 +45,9 @@ class DocumentTree:
         self.rootDirectory = rootDirectory
         self.root = Document('root')
         self.orphan = Document('orphan.orphan')
+        self.orphan.tagSet['description'] = 'Orphans'
         self.documentMap = {'orphan.orphan' : self.orphan}
         self.fileNameMap = {}
-        self.otherFileSet = []
         
     def compute(self):        
         print '\nGathering directories...',
@@ -82,15 +82,9 @@ class DocumentTree:
         print 'Done.'
         
     def insertDocument(self, relativeName):
-        fileName = os.path.split(relativeName)[1]
-        #print relativeName
-        if documentType(fileSuffix(fileName)) != None:
-            document = Document(relativeName)
-            self.documentMap[document.relativeName] = document
-            return document
-        else:
-            self.otherFileSet.append(relativeName)
-        return None
+        document = Document(relativeName)
+        self.documentMap[document.relativeName] = document
+        return document
 
     def findDocument(self, documentName, relativeDirectory):
         '''

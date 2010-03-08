@@ -4,7 +4,7 @@
 # Detail: Generates links to documentation children.
 
 from MacroRegistry import registerMacro
-from Common import linkAddress, outputDocumentName
+from Common import linkAddress, outputDocumentName, linkTable
 
 class DocChildren_Macro:
     def expand(self, parameter, remarkConverter):
@@ -54,56 +54,10 @@ class DocChildren_Macro:
         for child in childSet:
             linkTarget = linkAddress(targetDirectory, child.relativeName)
             linkDescription = child.tag('description')
-            #linkSet.append('[[Link: ' + linkTarget + ']]')
-            linkSet.append('<a href="' + outputDocumentName(linkTarget) + '">' + linkDescription + '</a>')
-
-        links = len(linkSet)
-        if links <= 7:
-            # If there are at most 7 documentation
-            # children, they are simply listed below each other.
-            for link in linkSet:
-                text.append(link)
-                text.append('')
-        else:
-            # Otherwise the children are shown
-            # using a table of 2 or 3 columns. 
+            linkSet.append((outputDocumentName(linkTarget), linkDescription))
             
-            tableColumns = 0
-            tableRows = 0
-            if links <= 10:
-                tableColumns = 2
-                tableRows = 5
-            elif links < 13:
-                tableColumns = 2
-                tableRows = (links + tableColumns - 1) / tableColumns
-            elif links < 15:
-                tableColumns = 3
-                tableRows = 5
-            else:
-                tableColumns = 3
-                tableRows = (links + tableColumns - 1) / tableColumns
-                
-            tableRow = 0
-            tableColumn = 0
-            text.append('<table class = "division">')
-            text.append('<tr class = "division">')
-            
-            while tableRow < tableRows:
-                tableIndex = tableRow + tableColumn * tableRows
-                tableEntry = ''
-                if tableIndex < links: 
-                    tableEntry = linkSet[tableIndex]
-                text.append('<td class = "division">' + tableEntry + '</td>')                                
-                    
-                tableColumn += 1
-                if tableColumn == tableColumns:
-                    text.append('</tr>')
-                    text.append('<tr>')
-                    tableRow += 1
-                    tableColumn = 0             
-            text.append('</tr>')
-            text.append('</table>')
-                                
+        text += linkTable(linkSet)
+                               
         return text
 
     def outputType(self):

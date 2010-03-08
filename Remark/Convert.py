@@ -12,7 +12,7 @@ import codecs
 import copy
 
 from MacroRegistry import findMacro
-from Common import changeExtension, outputDocumentName, documentType, unixDirectoryName
+from Common import changeExtension, outputDocumentName, documentType, unixDirectoryName, copyIfNecessary
 
 class Scope:
     def __init__(self, parent):
@@ -435,6 +435,9 @@ class RemarkConverter:
         
         # Add link definitions
         for link in self.linkSet:
+            # Note, the link target is wrapped in angle brackets
+            # so that it also works with URLs that have a space
+            # in them.
             newText.append('[' + link[0] + ']: ' + link[1])
             
         for macro in self.usedMacroSet:
@@ -636,17 +639,26 @@ def convert(template, document, documentTree,
             outputFile.write('\n')
 
 def convertAll(documentTree, inputRootDirectory, targetRootDirectory):
-    for document in documentTree.documentMap.itervalues():
+    # We wish to convert the files in alphabetical order
+    # (in the map they are in hashed order).
+    sortedDocumentSet = documentTree.documentMap.values()
+    sortedDocumentSet.sort(lambda x, y: cmp(x.relativeName, y.relativeName))
+    for document in sortedDocumentSet:
+        print '.',
         type = documentType(document.extension) 
         #if type == None or document.fileName != 'Body_Macro.txt':
         if type == None:
-            continue
-        #print document.relativeName, '...'
-        print '.',
-        convert(type.template, document, documentTree, 
-                inputRootDirectory, targetRootDirectory)
+            # This file has no associated document type.
+            # Simply copy it.
+            print 'Copying', document.relativeName, '...'
+            copyIfNecessary(os.path.join(inputRootDirectory, document.relativeName),
+                            os.path.join(targetRootDirectory, document.relativeName))
+        else:
+            print 'Expanding', document.relativeName, '...'
+            convert(type.template, document, documentTree, 
+                    inputRootDirectory, targetRootDirectory)
 
-    print
+    print ''
     
 def _leadingTabs(text):
     tabs = 0
