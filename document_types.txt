@@ -53,7 +53,14 @@ AsciiMath interpretation
 Document template
 :	
 		
-		[[CppCode]]
+		[[get file_name]]
+		===
+	
+		[[Parent]]
+	
+		[[Link]]: directory.index
+	
+		[[-+CppCode]]: [[-Body]]
 
 ### Generic source-code file
 
@@ -67,9 +74,16 @@ AsciiMath interpretation
 :	Disabled
 
 Document template
-:
-
-		[[GenericCode]]
+:	
+		
+		[[get file_name]]
+		===
+	
+		[[Parent]]
+	
+		[[Link]]: directory.index
+	
+		[[-+GenericCode]]: [[-Body]]
 
 ### Directory view
 
@@ -85,8 +99,11 @@ AsciiMath interpretation
 Document template
 : 
 
+		[[get description]]
+		===
+		
 		[[Index]]
-
+	
 ### Orphan list
 
 Input Extension
@@ -102,8 +119,9 @@ Document template
 : 
 
 		Orphans
-    	=======
-    	[[DocChildren]]
-    	[[SourceChildren]]
+		=======
+		
+		[[DocChildren]]
+		[[SourceChildren]]
  
  

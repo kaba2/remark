@@ -18,8 +18,8 @@ class Gallery_Macro:
         inputRootDirectory = remarkConverter.inputRootDirectory
         targetRootDirectory = remarkConverter.targetRootDirectory
         
-        thumbnailMaxWidth = scope.getInteger('Gallery.thumbnail_max_width', 256)
-        thumbnailMaxHeight = scope.getInteger('Gallery.thumbnail_max_height', 256)
+        thumbnailMaxWidth = scope.getInteger('Gallery.thumbnail_max_width', 200)
+        thumbnailMaxHeight = scope.getInteger('Gallery.thumbnail_max_height', 200)
 
         # Gather a list of images and their captions.
         entrySet = []
@@ -86,9 +86,9 @@ class Gallery_Macro:
                     image = Image.open(sourceName)
                     image.thumbnail((thumbnailMaxWidth, thumbnailMaxHeight), Image.ANTIALIAS)
                     image.save(targetName, 'PNG')
-                    print 'Created a thumbnail for', imageFileName, '.' 
+                    remarkConverter.report('Gallery_Macro: Created a thumbnail for ' + imageFileName + '.') 
                 except IOError:
-                    remarkConverter.reportWarning('Cannot create thumbnail for ' + imageFileName + '.')
+                    remarkConverter.reportWarning('Gallery_Macro: Cannot create thumbnail for ' + imageFileName + '.')
                     continue
         
         text.append('</div>')

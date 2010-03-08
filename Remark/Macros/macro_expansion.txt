@@ -44,9 +44,9 @@ for both expansions, i.e. - = -- and + = ++.
 
 ### Default behaviors
 
-If the expansions signs are not given, then
+If the expansion signs are not given, then
 the expansions assume default behaviors. 
-The default behavior for the parameter expansion
+The default behavior for parameter expansion
 is not to do it. The default behavior 
 for output expansion is determined by the invoked 
 macro.

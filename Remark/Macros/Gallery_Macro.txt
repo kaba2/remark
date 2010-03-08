@@ -38,11 +38,11 @@ Specification of captions is not required.
 
 thumbnail_max_width 
 : 	A maximum for the width of a thumbnail in pixels.
-	Default 256.
+	Default 200.
 
 thumbnail_max_height
 : 	A maximum for the height of a thumbnail in pixels.
-	Default 256.
+	Default 200.
 	
 Example
 -------

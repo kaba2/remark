@@ -41,7 +41,7 @@ class DocChildren_Macro:
         scopeTitle = scope.search('DocChildren.title')
         if scopeTitle != None:
             if len(scopeTitle) != 1:
-                print 'Warning: DocChildren: \'DocChildren.title\' should be a one-line parameter. Ignoring it and using the default.'
+                remarkConverter.reportWarning('DocChildren: \'DocChildren.title\' should be a one-line parameter. Ignoring it and using the default.')
             else:
                 title = scopeTitle[0]
             
