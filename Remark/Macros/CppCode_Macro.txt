@@ -8,8 +8,7 @@ Description
 
 ### Action
 
-Color-encodes C and C++ source code. Outputs corresponding
-html code. 
+Highlights C++ source code. Outputs corresponding html code. 
 
 ### Output type
 
@@ -21,9 +20,7 @@ Disabled.
 
 ### Parameters
 
-The parameter is interpreted as the input C++ source code.
-If the parameter is not given, the content is loaded from 
-the currently processed document file. 
+The C++ source code to highlight.
 
 ### Variables
 
@@ -31,8 +28,7 @@ None.
 
 ### Details
 
-The color-encoding is carried out by the Pygments Python library.
-Note that Markdown syntax allows for inlined html.
+The color-encoding is carried out by the Pygments library.
 
 Example
 -------

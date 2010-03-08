@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 
-# Description: SkipExpansion_Macro class
-# Detail: Copies the input to output and skips macro expansion.
+# Description: Copy_Macro class
+# Detail: Copies the input to output.
 
 from MacroRegistry import registerMacro
 
-class SkipExpansion_Macro:
+class Copy_Macro:
     def expand(self, parameter, remarkConverter):
         return parameter
 
@@ -13,7 +13,7 @@ class SkipExpansion_Macro:
         return 'remark'
 
     def pureOutput(self):
-        return True
+        return False
 
     def htmlHead(self, remarkConverter):
         return []                
@@ -21,4 +21,4 @@ class SkipExpansion_Macro:
     def postConversion(self, inputDirectory, outputDirectory):
         None
 
-registerMacro('SkipExpansion', SkipExpansion_Macro())
+registerMacro('Copy', Copy_Macro())

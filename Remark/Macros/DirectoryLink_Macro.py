@@ -25,7 +25,8 @@ class DirectoryLink_Macro:
             
             if linkDocument != None:
                 linkDescription = linkDocument.relativeDirectory + '/'
-                linkTarget = linkAddress(document.relativeDirectory, linkDocument.relativeName)
+                linkTarget = linkAddress(document.relativeDirectory, 
+                                         os.path.join(linkDocument.relativeDirectory, 'directory.index'))
                 text.append(remarkConverter.remarkLink(linkDescription, outputDocumentName(linkTarget)))
                 if len(parameter) > 1:                
                     text += ['']
