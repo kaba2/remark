@@ -1,0 +1,52 @@
+Ref macro
+=========
+
+[[Parent]]: macros.txt
+
+Description
+-----------
+
+### Action
+
+Returns the relative output names of the given 
+documents.
+
+### Output type
+
+Remark
+
+### Output expansion default
+
+Disabled.
+
+### Parameters
+
+A list of target document paths for which the links are to be generated.
+
+### Variables
+
+None.
+
+Example
+-------
+
+This:
+	
+	When links need to be [given specific names][1], they can use
+	the combination of a Markdown link with the Ref macro in the
+	definition of the link.
+	
+	[1]: [[Ref: Ref_Macro.txt]]  
+	
+produces this:
+
+When links need to be [given specific names][1], they can use
+the combination of a Markdown link with the Ref macro in the
+definition of the link.
+
+[1]: [[Ref: Ref_Macro.txt]]  
+
+See also
+--------
+
+[[Link]]: file_searching_algorithm.txt

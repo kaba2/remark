@@ -3,9 +3,9 @@ File searching algorithm
 
 [[Parent]]: macro.txt
 
-Many of the macros, such as Link, FileLink, and Gallery, use
-the same file searching algorithm to match a given file path
-to a unique file in the document tree. We specify that algorithm
+Many of the macros, such as Link, FileLink, DirectoryLink, Gallery, 
+and Ref, use the same file searching algorithm to match a given file 
+path to a unique file in the document tree. We specify that algorithm
 here. Knowing this algorithm is essential to being able to build 
 documentation that is robust to changes in the directory structure.
 
