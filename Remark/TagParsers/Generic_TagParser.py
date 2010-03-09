@@ -17,7 +17,7 @@ class Generic_TagParser:
             lineNumber = 0
             for fileLine in file:
                 for tagName, tagRegex in self.tagRegexMap.iteritems():
-                    match = tagRegex.match(fileLine)
+                    match = tagRegex.search(fileLine)
                     if match != None:
                         if tagName in tagSet and tagSet[tagName] != '':
                             print 'Warning:', fileName, 

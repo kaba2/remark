@@ -650,11 +650,11 @@ def convertAll(documentTree, inputRootDirectory, targetRootDirectory):
         if type == None:
             # This file has no associated document type.
             # Simply copy it.
-            print 'Copying', document.relativeName, '...'
+            #print 'Copying', document.relativeName, '...'
             copyIfNecessary(os.path.join(inputRootDirectory, document.relativeName),
                             os.path.join(targetRootDirectory, document.relativeName))
         else:
-            print 'Expanding', document.relativeName, '...'
+            #print 'Expanding', document.relativeName, '...'
             template = type.generateMarkdown(os.path.join(inputRootDirectory, document.relativeName))
             convert(template, document, documentTree, 
                     inputRootDirectory, targetRootDirectory)
