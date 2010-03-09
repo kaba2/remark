@@ -1,0 +1,51 @@
+Implicit rules
+==============
+
+[[Parent]]: user_documentation.txt
+
+A large part of the convenience of Remark relies on implicit
+rules which fill in the details when those are not given.
+These rules are constructed such that most of the time they
+do the right thing. Such implicit rules save work by minimizing
+the effort that needs to be done to build and maintain the
+documentation. 
+
+Implicit description
+--------------------
+
+Often a group of documents can be described by a single description. 
+To reduce the number of tag embeddings in these cases, Remark defines 
+the following implicit rules:
+
+ * Files which reside in the same directory and have the same name without 
+ the extension share the same description.
+ 
+ * A document which does not have a description after the previous rule 
+ is given (if exists) the description of the source file which:
+ 	1. is in the same directory
+ 	2. has a description
+ 	3. without the extension has a filename which is the longest prefix 
+ 	of the name of the to-be-described file.
+
+Implicit parent
+---------------
+
+If a document with the RemarkPage type does not specify a parent, 
+it is assigned the orphan node as the parent. If some other type of document
+does not specify a parent, Remark gives the file an implicitly-defined 
+parent. The logic for this goes as follows:
+
+ * In the same directory, search for the longest prefix file (excluding the 
+ file itself). Give documents with RemarkPage type priority over other 
+ documents. Only consider those files which have a parent document. If there 
+ are multiple candidate files, pick one arbitrarily (Remark reports a warning 
+ about the ambiguity). 
+ 
+ * If a document with the RemarkPage type is found, assign it as a parent. 
+
+ * Otherwise, if some other type of document is found, assign its parent 
+ as a parent. 
+
+ * Otherwise, assign the orphan node as a parent.
+
+
