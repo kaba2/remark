@@ -21,7 +21,7 @@ See the installation instructions below.
 News
 ----
 
-### 24.02.2010: Released Remark 1.2.0
+### 10.03.2010: Released Remark 1.2.0
 
 #### Core
 
@@ -31,7 +31,7 @@ News
  expansion behavior in macro invocation.
  * Allowed local variables for macros.
  * Allowed parameter passing for variables to turn
- them into user-defined macros. 
+ them into user-defined text transformations. 
  * Variables can now be retrieved simply by their name,
  rather than having to use `get`. 
  * Added `set_many` command to set variables easily.

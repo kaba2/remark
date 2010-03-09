@@ -29,6 +29,11 @@ relative_name
 
 The following variables have a special meaning:
 
+parameter
+:	A local variable which is created when a macro is
+	invoked. Contains the parameter that was passed
+	to the macro.
+
 html_head
 :	This text is appended to the head section of the html-page,
 	after the text that is possibly appended by macros.
@@ -38,25 +43,18 @@ Examples
 
 This:
 
-	1. [[get description]]
+	1. [[description]]
 	
-	2. [[get file_name]]
+	2. [[file_name]]
 
-	3. [[get relative_name]]
+	3. [[relative_name]]
 
-	4. [[get detail]]
-	
 produces this:
 
 [[+Verbatim]]:
-	1. [[get description]]
+	1. [[description]]
 	
-	2. [[get file_name]]
+	2. [[file_name]]
 
-	3. [[get relative_name]]
-
-	4. [[get detail]]
-	
-Note that Remark source files do not have a detailed description
-and that is why nothing is output for it.
+	3. [[relative_name]]
 	
