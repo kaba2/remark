@@ -5,10 +5,8 @@ Implicit rules
 
 A large part of the convenience of Remark relies on implicit
 rules which fill in the details when those are not given.
-These rules are constructed such that most of the time they
-do the right thing. Such implicit rules save work by minimizing
-the effort that needs to be done to build and maintain the
-documentation. 
+Such implicit rules save work by minimizing the effort that 
+needs to be done to build and maintain the documentation. 
 
 Implicit description
 --------------------

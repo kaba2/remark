@@ -76,11 +76,4 @@ How can I inject html code to the head section of the page?
 
 Store text in the `html_head` variable.
 
-Things don't work out for a link if there are spaces in the path
-----------------------------------------------------------------
-
-This is a problem with the Markdown link implementation in Python
-Markdown. The official specification allows to use angle brackets
-to bound paths with spaces. However, Python Markdown does not seem
-to support this.
 
