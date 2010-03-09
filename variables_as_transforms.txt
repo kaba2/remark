@@ -3,8 +3,8 @@ Variables as text transformations
 
 [[Parent]]: variables.txt
 
-In this page we view variables as user-defined functions
-that transform text. 
+This page introduces variables from the view-point that they
+are user-defined text transformations. 
 
 Constant-output macros
 ----------------------
