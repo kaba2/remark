@@ -1,0 +1,103 @@
+Advanced use of variables
+=========================
+
+[[Parent]]: variables.txt
+
+In this page we will look at variables more generally as user-defined 
+macros (i.e. functions) that transform text. 
+
+Constant-output macros
+----------------------
+
+In basic use variables can be thought of as simply storing text. 
+However, their role in Remark is somewhat general. Consider first 
+the following variable:
+
+	[[set my_macro]]: Hello world!
+
+[[set my_macro]]: Hello world!
+
+Taking a bit different view, we interpret my_macro as a user-defined 
+macro that takes in arbitrary input and produces as output `Hello world!`. 
+For example, this:
+
+	[[my_macro]]
+	
+	[[my_macro]]: Arbitrary input.
+
+produces this:
+
+[[my_macro]]
+
+[[my_macro]]: Arbitrary input.
+
+Constant-output macros have their uses, but more generally we would like 
+to build macros whose output are dependent on the input.
+
+Input-dependent macros
+----------------------
+
+Remark passes the parameter of a macro in the parameter variable. Using 
+this knowledge we can build a generalized version of our macro:
+
+	[[set my_macro]]: Hello [[parameter]]!
+
+[[set my_macro]]: Hello [[parameter]]!
+
+Then this:
+
+	[[my_macro]]: world
+	
+	[[my_macro]]: jello
+
+produces this:
+
+[[my_macro]]: world
+
+[[my_macro]]: jello
+
+Viewing the macro
+-----------------
+
+The 'source code' of a macro can be viewed by disallowing expansion.
+For example, this:
+
+	[[-my_macro]]
+
+produces this:
+
+[[-my_macro]]
+
+Variable scopes
+---------------
+
+Each macro invocation creates a new local variable scope into the 
+current variable scope. Consider the following example:
+
+	[[set word: world]]
+	
+	[[set my_macro]]:
+	    [[set word: jello]]
+	    Hello [[word]]!
+
+[[set word: world]]
+
+[[set my_macro]]:
+    [[set word: jello]]
+    Hello [[word]]!
+
+Then this:
+
+	[[my_macro]]
+	
+	word = [[word]]
+
+produces this:
+
+[[my_macro]]
+
+word = [[word]]
+
+That is, the variable word inside set my_macro is introduced as a 
+local variable and hence does not affect the word variable at the 
+outer scope.

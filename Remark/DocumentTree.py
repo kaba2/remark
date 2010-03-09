@@ -22,7 +22,9 @@ class Document:
         self.relativeName = unixDirectoryName(relativeName)
         self.relativeDirectory, self.fileName = os.path.split(relativeName)
         self.extension = os.path.splitext(self.fileName)[1]
-        self.tagSet = {'description' : '', 'detail' : ''}
+        self.tagSet = {'description' : '', 
+                       'detail' : '',
+                       'author' : ''}
         self.parent = None
         self.childSet = dict()
         self.directorySet = set()
@@ -33,10 +35,10 @@ class Document:
         self.childSet[child.relativeName] = child
         child.parent = self
         
-    def tag(self, name):
+    def tag(self, name, defaultValue = ''):
         if name in self.tagSet:
             return self.tagSet[name]
-        return ''
+        return defaultValue
 
 class DocumentTree:
     def __init__(self, rootDirectory, parserLines = 100):

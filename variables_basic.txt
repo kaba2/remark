@@ -1,4 +1,4 @@
-Working with variables
+Basic use of variables
 ======================
 
 [[Parent]]: variables.txt
@@ -52,17 +52,28 @@ Retrieving a variable
 The text contained in a variable can be obtained
 in this way:
 
-	[[get Gallery.thumb_min_length]]
+	[[Gallery.thumb_min_length]]
 
-	[[get some_file_list]]
+	[[some_file_list]]
 	
 This simply expands into the stored text:
 
 [[+Verbatim]]:
-	[[get Gallery.thumb_min_length]]
+	[[Gallery.thumb_min_length]]
 	
+	[[some_file_list]]
+
+### Alternative form
+
+Alternatively one can use:
+
+	[[get Gallery.thumb_min_length]]
+
 	[[get some_file_list]]
 
+However, we encourage using the first form
+because it has less clutter.
+	
 Appending to a variable
 -----------------------
 
@@ -76,12 +87,12 @@ Lines can be appended into a variable like this:
 
 After which invoking
 
-	[[get some_file_list]]
+	[[some_file_list]]
 	
 Yields:
 
 [[+Verbatim]]:
-	[[get some_file_list]]
+	[[some_file_list]]
 
 [[Comment]]:
 	Scopes
