@@ -1,5 +1,5 @@
-Advanced use of variables
-=========================
+Variables as text transformations
+=================================
 
 [[Parent]]: variables.txt
 
