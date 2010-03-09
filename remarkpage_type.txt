@@ -1,0 +1,61 @@
+RemarkPage document type
+========================
+
+[[Parent]]: document_types.txt
+
+The RemarkPage document type is used to write the part of the 
+documentation that can't be generated automatically. The page
+you are reading right now has been generated from a document of
+this type. RemarkPage is special among document types in that
+is sometimes given priority, such as when finding a parent 
+document by implicit rules. RemarkPage documents load the content
+from a file by the Body macro, and assume that the loaded content 
+is in [[Link: remark_syntax.txt]].
+
+Specification of tags
+---------------------
+
+The parent document is specified by writing somewhere in the file 
+
+	[[Parent]]: name_of_parent.txt 
+
+You might notice that this is also a macro invocation.
+This is indeed the case: the Parent macro has been given
+a double-role both as a tag and a macro.   
+
+The description is extracted from the first encountered heading.
+A detailed description can not be given.
+
+Properties
+----------
+
+Input extension
+: 	.txt
+
+Output extension
+: 	.htm
+
+AsciiMath interpretation
+:	Enabled
+
+Document template
+: 
+
+		[[Body]]
+	    [[DocChildren]]
+	    [[get mid_text]]
+	    [[SourceChildren]]
+	    [[get end_text]]
+
+	The purpose of the get macros is to enable the documentation
+	writer some freedom over positioning. For example, the
+	following can be used to place a link list at the end:
+	
+		[[set end_text]]:
+			Links
+			-----
+			
+			[[Link]]: some_file.txt
+
+Document syntax
+:	Remark

@@ -1,7 +1,7 @@
 Algorithm
 =========
 
-[[Parent]]: user_documentation.txt
+[[Parent]]: implementation.txt
 
 This page describes the algorithm Remark uses to generate the
 resulting web-pages. Before reading this page you should be
@@ -15,9 +15,10 @@ Constructing the document tree
 ### Gathering files and directories
 
 This step gathers a linear list of those files that are located
-in the input directory or its sub-directories. Only registered
-file extensions are accepted. Files are identified with their 
-location relative to the input directory (a _relative filename_).
+in the input directory or its sub-directories. Files are identified 
+with their location relative to the input directory (called a _root name_).
+Only those files are accepted which have an associated document
+type or are explicitly specified at the invocation of Remark. 
 
 After the files have been gathered, their containing directories
 are gathered. If a directory is gathered, then so is its parent 

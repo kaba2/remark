@@ -54,11 +54,11 @@ This
 		thumbnail_max_height 180
 	
 	[[Gallery]]:
-		../../images/hsv.png
+		hsv.png
 		- A visualization of the HSV color space (with full saturation). 
 		../../images/hsv.png
-		- Another caption.
 		../../images/hsv.png
+		- Another caption.
 		../../images/hsv.png
 	
 produces this:
@@ -68,9 +68,14 @@ produces this:
 	thumbnail_max_height 180
 
 [[Gallery]]:
-	../../images/hsv.png
+	hsv.png
 	- A visualization of the HSV color space (with full saturation). 
+	../../images/hsv.png
 	../../images/hsv.png
 	- Another caption.
 	../../images/hsv.png
-	../../images/hsv.png
+
+See also
+--------
+
+[[Link]]: file_searching_algorithm.txt

@@ -1,0 +1,70 @@
+File searching algorithm
+========================
+
+[[Parent]]: macro.txt
+
+Many of the macros, such as Link, FileLink, and Gallery, use
+the same file searching algorithm to match a given file path
+to a unique file in the document tree. We specify that algorithm
+here. Knowing this algorithm is essential to being able to build 
+documentation that is robust to changes in the directory structure.
+
+Algorithm
+--------- 
+
+### Relative paths
+
+A relative path is interpreted relative to the location of the 
+currently handled document. In this case the algorithm looks only at 
+this specific location. For example, the parameters in the following 
+macro invocations are relative paths:
+
+	[[Link]]: ../../remark.txt
+	
+	[[Link]]: ../TagParsers/tag_parsers.txt
+	
+They correctly produce the following links:
+	
+[[Link]]: ../../remark.txt
+
+[[Link]]: ../TagParsers/tag_parsers.txt
+
+While this works, notice that relative paths are fragile to 
+changes in the directory structure. For example, if we moved 
+this document to a new sub-directory in the current directory,
+the link above would be broken. 
+
+### Pure filenames
+
+Pure filenames are searched as follows:
+
+ 1. Search from the current directory.
+ 
+ 2. If not found, search from the parent directories up until 
+ to the documentation root.
+ 
+ 3. If not found, search across all documents in the
+ document tree. In case there are multiple documents
+ with the given filename, pick one arbitrarily and
+ report a warning of the ambiguity.
+
+For example, the parameters in the following macro invocations 
+are pure filenames:
+
+	[[Link]]: remark.txt
+	
+	[[Link]]: tag_parsers.txt
+	
+They correctly produce the following links by the 
+rules 2 and 3:
+	
+[[Link]]: remark.txt
+
+[[Link]]: tag_parsers.txt
+
+Guidance
+--------
+
+Use the pure filename form whenever you can. Use the relative
+path form only when it is necessary to avoid an ambiguity or when
+the implicit rules do not do what you want. 

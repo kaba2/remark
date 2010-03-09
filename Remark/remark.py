@@ -18,18 +18,23 @@ import fnmatch
 
 from DocumentTree import Document
 from DocumentTree import DocumentTree
+
+from DocumentTypes.CppCodeView_DocumentType import CppCodeView_DocumentType
+from DocumentTypes.GenericCodeView_DocumentType import GenericCodeView_DocumentType
+from DocumentTypes.RemarkPage_DocumentType import RemarkPage_DocumentType
+from DocumentTypes.DirectoryView_DocumentType import DirectoryView_DocumentType
+from DocumentTypes.Orphan_DocumentType import Orphan_DocumentType
+
 from TagParsers.Generic_TagParser import Generic_TagParser
 from TagParsers.Markdown_TagParser import Markdown_TagParser
 from TagParsers.Empty_TagParser import Empty_TagParser
-from Convert import convertAll
-from Common import registerDocumentType, unixDirectoryName, linkAddress, documentType
-from optparse import OptionParser
-from Macros import *
 
-def commentParserTags(comment):
-    return {'description' : re.compile(r'[ \t]*' + comment + '[ \t]*Description[ \t]*:[ \t]*(.*)'),
-            'detail' : re.compile(r'[ \t]*' + comment + '[ \t]*Detail[ \t]*:[ \t]*(.*)'),
-            'parent' : re.compile(r'[ \t]*' + comment + '[ \t]*Documentation[ \t]*:[ \t]*(.*)')}
+from Convert import convertAll
+from Common import unixDirectoryName, linkAddress 
+from Common import documentType, associateDocumentType
+from optparse import OptionParser
+
+from Macros import *
 
 if __name__ == '__main__':
     optionParser = OptionParser(usage = """\
@@ -72,68 +77,28 @@ use wildcards (e.g. *.png).""")
     print 'Input directory:', inputDirectory
     print 'Output directory:', outputDirectory
 
-    cppParser = Generic_TagParser(commentParserTags('//'), options.lines)
-    matlabParser = Generic_TagParser(commentParserTags('%'), options.lines)
-    pythonParser = Generic_TagParser(commentParserTags('#'), options.lines)
-    emptyParser = Empty_TagParser()
+    # Associate document types with filename extensions.
     
-    txtParser = Markdown_TagParser({'parent' : re.compile(r'\[\[Parent\]\]:[ \t]*(.*)')}, options.lines)
-    
-    docTemplate = \
-    ['[[Body]]',
-    '[[DocChildren]]',
-    '[[get mid_text]]',
-    '[[SourceChildren]]',
-    '[[get end_text]]',]
-
-    cppTemplate = \
-    ['[[get file_name]]',
-     '===',
-     '',
-     '[[Parent]]',
-     '',
-     '[[Link]]: directory.index',
-     '',
-     '[[-+CppCode]]: [[-Body]]',]
-     
-    
-    genericCodeTemplate = \
-    ['[[get file_name]]',
-     '===',
-     '',
-     '[[Parent]]',
-     '',
-     '[[Link]]: directory.index',
-     '',
-     '[[-+GenericCode]]: [[-Body]]',]
-
-    indexTemplate = \
-    ['[[get description]]',
-     '===',
-     '',
-     '[[Index]]',]
-    
-    orphanTemplate = \
-    ['Orphans',
-    '=======',
-    '',
-    '[[DocChildren]]',
-    '[[SourceChildren]]',]
-    
-    registerDocumentType('.txt', '.htm', docTemplate, txtParser, True)
-    registerDocumentType('.cpp', '.cpp.htm', cppTemplate, cppParser, False)
-    registerDocumentType('.cc', '.cc.htm', cppTemplate, cppParser, False)
-    registerDocumentType('.c', '.c.htm', cppTemplate, cppParser, False)
-    registerDocumentType('.h', '.h.htm', cppTemplate, cppParser, False)
-    registerDocumentType('.hh', '.hh.htm', cppTemplate, cppParser, False)
-    registerDocumentType('.hpp', '.hpp.htm', cppTemplate, cppParser, False)
-    registerDocumentType('.py', '.py.htm', genericCodeTemplate, pythonParser, False)
-    registerDocumentType('.m', '.m.htm', genericCodeTemplate, matlabParser, False)
-    registerDocumentType('.index', '.htm', indexTemplate, emptyParser, False)
-    registerDocumentType('.orphan', '.htm', orphanTemplate, emptyParser, False)
+    remarkPageType = RemarkPage_DocumentType()
+    cppCodeViewType = CppCodeView_DocumentType()
+    genericCodeViewType= GenericCodeView_DocumentType()
+    directoryViewType = DirectoryView_DocumentType()
+    orphanType = Orphan_DocumentType()
+       
+    associateDocumentType('.txt', remarkPageType)
+    associateDocumentType('.cpp', cppCodeViewType)
+    associateDocumentType('.cc', cppCodeViewType)
+    associateDocumentType('.c', cppCodeViewType)
+    associateDocumentType('.h', cppCodeViewType)
+    associateDocumentType('.hh', cppCodeViewType)
+    associateDocumentType('.hpp', cppCodeViewType)
+    associateDocumentType('.py', genericCodeViewType)
+    associateDocumentType('.m', genericCodeViewType)
+    associateDocumentType('.index', directoryViewType)
+    associateDocumentType('.orphan', orphanType)
     
     # Construct a document tree from the input directory.
-    documentTree = DocumentTree(inputDirectory)
+    documentTree = DocumentTree(inputDirectory, options.lines)
     #display(documentTree)
 
     # Recursively gather files starting from the input directory.

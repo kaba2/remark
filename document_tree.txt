@@ -1,0 +1,27 @@
+Document tree
+=============
+
+[[Parent]]: user_documentation.txt
+
+Implicit parent document
+------------------------
+
+If a document with the RemarkPage type does not specify a parent, 
+it is assigned the orphan node as the parent. If some other type of document
+does not specify a parent, Remark gives the file an implicitly-defined 
+parent. The logic for this goes as follows:
+
+ * In the same directory, search for the longest prefix file (excluding the 
+ file itself). Give documents with RemarkPage type priority over other 
+ documents. Only consider those files which have a parent document. If there 
+ are multiple candidate files, pick one arbitrarily (Remark reports a warning 
+ about the ambiguity). 
+ 
+ * If a document with the RemarkPage type is found, assign it as a parent. 
+
+ * Otherwise, if some other type of document is found, assign its parent 
+ as a parent. 
+
+ * Otherwise, assign the orphan node as a parent.
+
+

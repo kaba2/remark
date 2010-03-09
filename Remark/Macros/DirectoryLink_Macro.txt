@@ -22,35 +22,10 @@ Disabled.
 ### Parameters
 
 A list of target document paths for which the links are to be generated.
-If a relative path is given, the file is linked to if it exists at the 
-specified location. Otherwise, if only a filename is given, a search 
-algorithm tries to find the document via implicit rules. This algorithm 
-is detailed below.      
-
-Normally you should use the form where you only specify the 
-filename rather than a relative path. This is because most 
-of the time the search algorithm does the right thing, and 
-this also makes your pages robust against changes in the 
-directory structure.  
 
 ### Variables
 
 None.
-
-### Details
-
-The search algorithm for the case when
-only a filename is given is as follows:
-
- 1. Search from the current directory.
- 
- 3. If not found, search from the parent directories up until 
- to the document tree root.
- 
- 4. If not found, search across all documents in the
- document tree. In case there are multiple documents
- with the given filename, pick one arbitrarily and
- report a warning of the ambiguity.
 
 Example
 -------
@@ -70,3 +45,8 @@ produces this:
 	remark_syntax.txt
 	../../remark_syntax.txt
 	directory.index
+
+See also
+--------
+
+[[Link]]: file_searching_algorithm.txt

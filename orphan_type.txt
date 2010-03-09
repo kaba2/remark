@@ -1,0 +1,37 @@
+Orphan document type
+====================
+
+[[Parent]]: document_types.txt
+
+The Orphan document type is used to generate a page which
+simply lists its documentation as well as source children.
+Remark makes use of this document type by creating a 
+virtual `orphan.orphan` node in the root of document tree,
+called the _orphan node_. Those documents which do not
+find a parent document elsewhere are assigned as children
+of the orphan node. The role of the orphan document is
+to generate a useful check report to see that one hasn't
+forgotten to link some important documents properly into 
+the documentation. 
+
+Properties
+----------
+
+Input Extension
+: .orphan
+
+Output extension
+: .htm
+
+AsciiMath interpretation
+:	Disabled
+
+Document template
+: 
+
+		Orphans
+		=======
+		
+		[[DocChildren]]
+		[[SourceChildren]]
+ 

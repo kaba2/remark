@@ -13,6 +13,7 @@ import Image
 
 class Gallery_Macro:
     def expand(self, parameter, remarkConverter):
+        documentTree = remarkConverter.documentTree
         scope = remarkConverter.scopeStack.top()
         document = remarkConverter.document
         inputRootDirectory = remarkConverter.inputRootDirectory
@@ -48,26 +49,31 @@ class Gallery_Macro:
         text = ['<div class="highslide-gallery">']
 
         for entry in entrySet:
-            imageRelativeName = unixDirectoryName(entry[0])
-            caption = entry[1]
-            imageFileName = os.path.split(imageRelativeName)[1]
-            thumbFileName = 'remark_files/thumbnails/' + changeExtension(imageFileName, '-thumb.png')
-            
-            sourceName = os.path.normpath(os.path.join(inputRootDirectory, 
-                                     os.path.join(document.relativeDirectory, imageRelativeName)))
-            if not os.path.exists(sourceName):
-                remarkConverter.reportWarning('Image file ' + imageRelativeName + ' does not exist. Ignoring it.')
+            inputImageName = entry[0]
+            imageDocument, unique = documentTree.findDocumentHard(inputImageName, document.relativeDirectory)
+            if imageDocument == None:
+                remarkConverter.reportWarning('Gallery_Macro: Image file ' + inputImageName + ' was not found. Ignoring it.')
                 continue
+            if not unique:
+                remarkConverter.reportWarning('Gallery_Macro: Image file ' + inputImageName + ' is ambiguous. Picking arbitrarily.')
+            imageRootName = imageDocument.relativeName
             
-            thumbRelativeName = linkAddress(document.relativeDirectory, thumbFileName)
+            caption = entry[1]
+            imageFileName = os.path.split(imageRootName)[1]
+            thumbRootName = 'remark_files/thumbnails/' + changeExtension(imageFileName, '-thumb.png')
+            
+            sourceImageFullName = os.path.join(inputRootDirectory, imageRootName)
+           
+            imageDocName = linkAddress(document.relativeDirectory, imageRootName)
+            thumbDocName = linkAddress(document.relativeDirectory, thumbRootName)
             
             title = caption
             if caption == '':
                 title = 'Click to enlarge'    
                              
             # Generate html-entry.
-            text += ['<a href="' + imageRelativeName + '" class="highslide" onclick="return hs.expand(this)">',
-                     '\t<img src="' + thumbRelativeName + '" alt="Highslide JS" title="' + title + '"/>',
+            text += ['<a href="' + imageDocName + '" class="highslide" onclick="return hs.expand(this)">',
+                     '\t<img src="' + thumbDocName + '" alt="Highslide JS" title="' + title + '"/>',
                      '</a>',]
 
             if caption != '':
@@ -80,12 +86,12 @@ class Gallery_Macro:
             if not os.path.exists(targetDirectory):
                 os.makedirs(targetDirectory)
                 
-            targetName = os.path.join(targetRootDirectory, thumbFileName)
-            if not os.path.exists(targetName):
+            targetImageFullName = os.path.join(targetRootDirectory, thumbRootName)
+            if not os.path.exists(targetImageFullName):
                 try:
-                    image = Image.open(sourceName)
+                    image = Image.open(sourceImageFullName)
                     image.thumbnail((thumbnailMaxWidth, thumbnailMaxHeight), Image.ANTIALIAS)
-                    image.save(targetName, 'PNG')
+                    image.save(targetImageFullName, 'PNG')
                     remarkConverter.report('Gallery_Macro: Created a thumbnail for ' + imageFileName + '.') 
                 except IOError:
                     remarkConverter.reportWarning('Gallery_Macro: Cannot create thumbnail for ' + imageFileName + '.')

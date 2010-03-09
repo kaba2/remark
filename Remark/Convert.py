@@ -655,7 +655,8 @@ def convertAll(documentTree, inputRootDirectory, targetRootDirectory):
                             os.path.join(targetRootDirectory, document.relativeName))
         else:
             print 'Expanding', document.relativeName, '...'
-            convert(type.template, document, documentTree, 
+            template = type.generateMarkdown(os.path.join(inputRootDirectory, document.relativeName))
+            convert(template, document, documentTree, 
                     inputRootDirectory, targetRootDirectory)
 
     print ''
