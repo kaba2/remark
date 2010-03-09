@@ -21,7 +21,7 @@ class GenericCodeView_DocumentType(DocumentType):
         return parser.parse(fileName)
         
     def generateMarkdown(self, fileName):
-        return ['[[get file_name]]',
+        return ['[[file_name]]',
                 '===',
                 '',
                 '[[Parent]]',

@@ -56,6 +56,11 @@ News
  * Removed SkipExpansion macro. Its effect can
  be obtained with the Copy macro.
 
+### Interface
+
+ * Added the option to execute a prologue Remark
+ file before each document.
+
 #### Additional dependencies
 
  * Dependence to _Python Imaging Library_ via Gallery macro.

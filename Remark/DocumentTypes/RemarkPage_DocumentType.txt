@@ -41,17 +41,21 @@ AsciiMath interpretation
 Document template
 : 
 
+		[[set RemarkPage.mid_text]]
+        [[set RemarkPage.end_text]]
 		[[Body]]
 	    [[DocChildren]]
-	    [[get mid_text]]
+	    [[RemarkPage.mid_text]]
 	    [[SourceChildren]]
-	    [[get end_text]]
+	    [[RemarkPage.end_text]]
 
-	The purpose of the get macros is to enable the documentation
+	The purpose of the variables `RemarkPage.mid_text` and
+	`RemarkPage.end_text` is to give the documentation
 	writer some freedom over positioning. For example, the
-	following can be used to place a link list at the end:
+	following can be used to place a link list at the end
+	of the document:
 	
-		[[set end_text]]:
+		[[set RemarkPage.end_text]]:
 			Links
 			-----
 			
