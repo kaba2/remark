@@ -3,8 +3,8 @@ Concepts
 
 [[Parent]]: user_documentation.txt
 
-Terminology
------------
+This page introduces the main concepts and
+terminology that are used in Remark.
 
 ### Division of files 
 
