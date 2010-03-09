@@ -1,0 +1,57 @@
+CppCodeView document type
+=========================
+
+[[Parent]]: document_types.txt
+
+The CppCodeView document type offers a highlighted view to a C++ source 
+code file. In addition, the include files are cross-linked to other files
+with the CppCodeView type within the document tree.
+
+Specification of tags
+---------------------
+
+A parent document is specified by writing somewhere in the file a comment 
+of the form:
+
+	Documentation: name_of_documentation.txt
+
+The specified parent file will be first searched from the current directory,
+and if not found, sequentially through parent directories up to the 
+project's root directory.
+
+A description is specified by writing somewhere in the file a comment 
+of the form:
+
+	Description: Useful description here
+
+A detailed description can be specified by writing somewhere in the file
+a comment of the form:
+
+	Detail: A more detailed description here
+
+Properties
+----------
+
+Input extensions 
+:	.cpp, .cc, .hpp, hh, .c, .h
+
+Output extension
+:	input extension + `.htm`
+
+AsciiMath interpretation
+: Disabled
+
+Document template
+:	
+		
+		[[get file_name]]
+		===
+	
+		[[Parent]]
+	
+		[[Link]]: directory.index
+	
+		[[-+CppCode]]: [[-Body]]
+
+Document syntax
+:	C++

@@ -28,7 +28,7 @@ class DirectoryLink_Macro:
                 linkTarget = linkAddress(document.relativeDirectory, 
                                          os.path.join(linkDocument.relativeDirectory, 'directory.index'))
                 text.append(remarkConverter.remarkLink(linkDescription, outputDocumentName(linkTarget)))
-                if len(parameter) > 1:                
+                if len(parameter) > 1:
                     text += ['']
             else:
                 remarkConverter.reportWarning('DirectoryLink: "' + linkFileName + '" not found. Ignoring it.')

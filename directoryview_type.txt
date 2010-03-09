@@ -1,0 +1,34 @@
+DirectoryView document type
+===========================
+
+[[Parent]]: document_types.txt
+
+The DirectoryView document type offers a view of the containing directory 
+of such a document. This is a listing of all the directories and files
+in the document tree that are contained in the same directory as the 
+document.
+
+Rather than having to physically create a file with this document type,
+Remark creates such documents virtually and automatically into the 
+document tree. One such document is generated into each directory and 
+is named `directory.index`.
+
+Properties
+----------
+
+Input extension
+: .index
+
+Output extension
+: .htm
+
+AsciiMath interpretation
+:	Disabled
+
+Document template
+: 
+
+		[[get description]]
+		===
+		
+		[[Index]]

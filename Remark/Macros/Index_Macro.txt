@@ -29,6 +29,14 @@ Ignored.
 
 None.
 
+Details
+-------
+
+Directories will be listed before files. Both directories and files
+are listed in alphabetical order. The list is displayed differently
+depending on the number of items in the list: Remark chooses from 
+1 to 3 columns to represent the list.
+
 Example
 -------
 

@@ -39,7 +39,7 @@ class Document:
         return ''
 
 class DocumentTree:
-    def __init__(self, rootDirectory):
+    def __init__(self, rootDirectory, parserLines = 100):
         assert os.path.isdir(rootDirectory)
         
         self.rootDirectory = rootDirectory
@@ -48,6 +48,7 @@ class DocumentTree:
         self.orphan.tagSet['description'] = 'Orphans'
         self.documentMap = {'orphan.orphan' : self.orphan}
         self.fileNameMap = {}
+        self.parserLines = parserLines
         
     def compute(self):        
         print '\nGathering directories...',
@@ -223,7 +224,7 @@ class DocumentTree:
             key = fileSuffix(document.relativeName)
             type = documentType(key)
             if type != None:
-                tagSet = type.parser.parse(self._fullName(document.relativeName))
+                tagSet = type.parseTags(self._fullName(document.relativeName), self.parserLines)
                 document.tagSet.update(tagSet)
             
     def _resolveExplicitLinks(self):
