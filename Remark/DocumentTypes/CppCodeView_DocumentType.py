@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 # Description: CppCodeView_DocumentType class
+# Author: Kalle Rutanen
 
 import re
 
@@ -12,9 +13,10 @@ class CppCodeView_DocumentType(DocumentType):
         None
 
     def parseTags(self, fileName, lines = 100):
-        regexMap = {'description' : re.compile(r'[ \t]*Description:[ \t]+(.*)'),
-                    'detail' : re.compile(r'[ \t]*Detail:[ \t]+(.*)'),
-                    'parent' : re.compile(r'[ \t]*Documentation:[ \t]+(.*)')}
+        regexMap = {'description' : re.compile(r'[ \t]+Description:[ \t]+(.*)'),
+                    'detail' : re.compile(r'[ \t]+Detail:[ \t]+(.*)'),
+                    'parent' : re.compile(r'[ \t]+Documentation:[ \t]+(.*)'),
+                    'author' : re.compile(r'[ \t]+Author:[ \t]+(.*)')}
         
         parser = Generic_TagParser(regexMap, lines)
         return parser.parse(fileName)

@@ -329,6 +329,12 @@ class RemarkConverter:
         macroNameSet = string.split(macroInvocation.name)
         macroName = macroNameSet[0]
         parameterSet = macroInvocation.parameterSet
+        getCommand = False
+        
+        # By default, the output will be expanded. 
+        # If a proper macro is invoked, then its
+        # decision overrides this default.
+        expandMore = True
         
         macroText = ['']        
       
@@ -337,10 +343,14 @@ class RemarkConverter:
             if len(macroNameSet) < 2:
                 self.reportWarning('set command is missing the variable name. Ignoring it.')
             else:
-                #print 'set', macroNameSet, 'to', parameterSet 
-                scope.insert(macroNameSet[1], parameterSet)
+                #print 'set', macroNameSet, 'to', parameterSet
+                if parameterSet != []:                 
+                    scope.insert(macroNameSet[1], parameterSet)
+                else:
+                    scope.insert(macroNameSet[1], [''])
             macroHandled = True
-        elif macroName == 'set_many':
+        
+        if not macroHandled and macroName == 'set_many':
             prefix = ''
             if len(macroNameSet) >= 2:
                 prefix = macroNameSet[1] + '.'
@@ -354,28 +364,25 @@ class RemarkConverter:
                         self.reportWarning('set_many: variable ' + nameValue[0] + 
                                            'has no assigned value. Ignoring it.')
             macroHandled = True
-        elif macroName == 'add':
+        
+        if not macroHandled and macroName == 'add':
             # Appending to a scope variable.
             if len(macroNameSet) < 2:
                 self.reportWarning('add command is missing the variable name. Ignoring it.')
             else:
                 scope.append(macroNameSet[1], parameterSet)
             macroHandled = True
-        elif macroName == 'get':
-            # Getting a scope variable.
+        
+        if not macroHandled and macroName == 'get':
+            # Getting a scope variable, alternative form.
             if len(macroNameSet) < 2:
                 self.reportWarning('get command is missing the variable name. Ignoring it.')
             else:
-                result = scope.recursiveSearch(macroNameSet[1])
-                if result != None:
-                    macroText = result
-                    #print 'get', macroText
-                else:
-                    None
-                    #print 'Warning:', document.relativeName, 
-                    #print ': get: Variable \'' + macroNameSet[1] + '\' not found. Ignoring it.'
+                getCommand = True
+                getName = macroNameSet[1]
             macroHandled = True
-        else:
+        
+        if not macroHandled and len(macroNameSet) == 1:
             # Search for the macro.
             macro = findMacro(macroName)
 
@@ -389,9 +396,9 @@ class RemarkConverter:
                 # in suppress list.
                 if not macroName in suppressList:
                     # Run the actual macro.
-                    expandedText = macro.expand(parameterSet, self)
-                    if expandedText == []:
-                        expandedText = ['']
+                    macroText = macro.expand(parameterSet, self)
+                    if macroText == []:
+                        macroText = ['']
                     
                     # Mark the macro as used.
                     self.usedMacroSet.append(macro)
@@ -400,7 +407,7 @@ class RemarkConverter:
                     # we need to add some dummy html newlines
                     # for Markdown.
                     if macro.outputType() == 'html':
-                        self.addDummyHtmlNewLines(expandedText)
+                        self.addDummyHtmlNewLines(macroText)
 
                     # The output of the macro is either
                     # recursively expanded or not.
@@ -408,22 +415,41 @@ class RemarkConverter:
                     # behavior.
                     expandMore = not macro.pureOutput()
                     
-                    # However, the invocation can override
-                    # this suggestion.
-                    if macroInvocation.outputExpansion != None:
-                        expandMore = macroInvocation.outputExpansion
-                    
-                    if expandMore:
-                        # Expand recursively.
-                        macroText = self.convertRecurse(expandedText) 
-                    else:
-                        # No expansion, simply copy text.
-                        macroText = expandedText
                 macroHandled = True
 
+        if not macroHandled and len(macroNameSet) == 1:
+            # Getting a scope variable.
+            getName = macroName
+            getCommand = True
+            macroHandled = True
+            
+        if getCommand:
+            # Getting a scope variable.
+            result = scope.recursiveSearch(getName)
+            if result != None:
+                macroText = result
+            else:
+                self.reportWarning('Variable \'' + getName + 
+                                   '\' not found. Ignoring it.')
+
         if not macroHandled:
-            self.reportWarning('Don\'t know how to handle macro ' + macroInvocation.name + '. Ignoring it.')
-        
+            self.reportWarning('Don\'t know how to handle macro "' + 
+                               macroInvocation.name + '". Ignoring it.')
+
+        # The invocation can override the decision 
+        # whether to expand the output.
+        if macroInvocation.outputExpansion != None:
+            self.scopeStack.open()
+            expandMore = macroInvocation.outputExpansion
+            self.scopeStack.close()
+
+        if macroHandled and expandMore:
+            # Expand recursively.
+            self.scopeStack.open()
+            self.scopeStack.top().insert('parameter', macroInvocation.parameterSet)
+            macroText = self.convertRecurse(macroText)
+            self.scopeStack.close()
+       
         return macroText            
 
     def convert(self, text):
@@ -497,7 +523,7 @@ class RemarkConverter:
             #print macroInvocation.endRow, macroInvocation.endColumn
             #for parameterLine in macroInvocation.parameterSet:
             #    print parameterLine
-            
+
             # The parameter of the macro will be expanded 
             # before invocation only if the user explicitly 
             # requests so.

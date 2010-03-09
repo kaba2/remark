@@ -44,9 +44,6 @@ class SourceChildren_Macro:
             reference = sortedMap[beginIndex]
             
             desc = document.tag('description')
-            if desc == None: 
-                desc = ''
-            desc = string.strip(desc)
             if desc != '':
                 # If there are multiple descriptions, one is chosen
                 # arbitrarily and a warning is emitted.
@@ -55,9 +52,6 @@ class SourceChildren_Macro:
                 description = desc
 
             det = document.tag('detail')
-            if det == None: 
-                det = ''
-            det = string.strip(det)
             if det != '':
                 # If there are multiple details, one is chosen
                 # arbitrarily and a warning is emitted.
@@ -98,27 +92,35 @@ class SourceChildren_Macro:
         groupSet.sort(lambda x, y: cmp(x[0], y[0]))
         
         # Output the links in the groups together
-        # with a description for the group. 
-
+        # with a description for the group.
+        
         if parameter == []:
-            title = '\nFiles'
+            title = 'Files'
         else:
             title = parameter[0]
             
-        text = [title, '-' * (len(title) - 1) + '\n']
+        text = ['', title, '-' * (len(title) - 1), '']
         for group in groupSet:
             # Output description for the group.
             description = group[0]
+            text.append('')
+            text.append('### ' + description)
+            text.append('')
+            
+            # Output detailed description for the group
+            # if it's present.
             detail = group[1]
-            text.append('\n### ' + description + '\n')
-            if detail != '': 
-                text.append('\n_' + detail + '_\n')
+            if detail != '':
+                text.append('')
+                text.append('_' + detail + '_')
+                text.append('')
                 
             # Output the links in the group.
             for child in group[2]:
                 #detail = child.tag('detail')
                 #if detail != '':
                 #    text.append('\n####' + detail + '\n')
+                
                 linkDescription = child.fileName
                 linkTarget = linkAddress(targetDirectory, child.relativeName)
                 text.append(remarkConverter.remarkLink(linkDescription, outputDocumentName(linkTarget)))

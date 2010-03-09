@@ -15,6 +15,9 @@ description
 detail
 :	Detailed description of the current document.
 
+author
+:	The author(s) of the current document.
+
 file_name
 : 	The filename of the current document.
 
