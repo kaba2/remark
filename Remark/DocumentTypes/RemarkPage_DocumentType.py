@@ -17,13 +17,13 @@ class RemarkPage_DocumentType(DocumentType):
         return parser.parse(fileName)
         
     def generateMarkdown(self, fileName):
-        return  ['[[set mid_text]]',
-                 '[[set end_text]]',
+        return  ['[[set RemarkPage.mid_text]]',
+                 '[[set RemarkPage.end_text]]',
                  '[[Body]]',
                  '[[DocChildren]]',
-                 '[[mid_text]]',
+                 '[[RemarkPage.mid_text]]',
                  '[[SourceChildren]]',
-                 '[[end_text]]',]
+                 '[[RemarkPage.end_text]]',]
          
     def mathEnabled(self):
         return True

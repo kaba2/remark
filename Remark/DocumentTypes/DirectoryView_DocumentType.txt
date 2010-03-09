@@ -28,7 +28,7 @@ AsciiMath interpretation
 Document template
 : 
 
-		[[get description]]
+		[[description]]
 		===
 		
 		[[Index]]

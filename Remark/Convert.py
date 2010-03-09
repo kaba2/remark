@@ -664,7 +664,7 @@ def convert(template, document, documentTree,
             outputFile.write(line)
             outputFile.write('\n')
 
-def convertAll(documentTree, inputRootDirectory, targetRootDirectory):
+def convertAll(documentTree, inputRootDirectory, targetRootDirectory, prologue):
     # We wish to convert the files in alphabetical order
     # (in the map they are in hashed order).
     sortedDocumentSet = documentTree.documentMap.values()
@@ -682,7 +682,7 @@ def convertAll(documentTree, inputRootDirectory, targetRootDirectory):
         else:
             #print 'Expanding', document.relativeName, '...'
             template = type.generateMarkdown(os.path.join(inputRootDirectory, document.relativeName))
-            convert(template, document, documentTree, 
+            convert(prologue + template, document, documentTree, 
                     inputRootDirectory, targetRootDirectory)
 
     print ''

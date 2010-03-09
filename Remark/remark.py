@@ -30,7 +30,7 @@ from TagParsers.Markdown_TagParser import Markdown_TagParser
 from TagParsers.Empty_TagParser import Empty_TagParser
 
 from Convert import convertAll
-from Common import unixDirectoryName, linkAddress 
+from Common import unixDirectoryName, linkAddress, readFile
 from Common import documentType, associateDocumentType
 from optparse import OptionParser
 
@@ -50,6 +50,12 @@ use wildcards (e.g. *.png).""")
         default = 100,
         help = """maximum number of lines for a tag-parser to scan a file for tags (default 100)""")
 
+    optionParser.add_option('-p', '--prologue',
+        dest = 'prologueFileName',
+        type = 'string',
+        default = '',
+        help = """file written in Remark syntax which should be merged to the beginning of each document template""")
+
     options, args = optionParser.parse_args()
     
     if len(args) < 2:
@@ -57,9 +63,20 @@ use wildcards (e.g. *.png).""")
         sys.exit(1)
         
     if options.lines <= 0:
-        print 'The maximum number of lines to scan for tags must be at least 1.'
+        print 'Error: The maximum number of lines to scan for tags must be at least 1.'
         sys.exit(1)
     
+    # Possibly load the prologue file.
+
+    prologueFileName = options.prologueFileName
+    prologue = []
+    if prologueFileName != '':
+        try:
+            prologue = readFile(prologueFileName)
+        except IOError:
+            print 'Error: The prologue file', prologueFileName, 'could not be read.'
+            sys.exit(1) 
+
     print 'Remark documentation system'
     print '===========================\n'
 
@@ -122,11 +139,11 @@ use wildcards (e.g. *.png).""")
     print 'Done.'
 
     documentTree.compute()
-   
+
     print '\nGenerating documents'
     print '--------------------\n'
     
-    convertAll(documentTree, inputDirectory, outputDirectory)
+    convertAll(documentTree, inputDirectory, outputDirectory, prologue)
 
     # If there are no .css files already in the target directory,
     # copy the default ones there.
