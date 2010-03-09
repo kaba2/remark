@@ -3,8 +3,10 @@ Basic use of variables
 
 [[Parent]]: variables.txt
 
-This page introduces the tools that are used to
-work with variables in Remark.
+This page introduces the basic use of variables in Remark.
+Here we view variables as a way to store and retrieve
+text. However, later we shall view variables as user-defined
+functions that transform text.
 
 Defining variables
 ------------------
@@ -94,34 +96,46 @@ Yields:
 [[+Verbatim]]:
 	[[some_file_list]]
 
-[[Comment]]:
-	Scopes
-	------
-	
-	Each variable lives in some scope which
-	defines its visibility and life-time. Each macro
-	invocation creates a child-scope into the current
-	scope. Variables defined inside the macro invocation
-	are placed into this scope. When a macro finishes, its scope
-	is closed and all the local variables in the scope are 
-	destroyed. When no macro invocations are active, the
-	only active scope is the _global scope_. Child scopes
-	can refer to variables in the parent scopes, but not
-	vice versa.  
-	
-	For example:
-	
-		[[set global_variable]]:
-			Something interesting.
-	
-		[[Comment]]:
-			[[set filename]]: some_file.txt
-	
-		[[Comment]]: 
-			The 'filename' variable does not exist
-			at this point anymore. However, the
-			'global_variable' is visible since it
-			is in a parent scope:
-			
-			[[get global_variable]]	
+Variable scopes
+---------------
 
+Each variable lives in some scope which
+defines its visibility and life-time. Each macro
+invocation creates a child-scope into the current
+scope. Variables defined inside the macro invocation
+are placed into this scope. When a macro finishes, its scope
+is closed and all the local variables in the scope are 
+destroyed. When no macro invocations are active, the
+only active scope is the _global scope_. Child scopes
+can refer to variables in the parent scopes, but not
+vice versa. When a variable that does not exist in the 
+current scope is set, a new local variable is created.
+Consider the following example:
+
+	[[set word: world]]
+	
+	[[set my_macro]]:
+	    [[set word: jello]]
+		Hello [[word]]!
+
+[[set word: world]]
+
+[[set my_macro]]:
+	[[set word: jello]]
+	Hello [[word]]!
+
+Then this:
+
+	[[my_macro]]
+	
+	word = [[word]]
+
+produces this:
+
+[[my_macro]]
+
+word = [[word]]
+
+That is, the variable `word` inside `set my_macro` is introduced as a 
+local variable and hence does not affect the variable `word` at the 
+outer scope.
