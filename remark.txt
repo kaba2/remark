@@ -30,8 +30,8 @@ News
  * Added explicit control over parameter and output
  expansion behavior in macro invocation.
  * Allowed local variables for macros.
- * Added `set_outer` and `outer` commands to set
- and retrieve variables at outer scopes, respectively.
+ * Added `set_outer`, `add_outer`, and `outer` commands to 
+ set, append, and retrieve variables at outer scopes, respectively.
  * Allowed parameter passing for variables to turn
  them into user-defined text transformations. 
  * Variables can now be retrieved simply by their name,
@@ -44,8 +44,8 @@ News
 
  * Added FileLink macro to generate links with the link 
  description set to the filename of the target.
- * Added implicit searching rules for pure filenames 
- into the Link and FileLink macros. 
+ * Added the implicit file searching algorithm for pure 
+ filenames into various macros. 
  * DocChildren macro now uses 2 or 3 columns to list
  the children if there are more than 7 of them.
  * Added Html macro to embed html directly.
@@ -55,6 +55,8 @@ News
  * Added DirectoryLink macro to generate links to
  the containing directories of files.
  * Added Copy macro to copy the input without changes.
+ * Added Ref macro to return the relative filenames of 
+ the output documents.
  * Removed SkipExpansion macro. Its effect can
  be obtained with the Copy macro.
 
@@ -71,7 +73,7 @@ News
  
 [[Link]]: more_news.txt
 
-[[set DocChildren.no_links_for]]: 
+[[set_outer DocChildren.no_links_for]]: 
 	more_news.txt
  
 Download

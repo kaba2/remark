@@ -203,3 +203,8 @@ produces this:
 [[my_macro]]
 
 word = [[word]]
+
+### Appending a variable in an outer scope.
+
+The `add_outer` command works similarly to `set_outer`,
+but instead of assigning, it appends text.
