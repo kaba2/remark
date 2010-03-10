@@ -138,3 +138,68 @@ word = [[word]]
 That is, the variable `word` inside `set my_macro` is introduced as a 
 local variable and hence does not affect the variable `word` at the 
 outer scope.
+
+### Retrieving a variable in an outer scope 
+
+The `get` command will look at outer scopes if a variable is not
+found at the local scope. However, when there is _both_ a local variable 
+and a variable of the same name in an outer scope, the latter can be 
+retrieved with the `outer` command.    
+
+Consider the following example:
+
+	[[set word: world]]
+	
+	[[set my_macro]]:
+		[[set word: jello]]
+		Hello [[outer word]]!
+
+[[set word: world]]
+
+[[set my_macro]]:
+	[[set word: jello]]
+	Hello [[outer word]]!
+
+Then this:
+
+	[[my_macro]]
+	
+	word = [[word]]
+	
+produces this:
+
+[[my_macro]]
+
+word = [[word]]
+
+### Setting a variable in an outer scope 
+
+The `set` command always creates a local variable. You
+can use the `set_outer` command to set an existing variable
+at an outer scope. In case no such variable is found, a
+new variable is created at the global scope. 
+Consider the following example:
+
+	[[set word: world]]
+	
+	[[set my_macro]]:
+		[[set_outer word: jello]]
+		Hello [[outer word]]!
+	
+[[set word: world]]
+
+[[set my_macro]]:
+	[[set_outer word: jello]]
+	Hello [[outer word]]!
+
+Then this:
+
+	[[my_macro]]
+	
+	word = [[word]]
+	
+produces this:
+
+[[my_macro]]
+
+word = [[word]]

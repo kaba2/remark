@@ -13,7 +13,7 @@ class DocChildren_Macro:
         scope = remarkConverter.scopeStack.top()
         
         targetDirectory = document.relativeDirectory
-
+        
         # Construct the ignore set.
         ignoreList = scope.search('DocChildren.no_links_for')
         if ignoreList == None:

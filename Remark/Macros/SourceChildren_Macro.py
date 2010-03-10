@@ -117,10 +117,6 @@ class SourceChildren_Macro:
                 
             # Output the links in the group.
             for child in group[2]:
-                #detail = child.tag('detail')
-                #if detail != '':
-                #    text.append('\n####' + detail + '\n')
-                
                 linkDescription = child.fileName
                 linkTarget = linkAddress(targetDirectory, child.relativeName)
                 text.append(remarkConverter.remarkLink(linkDescription, outputDocumentName(linkTarget)))
