@@ -385,6 +385,19 @@ class RemarkConverter:
                     outerScope.insert(variableName, [''])
             macroHandled = True
 
+        if macroName == 'add_outer':
+            # Setting a variable at outer scope.
+            if len(macroNameSet) < 2:
+                self.reportWarning('add_outer command is missing the variable name. Ignoring it.')
+            else:
+                variableName = macroNameSet[1]
+                outerScope = scope.outer().searchScope(variableName)
+                if parameterSet != []:
+                    outerScope.append(variableName, parameterSet)
+                else:
+                    outerScope.append(variableName, [''])
+            macroHandled = True
+
         if not macroHandled and macroName == 'set_many':
             prefix = ''
             if len(macroNameSet) >= 2:
@@ -405,7 +418,8 @@ class RemarkConverter:
             if len(macroNameSet) < 2:
                 self.reportWarning('add command is missing the variable name. Ignoring it.')
             else:
-                scope.append(macroNameSet[1], parameterSet)
+                variableName = macroNameSet[1]
+                scope.append(variableName, parameterSet)
             macroHandled = True
         
         if not macroHandled and macroName == 'get':
