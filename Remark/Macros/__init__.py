@@ -18,4 +18,5 @@ __all__ = ['Body_Macro',
            'Gallery_Macro',
            'Verbatim_Macro',
            'DirectoryLink_Macro',
-           'Copy_Macro']
+           'Copy_Macro',
+           'Ref_Macro',]

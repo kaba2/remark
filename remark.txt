@@ -30,6 +30,8 @@ News
  * Added explicit control over parameter and output
  expansion behavior in macro invocation.
  * Allowed local variables for macros.
+ * Added `set_outer` and `outer` commands to set
+ and retrieve variables at outer scopes, respectively.
  * Allowed parameter passing for variables to turn
  them into user-defined text transformations. 
  * Variables can now be retrieved simply by their name,

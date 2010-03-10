@@ -15,15 +15,20 @@ from MacroRegistry import findMacro
 from Common import changeExtension, outputDocumentName, documentType, unixDirectoryName, copyIfNecessary
 
 class Scope:
-    def __init__(self, parent):
+    def __init__(self, parent, name):
         self.parent_ = parent
+        self.name_ = name
         self.nameSet_ = dict()
         
+    def name(self):
+        return self.name_
+    
     def insert(self, name, data):
+        #print 'Inserted', name, data
         self.nameSet_[name] = data
         
     def append(self, name, data):
-        result = self.recursiveSearch(name)
+        result = self.search(name)
         if result != None:
             result += data
         else:
@@ -32,19 +37,33 @@ class Scope:
     def parent(self):
         return self.parent_
     
-    def search(self, name):
+    def outer(self):
+        if self.parent_ == None:
+            return self
+        return self.parent_
+    
+    def shallowSearch(self, name):
         if name in self.nameSet_:
             return self.nameSet_[name]
         return None
     
-    def recursiveSearch(self, name):
+    def search(self, name):
         #print 'Recursive search for', name
-        result = self.search(name)        
+        result = self.shallowSearch(name)        
         if result != None:
             return result
         if self.parent_ != None:
-            return self.parent_.recursiveSearch(name)
-        return None     
+            return self.parent_.search(name)
+        return None
+    
+    def searchScope(self, name):
+        #print 'Recursive search for', name
+        result = self.shallowSearch(name)        
+        if result != None:
+            return self
+        if self.parent_ != None:
+            return self.parent_.searchScope(name)
+        return self
 
     def getInteger(self, name, defaultValue):
         value = None
@@ -69,19 +88,22 @@ class ScopeStack:
     def __init__(self):
         self.stack_ = []
         
-    def open(self):
+    def open(self, name):
         #print 'Scope opened.'
         parent = None
         if len(self.stack_) > 0:
             parent = self.top()                
-        self.stack_.append(Scope(parent))
+        self.stack_.append(Scope(parent, name))
         
     def close(self):
         #print 'Scope closed.'
         self.stack_.pop()
         
     def top(self):
-        return self.stack_[-1]        
+        return self.stack_[-1]
+    
+    def bottom(self):
+        return self.stack_[0]  
 
 class MacroInvocation:
     def __init__(self, name,
@@ -103,7 +125,7 @@ class RemarkConverter:
     def __init__(self, document, template, documentTree, 
                  inputRootDirectory, targetRootDirectory):
         self.scopeStack = ScopeStack()
-        self.scopeStack.open()
+        self.scopeStack.open('global')
         self.document = document
         self.documentTree = documentTree
         self.linkIndex = 0
@@ -343,13 +365,26 @@ class RemarkConverter:
             if len(macroNameSet) < 2:
                 self.reportWarning('set command is missing the variable name. Ignoring it.')
             else:
-                #print 'set', macroNameSet, 'to', parameterSet
+                variableName = macroNameSet[1]
                 if parameterSet != []:                 
-                    scope.insert(macroNameSet[1], parameterSet)
+                    scope.insert(variableName, parameterSet)
                 else:
-                    scope.insert(macroNameSet[1], [''])
+                    scope.insert(variableName, [''])
             macroHandled = True
         
+        if macroName == 'set_outer':
+            # Setting a variable at outer scope.
+            if len(macroNameSet) < 2:
+                self.reportWarning('set_outer command is missing the variable name. Ignoring it.')
+            else:
+                variableName = macroNameSet[1]
+                outerScope = scope.outer().searchScope(variableName)
+                if parameterSet != []:
+                    outerScope.insert(variableName, parameterSet)
+                else:
+                    outerScope.insert(variableName, [''])
+            macroHandled = True
+
         if not macroHandled and macroName == 'set_many':
             prefix = ''
             if len(macroNameSet) >= 2:
@@ -380,14 +415,25 @@ class RemarkConverter:
             else:
                 getCommand = True
                 getName = macroNameSet[1]
+                getScope = scope
             macroHandled = True
         
+        if not macroHandled and macroName == 'outer':
+            # Getting a global variable.
+            if len(macroNameSet) < 2:
+                self.reportWarning('outer command is missing the variable name. Ignoring it.')
+            else:
+                getCommand = True
+                getName = macroNameSet[1]
+                getScope = scope.outer().searchScope(macroNameSet[1])
+            macroHandled = True
+
         if not macroHandled and len(macroNameSet) == 1:
             # Search for the macro.
             macro = findMacro(macroName)
 
             # Get the macro suppress list.
-            suppressList = scope.recursiveSearch('suppress_calls_to')
+            suppressList = scope.search('suppress_calls_to')
             if suppressList == None:
                 suppressList = []
             
@@ -421,11 +467,12 @@ class RemarkConverter:
             # Getting a scope variable.
             getName = macroName
             getCommand = True
+            getScope = scope
             macroHandled = True
             
         if getCommand:
             # Getting a scope variable.
-            result = scope.recursiveSearch(getName)
+            result = getScope.search(getName)
             if result != None:
                 macroText = result
             else:
@@ -439,13 +486,11 @@ class RemarkConverter:
         # The invocation can override the decision 
         # whether to expand the output.
         if macroInvocation.outputExpansion != None:
-            self.scopeStack.open()
             expandMore = macroInvocation.outputExpansion
-            self.scopeStack.close()
 
         if macroHandled and expandMore:
             # Expand recursively.
-            self.scopeStack.open()
+            self.scopeStack.open(macroInvocation.name)
             self.scopeStack.top().insert('parameter', macroInvocation.parameterSet)
             macroText = self.convertRecurse(macroText)
             self.scopeStack.close()
@@ -528,7 +573,9 @@ class RemarkConverter:
             # before invocation only if the user explicitly 
             # requests so.
             if macroInvocation.parameterExpansion:
+                self.scopeStack.open(macroInvocation.name)
                 macroInvocation.parameterSet = self.convertRecurse(macroInvocation.parameterSet)
+                self.scopeStack.close()
 
             # Recursively expand the macro.
             macroText = self.expandMacro(macroInvocation)
