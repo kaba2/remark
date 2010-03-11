@@ -46,8 +46,8 @@ News
  description set to the filename of the target.
  * Added the implicit file searching algorithm for pure 
  filenames into various macros. 
- * DocChildren macro now uses 2 or 3 columns to list
- the children if there are more than 7 of them.
+ * DocChildren and Index macros now use 2 or 3 columns to 
+ list the items if there are more than 7 of them.
  * Added Html macro to embed html directly.
  * Added Gallery macro to generate image galleries.
  * Added Verbatim macro to reinterpret text as
@@ -60,10 +60,10 @@ News
  * Removed SkipExpansion macro. Its effect can
  be obtained with the Copy macro.
 
-### Interface
+#### Interface
 
- * Added the option to execute a prologue Remark
- file before each document.
+ * Added the option to merge a prologue file to the
+ beginning of each document template.
 
 #### Additional dependencies
 
@@ -73,9 +73,6 @@ News
  
 [[Link]]: more_news.txt
 
-[[set_outer DocChildren.no_links_for]]: 
-	more_news.txt
- 
 Download
 --------
 
@@ -112,3 +109,6 @@ Markdown for writing the documentation.
  
 [TES]: http://www.kolumbus.fi/tes/ 
 [Juho]: http://jusa.hilvi.org
+
+[[add_outer DocChildren.no_links_for]]: 
+	more_news.txt
