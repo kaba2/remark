@@ -236,6 +236,10 @@ class DocumentTree:
         explicitly specifies a parent file using a tag.
         '''
         for document in self.documentMap.itervalues():
+            # Documents which are not associated to a document
+            # type are linked to orphan straight away.
+            if documentType(document.extension) == None:
+                document.parent = self.orphan
             # If a document specifies a parent, then this
             # is handled the same whether it is a documentation file
             # or a source file. Simply find the specified parent.

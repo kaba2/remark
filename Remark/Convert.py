@@ -432,10 +432,10 @@ class RemarkConverter:
                 getScope = scope
             macroHandled = True
         
-        if not macroHandled and macroName == 'outer':
+        if not macroHandled and (macroName == 'outer' or macroName == 'get_outer'):
             # Getting a global variable.
             if len(macroNameSet) < 2:
-                self.reportWarning('outer command is missing the variable name. Ignoring it.')
+                self.reportWarning(macroName + ' command is missing the variable name. Ignoring it.')
             else:
                 getCommand = True
                 getName = macroNameSet[1]
