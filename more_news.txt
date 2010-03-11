@@ -3,15 +3,13 @@ More news
 
 [[Parent]]: remark.txt
 
-This page contains all news that have been published.
+This page contains all the news that have been published.
 
 ### 23.01.2010: Released Remark 1.1.0
 
  * Added option parsing to console interface.
- 
  * Non-converted files are now copied only if they match
  a filename-pattern specified at the command line (filesToCopy arguments).
- 
  * Tag-parsers now only read at most 100 lines from a file
  (configurable via the option -l). This speeds up the parsing of
  tags.
@@ -24,4 +22,4 @@ This page contains all news that have been published.
 
 ### 13.01.2010: Released Remark 1.0.0
 
-Initial release.
+ * Initial release.

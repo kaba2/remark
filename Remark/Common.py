@@ -53,9 +53,10 @@ def copyIfNecessary(inputFilePath, outputFilePath):
 def outputDocumentName(name):
     inputExtension = os.path.splitext(name)[1]
     type = documentType(inputExtension)
-    if type == None:
-        return name
-    return type.outputName(name) 
+    outputName = name
+    if type != None:
+        outputName = type.outputName(name)
+    return unixDirectoryName(outputName) 
 
 def unixDirectoryName(name):
     return string.replace(os.path.normpath(name), '\\', '/')                
