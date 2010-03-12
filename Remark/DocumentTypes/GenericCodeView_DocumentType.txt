@@ -9,24 +9,24 @@ code files in various programming languages.
 Specification of tags
 ---------------------
 
-A parent document is specified by writing somewhere in the file a comment 
-of the form:
+The tags specifications are embedded into the comments.
+Their form are as follows:
+
+### Parent document
 
 	Documentation: name_of_documentation.txt
 
-The specified parent file will be first searched from the current directory,
-and if not found, sequentially through parent directories up to the 
-project's root directory.
-
-A description is specified by writing somewhere in the file a comment 
-of the form:
+### Description
 
 	Description: Useful description here
 
-A detailed description can be specified by writing somewhere in the file
-a comment of the form:
+### Detailed description
 
 	Detail: A more detailed description here
+
+### Author
+
+	Author: Name or alias of the author	
 	
 Properties
 ----------

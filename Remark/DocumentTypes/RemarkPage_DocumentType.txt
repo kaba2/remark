@@ -42,12 +42,12 @@ Document template
 : 
 
 		[[set RemarkPage.mid_text]]
-        [[set RemarkPage.end_text]]
+		[[set RemarkPage.end_text]]
 		[[Body]]
-	    [[DocChildren]]
-	    [[RemarkPage.mid_text]]
-	    [[SourceChildren]]
-	    [[RemarkPage.end_text]]
+		[[DocChildren]]
+		[[RemarkPage.mid_text]]
+		[[SourceChildren]]
+		[[RemarkPage.end_text]]
 
 	The purpose of the variables `RemarkPage.mid_text` and
 	`RemarkPage.end_text` is to give the documentation

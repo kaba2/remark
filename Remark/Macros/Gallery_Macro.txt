@@ -14,7 +14,7 @@ images.
 
 ### Output type
 
-html
+Html
 
 ### Output expansion default
 

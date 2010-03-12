@@ -79,7 +79,7 @@ The verbatim content is what we are using on this
 page to demonstrate the syntax such that it isn't
 interpreted as Remark code.   
 
-### Links
+### Links in Markdown
 
 Links are created as follows:
 
@@ -96,20 +96,48 @@ produces:
 
 [Remark_Syntax]: remark_syntax.htm
 
+### Links in Remark
+
 While the Markdown linking mechanism is fine
 (and required) for external links, you will want 
 to use the Remark linking mechanism for links internal
 to the documentation. This is because it is
-able to automatically fetch the description 
-of the target documentation for link naming,
-helping to keep documentation in sync. 
+able to automatically fetch information about the
+target file, helping to keep the documentation in sync. 
 For example:
 
-	[[Link]]: remark_syntax.txt  
+	[[Link: remark_syntax.txt]]  
+	
+	[[FileLink: remark_syntax.txt]]
+	
+	[[DirectoryLink: remark_syntax.txt]]
 
 produces:
 
-[[Link]]: remark_syntax.txt  
+[[Link: remark_syntax.txt]]  
+
+[[FileLink: remark_syntax.txt]]
+
+[[DirectoryLink: remark_syntax.txt]]  
+
+When you need to give links specific names, use the following
+syntax:
+
+	[Remark syntax][2]
+	
+	[2]: [[Ref: remark_syntax.txt]]
+
+This will produce:
+
+[Remark syntax][2]
+
+[2]: [[Ref: remark_syntax.txt]]
+
+Remark linking relies on the [file searching algorithm][file-search], which 
+is important to make the documentation robust to changes
+in the directory structure.
+
+[file-search]: [[Ref: file_searching_algorithm.txt]]
 
 Links
 -----
