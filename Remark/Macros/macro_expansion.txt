@@ -33,11 +33,11 @@ the following invocation of the Verbatim macro
 explicitly disables the expansion of the output and 
 enables the expansion of the parameter. 
 	
-	[[-+Verbatim]]: [[get description]] 
+	[[-+Verbatim]]: [[description]] 
 
 The example above produces:
 
-[[-+Verbatim]]: [[get description]]
+[[-+Verbatim]]: [[description]]
 
 If only one sign is given, then that sign is assumed
 for both expansions, i.e. - = -- and + = ++.
@@ -57,9 +57,9 @@ Placement of macros
 The macros can be placed freely as shown in the following
 example:
 	
-	[[set b: Nom]]Nom[[get b]] [[get b]]Nom[[get b]] Nom[[get b]]
+	[[set b: Nom]]Nom[[b]] [[b]]Nom[[b]] Nom[[b]]
 
-[[set b: Nom]]Nom[[get b]] [[get b]]Nom[[get b]] Nom[[get b]]
+[[set b: Nom]]Nom[[b]] [[b]]Nom[[b]] Nom[[b]]
 
 
 
