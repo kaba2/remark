@@ -16,6 +16,7 @@ class CppCodeView_DocumentType(DocumentType):
         regexMap = {'description' : re.compile(r'[ \t]+Description:[ \t]+(.*)'),
                     'detail' : re.compile(r'[ \t]+Detail:[ \t]+(.*)'),
                     'parent' : re.compile(r'[ \t]+Documentation:[ \t]+(.*)'),
+                    'parentOf' : re.compile(r'[ \t]+DocumentationOf:[ \t]+(.*)'),
                     'author' : re.compile(r'[ \t]+Author:[ \t]+(.*)')}
         
         parser = Generic_TagParser(regexMap, lines)

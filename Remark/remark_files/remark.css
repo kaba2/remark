@@ -32,7 +32,7 @@ body
     border-color: rgb(85, 85, 85);
 
     /* Its background is colored light green. */
-    background-color: rgb(234, 255, 232);
+    background-color: rgb(234, 240, 255);
 
     /* The verbatim content should be indented somewhat. */
     margin-top: 0px;
@@ -64,6 +64,15 @@ body
 {
     margin-left: 0px;
     text-align: justify;
+}
+
+/* Code */
+#remark code
+{
+    color: #505080;
+    font-size: 1.2em;
+    font-weight: bold;
+    font-family: monospace;
 }
 
 /* Level 1 headings */

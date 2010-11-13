@@ -14,7 +14,15 @@ def linkAddress(fromDirectory, toFile):
 
 def readFile(fileName):
     text = []
-
+    
+    fileSize = os.path.getsize(fileName)
+    maxSize = 2**18
+    if fileSize >= maxSize:
+        print
+        print 'readFile: file \'' + fileName + '\' is larger than ', 
+        print maxSize, ' bytes (', fileSize, 'bytes) . Ignoring it.'
+        return text 
+        
     # Read the file into memory
     try:
         with codecs.open(fileName, mode = 'rU', encoding = 'utf-8-sig') as file:
