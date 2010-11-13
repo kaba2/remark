@@ -6,10 +6,16 @@
 from Common import readFile
 from MacroRegistry import registerMacro
 
+import os.path 
+
 class Body_Macro:
     def expand(self, parameter, remarkConverter):
         document = remarkConverter.document
-        text = readFile(remarkConverter.documentTree._fullName(document.relativeName))                        
+        
+        fileName = remarkConverter.documentTree._fullName(document.relativeName);
+    
+        text = readFile(fileName)
+                                    
         return text
     
     def outputType(self):

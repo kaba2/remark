@@ -61,6 +61,10 @@ class DocumentTree:
         self._generateIndexFiles();
         print 'Done.'
 
+        print '\nConstructing fileName map...',
+        self._constructFileNameMap()
+        print 'Done.'
+
         print '\nParsing tags'
         print '------------\n'
         self._parseTags()
@@ -76,12 +80,13 @@ class DocumentTree:
         self._resolveImplicitLinks()
         print 'Done.'
         
+        print '\nResolving reference links'
+        print '-------------------------\n'
+        self._resolveReferenceLinks()
+        print 'Done.'
+
         print '\nLinking orphans...',
         self._linkOrphans()
-        print 'Done.'
-        
-        print '\nConstructing fileName map...',
-        self._constructFileNameMap()
         print 'Done.'
         
     def insertDocument(self, relativeName):
@@ -164,6 +169,8 @@ class DocumentTree:
             # search from anywhere else.
             document = self.findDocument(documentName, relativeDirectory) 
             return (document, True)
+        
+        #print '"', fileName, '"'
          
         # See if there is a document of such name at all.
         if not fileName in self.fileNameMap:
@@ -260,6 +267,10 @@ class DocumentTree:
                     # Parent file was found. Update parent-child
                     # pointers.
                     parent.insertChild(document)
+            elif 'parentOf' in document.tagSet:
+                # This file uses a reference link, which will be
+                # handled later.
+                None     
             elif document.extension == '.txt':
                 # This file is a documentation file and it is
                 # missing a parent tag. Warn about that.
@@ -308,117 +319,155 @@ class DocumentTree:
         
         for i in range(0, len(sortedMap)):
             document = sortedMap[i]
-            # The implicit linking is done when
-            # a file does not explicitly specify
-            # a parent.
-            if document.parent == None:
-                #print 'Implicit find for', document.relativeName
-                searchDirectory = document.relativeDirectory
-                searchName = filePrefix(document.fileName)
-                # The implicit linking only concerns
-                # source files. 
-                if document.extension != '.txt':
-                    # This is a source file.
-             
-                    # Find the last document in the array
-                    # which has identical filename to the searched
-                    # one, without considering suffixes.
-                    # After doing this, all the candidates are
-                    # located at lower indices, and they will
-                    # come in shortening order.
-                     
-                    lastIndex = i + 1
-                    while lastIndex < len(sortedMap):
-                        thatDocument = sortedMap[lastIndex]
+            # The implicit linking is done only when
+            # a file does not have a parent and
+            # does not use reference linking.
+            if document.parent != None or 'parentOf' in document.tagSet:
+                continue
+            
+            #print 'Implicit find for', document.relativeName
+            searchDirectory = document.relativeDirectory
+            searchName = filePrefix(document.fileName)
+            # The implicit linking only concerns
+            # source files. 
+            if document.extension != '.txt':
+                # This is a source file.
+            
+                # Find the last document in the array
+                # which has identical filename to the searched
+                # one, without considering suffixes.
+                # After doing this, all the candidates are
+                # located at lower indices, and they will
+                # come in shortening order.
+                 
+                lastIndex = i + 1
+                while lastIndex < len(sortedMap):
+                    thatDocument = sortedMap[lastIndex]
+                    thatDirectory = thatDocument.relativeDirectory
+                    # The search is restricted to the containing
+                    # directory.
+                    if thatDirectory != searchDirectory:
+                        break
+                    thatName = filePrefix(thatDocument.fileName)
+                    if thatName != searchName:
+                        break
+                    lastIndex = lastIndex + 1
+            
+                # Visit the documents in the array in decreasing order
+                # (decreasing prefix length).
+                
+                sourceMatches = set()
+                documentationMatches = set()
+                matchLength = 0
+                matchesFound = 0;
+            
+                k = lastIndex - 1;
+                while k >= 0:
+                    # The document itself is not accepted as
+                    # its own parent.
+                    if k != i:
+                        thatDocument = sortedMap[k]
                         thatDirectory = thatDocument.relativeDirectory
                         # The search is restricted to the containing
                         # directory.
                         if thatDirectory != searchDirectory:
                             break
+                        # The filename of the parent document must be a 
+                        # prefix of the documents filename, without
+                        # suffixes.                            
                         thatName = filePrefix(thatDocument.fileName)
-                        if thatName != searchName:
-                            break
-                        lastIndex = lastIndex + 1
- 
-                    # Visit the documents in the array in decreasing order
-                    # (decreasing prefix length).
-                    
-                    sourceMatches = set()
-                    documentationMatches = set()
-                    matchLength = 0
-                    matchesFound = 0;
- 
-                    k = lastIndex - 1;
-                    while k >= 0:
-                        # The document itself is not accepted as
-                        # its own parent.
-                        if k != i:
-                            thatDocument = sortedMap[k]
-                            thatDirectory = thatDocument.relativeDirectory
-                            # The search is restricted to the containing
-                            # directory.
-                            if thatDirectory != searchDirectory:
+                        if searchName.startswith(thatName):
+                            # If we have already found a match,
+                            # and we find a candidate which
+                            # is shorter than our existing match,
+                            # we can stop the search.
+                            if matchesFound > 0 and len(thatName) < matchLength:
                                 break
-                            # The filename of the parent document must be a 
-                            # prefix of the documents filename, without
-                            # suffixes.                            
-                            thatName = filePrefix(thatDocument.fileName)
-                            if searchName.startswith(thatName):
-                                # If we have already found a match,
-                                # and we find a candidate which
-                                # is shorter than our existing match,
-                                # we can stop the search.
-                                if matchesFound > 0 and len(thatName) < matchLength:
-                                    break
-
-                                # Either the file must be a documentation file
-                                # or it must have a parent.                                
-                                #print 'Candidate', thatDocument.relativeName
-                                if fileSuffix(thatDocument.fileName) == '.txt':
-                                    # We have found a match from a documentation
-                                    # file! 
-                                    documentationMatches.add(thatDocument)
-                                    matchesFound = matchesFound + 1
-                                    matchLength = len(thatName)
-                                    # In this case we are safe to stop because
-                                    # there can't be another documentation file
-                                    # of the same length, and documentation files
-                                    # are favored over source files.
-                                    break
-                                elif thatDocument.parent != None:
-                                    # We have found a match from a source file!
-                                    sourceMatches.add(thatDocument.parent)
-                                    matchesFound = matchesFound + 1
-                                    matchLength = len(thatName)
-                                    # We can't stop the search yet. 
-                                    # We still have to see what other choices
-                                    # there are. For example, it could be
-                                    # that there is matching documentation file
-                                    # of the same length coming up.
-                        # Proceed to the next document in the array.                            
-                        k = k - 1
-           
-                    # See if we found an implicit match.            
-                        
-                    if len(documentationMatches) > 0:
-                        # There is a match from a documentation file.
-                        # Documentation files are favored to source files
-                        newParent = documentationMatches.pop()
-                        newParent.insertChild(document)
-                    elif len(sourceMatches) >= 1:
-                        # There is a match from a source file.
-                        if len(sourceMatches) > 1:
-                            print 'Warning: ambiguous parent for',
-                            print document.relativeName,
-                            print '. Picking arbitrarily from:'
-                            for match in sourceMatches:
-                                print match.relativeName
-                        newParent = sourceMatches.pop()
-                        newParent.insertChild(document)                              
+            
+                            # Either the file must be a documentation file
+                            # or it must have a parent.                                
+                            #print 'Candidate', thatDocument.relativeName
+                            if fileSuffix(thatDocument.fileName) == '.txt':
+                                # We have found a match from a documentation
+                                # file! 
+                                documentationMatches.add(thatDocument)
+                                matchesFound = matchesFound + 1
+                                matchLength = len(thatName)
+                                # In this case we are safe to stop because
+                                # there can't be another documentation file
+                                # of the same length, and documentation files
+                                # are favored over source files.
+                                break
+                            elif thatDocument.parent != None:
+                                # We have found a match from a source file!
+                                sourceMatches.add(thatDocument.parent)
+                                matchesFound = matchesFound + 1
+                                matchLength = len(thatName)
+                                # We can't stop the search yet. 
+                                # We still have to see what other choices
+                                # there are. For example, it could be
+                                # that there is matching documentation file
+                                # of the same length coming up.
+                    # Proceed to the next document in the array.                            
+                    k = k - 1
+            
+                # See if we found an implicit match.            
                     
-                #if document.parent != None:
-                #    print document.relativeName, '->', document.parent.relativeName
+                if len(documentationMatches) > 0:
+                    # There is a match from a documentation file.
+                    # Documentation files are favored to source files
+                    newParent = documentationMatches.pop()
+                    newParent.insertChild(document)
+                elif len(sourceMatches) >= 1:
+                    # There is a match from a source file.
+                    if len(sourceMatches) > 1:
+                        print 'Warning: ambiguous parent for',
+                        print document.relativeName,
+                        print '. Picking arbitrarily from:'
+                        for match in sourceMatches:
+                            print match.relativeName
+                    newParent = sourceMatches.pop()
+                    newParent.insertChild(document)                              
+                
+            #if document.parent != None:
+            #    print document.relativeName, '->', document.parent.relativeName
         
+    def _resolveReferenceLinks(self):
+        '''
+        Resolves the parent-child relationships between
+        Document objects in those cases where a document file 
+        specifies a parent file as the parent file of 
+        another file. 
+        '''
+        for document in self.documentMap.itervalues():
+            # Reference linking is done only when no parent has been
+            # found through explicit or implicit linking, and
+            # a reference link has been specified.
+            if document.parent != None or 'parentOf' not in document.tagSet:
+                continue
+            
+            # The parent file path in the tag is given relative to 
+            # the directory containing the document file.
+            referenceName = document.tagSet['parentOf']
+            
+            reference = self.findDocumentHard(referenceName, 
+                                               document.relativeDirectory)[0]
+            if reference == None:
+                # If a reference file can't be found, it can be
+                # because of a typo in the tag or a missing file. 
+                # In any case we warn the user.
+                print 'Warning: reference parent file was not found for',
+                print document.relativeName, '. The search was for:', referenceName
+            else:
+                # Reference file was found. Use
+                # its parent as the parent of this document.
+                if reference.parent != None:
+                    reference.parent.insertChild(document)
+                else:
+                    print 'Warning: The file ', referenceName, ', referenced by ',
+                    print document.relativeName, ', does not have an associated parent file.'
+                    
+
     def _linkOrphans(self):
         '''
         Links all documents without a parent
