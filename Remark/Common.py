@@ -75,8 +75,8 @@ def changeExtension(fileName, newExtension):
 def linkTable(linkSet):
     text = []
     links = len(linkSet)
-    if links <= 7:
-        # If there are at most 7 documentation
+    if links <= 4:
+        # If there are at most 4 documentation
         # children, they are simply listed below each other.
         for link in linkSet:
             linkTarget = link[0]
@@ -90,22 +90,13 @@ def linkTable(linkSet):
     else:
         # Otherwise the children are shown
         # using a table of 2 or 3 columns. 
-        
-        tableColumns = 0
-        tableRows = 0
-        if links <= 10:
-            tableColumns = 2
-            tableRows = 5
-        elif links < 13:
-            tableColumns = 2
-            tableRows = (links + tableColumns - 1) / tableColumns
-        elif links < 15:
+
+        tableColumns = 2
+        if links > 8:
             tableColumns = 3
-            tableRows = 5
-        else:
-            tableColumns = 3
-            tableRows = (links + tableColumns - 1) / tableColumns
             
+        tableRows = (links + tableColumns - 1) / tableColumns
+
         tableRow = 0
         tableColumn = 0
         text.append('<table class = "division">')
