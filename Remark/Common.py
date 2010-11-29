@@ -92,9 +92,6 @@ def linkTable(linkSet):
         # using a table of 2 or 3 columns. 
 
         tableColumns = 2
-        if links > 8:
-            tableColumns = 3
-            
         tableRows = (links + tableColumns - 1) / tableColumns
 
         tableRow = 0
