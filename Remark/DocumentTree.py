@@ -255,8 +255,11 @@ class DocumentTree:
                 # the directory containing the document file.
                 parentName = document.tagSet['parent']
                 
-                parent = self.findDocumentOutwards(parentName, 
-                                                   document.relativeDirectory)
+                parent, unique = self.findDocumentHard(parentName, 
+                                                       document.relativeDirectory)
+                if not unique:
+                    print 'Warning: parent file is ambiguous for', 
+                    print document.relativeName, '. The search was for:', parentName                                     
                 if parent == None:
                     # If a parent file can't be found, it can be
                     # because of a typo in the tag or a missing file. 
