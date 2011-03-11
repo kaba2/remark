@@ -10,7 +10,7 @@ with the CppCodeView type within the document tree.
 Specification of tags
 ---------------------
 
-The tags specifications are embedded into the comments.
+The tag specifications are embedded into the comments.
 Their form are as follows:
 
 ### Parent document

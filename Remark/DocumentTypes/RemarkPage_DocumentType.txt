@@ -55,7 +55,7 @@ Document template
 	following can be used to place a link list at the end
 	of the document:
 	
-		[[set RemarkPage.end_text]]:
+		[[set_outer RemarkPage.end_text]]:
 			Links
 			-----
 			

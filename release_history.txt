@@ -1,0 +1,125 @@
+Release history
+===============
+
+[[Parent]]: remark.txt
+
+This section summarizes the release history of Remark.
+
+Conventions
+-----------
+
+### Versioning
+
+The versioning of Remark is given in the form x.y.z, where x, y, and z 
+are integers. The x increments only for major changes, the y increments 
+for feature changes, and the z increments for bug fixes or documentation 
+updates. Whenever y is incremented, z is zeroed, and whenever x is 
+incremented, both y and z are zeroed. The x, y, and z need not consist 
+of a single digit, and, for example, 1.12.0 is a much later version 
+than 1.1.3.
+
+### Previous versions
+
+It is possible to visit the webpages of a 
+previous version by visiting the address
+
+	http://kaba.hilvi.org/remark/remark-x.y.z
+	
+where x.y.z is a version number. That webpage then works as
+it did on the time release, and can be used to obtain the
+older software.
+
+Remark 1.3.0
+------------
+
+Release date 11.03.2011.
+
+* Added reference links, i.e. the `DocumentationOf` tag
+which uses as documentation the documentation of another
+file.
+* Made document search to look for a file in all directories,
+in case a hierarchical search upwards does not find the file.
+* Updated the default css file.
+* Updated the layout of link tables.
+
+Remark 1.2.0
+------------
+
+Release date 11.03.2010.
+
+#### Core
+
+ * Allowed free positioning of Remark macros. 
+ * Added the ability to invoke macros via inline parameters.
+ * Added explicit control over parameter and output
+ expansion behavior in macro invocation.
+ * Allowed local variables for macros.
+ * Added `set_outer`, `add_outer`, and `outer` commands to 
+ set, append, and retrieve variables at outer scopes, respectively.
+ * Allowed parameter passing for variables to turn
+ them into user-defined text transformations. 
+ * Variables can now be retrieved simply by their name,
+ rather than having to use `get`. 
+ * Added `set_many` command to set variables easily.
+ * Fixed a bug in `filesToCopy` pattern matching:
+ a file was copied only if it matched all patterns.
+  
+#### Macros
+
+ * Added FileLink macro to generate links with the link 
+ description set to the filename of the target.
+ * Added the implicit file searching algorithm for pure 
+ filenames into various macros. 
+ * DocChildren and Index macros now use 2 or 3 columns to 
+ list the items if there are more than 7 of them.
+ * Added Html macro to embed html directly.
+ * Added Gallery macro to generate image galleries.
+ * Added Verbatim macro to reinterpret text as
+ verbatim content.
+ * Added DirectoryLink macro to generate links to
+ the containing directories of files.
+ * Added Copy macro to copy the input without changes.
+ * Added Ref macro to return the relative filenames of 
+ the output documents.
+ * Removed SkipExpansion macro. Its effect can
+ be obtained with the Copy macro.
+
+#### Interface
+
+ * Added the option to merge a prologue file to the
+ beginning of each document template.
+
+#### Additional dependencies
+
+ * Dependence to _Python Imaging Library_ via Gallery macro.
+ * Optional dependence to _Highslide_ javascript library
+ via Gallery macro.
+
+Remark 1.1.0
+------------
+
+Release date 23.01.2010.
+
+ * Added option-parsing to console interface.
+ * Non-converted files are now copied only if they match
+ a filename-pattern specified at the command line (filesToCopy arguments).
+ * Tag-parsers now only read at most 100 lines from a file
+ (configurable via the option -l). This speeds up the parsing of
+ tags.
+
+Remark 1.0.1
+------------
+
+Release date 13.01.2010.
+
+ * Bug-fix: some directories were written in Windows-style 
+ backslashes into the html files depending on which OS was
+ used to run Remark.
+
+Remark 1.0.0
+------------
+
+Release date 13.01.2010. 
+
+ * Initial release.
+
