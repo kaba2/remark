@@ -6,7 +6,7 @@
 [Back]: http://kaba.hilvi.org
 
 _Remark_ is a Python library to generate html documentation for software libraries.
-Naturally, Remark is documented with Remark, the results of which you are inspecting
+Remark is documented with Remark, the results of which you are inspecting
 right now. 
 
 Usage
@@ -18,67 +18,16 @@ From the console (Windows, Linux, Unix, ...):
 
 See the installation instructions below.
 
-News
-----
-
-### 11.03.2010: Released Remark 1.2.0
-
-#### Core
-
- * Allowed free positioning of Remark macros. 
- * Added the ability to invoke macros via inline parameters.
- * Added explicit control over parameter and output
- expansion behavior in macro invocation.
- * Allowed local variables for macros.
- * Added `set_outer`, `add_outer`, and `outer` commands to 
- set, append, and retrieve variables at outer scopes, respectively.
- * Allowed parameter passing for variables to turn
- them into user-defined text transformations. 
- * Variables can now be retrieved simply by their name,
- rather than having to use `get`. 
- * Added `set_many` command to set variables easily.
- * Fixed a bug in `filesToCopy` pattern matching:
- a file was copied only if it matched all patterns.
-  
-#### Macros
-
- * Added FileLink macro to generate links with the link 
- description set to the filename of the target.
- * Added the implicit file searching algorithm for pure 
- filenames into various macros. 
- * DocChildren and Index macros now use 2 or 3 columns to 
- list the items if there are more than 7 of them.
- * Added Html macro to embed html directly.
- * Added Gallery macro to generate image galleries.
- * Added Verbatim macro to reinterpret text as
- verbatim content.
- * Added DirectoryLink macro to generate links to
- the containing directories of files.
- * Added Copy macro to copy the input without changes.
- * Added Ref macro to return the relative filenames of 
- the output documents.
- * Removed SkipExpansion macro. Its effect can
- be obtained with the Copy macro.
-
-#### Interface
-
- * Added the option to merge a prologue file to the
- beginning of each document template.
-
-#### Additional dependencies
-
- * Dependence to _Python Imaging Library_ via Gallery macro.
- * Optional dependence to _Highslide_ javascript library
- via Gallery macro.
- 
-[[Link]]: more_news.txt
-
 Download
 --------
 
-### [Download Remark 1.2.0][Library]
+### [Download Remark 1.3.0][Library]
 
-[Library]: ./files/remark-1.2.0.zip
+[Library]: ./files/remark-1.3.0.zip
+
+For previous versions, see the [release history][History].
+
+[History]: [[Ref]]: release_history.txt
 
 Note on web-browsers
 --------------------
@@ -97,8 +46,8 @@ you to use these browsers to view these pages.
 Acknowledgements
 ----------------
 
-Remark was programmed under funding from the 
-[Finnish Foundation for Technology Promotion][TES]
+Remark 1.0, 1.1, and 1.2 were programmed under funding from 
+the [Finnish Foundation for Technology Promotion][TES]
 
 Remark was preceded by a similar implementation
 called _LightMark_ programmed by [Juho Hämäläinen][Juho].
@@ -109,9 +58,6 @@ Markdown for writing the documentation.
  
 [TES]: http://www.kolumbus.fi/tes/ 
 [Juho]: http://jusa.hilvi.org
-
-[[add_outer DocChildren.no_links_for]]: 
-	more_news.txt
 
 [[Comment]]:
 	The following is a javascript for Google Analytics by which we can

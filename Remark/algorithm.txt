@@ -64,16 +64,15 @@ document type is used for.
 Add some virtual documents
 --------------------------
 
-Using the list of involved directories, a 'directory.index' document is
+Using the list of involved directories, a `directory.index` document is
 generated to each sub-directory of the document tree. In addition,
-an 'orphan.orphan' document is generated to the root directory of the
+an `orphan.orphan` document is generated to the root directory of the
 document tree.
 
 Generating output
 -----------------
 
-This phase is quite trivially described. For each file in the
-document tree:
+For each file in the document tree:
 
 1. Recursively expand the Remark macros in its document template (given by the document type).  
 
@@ -98,7 +97,7 @@ particular file already exists at the output directory,
 it is _not_ copied over.
 
 At the end, three files are copied (if they don't exist) to the 
-remark_files directory of the output directory. These are:
+`remark_files` directory of the output directory. These are:
 
 remark.css 
 : To control the styling of the generated web-pages in general.

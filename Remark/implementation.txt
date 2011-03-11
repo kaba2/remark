@@ -3,10 +3,11 @@ Implementation
 
 [[Parent]]: remark.txt
 
-These pages contain documentation for the implementation
-of Remark. You do not need this documentation to use Remark.
-Before reading this section, be sure to read everything from 
-the user documentation. In addition to describing the concepts 
-and algorithms, the macro implementations are also documented 
-there.  
+These section describes the implementation of Remark. 
+The information here is not needed to use Remark.
+Before reading this section, you should read everything from 
+the [user documentation][UserDocumentation].
+
+[UserDocumentation]: [[Ref]]: user_documentation.txt
+
 
