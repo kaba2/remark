@@ -37,6 +37,7 @@ from optparse import OptionParser
 from Macros import *
 
 if __name__ == '__main__':
+    
     optionParser = OptionParser(usage = """\
 %prog [options] inputDirectory outputDirectory [filesToCopy...]
 
@@ -151,21 +152,24 @@ use wildcards (e.g. *.png).""")
     print '\nMoving style files and AsciiMathML'
     print '----------------------------------\n'
 
-    remarkDirectory = os.path.join(outputDirectory, 'remark_files')
-    if not os.path.exists(remarkDirectory):
-        os.makedirs(remarkDirectory)
+    remarkOutputDirectory = os.path.join(outputDirectory, 'remark_files')
+    if not os.path.exists(remarkOutputDirectory):
+        os.makedirs(remarkOutputDirectory)
 
-    if not os.path.exists(os.path.join(remarkDirectory, 'remark.css')):
+    scriptDirectory = sys.path[0]
+    remarkInputDirectory = os.path.join(scriptDirectory, './remark_files')
+    
+    if not os.path.exists(os.path.join(remarkOutputDirectory, './remark.css')):
         print 'remark.css'
-        shutil.copy('./remark_files/remark.css', remarkDirectory)
+        shutil.copy(os.path.join(remarkInputDirectory, './remark.css'), remarkOutputDirectory)
 
-    if not os.path.exists(os.path.join(remarkDirectory, 'pygments.css')):
+    if not os.path.exists(os.path.join(remarkOutputDirectory, './pygments.css')):
         print 'pygments.css'
-        shutil.copy('./remark_files/pygments.css', remarkDirectory)
+        shutil.copy(os.path.join(remarkInputDirectory, './pygments.css'), remarkOutputDirectory)
 
-    if not os.path.exists(os.path.join(remarkDirectory, 'ASCIIMathMLwFallback.js')):
+    if not os.path.exists(os.path.join(remarkOutputDirectory, './ASCIIMathMLwFallback.js')):
         print 'ASCIIMathMLwFallback.js'
-        shutil.copy('./remark_files/ASCIIMathMLwFallback.js', remarkDirectory)
+        shutil.copy(os.path.join(remarkInputDirectory, './ASCIIMathMLwFallback.js'), remarkOutputDirectory)
 
     print 'Done.'
     
