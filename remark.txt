@@ -21,9 +21,9 @@ See the installation instructions below.
 Download
 --------
 
-### [Download Remark 1.3.0][Library]
+### [Download Remark 1.4.0][Library]
 
-[Library]: ./files/remark-1.3.0.zip
+[Library]: ./files/remark-1.4.0.zip
 
 For previous versions, see the [release history][History].
 
