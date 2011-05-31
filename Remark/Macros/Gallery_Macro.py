@@ -6,6 +6,7 @@
 from MacroRegistry import registerMacro
 from Common import linkAddress, unixDirectoryName, changeExtension
 
+import sys
 import os.path
 import shutil
 
@@ -121,8 +122,9 @@ class Gallery_Macro:
                 '</script>',]
         
     def postConversion(self, inputDirectory, outputDirectory):
-        highslideSource = './remark_files/highslide'
-        highslideTarget = os.path.join(outputDirectory, 'remark_files/highslide')
+        remarkInputDirectory = sys.path[0]
+        highslideSource = os.path.join(remarkInputDirectory, './remark_files/highslide')
+        highslideTarget = os.path.join(outputDirectory, './remark_files/highslide')
         if not os.path.exists(highslideTarget):
             shutil.copytree(highslideSource, highslideTarget)                
         
