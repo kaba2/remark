@@ -10,8 +10,21 @@ Started on 16.11.2009
 @author: Kalle Rutanen
 '''
 
-import re
 import sys
+
+try:
+    import markdown
+except ImportError, e:
+    print 'Error: Python Markdown library missing. Please install it first.'
+    sys.exit(1)
+
+try: 
+    import pygments
+except ImportError, e:
+    print 'Error: Pygments library missing. Please install it first.'
+    sys.exit(1)
+
+import re
 import os
 import shutil
 import fnmatch

@@ -10,7 +10,11 @@ import sys
 import os.path
 import shutil
 
-import Image
+try: 
+    import Image
+except ImportError, e:
+    print 'Error: Python Imaging Library missing. Please install it first.'
+    sys.exit(1)
 
 class Gallery_Macro:
     def expand(self, parameter, remarkConverter):
