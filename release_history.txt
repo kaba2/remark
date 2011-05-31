@@ -26,7 +26,10 @@ Release date xx.xx.2011.
 
 [Original webpage][Remark-1.4.0]
 
+#### Interface
+
 * Added the ability to invoke Remark from other directories.
+* Added proper error messages for missing dependency libraries.
 
 [Remark-1.4.0]: http://kaba.hilvi.org/remark-1.4.0
 
