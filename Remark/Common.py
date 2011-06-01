@@ -34,8 +34,7 @@ def readFile(fileName):
             
     # Remove possible newlines from the ends of the lines.
     for i in range(0, len(text)):
-        if text[i][-1] == '\n':
-            text[i] = text[i][0 : -1]
+        text[i] = text[i].rstrip('\r\n')
             
     return text
 
