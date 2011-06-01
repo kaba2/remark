@@ -22,7 +22,7 @@ than 1.1.3.
 Remark 1.4.0
 ------------
 
-Release date xx.xx.2011.
+Release date 01.06.2011.
 
 [Original webpage][Remark-1.4.0]
 
