@@ -26,6 +26,11 @@ Release date xx.xx.2011.
 
 [Original webpage][Remark-1.4.0]
 
+#### Core
+
+* Fixed the handling of different kinds of newlines.
+* Fixed a buggy library import.
+
 #### Interface
 
 * Added the ability to invoke Remark from other directories.
