@@ -3,8 +3,8 @@ Installation
 
 [[Parent]]: remark.txt
 
-Remark was programmed using Python 2.6. Thus it should run in any
-Python 2.x interpreter, where x is at least 6. Note that the syntaxes of 
+Remark was programmed using Python 2.7. Thus it should run in any
+Python 2.x interpreter, where x is at least 7. Note that the syntaxes of 
 Python 3.x and Python 2.x are not compatible.
 
 Python dependencies
@@ -16,7 +16,7 @@ The dependencies to other Python libraries are as follows:
 
 This library is used to convert Markdown to Html.
  
-### [Pygments 1.2.2][Pygments]
+### [Pygments 1.5][Pygments]
 
 This library is used to highlight source code. 
  
@@ -40,6 +40,39 @@ We distribute it with Remark.
 
 This library is used to convert AsciiMath to MathML. 
 We distribute it with Remark.
+
+Notes on Windows 7 (and other 64-bit Windows?)
+----------------------------------------------
+
+The installers for the Python Markdown 2.0 and Python Imaging
+Library 1.1.7 do not work in Windows 7 (when writing this in
+18.06.2012). The solution for the Python Imaging Library is 
+to obtain a 64-bit installer from [here][PIL-64].
+
+[PIL-64]: http://www.lfd.uci.edu/~gohlke/pythonlibs/
+
+The solution for the Markdown installer is to first write the 
+following in Notepad:
+
+	Windows Registry Editor Version 5.00 
+
+	[HKEY_CURRENT_USER\Software\Python] 
+	[HKEY_CURRENT_USER\Software\Python\Pythoncore]
+	[HKEY_CURRENT_USER\Software\Python\Pythoncore\2.7] 
+	[HKEY_CURRENT_USER\Software\Python\Pythoncore\2.7\InstallPath]
+	@="C:\\Python27" 
+	[HKEY_CURRENT_USER\Software\Python\Pythoncore\2.7\PythonPath]
+	@="C:\\Python27;C:\\Python27\\Lib\\;C:\\Python27\\DLLs\\"
+
+save this in a file with extension .reg, and then run it using 
+Registry Editor (right click --> Open with). Then the installer
+should run through. Do note to replace the Python version, and the
+Python directory above if they are not what you use.
+
+At first it would seem that this also helps with the Python Imaging 
+Library installer. This is true to the extent that the installation
+itself is successful. However, the package contains a 32-bit 
+.dll which does not run in a 64-bit Windows.
  
 Installation
 ------------
