@@ -230,11 +230,18 @@ class DocumentTree:
         associated parser.
         '''        
         for document in self.documentMap.itervalues():
-            key = fileSuffix(document.relativeName)
-            type = documentType(key)
-            if type != None:
-                tagSet = type.parseTags(self._fullName(document.relativeName), self.parserLines)
-                document.tagSet.update(tagSet)
+            try:
+                key = fileSuffix(document.relativeName)
+                type = documentType(key)
+                if type != None:
+                    tagSet = type.parseTags(self._fullName(document.relativeName), self.parserLines)
+                    document.tagSet.update(tagSet)
+            except UnicodeDecodeError:
+                print 'Warning:', document.relativeName,
+                print ': Tag parsing failed because of a unicode decode error.'
+            except:
+                print 'Warning:', document.relativeName,
+                print ': Tag parsing failed for some reason.'
             
     def _resolveExplicitLinks(self):
         '''

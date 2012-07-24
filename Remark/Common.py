@@ -12,26 +12,36 @@ def linkAddress(fromDirectory, toFile):
     relativeName = os.path.relpath(toFile, fromDirectory)
     return unixDirectoryName(relativeName)
 
+def openFileUtfOrLatin(fileName):
+    try:
+        file = codecs.open(fileName, mode = 'rU', encoding = 'utf-8-sig')
+    except UnicodeDecodeError:
+        print 'Warning: file \'' + fileName + '\' is not UTF-8 encoded. Assuming Latin-1 encoding.'
+        file = codecs.open(fileName, mode = 'rU', encoding = 'latin-1')
+
+    return file    
+
 def readFile(fileName):
-    text = []
-    
     fileSize = os.path.getsize(fileName)
     maxSize = 2**18
     if fileSize >= maxSize:
         print
-        print 'readFile: file \'' + fileName + '\' is larger than ', 
+        print 'Warning: file \'' + fileName + '\' is larger than ', 
         print maxSize, ' bytes (', fileSize, 'bytes) . Ignoring it.'
-        return text 
+        return []
         
     # Read the file into memory
+    text = []
     try:
-        with codecs.open(fileName, mode = 'rU', encoding = 'utf-8-sig') as file:
+        with openFileUtfOrLatin(fileName) as file:
             text = file.readlines()
     except UnicodeDecodeError:
-        print 'Warning: file \'' + fileName + '\' is not UTF-8 encoded. Assuming Latin-1 encoding.'
-        with codecs.open(fileName, mode = 'rU', encoding = 'latin-1') as file:
-            text = file.readlines()
-            
+        print
+        print 'Warning: file \'' + fileName + '\' ',
+        print 'could not be read because of a unicode decode error. ',
+        print 'Ignoring it.'
+        return []
+
     # Remove possible newlines from the ends of the lines.
     for i in range(0, len(text)):
         text[i] = text[i].rstrip('\r\n')
