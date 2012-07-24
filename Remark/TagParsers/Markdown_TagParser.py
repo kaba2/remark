@@ -4,6 +4,7 @@
 # Documentation: tag_parsers.txt
 
 from Generic_TagParser import Generic_TagParser
+from Common import openFileUtfOrLatin
 
 import string
 import re
@@ -27,7 +28,7 @@ class Markdown_TagParser:
         lineRegex = re.compile(r'[ \t]*((==+=)|(--+-))')
         previousLine = ''
         
-        with codecs.open(fileName, mode = 'rU', encoding = 'utf-8-sig') as file:
+        with openFileUtfOrLatin(fileName) as file:
             lineNumber = 0
             for fileLine in file:
                 # Search for a description

@@ -3,8 +3,9 @@
 # Description: Generic_TagParser class
 # Documentation: tag_parsers.txt
 
+from Common import openFileUtfOrLatin
+
 import string
-import codecs
 
 class Generic_TagParser:
     def __init__(self, tagRegexMap, maxLines = 100):
@@ -13,7 +14,7 @@ class Generic_TagParser:
 
     def parse(self, fileName):
         tagSet = {}
-        with codecs.open(fileName, mode = 'rU', encoding = 'utf-8-sig') as file:
+        with openFileUtfOrLatin(fileName) as file:
             lineNumber = 0
             for fileLine in file:
                 for tagName, tagRegex in self.tagRegexMap.iteritems():
