@@ -1,0 +1,155 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{98e51aaf-0959-4c07-88d4-d6c57a655fe0}</ProjectGuid>
+    <ProjectHome>.</ProjectHome>
+    <StartupFile>Remark.py</StartupFile>
+    <SearchPath>E:\Ohjelmointi\Remark\;..</SearchPath>
+    <WorkingDirectory>.</WorkingDirectory>
+    <OutputPath>.</OutputPath>
+    <Name>Remark</Name>
+    <RootNamespace>Remark</RootNamespace>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <DebugSymbols>true</DebugSymbols>
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <DebugSymbols>true</DebugSymbols>
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Common.py" />
+    <Compile Include="Convert.py" />
+    <Compile Include="DocumentTree.py" />
+    <Compile Include="DocumentTypes\CppCodeView_DocumentType.py" />
+    <Compile Include="DocumentTypes\DirectoryView_DocumentType.py" />
+    <Compile Include="DocumentTypes\DocumentType.py" />
+    <Compile Include="DocumentTypes\GenericCodeView_DocumentType.py" />
+    <Compile Include="DocumentTypes\Orphan_DocumentType.py" />
+    <Compile Include="DocumentTypes\RemarkPage_DocumentType.py" />
+    <Compile Include="DocumentTypes\__init__.py" />
+    <Compile Include="MacroRegistry.py" />
+    <Compile Include="Macros\Body_Macro.py" />
+    <Compile Include="Macros\Comment_Macro.py" />
+    <Compile Include="Macros\Copy_Macro.py" />
+    <Compile Include="Macros\CppCode_Macro.py" />
+    <Compile Include="Macros\DirectoryLink_Macro.py" />
+    <Compile Include="Macros\DocChildren_Macro.py" />
+    <Compile Include="Macros\FileLink_Macro.py" />
+    <Compile Include="Macros\Gallery_Macro.py" />
+    <Compile Include="Macros\GenericCode_Macro.py" />
+    <Compile Include="Macros\Html_Macro.py" />
+    <Compile Include="Macros\Index_Macro.py" />
+    <Compile Include="Macros\Link_Macro.py" />
+    <Compile Include="Macros\Parent_Macro.py" />
+    <Compile Include="Macros\Ref_Macro.py" />
+    <Compile Include="Macros\SourceChildren_Macro.py" />
+    <Compile Include="Macros\Verbatim_Macro.py" />
+    <Compile Include="Macros\__init__.py" />
+    <Compile Include="Remark.py" />
+    <Compile Include="TagParsers\Empty_TagParser.py" />
+    <Compile Include="TagParsers\Generic_TagParser.py" />
+    <Compile Include="TagParsers\Markdown_TagParser.py" />
+    <Compile Include="TagParsers\__init__.py" />
+    <Compile Include="__init__.py" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Macros\" />
+    <Folder Include="DocumentTypes\" />
+    <Folder Include="TagParsers\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\basic_asciimath.txt">
+      <Link>basic_asciimath.txt</Link>
+    </Content>
+    <Content Include="..\basic_markdown.txt">
+      <Link>basic_markdown.txt</Link>
+    </Content>
+    <Content Include="..\concepts.txt">
+      <Link>concepts.txt</Link>
+    </Content>
+    <Content Include="..\extended_markdown.txt">
+      <Link>extended_markdown.txt</Link>
+    </Content>
+    <Content Include="..\implicit_rules.txt">
+      <Link>implicit_rules.txt</Link>
+    </Content>
+    <Content Include="..\installation.txt">
+      <Link>installation.txt</Link>
+    </Content>
+    <Content Include="..\license_matters.txt">
+      <Link>license_matters.txt</Link>
+    </Content>
+    <Content Include="..\main_features.txt">
+      <Link>main_features.txt</Link>
+    </Content>
+    <Content Include="..\predefined_variables.txt">
+      <Link>predefined_variables.txt</Link>
+    </Content>
+    <Content Include="..\problem.txt">
+      <Link>problem.txt</Link>
+    </Content>
+    <Content Include="..\release_history.txt">
+      <Link>release_history.txt</Link>
+    </Content>
+    <Content Include="..\remark.txt">
+      <Link>remark.txt</Link>
+    </Content>
+    <Content Include="..\remark_license.txt">
+      <Link>remark_license.txt</Link>
+    </Content>
+    <Content Include="..\remark_syntax.txt">
+      <Link>remark_syntax.txt</Link>
+    </Content>
+    <Content Include="..\style.txt">
+      <Link>style.txt</Link>
+    </Content>
+    <Content Include="..\user_documentation.txt">
+      <Link>user_documentation.txt</Link>
+    </Content>
+    <Content Include="..\variables.txt">
+      <Link>variables.txt</Link>
+    </Content>
+    <Content Include="..\variables_as_storage.txt">
+      <Link>variables_as_storage.txt</Link>
+    </Content>
+    <Content Include="..\variables_as_transforms.txt">
+      <Link>variables_as_transforms.txt</Link>
+    </Content>
+    <Content Include="algorithm.txt" />
+    <Content Include="core_stuff.txt" />
+    <Content Include="DocumentTypes\CppCodeView_DocumentType.txt" />
+    <Content Include="DocumentTypes\DirectoryView_DocumentType.txt" />
+    <Content Include="DocumentTypes\document_types.txt" />
+    <Content Include="DocumentTypes\GenericCodeView_DocumentType.txt" />
+    <Content Include="DocumentTypes\Orphan_DocumentType.txt" />
+    <Content Include="DocumentTypes\RemarkPage_DocumentType.txt" />
+    <Content Include="implementation.txt" />
+    <Content Include="Macros\Body_Macro.txt" />
+    <Content Include="Macros\Comment_Macro.txt" />
+    <Content Include="Macros\Copy_Macro.txt" />
+    <Content Include="Macros\CppCode_Macro.txt" />
+    <Content Include="Macros\DirectoryLink_Macro.txt" />
+    <Content Include="Macros\DocChildren_Macro.txt" />
+    <Content Include="Macros\FileLink_Macro.txt" />
+    <Content Include="Macros\file_searching_algorithm.txt" />
+    <Content Include="Macros\Gallery_Macro.txt" />
+    <Content Include="Macros\GenericCode_Macro.txt" />
+    <Content Include="Macros\Html_Macro.txt" />
+    <Content Include="Macros\Index_Macro.txt" />
+    <Content Include="Macros\Link_Macro.txt" />
+    <Content Include="Macros\macro.txt" />
+    <Content Include="Macros\macros.txt" />
+    <Content Include="Macros\macro_expansion.txt" />
+    <Content Include="Macros\macro_invocation.txt" />
+    <Content Include="Macros\Parent_Macro.txt" />
+    <Content Include="Macros\Ref_Macro.txt" />
+    <Content Include="Macros\SourceChildren_Macro.txt" />
+    <Content Include="Macros\Verbatim_Macro.txt" />
+    <Content Include="TagParsers\tag_parsers.txt" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.Common.targets" />
+</Project>
