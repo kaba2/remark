@@ -8,6 +8,9 @@ import string
 import codecs
 import shutil
 
+def remarkVersion():
+    return '1.5.0'
+
 def linkAddress(fromDirectory, toFile):
     relativeName = os.path.relpath(toFile, fromDirectory)
     return unixDirectoryName(relativeName)

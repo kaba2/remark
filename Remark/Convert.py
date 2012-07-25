@@ -726,27 +726,38 @@ def convert(template, document, documentTree,
             outputFile.write('\n')
 
 def convertAll(documentTree, inputRootDirectory, targetRootDirectory, prologue):
+    
     # We wish to convert the files in alphabetical order
     # (in the map they are in hashed order).
     sortedDocumentSet = documentTree.documentMap.values()
     sortedDocumentSet.sort(lambda x, y: cmp(x.relativeName, y.relativeName))
+
+    inputRootDirectory = os.path.normpath(inputRootDirectory)
+    targetRootDirectory = os.path.normpath(targetRootDirectory)
+    
     for document in sortedDocumentSet:
-        print '.',
+        # Find out some names.
+        sourceFullName = os.path.join(inputRootDirectory, document.relativeName)
+        targetRelativeName = outputDocumentName(document.relativeName)
+        targetFullName = os.path.join(targetRootDirectory, targetRelativeName)
+
+        if (os.path.exists(sourceFullName) and 
+            os.path.exists(targetFullName) and 
+            os.path.getmtime(sourceFullName) < os.path.getmtime(targetFullName)):
+            #print 'Skipping', document.relativeName, ' as up-to-date...'
+            continue
+
         type = documentType(document.extension) 
-        #if type == None or document.fileName != 'Body_Macro.txt':
         if type == None:
             # This file has no associated document type.
             # Simply copy it.
-            #print 'Copying', document.relativeName, '...'
-            copyIfNecessary(os.path.join(inputRootDirectory, document.relativeName),
-                            os.path.join(targetRootDirectory, document.relativeName))
+            print 'Copying', document.relativeName, '...'
+            copyIfNecessary(sourceFullName, targetFullName)
         else:
-            #print 'Expanding', document.relativeName, '...'
-            template = type.generateMarkdown(os.path.join(inputRootDirectory, document.relativeName))
+            print 'Generating', document.relativeName, '...'
+            template = type.generateMarkdown(sourceFullName)
             convert(prologue + template, document, documentTree, 
                     inputRootDirectory, targetRootDirectory)
-
-    print ''
     
 def _leadingTabs(text):
     tabs = 0

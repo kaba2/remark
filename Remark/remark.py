@@ -4,12 +4,6 @@
 # Description: Console executable
 # Documentation: implementation.txt 
 
-'''
-Remark documentation system
-Started on 16.11.2009
-@author: Kalle Rutanen
-'''
-
 import sys
 
 try:
@@ -44,7 +38,7 @@ from TagParsers.Empty_TagParser import Empty_TagParser
 
 from Convert import convertAll
 from Common import unixDirectoryName, linkAddress, readFile
-from Common import documentType, associateDocumentType
+from Common import documentType, associateDocumentType, remarkVersion
 from optparse import OptionParser
 
 from Macros import *
@@ -89,11 +83,17 @@ use wildcards (e.g. *.png).""")
             prologue = readFile(prologueFileName)
         except IOError:
             print 'Error: The prologue file', prologueFileName, 'could not be read.'
-            sys.exit(1) 
+            sys.exit(1)
 
-    print 'Remark documentation system'
-    print '===========================\n'
+    title = 'Remark ' + remarkVersion()
 
+    print
+    print title
+    for i in range(0, len(title)):
+        sys.stdout.write('=')
+    print
+    print
+    
     inputDirectory = args[0]
     outputDirectory = args[1]
     filesToCopySet = args[2:]
