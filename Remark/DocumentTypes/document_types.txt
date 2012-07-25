@@ -1,7 +1,7 @@
 Document types
 ==============
 
-[[Parent]]: user_documentation.txt
+[[Parent]]: implementation.txt
 
 This page contains the currently available document types.
 

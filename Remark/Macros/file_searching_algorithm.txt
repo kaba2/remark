@@ -12,27 +12,9 @@ documentation that is robust to changes in the directory structure.
 Algorithm
 --------- 
 
-### Relative paths
-
-A relative path is interpreted relative to the location of the 
-currently handled document. In this case the algorithm looks only at 
-this specific location. For example, the parameters in the following 
-macro invocations are relative paths:
-
-	[[Link]]: ../../remark.txt
-	
-	[[Link]]: ../TagParsers/tag_parsers.txt
-	
-They correctly produce the following links:
-	
-[[Link]]: ../../remark.txt
-
-[[Link]]: ../TagParsers/tag_parsers.txt
-
-While this works, notice that relative paths are fragile to 
-changes in the directory structure. For example, if we moved 
-this document to a new sub-directory in the current directory,
-the link above would be broken. 
+You can specify a filename either in pure or relative path form.
+Use the relative path form only when it is necessary to avoid 
+an ambiguity or when the implicit rules do not do what you want. 
 
 ### Pure filenames
 
@@ -52,19 +34,24 @@ For example, the parameters in the following macro invocations
 are pure filenames:
 
 	[[Link]]: remark.txt
-	
+
 	[[Link]]: tag_parsers.txt
 	
-They correctly produce the following links by the 
-rules 2 and 3:
+### Relative paths
+
+A relative path is interpreted relative to the location of the 
+currently handled document. In this case the algorithm looks only at 
+this specific location. For example, the parameters in the following 
+macro invocations are relative paths:
+
+	[[Link]]: ../../remark.txt
 	
-[[Link]]: remark.txt
+	[[Link]]: ../TagParsers/tag_parsers.txt
+	
+While this works, notice that relative paths are sensitive to 
+changes in the directory structure. For example, if we moved 
+this document to a new sub-directory in the current directory,
+the link above would be broken. This is why we recommend using
+the pure form instead.
 
-[[Link]]: tag_parsers.txt
 
-Guidance
---------
-
-Use the pure filename form whenever you can. Use the relative
-path form only when it is necessary to avoid an ambiguity or when
-the implicit rules do not do what you want. 
