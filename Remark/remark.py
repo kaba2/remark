@@ -39,6 +39,7 @@ from TagParsers.Empty_TagParser import Empty_TagParser
 from Convert import convertAll
 from Common import unixDirectoryName, linkAddress, readFile
 from Common import documentType, associateDocumentType, remarkVersion
+from Common import asciiMathMlName
 from optparse import OptionParser
 
 from Macros import *
@@ -180,9 +181,9 @@ use wildcards (e.g. *.png).""")
         print 'pygments.css'
         shutil.copy(os.path.join(remarkInputDirectory, './pygments.css'), remarkOutputDirectory)
 
-    if not os.path.exists(os.path.join(remarkOutputDirectory, './ASCIIMathMLwFallback.js')):
-        print 'ASCIIMathMLwFallback.js'
-        shutil.copy(os.path.join(remarkInputDirectory, './ASCIIMathMLwFallback.js'), remarkOutputDirectory)
+    if not os.path.exists(os.path.join(remarkOutputDirectory, './' + asciiMathMlName())):
+        print asciiMathMlName()
+        shutil.copy(os.path.join(remarkInputDirectory, './' + asciiMathMlName()), remarkOutputDirectory)
 
     print 'Done.'
     

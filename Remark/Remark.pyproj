@@ -59,6 +59,7 @@
   <ItemGroup>
     <Folder Include="Macros\" />
     <Folder Include="DocumentTypes\" />
+    <Folder Include="remark_files\" />
     <Folder Include="TagParsers\" />
   </ItemGroup>
   <ItemGroup>
@@ -149,6 +150,9 @@
     <Content Include="Macros\Ref_Macro.txt" />
     <Content Include="Macros\SourceChildren_Macro.txt" />
     <Content Include="Macros\Verbatim_Macro.txt" />
+    <Content Include="remark_files\ASCIIMathMLwFallback.js" />
+    <Content Include="remark_files\pygments.css" />
+    <Content Include="remark_files\remark.css" />
     <Content Include="TagParsers\tag_parsers.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.Common.targets" />
