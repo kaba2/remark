@@ -11,6 +11,9 @@ import shutil
 def remarkVersion():
     return '1.5.0'
 
+def asciiMathMlName():
+    return 'ASCIIMathMLwFallback.js'
+
 def linkAddress(fromDirectory, toFile):
     relativeName = os.path.relpath(toFile, fromDirectory)
     return unixDirectoryName(relativeName)

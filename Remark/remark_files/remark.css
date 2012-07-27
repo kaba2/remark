@@ -129,9 +129,13 @@ body
 #remark img 
 {
     /* We would like to add a 1 pixel border
-    around the image to make it stand out. */
+    around an image to make it stand out.
+    However, since AsciiMathML does not support
+    css's, the fallback images for the formulas
+    also have to use this style. Using a border
+    in this case would look bad. */
     border-style: solid;
-    border-width: 1px;
+    border-width: 0px;
     border-color: rgb(0, 0, 0);
 }
 

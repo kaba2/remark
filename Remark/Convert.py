@@ -13,6 +13,7 @@ import copy
 
 from MacroRegistry import findMacro
 from Common import changeExtension, outputDocumentName, documentType, unixDirectoryName, copyIfNecessary
+from Common import asciiMathMlName
 
 class Scope:
     def __init__(self, parent, name):
@@ -652,7 +653,7 @@ def addHtmlBoilerPlate(text, document, htmlHead):
     
     remarkCss = unixDirectoryName(os.path.normpath(os.path.join(remarkDirectory, 'remark.css')))
     pygmentsCss = unixDirectoryName(os.path.normpath(os.path.join(remarkDirectory, 'pygments.css')))
-    asciiMathML = unixDirectoryName(os.path.normpath(os.path.join(remarkDirectory, 'ASCIIMathMLwFallback.js')))
+    asciiMathML = unixDirectoryName(os.path.normpath(os.path.join(remarkDirectory, asciiMathMlName())))
             
     htmlText = []
     htmlText.append('<?xml version="1.0" encoding="UTF-8"?>')
@@ -741,11 +742,11 @@ def convertAll(documentTree, inputRootDirectory, targetRootDirectory, prologue):
         targetRelativeName = outputDocumentName(document.relativeName)
         targetFullName = os.path.join(targetRootDirectory, targetRelativeName)
 
-        if (os.path.exists(sourceFullName) and 
-            os.path.exists(targetFullName) and 
-            os.path.getmtime(sourceFullName) < os.path.getmtime(targetFullName)):
-            #print 'Skipping', document.relativeName, ' as up-to-date...'
-            continue
+        #if (os.path.exists(sourceFullName) and 
+        #    os.path.exists(targetFullName) and 
+        #    os.path.getmtime(sourceFullName) < os.path.getmtime(targetFullName)):
+        #    #print 'Skipping', document.relativeName, ' as up-to-date...'
+        #    continue
 
         type = documentType(document.extension) 
         if type == None:

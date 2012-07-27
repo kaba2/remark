@@ -29,19 +29,18 @@ General Public License (at http://www.gnu.org/copyleft/gpl.html)
 for more details.
 */
 
-var AMTcgiloc = ""; //path to CGI script that
+var AMTcgiloc = "http://www.imathas.com/cgi-bin/mimetex.cgi"; //path to CGI script that
 						     //can render a TeX string
 var checkForMathML = true;   // check if browser can display MathML
 var notifyIfNoMathML = false; // display note if no MathML capability
 var alertIfNoMathML = false;  // show alert box if no MathML capability
 var mathcolor = "";       // change it to "" (to inherit) or any other color
-var mathfontsize = "1.0em";
 var mathfontfamily = "serif"; // change to "" to inherit (works in IE) 
                               // or another family (e.g. "arial")
 var displaystyle = true;      // puts limits above and below large operators
 var showasciiformulaonhover = true; // helps students learn ASCIIMath
 var decimalsign = ".";        // change to "," if you like, beware of `(1,2)`!
-var AMdelimiter1 = "''", AMescape1 = "\\\\`"; // can use other characters
+var AMdelimiter1 = "''", AMescape1 = "\\\\''"; // can use other characters
 var AMusedelimiter2 = false; 		//whether to use second delimiter below
 var AMdelimiter2 = "$", AMescape2 = "\\\\\\$", AMdelimiter2regexp = "\\$";
 var doubleblankmathdelimiter = false; // if true,  x+1  is equal to `x+1`
@@ -1111,7 +1110,6 @@ function AMparseMath(str) {
   if (mathcolor != "") node.setAttribute("mathcolor",mathcolor);
   if (displaystyle) node.setAttribute("displaystyle","true");
   if (mathfontfamily != "") node.setAttribute("fontfamily",mathfontfamily);
-  if (mathfontsize != "") node.setAttribute("fontsize",mathfontsize);
   AMnestingDepth = 0;
   //DLMOD to remove &nbsp;, which editor adds on multiple spaces
   str = str.replace(/&nbsp;/g,"");
