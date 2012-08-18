@@ -66,11 +66,29 @@ def documentType(inputExtension):
         return _documentTypeMap[inputExtension]
     return None
 
-def copyIfNecessary(inputFilePath, outputFilePath):
-    targetDirectory = os.path.split(outputFilePath)[0]
-    if not os.path.exists(targetDirectory):
-        os.makedirs(targetDirectory)
-    if not os.path.exists(outputFilePath):
+def copyIfNecessary(inputRelativeName, inputDirectory, 
+                    outputRelativeName, outputDirectory):
+
+    inputFilePath = os.path.join(inputDirectory, inputRelativeName)
+    outputFilePath = os.path.join(outputDirectory, outputRelativeName)
+
+    # If the output directory does not exist, create it.
+    finalOutputDirectory = os.path.split(outputFilePath)[0];
+    if not os.path.exists(finalOutputDirectory):
+        os.makedirs(finalOutputDirectory)
+
+    if not os.path.exists(inputFilePath):
+        print 'Error: the file ' + inputRelativeName + ' does not exist. Ignoring it.'
+        return
+
+    # The output file is up-to-date if it exists and has a 
+    # modification time-stamp earlier than with the input file.
+    fileUpToDate = \
+        (os.path.exists(outputFilePath) and 
+        os.path.getmtime(inputFilePath) < os.path.getmtime(outputFilePath))
+
+    if not fileUpToDate:
+        print 'Copying', inputRelativeName, '...'
         shutil.copy(inputFilePath, outputFilePath)
 
 def outputDocumentName(name):
@@ -84,8 +102,14 @@ def outputDocumentName(name):
 def unixDirectoryName(name):
     return string.replace(os.path.normpath(name), '\\', '/')                
 
+def fileExtension(fileName):
+    return os.path.splitext(fileName)[1]
+
+def withoutFileExtension(fileName):
+    return os.path.splitext(fileName)[0]
+
 def changeExtension(fileName, newExtension):
-    return os.path.splitext(fileName)[0] + newExtension
+    return withoutFileExtension(fileName) + newExtension
 
 def linkTable(linkSet):
     text = []

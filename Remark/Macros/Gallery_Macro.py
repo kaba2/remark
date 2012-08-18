@@ -5,6 +5,7 @@
 
 from MacroRegistry import registerMacro
 from Common import linkAddress, unixDirectoryName, changeExtension
+from Common import fileExtension, copyIfNecessary
 
 import sys
 import os.path
@@ -24,8 +25,10 @@ class Gallery_Macro:
         inputRootDirectory = remarkConverter.inputRootDirectory
         targetRootDirectory = remarkConverter.targetRootDirectory
         
-        thumbnailMaxWidth = scope.getInteger('Gallery.thumbnail_max_width', 200)
-        thumbnailMaxHeight = scope.getInteger('Gallery.thumbnail_max_height', 200)
+        thumbnailMaxWidth = scope.getInteger('Gallery.thumbnail_max_width', 400)
+        thumbnailMaxHeight = scope.getInteger('Gallery.thumbnail_max_height', 400)
+        thumbnailMaxWidthPercent = scope.getInteger('Gallery.thumbnail_max_width_percent', 45)
+        thumbnailMaxHeightPercent = scope.getInteger('Gallery.thumbnail_max_height_percent', 45)
 
         # Gather a list of images and their captions.
         entrySet = []
@@ -68,9 +71,17 @@ class Gallery_Macro:
             thumbRootName = 'remark_files/thumbnails/' + changeExtension(imageFileName, '-thumb.png')
             
             sourceImageFullName = os.path.join(inputRootDirectory, imageRootName)
+
+            thumbnailSet = ['.bmp', '.gif', '.jpeg', '.jpg', '.pcx', 
+                            '.png', '.pbm', '.pgm', '.ppm', '.tga', '.tif', '.tiff']
+
+            useThumbnail = (fileExtension(imageFileName).lower() in thumbnailSet)
            
             imageDocName = linkAddress(document.relativeDirectory, imageRootName)
-            thumbDocName = linkAddress(document.relativeDirectory, thumbRootName)
+            if useThumbnail:
+                thumbDocName = linkAddress(document.relativeDirectory, thumbRootName)
+            else:
+                thumbDocName = imageDocName
             
             title = caption
             if caption == '':
@@ -78,8 +89,12 @@ class Gallery_Macro:
                              
             # Generate html-entry.
             text += ['<a href="' + imageDocName + '" class="highslide" onclick="return hs.expand(this)">',
-                     '\t<img src="' + thumbDocName + '" alt="Highslide JS" title="' + title + '"/>',
-                     '</a>',]
+                     '\t<img src="' + thumbDocName + '" ' + 
+                     'alt="Highslide JS" ' +
+                     'title="' + title + '" ' + 
+                     'width=' + repr(thumbnailMaxWidthPercent) + '% ' +
+                     'height=' + repr(thumbnailMaxHeightPercent) + '% ' +
+                     '/></a>',]
 
             if caption != '':
                 text += ['<div class="highslide-caption">',
@@ -87,20 +102,21 @@ class Gallery_Macro:
                          '</div>',]
             
             # Generate thumbnail image if necessary.
-            targetDirectory = os.path.join(targetRootDirectory, 'remark_files/thumbnails');
-            if not os.path.exists(targetDirectory):
-                os.makedirs(targetDirectory)
+            if useThumbnail:
+                targetDirectory = os.path.join(targetRootDirectory, 'remark_files/thumbnails');
+                if not os.path.exists(targetDirectory):
+                    os.makedirs(targetDirectory)
                 
-            targetImageFullName = os.path.join(targetRootDirectory, thumbRootName)
-            if not os.path.exists(targetImageFullName):
-                try:
-                    image = Image.open(sourceImageFullName)
-                    image.thumbnail((thumbnailMaxWidth, thumbnailMaxHeight), Image.ANTIALIAS)
-                    image.save(targetImageFullName, 'PNG')
-                    remarkConverter.report('Gallery_Macro: Created a thumbnail for ' + imageFileName + '.') 
-                except IOError:
-                    remarkConverter.reportWarning('Gallery_Macro: Cannot create thumbnail for ' + imageFileName + '.')
-                    continue
+                targetImageFullName = os.path.join(targetRootDirectory, thumbRootName)
+                if not os.path.exists(targetImageFullName):
+                    try:
+                        image = Image.open(sourceImageFullName)
+                        image.thumbnail((thumbnailMaxWidth, thumbnailMaxHeight), Image.ANTIALIAS)
+                        image.save(targetImageFullName, 'PNG')
+                        remarkConverter.report('Gallery_Macro: Created a thumbnail for ' + imageFileName + '.') 
+                    except IOError:
+                        remarkConverter.reportWarning('Gallery_Macro: Cannot create thumbnail for ' + imageFileName + '.')
+                        continue
         
         text.append('</div>')
         
@@ -126,10 +142,17 @@ class Gallery_Macro:
                 '</script>',]
         
     def postConversion(self, inputDirectory, outputDirectory):
-        remarkInputDirectory = sys.path[0]
-        highslideSource = os.path.join(remarkInputDirectory, './remark_files/highslide')
-        highslideTarget = os.path.join(outputDirectory, './remark_files/highslide')
+        scriptDirectory = sys.path[0]
+
+        copyIfNecessary('./remark_files/highslide/highslide.css', scriptDirectory,
+                        './remark_files/highslide/highslide.css', outputDirectory);
+
+        copyIfNecessary('./remark_files/highslide/highslide-full.js', scriptDirectory,
+                        './remark_files/highslide/highslide-full.js', outputDirectory);
+
+        highslideSource = os.path.join(scriptDirectory, './remark_files/highslide/graphics')
+        highslideTarget = os.path.join(outputDirectory, './remark_files/highslide/graphics')
         if not os.path.exists(highslideTarget):
-            shutil.copytree(highslideSource, highslideTarget)                
+            shutil.copytree(highslideSource, highslideTarget)
         
 registerMacro('Gallery', Gallery_Macro())
