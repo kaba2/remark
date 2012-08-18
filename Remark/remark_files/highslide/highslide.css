@@ -10,11 +10,11 @@
 	background: none;
 }
 .highslide {
-	outline-style: solid;
-	outline-width: 1px;
 	text-decoration: none;
 }
 .highslide img {
+	outline-style: solid;
+	outline-width: 1px;
 	border: 2px solid silver;
 }
 .highslide:hover img {
