@@ -46,13 +46,11 @@ thumbnail_max_height
 : 	A maximum for the height of a thumbnail in pixels.
 	Default 400.
 
-thumbnail_max_width_percent
-:	A maximum width for the thumbnail in percents from
-	the width of the containing element. Default 45.
-
-thumbnail_max_height_percent
-:	A maximum height for the thumbnail in percents from
-	the height of the containing element. Default 45.
+thumbnail_width_percent
+:	The width for the thumbnail in percents from
+	the width of the containing element. The height
+	of the thumbnail will be changed to preserve
+	aspect ratio. Default 45.
 
 Note that both types of variables are used. The pixel-count
 defines the resolution of the thumbnail image; if the number

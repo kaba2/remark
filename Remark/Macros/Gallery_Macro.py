@@ -27,8 +27,7 @@ class Gallery_Macro:
         
         thumbnailMaxWidth = scope.getInteger('Gallery.thumbnail_max_width', 400)
         thumbnailMaxHeight = scope.getInteger('Gallery.thumbnail_max_height', 400)
-        thumbnailMaxWidthPercent = scope.getInteger('Gallery.thumbnail_max_width_percent', 45)
-        thumbnailMaxHeightPercent = scope.getInteger('Gallery.thumbnail_max_height_percent', 45)
+        thumbnailWidthPercent = scope.getInteger('Gallery.thumbnail_width_percent', 45)
 
         # Gather a list of images and their captions.
         entrySet = []
@@ -92,8 +91,7 @@ class Gallery_Macro:
                      '\t<img src="' + thumbDocName + '" ' + 
                      'alt="' + caption + '" ' +
                      'title="' + title + '" ' + 
-                     'width=' + repr(thumbnailMaxWidthPercent) + '% ' +
-                     'height=' + repr(thumbnailMaxHeightPercent) + '% ' +
+                     'width=' + repr(thumbnailWidthPercent) + '% ' +
                      '/></a>',]
 
             if caption != '':
