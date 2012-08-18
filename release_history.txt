@@ -22,18 +22,26 @@ than 1.1.3.
 Remark 1.5.0
 ------------
 
-Release date 25.07.2012
+Release date 18.08.2012
 
 [Original webpage][Remark-1.5.0]
 
 ### Core
 
-* Made Remark to generate/copy a file only when the source file
-has been modified after target file. This makes Remark much faster
-by turning a batch process into an incremental one.
+* Made Remark to copy a file only when the target file does not
+exist _or_ the source file has been modified after the target file.
 * Fixed a crash when facing Unicode decode errors in tag parsers
 and when generating such files. Replaced with a warning to pinpoint
 the problematic file and continuing.
+
+### Macros
+
+* Gallery: Added variables to control the size of the images as
+percentages of the containing element. Made the defaults more
+in line with current-day monitors (increased the default number 
+of pixels in thumbnails).
+* Gallery: Made the macro work also with vector-based images, such
+as .svg.
 
 ### Documentation
 
