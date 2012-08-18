@@ -64,10 +64,6 @@ Example
 
 This
 
-	[[set_many Gallery]]:
-		thumbnail_max_width 200
-		thumbnail_max_height 180
-	
 	[[Gallery]]:
 		hsv.png
 		- A visualization of the HSV color space (with full saturation). 
@@ -76,10 +72,6 @@ This
 		- Lookahead-sets in LC(1)-parsing
 	
 produces this:
-
-[[set_many Gallery]]:
-	thumbnail_max_width 200
-	thumbnail_max_height 180
 
 [[Gallery]]:
 	hsv.png
