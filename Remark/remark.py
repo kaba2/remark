@@ -39,7 +39,7 @@ from TagParsers.Empty_TagParser import Empty_TagParser
 from Convert import convertAll
 from Common import unixDirectoryName, linkAddress, readFile
 from Common import documentType, associateDocumentType, remarkVersion
-from Common import asciiMathMlName
+from Common import asciiMathMlName, copyIfNecessary
 from optparse import OptionParser
 
 from Macros import *
@@ -166,24 +166,15 @@ use wildcards (e.g. *.png).""")
     print '\nMoving style files and AsciiMathML'
     print '----------------------------------\n'
 
-    remarkOutputDirectory = os.path.join(outputDirectory, 'remark_files')
-    if not os.path.exists(remarkOutputDirectory):
-        os.makedirs(remarkOutputDirectory)
-
+    # This is the directory which contains 'remark.py'.
     scriptDirectory = sys.path[0]
-    remarkInputDirectory = os.path.join(scriptDirectory, './remark_files')
     
-    if not os.path.exists(os.path.join(remarkOutputDirectory, './remark.css')):
-        print 'remark.css'
-        shutil.copy(os.path.join(remarkInputDirectory, './remark.css'), remarkOutputDirectory)
-
-    if not os.path.exists(os.path.join(remarkOutputDirectory, './pygments.css')):
-        print 'pygments.css'
-        shutil.copy(os.path.join(remarkInputDirectory, './pygments.css'), remarkOutputDirectory)
-
-    if not os.path.exists(os.path.join(remarkOutputDirectory, './' + asciiMathMlName())):
-        print asciiMathMlName()
-        shutil.copy(os.path.join(remarkInputDirectory, './' + asciiMathMlName()), remarkOutputDirectory)
+    copyIfNecessary('./remark_files/remark.css', scriptDirectory, 
+                    './remark_files/remark.css', outputDirectory)
+    copyIfNecessary('./remark_files/pygments.css', scriptDirectory, 
+                    './remark_files/pygments.css', outputDirectory)
+    copyIfNecessary('./remark_files/' + asciiMathMlName(), scriptDirectory, 
+                    './remark_files/' + asciiMathMlName(), outputDirectory)
 
     print 'Done.'
     

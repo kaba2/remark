@@ -8,9 +8,10 @@ Description
 
 ### Action
 
-Generates an image gallery with thumbnails. 
-The thumbnails are automatically generated from the listed full-size
-images. 
+Generates an image gallery. Thumbnails are automatically generated for 
+_pixel-based_ images with filename extensions .bmp, .gif, .jpeg, .jpg, .pcx, 
+.png, .pbm, .pgm, .ppm, .tga, .tif, and .tiff. Other image-formats,
+such as the vector-based .svg or .pdf, are passed on as they are.
 
 ### Output type
 
@@ -30,6 +31,7 @@ A list of the following form:
 	- Caption for the second image.
 	image3.bmp
 	image4.tiff
+	image5.svg
 	...
 
 Specification of captions is not required.
@@ -38,12 +40,25 @@ Specification of captions is not required.
 
 thumbnail_max_width 
 : 	A maximum for the width of a thumbnail in pixels.
-	Default 200.
+	Default 400.
 
 thumbnail_max_height
 : 	A maximum for the height of a thumbnail in pixels.
-	Default 200.
-	
+	Default 400.
+
+thumbnail_max_width_percent
+:	A maximum width for the thumbnail in percents from
+	the width of the containing element. Default 45.
+
+thumbnail_max_height_percent
+:	A maximum height for the thumbnail in percents from
+	the height of the containing element. Default 45.
+
+Note that both types of variables are used. The pixel-count
+defines the resolution of the thumbnail image; if the number
+of pixels is too low compared to the presentation size (given
+by the percent), the thumbnail image will look blurry.
+
 Example
 -------
 
@@ -57,9 +72,8 @@ This
 		hsv.png
 		- A visualization of the HSV color space (with full saturation). 
 		../../images/hsv.png
-		../../images/hsv.png
-		- Another caption.
-		../../images/hsv.png
+		lookaheads.svg
+		- Lookahead-sets in LC(1)-parsing
 	
 produces this:
 
@@ -71,9 +85,8 @@ produces this:
 	hsv.png
 	- A visualization of the HSV color space (with full saturation). 
 	../../images/hsv.png
-	../../images/hsv.png
-	- Another caption.
-	../../images/hsv.png
+	lookaheads.svg
+	- Lookahead-sets in LC(1)-parsing
 
 See also
 --------

@@ -13,7 +13,7 @@ import copy
 
 from MacroRegistry import findMacro
 from Common import changeExtension, outputDocumentName, documentType, unixDirectoryName, copyIfNecessary
-from Common import asciiMathMlName
+from Common import asciiMathMlName, remarkVersion
 
 class Scope:
     def __init__(self, parent, name):
@@ -674,7 +674,7 @@ def addHtmlBoilerPlate(text, document, htmlHead):
     htmlText += text
     htmlText.append('</div>')
     htmlText.append('<div id="footer">')
-    htmlText.append('<p><a href="http://kaba.hilvi.org/remark">Remark</a> documentation system - Page generated ' + timeText + '.</p>')
+    htmlText.append('<p><a href="http://kaba.hilvi.org/remark">Remark ' + remarkVersion() + '</a> - Page generated ' + timeText + '.</p>')
     htmlText.append('</div>')
     htmlText.append('</div>')
     htmlText.append('</body>')
@@ -752,8 +752,8 @@ def convertAll(documentTree, inputRootDirectory, targetRootDirectory, prologue):
         if type == None:
             # This file has no associated document type.
             # Simply copy it.
-            print 'Copying', document.relativeName, '...'
-            copyIfNecessary(sourceFullName, targetFullName)
+            copyIfNecessary(document.relativeName, inputRootDirectory, 
+                            targetRelativeName, targetRootDirectory)
         else:
             print 'Generating', document.relativeName, '...'
             template = type.generateMarkdown(sourceFullName)
