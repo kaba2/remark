@@ -90,7 +90,7 @@ class Gallery_Macro:
             # Generate html-entry.
             text += ['<a href="' + imageDocName + '" class="highslide" onclick="return hs.expand(this)">',
                      '\t<img src="' + thumbDocName + '" ' + 
-                     'alt="Highslide JS" ' +
+                     'alt="' + caption + '" ' +
                      'title="' + title + '" ' + 
                      'width=' + repr(thumbnailMaxWidthPercent) + '% ' +
                      'height=' + repr(thumbnailMaxHeightPercent) + '% ' +
