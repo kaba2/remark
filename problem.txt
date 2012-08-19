@@ -3,6 +3,21 @@ Problems and solutions
 
 [[Parent]]: user_documentation.txt
 
+Why don't SVG-images get loaded?
+--------------------------------
+
+If an SVG-image does not get loaded when you run a Remark-generated
+html-file from a server, but it does get loaded when you run it from
+the hard-disk, then the probable cause is that the server does not
+have the MIME-type correctly assigned for the .svg files. For example, 
+for the `lighttpd` web-server, you should modify the configuration file
+`/etc/lighttpd/mime-types.conf` to contain the line
+
+	".svg"          =>      "image/svg+xml"
+
+The former string is the file-extension of the SVG-image file format, 
+while the latter is its MIME-type.
+
 What if I pass a non-UTF-8 encoded file to Remark?
 --------------------------------------------------
 
