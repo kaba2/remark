@@ -197,23 +197,23 @@ body
 {
 }
 
-/* Tables */
-#remark table.division
+/* The learn-more links are arranged into a table. */
+#remark table.learn-more
 {
+    /* The borders of neighbouring cells are joined together. */
     border-collapse: collapse;
+    /* The table spans the whole width. */
     width: 100%;
+    /* The table has no indentation. */
     margin-left: 0px;
+    /* The table has no border. */
+    border-style: none;
 }
 
-/* Tables: Cells */
-#remark td.division, th.division
+/* Border-styling for the learn-more table. */
+#remark table.learn-more *
 {
-}
-
-/* Tables and cells*/
-#remark table.division, th.division, td.division
-{
-    /* Give them a one-pixel wide border. */
+    /* Hide the cell-borders in the learn-more table. */
     border-style: none;
 }
 
