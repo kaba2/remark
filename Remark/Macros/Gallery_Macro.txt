@@ -46,16 +46,18 @@ thumbnail_max_height
 : 	A maximum for the height of a thumbnail in pixels.
 	Default 400.
 
-thumbnail_width_percent
-:	The width for the thumbnail in percents from
-	the width of the containing element. The height
-	of the thumbnail will be changed to preserve
-	aspect ratio. Default 45.
+The pixel-count defines the resolution of the thumbnail image
+for the pixel-based images; if the number of pixels is too low 
+compared to the presentation size (defined by the CSS), the 
+thumbnail image will look blurry. Naturally, vector-based
+images, such as svg, do not need separate thumbnails and are
+unaffected by these variables.
 
-Note that both types of variables are used. The pixel-count
-defines the resolution of the thumbnail image; if the number
-of pixels is too low compared to the presentation size (given
-by the percent), the thumbnail image will look blurry.
+To set the maximum allowed presentation width and height for
+the image thumbnails, modify the `max-width` and `max-height`
+properties of the `.highslide img` selector in `highslide.css`.
+The default for these are 45% and 20% (of the containing element), 
+respectively.
 
 Example
 -------
