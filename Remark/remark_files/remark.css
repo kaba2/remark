@@ -9,9 +9,9 @@ html, body
 
 body 
 {
-    /* Fonts from the sans-serif generic family are easier to read. 
-    Sans-serif means roughly 'without wiggles'. */
-    font-family: sans-serif;
+    /* Fonts from the sans-serif generic family are easier to read
+    on the screen. Sans-serif roughly means 'without wiggles'. */
+    font-family: Trebuchet MS, Sans-Serif;
     /* See the W3C CSS School for this trick. */
     font-size: 100%;
     /* Using more space between lines of text makes it easier to read. */
@@ -31,24 +31,23 @@ body
     border-width: 1px;
     border-color: rgb(85, 85, 85);
 
-    /* Its background is colored light green. */
+    /* Its background is colored light blue. */
     background-color: rgb(234, 240, 255);
 
-    /* The verbatim content should be indented somewhat. */
-    margin-top: 0px;
-    margin-bottom: 0px;
-    margin-left: 40px;
-    margin-right: 0px;
+    /* This can be used to indent the verbatim content. */
+    margin-top: 0%;
+    margin-bottom: 0%;
+    margin-left: 0%;
+    margin-right: 0%;
     
-    /* The verbatim content box should always have the same width.
-    This is because it must be able to hold some 70 characters
-    of source code per line. Yes, it is ugly when resizing, but
-    what can you do... */
-    width: 55em;
+    /* The verbatim content box should always have enough space
+    to cover some 80 characters per source-code line.*/
+    min-width: 40em;
+    max-width: 100%;
     
     /* The content should not be near the border. */
-    padding-left: 1em;
-    padding-right: 1em;
+    padding-left: 0.5em;
+    padding-right: 0.5em;
     padding-top: 0.5em;
     padding-bottom: 0.5em;
 }
@@ -63,46 +62,44 @@ body
 #remark p
 {
     margin-left: 0px;
-    text-align: justify;
+    font-weight: normal;
+    /*text-align: justify;*/
 }
 
 /* Code */
 #remark code
 {
     color: #505080;
-    font-size: 1.2em;
     font-family: monospace;
 }
 
 /* Level 1 headings */
 #remark h1
 {
+    font-size: 1.6em;
+    font-weight: normal;
+    color: #656565;
     margin: 1.5em 0em 1em 0em;
     /* Draw a dotted line under the heading. */
     border-bottom: 2px dotted #aca899;
     /* Make some space between the heading and the line under it.*/ 
-    padding-bottom: 0.4em;
+    padding-bottom: 0.3em;
     letter-spacing: 0.7em;
-    font-size: 1.6em;
-    font-weight: normal;
-    font-family: 'Trebuchet MS',Arial;
-    color: #656565;
     line-height: 1.5em;
 }
 
 /* Level 2 headings */
 #remark h2 
 {
+    font-size: 1.4em;
+    font-weight: normal;
+    color: #656565;
     margin: 1.5em 0em 1em 0em;
     /* Draw a dotted line under the heading. */
     border-bottom: 1px dotted #aca899;
     /* Make some space between the heading and the line under it.*/ 
     padding-bottom: 0.4em;
     letter-spacing: 0.3em;
-    font-size: 1.4em;
-    font-weight: normal;
-    font-family:'Trebuchet MS',Arial;
-    color: #656565;
 }
 
 /* Level 3 headings */
@@ -111,32 +108,22 @@ body
     margin: 1.5em 0em 1em 0em;
     font-size: 1.2em;
     font-weight: normal;
-    font-family:'Trebuchet MS',Arial;
     color: #356535;
 }
 
 /* Level 4 headings */
 #remark h4 
 {
-    margin: 1.5em 0em 1em 0em;
     font-size: 1.0em;
     font-weight: normal;
-    font-family:'Trebuchet MS',Arial;
     color: #255525;
+    margin: 1.5em 0em 1em 0em;
 }
 
 /* Images */
 #remark img 
 {
-    /* We would like to add a 1 pixel border
-    around an image to make it stand out.
-    However, since AsciiMathML does not support
-    css's, the fallback images for the formulas
-    also have to use this style. Using a border
-    in this case would look bad. */
-    border-style: solid;
-    border-width: 0px;
-    border-color: rgb(0, 0, 0);
+    /* For the image styling, use the highslide.css file instead */
 }
 
 /* Unordered lists (bullets) */
