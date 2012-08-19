@@ -4,6 +4,7 @@ Default stylesheet for Remark.
 
 html, body 
 {
+    /* We need this for positioning the footer. */
     height: 100%;
 }
 
@@ -35,13 +36,14 @@ body
     background-color: rgb(234, 240, 255);
 
     /* This can be used to indent the verbatim content. */
-    margin-top: 0%;
-    margin-bottom: 0%;
-    margin-left: 0%;
-    margin-right: 0%;
+    margin-top: 1em;
+    margin-bottom: 0em;
+    margin-left: 0em;
+    margin-right: 0em;
     
     /* The verbatim content box should always have enough space
-    to cover some 80 characters per source-code line.*/
+    to cover some 80 characters per source-code line, but it
+    should never be wider than the containing element.*/
     min-width: 40em;
     max-width: 100%;
     
@@ -230,37 +232,42 @@ body
 {
 }
 
-/* Remark generates some stuff in the 'footer' div. */
-
-#footer 
+/* The remark-all div contains the remark div and the remark-footer div.*/
+#remark-all
 {
-    position: absolute;
-    bottom: 10px;
-    width: 100%;
-    height: 30px;
+    /* We need the relative positioning to use the min-height.*/
+    position: relative;
+    /* The 100% min-height is here because we want to place
+    the footer at least one screen down (so it can't be seen
+    without scrolling). */
+    min-height: 100%;
 }
 
-#footer p 
+/* Remark generates the time-date and the link to itself 
+in the 'remark-footer' div. */
+
+#remark-footer 
+{
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+}
+
+#remark-footer p 
 {
     border-top: 1px dotted #716f64;
     font-size: 0.7em;
     font-family:'Trebuchet MS',Arial;
     color: #716f64;
 }
-#footer a 
+#remark-footer a 
 { 
     text-decoration: none; 
     color: #716f64; 
 }
 
-#footer a:hover 
+#remark-footer a:hover 
 { 
     text-decoration: underline; 
     color: #600; 
-}
-
-#container 
-{
-    min-height: 100%;
-    position: relative;
 }

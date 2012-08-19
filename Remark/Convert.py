@@ -656,25 +656,24 @@ def addHtmlBoilerPlate(text, document, htmlHead):
     asciiMathML = unixDirectoryName(os.path.normpath(os.path.join(remarkDirectory, asciiMathMlName())))
             
     htmlText = []
-    #htmlText.append('<?xml version="1.0" encoding="UTF-8"?>')
-    #htmlText.append('<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">')
     htmlText.append('<!DOCTYPE html>')
-    htmlText.append('<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US" lang="en-US">')
+    htmlText.append('<html>')
     htmlText.append('<head>')
+    htmlText.append('<meta http-equiv="Content-Type" content="text/html; charset=utf-8">')
     htmlText.append('<title>' + document.tag('description') + '</title>')
     htmlText.append('<link rel="stylesheet" type="text/css" href="' + remarkCss + '" />')
     htmlText.append('<link rel="stylesheet" type="text/css" href="' + pygmentsCss + '" />')
-    htmlText.append('<meta http-equiv="Content-Type" content="text/html; charset=utf-8">')
+
     if includeAsciiMathML:
         htmlText.append('<script type="text/javascript" src="' + asciiMathML + '"></script>')
     htmlText += htmlHead
     htmlText.append('</head>')
     htmlText.append('<body>')
-    htmlText.append('<div id = "container">')
+    htmlText.append('<div id = "remark-all">')
     htmlText.append('<div id = "remark">')
     htmlText += text
     htmlText.append('</div>')
-    htmlText.append('<div id="footer">')
+    htmlText.append('<div id="remark-footer">')
     htmlText.append('<p><a href="http://kaba.hilvi.org/remark">Remark ' + remarkVersion() + '</a> - Page generated ' + timeText + '.</p>')
     htmlText.append('</div>')
     htmlText.append('</div>')
