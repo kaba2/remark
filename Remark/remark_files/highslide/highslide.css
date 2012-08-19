@@ -17,7 +17,7 @@
 	outline-width: 1px;
 	max-width: 45%;
 	max-height: 20%;
-	border: 2px solid silver;
+	border-style: none;
 }
 .highslide:hover img {
 	border-color: gray;
