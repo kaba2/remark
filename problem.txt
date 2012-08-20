@@ -3,6 +3,16 @@ Problems and solutions
 
 [[Parent]]: user_documentation.txt
 
+Why do the thumbnails of the SVG-images look distorted in IE?
+-------------------------------------------------------------
+
+The Internet Explorer has a bug in the implementation of the CSS
+properties `max-width`, `max-height`, `min-width`, and `min-height`,
+especially in versions before IE9. In IE9, the above properties work 
+with pixel-based images, but they do not work with SVG-images; the 
+result is an image where the aspect ratio has not been preserved. 
+I am not aware of any way to circumvent the bug.
+
 Why don't SVG-images get loaded?
 --------------------------------
 
