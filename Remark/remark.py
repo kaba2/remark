@@ -198,7 +198,6 @@ use wildcards (e.g. *.png).""")
                     './remark_files/' + asciiMathMlName(), outputDirectory)
 
     if globalOptions().verbose:
-        print
         print 'Done.'
 
     # Output the time taken to produce the documentation.
