@@ -22,7 +22,7 @@ than 1.1.3.
 Remark 1.5.0
 ------------
 
-Release date 20.08.2012
+Release date 22.08.2012
 
 [Original webpage][Remark-1.5.0]
 
@@ -50,6 +50,11 @@ as .svg.
 
 * Updated the CSS-style files.
 * Made the generated html-boilerplate more standards-conforming.
+
+### AsciiMathML
+
+* Added support for online mimetex-rendering as a fallback when 
+the browser does not support MathML.
 
 ### Highslide JS
 
