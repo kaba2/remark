@@ -84,7 +84,7 @@ class SourceChildren_Macro:
         
         for group in groupSet:
             if group[0] == '':
-                group[0] = 'No description'
+                group[0] = '-'
                 print
                 print 'Warning: Description missing for the file-group'
                 print 

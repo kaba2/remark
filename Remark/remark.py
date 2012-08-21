@@ -5,6 +5,7 @@
 # Documentation: implementation.txt 
 
 import sys
+import time
 
 try:
     import markdown
@@ -41,6 +42,8 @@ from Common import unixDirectoryName, linkAddress, readFile
 from Common import documentType, associateDocumentType, remarkVersion
 from Common import asciiMathMlName, copyIfNecessary, setGlobalOptions, globalOptions
 from optparse import OptionParser
+
+from time import clock
 
 from Macros import *
 
@@ -100,6 +103,8 @@ use wildcards (e.g. *.png).""")
         sys.stdout.write('=')
     print
     print
+
+    startTime = time.clock()
     
     inputDirectory = args[0]
     outputDirectory = args[1]
@@ -141,7 +146,8 @@ use wildcards (e.g. *.png).""")
 
     # Recursively gather files starting from the input directory.
     if globalOptions().verbose:
-        print '\nGathering files...',
+        print
+        print 'Gathering files...',
 
     for pathName, directorySet, fileNameSet in os.walk(inputDirectory):
         for fileName in fileNameSet:
@@ -165,8 +171,10 @@ use wildcards (e.g. *.png).""")
     documentTree.compute()
 
     if globalOptions().verbose:
-        print '\nGenerating documents'
-        print '--------------------\n'
+        print
+        print 'Generating documents'
+        print '--------------------'
+        print
     
     convertAll(documentTree, inputDirectory, outputDirectory, prologue)
 
@@ -174,8 +182,10 @@ use wildcards (e.g. *.png).""")
     # copy the default ones there.
 
     if globalOptions().verbose:
-        print '\nMoving style files and AsciiMathML'
-        print '----------------------------------\n'
+        print 
+        print 'Moving style files and AsciiMathML'
+        print '----------------------------------'
+        print
 
     # This is the directory which contains 'remark.py'.
     scriptDirectory = sys.path[0]
@@ -188,6 +198,15 @@ use wildcards (e.g. *.png).""")
                     './remark_files/' + asciiMathMlName(), outputDirectory)
 
     if globalOptions().verbose:
+        print
         print 'Done.'
+
+    # Output the time taken to produce the documentation.
+    endTime = time.clock()
+    print
+    print str(round(endTime, 2)) + ' seconds.'
+    
+    if globalOptions().verbose:
         print
         print "That's all!"
+

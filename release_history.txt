@@ -37,6 +37,7 @@ the problematic file and continuing.
 * Added an option for verbose mode, and moved successful output
 from the normal mode to the verbose mode. This makes it easier
 to spot warnings and errors.
+* Added timing for the generation process.
 
 ### Macros
 
