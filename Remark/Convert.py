@@ -13,7 +13,7 @@ import copy
 
 from MacroRegistry import findMacro
 from Common import changeExtension, outputDocumentName, documentType, unixDirectoryName, copyIfNecessary
-from Common import asciiMathMlName, remarkVersion
+from Common import asciiMathMlName, remarkVersion, globalOptions
 
 class Scope:
     def __init__(self, parent, name):
@@ -755,7 +755,9 @@ def convertAll(documentTree, inputRootDirectory, targetRootDirectory, prologue):
             copyIfNecessary(document.relativeName, inputRootDirectory, 
                             targetRelativeName, targetRootDirectory)
         else:
-            print 'Generating', document.relativeName, '...'
+            if globalOptions().verbose:
+                print 'Generating', document.relativeName, '...'
+
             template = type.generateMarkdown(sourceFullName)
             convert(prologue + template, document, documentTree, 
                     inputRootDirectory, targetRootDirectory)

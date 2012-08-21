@@ -8,6 +8,15 @@ import string
 import codecs
 import shutil
 
+globalOptions_ = None
+
+def setGlobalOptions(options):
+    global globalOptions_
+    globalOptions_ = options
+
+def globalOptions():
+    return globalOptions_;
+
 def remarkVersion():
     return '1.5.0'
 
@@ -88,7 +97,8 @@ def copyIfNecessary(inputRelativeName, inputDirectory,
         os.path.getmtime(inputFilePath) <= os.path.getmtime(outputFilePath))
 
     if not fileUpToDate:
-        print 'Copying', inputRelativeName, '...'
+        if globalOptions().verbose:
+            print 'Copying', inputRelativeName, '...'
         shutil.copy(inputFilePath, outputFilePath)
 
 def outputDocumentName(name):

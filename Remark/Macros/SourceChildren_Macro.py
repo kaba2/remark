@@ -85,6 +85,11 @@ class SourceChildren_Macro:
         for group in groupSet:
             if group[0] == '':
                 group[0] = 'No description'
+                print
+                print 'Warning: Description missing for the file-group'
+                print 
+                for child in group[2]:
+                    print child.relativeName
         
         # Order the groups in alphabetical order w.r.t.
         # their descriptions. 

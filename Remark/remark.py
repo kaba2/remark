@@ -39,7 +39,7 @@ from TagParsers.Empty_TagParser import Empty_TagParser
 from Convert import convertAll
 from Common import unixDirectoryName, linkAddress, readFile
 from Common import documentType, associateDocumentType, remarkVersion
-from Common import asciiMathMlName, copyIfNecessary
+from Common import asciiMathMlName, copyIfNecessary, setGlobalOptions, globalOptions
 from optparse import OptionParser
 
 from Macros import *
@@ -59,6 +59,10 @@ use wildcards (e.g. *.png).""")
         default = 100,
         help = """maximum number of lines for a tag-parser to scan a file for tags (default 100)""")
 
+    optionParser.add_option('-v', '--verbose',
+        action="store_true", dest="verbose", default=False,
+        help = """whether to print additional progress information""")
+
     optionParser.add_option('-p', '--prologue',
         dest = 'prologueFileName',
         type = 'string',
@@ -74,6 +78,8 @@ use wildcards (e.g. *.png).""")
     if options.lines <= 0:
         print 'Error: The maximum number of lines to scan for tags must be at least 1.'
         sys.exit(1)
+
+    setGlobalOptions(options)
     
     # Possibly load the prologue file.
 
@@ -134,7 +140,9 @@ use wildcards (e.g. *.png).""")
     #display(documentTree)
 
     # Recursively gather files starting from the input directory.
-    print '\nGathering files...',
+    if globalOptions().verbose:
+        print '\nGathering files...',
+
     for pathName, directorySet, fileNameSet in os.walk(inputDirectory):
         for fileName in fileNameSet:
             fullName = os.path.normpath(os.path.join(pathName, fileName))
@@ -151,20 +159,23 @@ use wildcards (e.g. *.png).""")
                         documentTree.insertDocument(relativeName)
                         break
 
-    print 'Done.'
+    if globalOptions().verbose:
+        print 'Done.'
 
     documentTree.compute()
 
-    print '\nGenerating documents'
-    print '--------------------\n'
+    if globalOptions().verbose:
+        print '\nGenerating documents'
+        print '--------------------\n'
     
     convertAll(documentTree, inputDirectory, outputDirectory, prologue)
 
     # If there are no .css files already in the target directory,
     # copy the default ones there.
 
-    print '\nMoving style files and AsciiMathML'
-    print '----------------------------------\n'
+    if globalOptions().verbose:
+        print '\nMoving style files and AsciiMathML'
+        print '----------------------------------\n'
 
     # This is the directory which contains 'remark.py'.
     scriptDirectory = sys.path[0]
@@ -176,6 +187,7 @@ use wildcards (e.g. *.png).""")
     copyIfNecessary('./remark_files/' + asciiMathMlName(), scriptDirectory, 
                     './remark_files/' + asciiMathMlName(), outputDirectory)
 
-    print 'Done.'
-    
-    print "\nThat's all!"
+    if globalOptions().verbose:
+        print 'Done.'
+        print
+        print "That's all!"
