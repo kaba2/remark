@@ -82,10 +82,10 @@ def copyIfNecessary(inputRelativeName, inputDirectory,
         return
 
     # The output file is up-to-date if it exists and has a 
-    # modification time-stamp earlier than with the input file.
+    # modification time-stamp not later than with the input file.
     fileUpToDate = \
         (os.path.exists(outputFilePath) and 
-        os.path.getmtime(inputFilePath) < os.path.getmtime(outputFilePath))
+        os.path.getmtime(inputFilePath) <= os.path.getmtime(outputFilePath))
 
     if not fileUpToDate:
         print 'Copying', inputRelativeName, '...'
