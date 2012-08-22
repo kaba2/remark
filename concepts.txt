@@ -24,13 +24,14 @@ The documentation files and the auxiliary files are
 together called _documents_. When Remark works with
 the files:
 
- * The files in the class 3 are ignored.
+ * a file in the class 3 is ignored,
 
- * The files in the class 2 are copied as they are
- into the output directory, unless they already exist there.
+ * a file in the class 2 is copied directly into the 
+ output directory, unless the output file already
+ exists and is not older than the input file, and
 
- * The files in the class 1 are treated differently 
-based on the associated document type.
+ * a file in the class 1 is treated differently 
+based on its associated document type.
 
 ### Document types
 

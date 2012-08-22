@@ -742,16 +742,9 @@ def convertAll(documentTree, inputRootDirectory, targetRootDirectory, prologue):
         targetRelativeName = outputDocumentName(document.relativeName)
         targetFullName = os.path.join(targetRootDirectory, targetRelativeName)
 
-        #if (os.path.exists(sourceFullName) and 
-        #    os.path.exists(targetFullName) and 
-        #    os.path.getmtime(sourceFullName) < os.path.getmtime(targetFullName)):
-        #    #print 'Skipping', document.relativeName, ' as up-to-date...'
-        #    continue
-
         type = documentType(document.extension) 
         if type == None:
-            # This file has no associated document type.
-            # Simply copy it.
+            # This file has no associated document type; copy it.
             copyIfNecessary(document.relativeName, inputRootDirectory, 
                             targetRelativeName, targetRootDirectory)
         else:

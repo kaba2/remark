@@ -4,7 +4,7 @@ Orphan document type
 [[Parent]]: document_types.txt
 
 The Orphan document type is used to generate a page which
-simply lists its documentation as well as source children.
+lists its documentation children as well as its source children.
 Remark makes use of this document type by creating a 
 virtual `orphan.orphan` node in the root of document tree,
 called the _orphan node_. Those documents which do not

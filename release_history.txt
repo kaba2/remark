@@ -3,14 +3,8 @@ Release history
 
 [[Parent]]: remark.txt
 
-This section summarizes the release history of Remark.
-Previous versions can be obtained through the given links.
-
-Conventions
------------
-
-### Versioning
-
+This section summarizes the release history of Remark. Previous versions 
+can be obtained through the given links.
 The versioning of Remark is given in the form x.y.z, where x, y, and z 
 are integers. The x increments only for major changes, the y increments 
 for feature changes, and the z increments for bug fixes or documentation 

@@ -33,7 +33,7 @@ Acknowledgements
 ----------------
 
 Remark 1.0, 1.1, and 1.2 were programmed under funding from 
-the [Finnish Foundation for Technology Promotion][TES]
+the [Finnish Foundation for Technology Promotion][TES].
 
 Remark was preceded by a similar implementation
 called _LightMark_ programmed by [Juho Hämäläinen][Juho].
