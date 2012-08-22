@@ -31,18 +31,21 @@ def openFileUtfOrLatin(fileName):
     try:
         file = codecs.open(fileName, mode = 'rU', encoding = 'utf-8-sig')
     except UnicodeDecodeError:
-        print 'Warning: file \'' + fileName + '\' is not UTF-8 encoded. Assuming Latin-1 encoding.'
+        print
+        print 'Warning:', fileName, 
+        print 'is not UTF-8 encoded. Assuming Latin-1 encoding.'
         file = codecs.open(fileName, mode = 'rU', encoding = 'latin-1')
 
     return file    
 
 def readFile(fileName):
     fileSize = os.path.getsize(fileName)
-    maxSize = 2**18
+    maxSize = globalOptions().maxFileSize
     if fileSize >= maxSize:
         print
-        print 'Warning: file \'' + fileName + '\' is larger than ', 
-        print maxSize, ' bytes (', fileSize, 'bytes) . Ignoring it.'
+        print 'Warning:', fileName, 
+        print 'is larger than', maxSize, 'bytes (it is', fileSize, 'bytes).',
+        print 'Ignoring it.'
         return []
         
     # Read the file into memory
@@ -52,8 +55,8 @@ def readFile(fileName):
             text = file.readlines()
     except UnicodeDecodeError:
         print
-        print 'Warning: file \'' + fileName + '\' ',
-        print 'could not be read because of a unicode decode error. ',
+        print 'Warning:', fileName,
+        print 'could not be read because of a unicode decode error.',
         print 'Ignoring it.'
         return []
 

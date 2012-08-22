@@ -71,34 +71,35 @@ class DocumentTree:
         print
         print 'Parsing tags'
         print '------------'
-        print
         self._parseTags()
+        print
         print 'Done.'
         
         print
         print 'Resolving explicit links'
         print '------------------------'
-        print
         self._resolveExplicitLinks()
+        print
         print 'Done.'
         
         print
         print 'Resolving implicit links'
         print '------------------------'
-        print
         self._resolveImplicitLinks()
+        print
         print 'Done.'
         
         print
         print 'Resolving reference links'
         print '-------------------------'
-        print
         self._resolveReferenceLinks()
+        print
         print 'Done.'
 
         print
         print 'Linking orphans...',
         self._linkOrphans()
+        print
         print 'Done.'
         
     def insertDocument(self, relativeName):
@@ -179,7 +180,17 @@ class DocumentTree:
         if fileName != documentName:
             # This is a relative path: don't
             # search from anywhere else.
-            document = self.findDocument(documentName, relativeDirectory) 
+            document = self.findDocument(documentName, relativeDirectory)
+            if document != None:
+                # Check whether this search could have been equivalently
+                # been done with a pure filename.
+                (checkDocument, checkUnique) = \
+                    self.findDocumentHard(fileName, relativeDirectory)
+                if checkDocument == document and checkUnique:
+                    print
+                    print ('Warning: Used relative form ' + documentName + 
+                           ' where pure form ' + fileName + 
+                           ' is already unambiguous.')
             return (document, True)
         
         #print '"', fileName, '"'
@@ -277,12 +288,14 @@ class DocumentTree:
                 parent, unique = self.findDocumentHard(parentName, 
                                                        document.relativeDirectory)
                 if not unique:
+                    print
                     print 'Warning: parent file is ambiguous for', 
                     print document.relativeName, '. The search was for:', parentName                                     
                 if parent == None:
                     # If a parent file can't be found, it can be
                     # because of a typo in the tag or a missing file. 
                     # In any case we warn the user.
+                    print
                     print 'Warning: parent file was not found for',
                     print document.relativeName, '. The search was for:', parentName
                 else:
@@ -296,6 +309,7 @@ class DocumentTree:
             elif document.extension == '.txt':
                 # This file is a documentation file and it is
                 # missing a parent tag. Warn about that.
+                print
                 print 'Warning:', document.relativeName, 'does not specify a parent file.'
     
     def _resolveImplicitLinks(self):
@@ -478,6 +492,7 @@ class DocumentTree:
                 # If a reference file can't be found, it can be
                 # because of a typo in the tag or a missing file. 
                 # In any case we warn the user.
+                print
                 print 'Warning: reference parent file was not found for',
                 print document.relativeName, '. The search was for:', referenceName
             else:
@@ -486,7 +501,8 @@ class DocumentTree:
                 if reference.parent != None:
                     reference.parent.insertChild(document)
                 else:
-                    print 'Warning: The file ', referenceName, ', referenced by ',
+                    print
+                    print 'Warning: ', referenceName, ', referenced by ',
                     print document.relativeName, ', does not have an associated parent file.'
                     
 

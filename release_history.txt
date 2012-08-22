@@ -27,11 +27,17 @@ exist _or_ the source file has been modified after the target file.
 * Fixed a crash when facing Unicode decode errors in tag parsers
 and when generating such files. Replaced with a warning to pinpoint
 the problematic file and continuing.
-* Added a warning about a description missing for a file-group.
+
+### Interface
+
 * Added an option for verbose mode, and moved successful output
 from the normal mode to the verbose mode. This makes it easier
 to spot warnings and errors.
+* Added an option for setting the maximum file size to load.
 * Added timing for the generation process.
+* Added a warning about a description missing for a file-group.
+* Added a warning about using the relative form in links where the 
+pure form would already be unambiguous. This enforces robust linking.
 
 ### Macros
 

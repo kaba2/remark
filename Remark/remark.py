@@ -66,6 +66,12 @@ use wildcards (e.g. *.png).""")
         action="store_true", dest="verbose", default=False,
         help = """whether to print additional progress information""")
 
+    optionParser.add_option('-m', '--max-file-size',
+        dest = 'maxFileSize',
+        type = 'int',
+        default = 2**18,
+        help = """maximum file size to load (default 262144 bytes)""")
+
     optionParser.add_option('-p', '--prologue',
         dest = 'prologueFileName',
         type = 'string',
