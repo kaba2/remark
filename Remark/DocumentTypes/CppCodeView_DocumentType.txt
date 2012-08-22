@@ -4,14 +4,13 @@ CppCodeView document type
 [[Parent]]: document_types.txt
 
 The CppCodeView document type offers a highlighted view to a C++ source 
-code file. In addition, the include files are cross-linked to other files
+code file. In addition, the include-files are cross-linked to other files
 with the CppCodeView type within the document tree.
 
 Specification of tags
 ---------------------
 
-The tag specifications are embedded into the comments.
-Their form are as follows:
+The tags are specified in the comments. Their form are as follows:
 
 ### Parent document
 
@@ -33,7 +32,7 @@ Properties
 ----------
 
 Input extensions 
-:	.cpp, .cc, .hpp, hh, .c, .h
+:	.cpp, .cc, .hpp, .hh, .c, .h
 
 Output extension
 :	input extension + `.htm`

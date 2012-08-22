@@ -52,40 +52,52 @@ class DocumentTree:
         self.fileNameMap = {}
         self.parserLines = parserLines
         
-    def compute(self):        
-        print '\nGathering directories...',
+    def compute(self):      
+        print  
+        print 'Gathering directories...',
         self._gatherDirectories();
         print 'Done.'
 
-        print '\nGenerating index files...',
+        print
+        print 'Generating index files...',
         self._generateIndexFiles();
         print 'Done.'
 
-        print '\nConstructing fileName map...',
+        print
+        print 'Constructing file-name map...',
         self._constructFileNameMap()
         print 'Done.'
 
-        print '\nParsing tags'
-        print '------------\n'
+        print
+        print 'Parsing tags'
+        print '------------'
+        print
         self._parseTags()
         print 'Done.'
         
-        print '\nResolving explicit links'
-        print '------------------------\n'
+        print
+        print 'Resolving explicit links'
+        print '------------------------'
+        print
         self._resolveExplicitLinks()
         print 'Done.'
         
-        print '\nResolving implicit links'
-        print '------------------------\n'
+        print
+        print 'Resolving implicit links'
+        print '------------------------'
+        print
         self._resolveImplicitLinks()
         print 'Done.'
         
-        print '\nResolving reference links'
-        print '-------------------------\n'
+        print
+        print 'Resolving reference links'
+        print '-------------------------'
+        print
         self._resolveReferenceLinks()
         print 'Done.'
 
-        print '\nLinking orphans...',
+        print
+        print 'Linking orphans...',
         self._linkOrphans()
         print 'Done.'
         

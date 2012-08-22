@@ -3,8 +3,10 @@ File searching algorithm
 
 [[Parent]]: macro.txt
 
-Many of the macros, such as Link, FileLink, DirectoryLink, Gallery, 
-and Ref, use the same file searching algorithm to match a given file 
+Many of the macros, such as the [[Link: Link_Macro.txt]], 
+[[Link: FileLink_Macro.txt]], [[Link: DirectoryLink_Macro.txt]], 
+[[Link: Gallery_Macro.txt]], and the [[Link: Ref_Macro.txt]]
+use the same file-searching algorithm to match a given file 
 path to a unique file in the document tree. We specify that algorithm
 here. Knowing this algorithm is essential to being able to build 
 documentation that is robust to changes in the directory structure.
@@ -12,21 +14,22 @@ documentation that is robust to changes in the directory structure.
 Algorithm
 --------- 
 
-You can specify a filename either in pure or relative path form.
-Use the relative path form only when it is necessary to avoid 
-an ambiguity or when the implicit rules do not do what you want. 
+You can specify a filename either in pure or relative path form;
+always use the pure form, unless it is necessary to resolve an
+amgiguity in the implicit rules.
 
 ### Pure filenames
 
-Pure filenames are searched as follows:
+Pure filenames (paths with no directory-related information) are 
+searched as follows:
 
- 1. Search from the current directory.
+ 1. Search the file from the current directory.
  
- 2. If not found, search from the parent directories up until 
- to the documentation root.
+ 2. If the file was not found, search the file from the parent 
+ directories up until to the documentation root.
  
- 3. If not found, search across all documents in the
- document tree. In case there are multiple documents
+ 3. If the file was still not found, search the file across all 
+ documents in the document tree. In case there are multiple documents
  with the given filename, pick one arbitrarily and
  report a warning of the ambiguity.
 
@@ -51,7 +54,9 @@ macro invocations are relative paths:
 While this works, notice that relative paths are sensitive to 
 changes in the directory structure. For example, if we moved 
 this document to a new sub-directory in the current directory,
-the link above would be broken. This is why we recommend using
-the pure form instead.
+the link above would be broken. The pure form avoids these
+problems by using a well-defined dynamic association. The relative
+form should only be used to resolve ambiguities in the cases 
+where multiple files match.
 
 

@@ -9,8 +9,7 @@ code files in various programming languages.
 Specification of tags
 ---------------------
 
-The tags specifications are embedded into the comments.
-Their form are as follows:
+The tags are specified in the comments. Their form are as follows:
 
 ### Parent document
 

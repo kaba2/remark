@@ -16,7 +16,7 @@ Constructing the document tree
 
 This step gathers a linear list of those files that are located
 in the input directory or its sub-directories. Files are identified 
-with their location relative to the input directory (called a _root name_).
+with their location relative to the input directory (called a _relative name_).
 Only those files are accepted which have an associated document
 type or are explicitly specified at the invocation of Remark. 
 
@@ -40,11 +40,17 @@ construct a part of the document tree. The parent document
 is allowed to be given as a simple filename only. If the
 file is not found in the current directory, then parent directories
 are searched repeatedly until a match is found or one reaches
-the input directory. If the parent file is not found, a warning
-is emitted (the filename might be misspelled or the file really missing).  
-If a documentation file (.txt) does not specify a parent document,
-a warning is emitted. Other types of documents might still be
-deduced a parent implicitly.
+the input directory. If the parent file is not found in this way, 
+the file is searched from all documentation directories. If there 
+is a unique match, then that is used as the parent file. If there 
+are multiple matches, one is picked arbitrarily, and a warning is
+emitted (since the parent file is ambiguous). If there are no 
+matches, a warning is emitted (the filename might be mis-spelled 
+or the file really missing). 
+
+If a documentation file (.txt) does not specify a parent document, 
+a warning is emitted. If some other type of document does not specify 
+a parent document, it may still be decuded a parent implicitly.
 
 ### Resolving implicit links
 
@@ -61,8 +67,8 @@ the orphans, the user has a useful list of those files
 which are not linked to the documentation. This is what the .orphan
 document type is used for.
 
-Add some virtual documents
---------------------------
+Adding virtual documents
+------------------------
 
 Using the list of involved directories, a `directory.index` document is
 generated to each sub-directory of the document tree. In addition,
@@ -87,17 +93,15 @@ For each file in the document tree:
 5. Save the generated html to the output file 
  (with the input extension replaced with the output extension). 
 
-Copying some files
-------------------
+Copying files
+-------------
 
-Those files which have no associated document type, but are
-located at the documented directories, are simply copied
-to the corresponding output directories. However, if a
-particular file already exists at the output directory,
-it is _not_ copied over.
+A file which has no associated document type is directly copied to 
+the corresponding output directory, unless the output file already
+exists and does not have an earlier modification time-stamp.
 
-At the end, three files are copied (if they don't exist) to the 
-`remark_files` directory of the output directory. These are:
+At the end, the following files are copied, as above, to the 
+`remark_files` directory of the output directory:
 
 remark.css 
 : To control the styling of the generated web-pages in general.
