@@ -57,6 +57,8 @@ this document to a new sub-directory in the current directory,
 the link above would be broken. The pure form avoids these
 problems by using a well-defined dynamic association. The relative
 form should only be used to resolve ambiguities in the cases 
-where multiple files match.
+where multiple files match. The enforce this, Remark emits a
+warning whenever a file is searched using the relative form
+where the pure form would suffice.
 
 
