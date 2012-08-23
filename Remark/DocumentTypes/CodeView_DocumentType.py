@@ -14,6 +14,9 @@ class CodeView_DocumentType(DocumentType):
     def name(self):
         return 'CodeView'
 
+    def linkDescription(self, document):
+        return document.fileName
+
     def parseTags(self, fileName, lines = 100):
         regexMap = {'description' : re.compile(r'[ \t]+Description:[ \t]+(.*)'),
                     'detail' : re.compile(r'[ \t]+Detail:[ \t]+(.*)'),

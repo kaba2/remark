@@ -23,7 +23,13 @@ file_name
 
 relative_name
 :	Relative path to the current document from the
-    input directory root. 
+    input directory root.
+
+root_file_name
+:	The filename of the root document.
+
+root_relative_name
+:	The relative path of the root document.
 
 ### Special variables
 

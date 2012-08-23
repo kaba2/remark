@@ -24,7 +24,7 @@ class Link_Macro(object):
                 remarkConverter.reportWarning('Link: "' + linkFileName + '" is ambiguous. Picking arbitrarily.')
             
             if linkDocument != None:
-                text.append(remarkConverter.remarkLink(linkDocument.tag('description'),
+                text.append(remarkConverter.remarkLink(linkDocument.linkDescription(),
                                                        document, linkDocument))
 
                 if len(parameter) > 1:                

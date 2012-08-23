@@ -60,4 +60,3 @@ Markdown for writing the documentation.
 	pageTracker._trackPageview();
 	} catch(err) {}</script>
 
-[[DocumentTree]]

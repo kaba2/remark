@@ -32,6 +32,10 @@ DocumentTree.class_name
 	allows to style the generated list using CSS.
 	Default 'DocumentTree'.
 
+DocumentTree.max_depth
+:	Maximum depth for the listed tree.
+	Default 10.
+
 Examples
 --------
 
