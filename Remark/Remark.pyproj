@@ -152,6 +152,7 @@
     <Content Include="Macros\SourceChildren_Macro.txt" />
     <Content Include="Macros\Verbatim_Macro.txt" />
     <Content Include="remark_files\ASCIIMathMLwFallback.js" />
+    <Content Include="remark_files\highslide\highslide-full.js" />
     <Content Include="remark_files\highslide\highslide.css" />
     <Content Include="remark_files\pygments.css" />
     <Content Include="remark_files\remark.css" />

@@ -33,6 +33,7 @@ svg image to a pixel-based image.
 [PythonMarkdown]: http://www.freewisdom.org/projects/python-markdown/
 [Pygments]: http://pygments.org/
 [PIL]: http://www.pythonware.com/products/pil/
+[PyGtk]: http://pygtk.org
  
 Javascript dependencies
 -----------------------
