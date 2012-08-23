@@ -12,7 +12,7 @@ class DocChildren_Macro:
         documentTree = remarkConverter.documentTree
         scope = remarkConverter.scopeStack.top()
         
-        targetDirectory = document.relativeDirectory
+        outputDirectory = document.relativeDirectory
         
         # Construct the ignore set.
         ignoreList = scope.search('DocChildren.no_links_for')
@@ -52,7 +52,7 @@ class DocChildren_Macro:
                 
         childSet.sort(lambda x, y: cmp(x.tag('description'), y.tag('description')))        
         for child in childSet:
-            linkTarget = linkAddress(targetDirectory, child.relativeName)
+            linkTarget = linkAddress(outputDirectory, child.relativeName)
             linkDescription = child.tag('description')
             linkSet.append((outputDocumentName(linkTarget), linkDescription))
             

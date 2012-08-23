@@ -34,7 +34,7 @@ class SourceChildren_Macro:
         # group all files that have the same name without
         # extension. The group shares the same description.
        
-        targetDirectory = document.relativeDirectory
+        outputDirectory = document.relativeDirectory
         beginIndex = 0
         groupSet = []
         description = ''
@@ -123,7 +123,7 @@ class SourceChildren_Macro:
             # Output the links in the group.
             for child in group[2]:
                 linkDescription = child.fileName
-                linkTarget = linkAddress(targetDirectory, child.relativeName)
+                linkTarget = linkAddress(outputDirectory, child.relativeName)
                 text.append(remarkConverter.remarkLink(linkDescription, outputDocumentName(linkTarget)))
                 text.append('')
             

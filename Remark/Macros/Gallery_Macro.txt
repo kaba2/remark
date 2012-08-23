@@ -12,7 +12,7 @@ Generates an image gallery. The supported image formats are PNG,
 JPEG, GIF, and SVG. These image formats are the ones that are 
 [well-supported][ImageFormats] in browsers (as of October 2012).
 Thumbnails are automatically generated for images with filename 
-extensions .png, .gif, .jpeg, .jpg, and .svg. 
+extensions .png, .gif, .jpeg, .jpg. 
 
 [ImageFormats]: http://en.wikipedia.org/wiki/Comparison_of_browsers
 
@@ -30,6 +30,7 @@ A list of the following form:
 
 	image1.png
 	- Caption for the first image.
+	- More caption for the first image.
 	image2.jpg
 	- Caption for the second image.
 	image4.gif
@@ -53,6 +54,16 @@ for the pixel-based images; if the number of pixels is too low
 compared to the presentation size (defined by the CSS), the 
 thumbnail image will look blurry.
 
+### Multiple image formats
+
+If an image file has multiple formats in the same directory,
+say `lookaheads.png` and `lookaheads.svg`, then they are assumed
+to be the same image in different formats. If there is an image 
+file for which thumbnails can be generated (not .svg), then that 
+image file is used to generate the thumbnail. In particular, this
+covers for the fact that, as of October 2012, there aren't any good
+open-source libraries for converting SVG to a pixel-based image.
+
 ### Width and height of thumbnails
 
 To set the maximum allowed presentation width and height for
@@ -68,8 +79,8 @@ This
 
 	[[Gallery]]:
 		hsv.png
-		- A visualization of the HSV color space (with full saturation). 
-		../../images/hsv.png
+		- A visualization of the HSV color space (with full saturation).
+		- This text is appended to the caption.
 		lookaheads.svg
 		- Lookahead-sets in LC(1)-parsing
 	
@@ -78,7 +89,7 @@ produces this:
 [[Gallery]]:
 	hsv.png
 	- A visualization of the HSV color space (with full saturation). 
-	../../images/hsv.png
+	- This text is appended to the caption.
 	lookaheads.svg
 	- Lookahead-sets in LC(1)-parsing
 

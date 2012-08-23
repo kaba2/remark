@@ -7,7 +7,7 @@
 import os.path
 import string
 import re
-from Common import documentType, unixDirectoryName
+from Common import documentType, unixDirectoryName, linkAddress, fileExtension
 
 def fileSuffix(relativeName):
     index = string.rfind(relativeName, '.')
@@ -19,9 +19,12 @@ def filePrefix(relativeName):
 
 class Document:
     def __init__(self, relativeName):
+        # Precompute commonly needed names.
         self.relativeName = unixDirectoryName(relativeName)
         self.relativeDirectory, self.fileName = os.path.split(relativeName)
-        self.extension = os.path.splitext(self.fileName)[1]
+        self.extension = fileExtension(self.fileName).lower()
+        self.linkName = linkAddress(self.relativeDirectory, self.relativeName)
+
         self.tagSet = {'description' : '', 
                        'detail' : '',
                        'author' : ''}
@@ -119,7 +122,7 @@ class DocumentTree:
 
     def findDocumentByName(self, relativeName):
         '''
-        Finds a document corresponding to the given filename and 
+        Finds a document corresponding to the given relative name and 
         relative directory.
         Example:
         documentTree.findDocument('eggs/bar/spam.txt') 
@@ -190,7 +193,7 @@ class DocumentTree:
                     print
                     print ('Warning: Used relative form ' + documentName + 
                            ' where pure form ' + fileName + 
-                           ' is already unambiguous.')
+                           ' is unambiguous.')
             return (document, True)
         
         #print '"', fileName, '"'

@@ -124,7 +124,7 @@ class MacroInvocation:
         
 class RemarkConverter:
     def __init__(self, document, template, documentTree, 
-                 inputRootDirectory, targetRootDirectory):
+                 inputRootDirectory, outputRootDirectory):
         self.scopeStack = ScopeStack()
         self.scopeStack.open('global')
         self.document = document
@@ -134,7 +134,7 @@ class RemarkConverter:
         self.usedMacroSet = []
         self.template = template
         self.inputRootDirectory = inputRootDirectory
-        self.targetRootDirectory = targetRootDirectory
+        self.outputRootDirectory = outputRootDirectory
 
         # Here we form regular expressions to identify
         # Remark macro invocations in the text.
@@ -528,7 +528,7 @@ class RemarkConverter:
             
         for macro in self.usedMacroSet:
             macro.postConversion(self.inputRootDirectory, 
-                                 self.targetRootDirectory)
+                                 self.outputRootDirectory)
 
         self.used = True
         return newText
@@ -684,26 +684,26 @@ def addHtmlBoilerPlate(text, document, htmlHead):
 
 
 def convert(template, document, documentTree, 
-            inputRootDirectory, targetRootDirectory):
+            inputRootDirectory, outputRootDirectory):
     # Find out some names.
-    targetRootDirectory = os.path.normpath(targetRootDirectory)
-    targetRelativeName = outputDocumentName(document.relativeName)
-    targetFullName = os.path.join(targetRootDirectory, targetRelativeName)
+    outputRootDirectory = os.path.normpath(outputRootDirectory)
+    outputRelativeName = outputDocumentName(document.relativeName)
+    outputFullName = os.path.join(outputRootDirectory, outputRelativeName)
 
     # If the directories do not exist, create them.
-    targetDirectory = os.path.split(targetFullName)[0]
-    if not os.path.exists(targetDirectory):
-        os.makedirs(targetDirectory)
+    outputDirectory = os.path.split(outputFullName)[0]
+    if not os.path.exists(outputDirectory):
+        os.makedirs(outputDirectory)
 
     # Convert Remark to Markdown
     remarkConverter = RemarkConverter(document, template, documentTree, 
-                                      inputRootDirectory, targetRootDirectory)
+                                      inputRootDirectory, outputRootDirectory)
     text = remarkConverter.convert(template)
     #for line in text:
     #    print line
     
     # Save the text to a file.
-    #with codecs.open(targetFullName + '.txt', mode = 'w', encoding = 'utf-8') as outputFile:
+    #with codecs.open(outputFullName + '.txt', mode = 'w', encoding = 'utf-8') as outputFile:
     #    for line in text:
     #        outputFile.write(line)
     #        outputFile.write('\n')
@@ -721,12 +721,12 @@ def convert(template, document, documentTree,
     text = addHtmlBoilerPlate(text, document, headText)
        
     # Save the text to a file.
-    with codecs.open(targetFullName, mode = 'w', encoding = 'utf-8') as outputFile:
+    with codecs.open(outputFullName, mode = 'w', encoding = 'utf-8') as outputFile:
         for line in text:
             outputFile.write(line)
             outputFile.write('\n')
 
-def convertAll(documentTree, inputRootDirectory, targetRootDirectory, prologue):
+def convertAll(documentTree, inputRootDirectory, outputRootDirectory, prologue):
     
     # We wish to convert the files in alphabetical order
     # (in the map they are in hashed order).
@@ -734,26 +734,26 @@ def convertAll(documentTree, inputRootDirectory, targetRootDirectory, prologue):
     sortedDocumentSet.sort(lambda x, y: cmp(x.relativeName, y.relativeName))
 
     inputRootDirectory = os.path.normpath(inputRootDirectory)
-    targetRootDirectory = os.path.normpath(targetRootDirectory)
+    outputRootDirectory = os.path.normpath(outputRootDirectory)
     
     for document in sortedDocumentSet:
         # Find out some names.
         sourceFullName = os.path.join(inputRootDirectory, document.relativeName)
-        targetRelativeName = outputDocumentName(document.relativeName)
-        targetFullName = os.path.join(targetRootDirectory, targetRelativeName)
+        outputRelativeName = outputDocumentName(document.relativeName)
+        outputFullName = os.path.join(outputRootDirectory, outputRelativeName)
 
         type = documentType(document.extension) 
         if type == None:
             # This file has no associated document type; copy it.
             copyIfNecessary(document.relativeName, inputRootDirectory, 
-                            targetRelativeName, targetRootDirectory)
+                            outputRelativeName, outputRootDirectory)
         else:
             if globalOptions().verbose:
                 print 'Generating', document.relativeName, '...'
 
             template = type.generateMarkdown(sourceFullName)
             convert(prologue + template, document, documentTree, 
-                    inputRootDirectory, targetRootDirectory)
+                    inputRootDirectory, outputRootDirectory)
     
 def _leadingTabs(text):
     tabs = 0
