@@ -45,12 +45,18 @@ class Document(object):
     def documentType(self):
         return documentType(self.extension)
 
+    def linkDescription(self):
+        type = self.documentType()
+        if type == None:
+            return ''
+        
+        return self.documentType().linkDescription(self)
+
 class DocumentTree(object):
     def __init__(self, rootDirectory, parserLines = 100):
         assert os.path.isdir(rootDirectory)
         
         self.rootDirectory = rootDirectory
-        self.root = Document('root')
         self.orphan = Document('orphan.remark-orphan')
         self.orphan.tagSet['description'] = 'Orphans'
         self.documentMap = {'orphan.remark-orphan' : self.orphan}
@@ -64,8 +70,8 @@ class DocumentTree(object):
         print 'Done.'
 
         print
-        print 'Generating index files...',
-        self._generateIndexFiles();
+        print 'Inserting virtual documents...',
+        self._insertVirtualDocuments();
         print 'Done.'
 
         print
@@ -249,7 +255,7 @@ class DocumentTree(object):
         
         self.directorySet = directorySet
 
-    def _generateIndexFiles(self):
+    def _insertVirtualDocuments(self):
         # We wish to generate an index to each directory in the
         # directory tree.
         for directory in self.directorySet:
@@ -540,14 +546,3 @@ class DocumentTree(object):
             else:
                 self.fileNameMap[document.fileName] = [document]
             
-def display(documentTree):
-    _display(documentTree, documentTree.root, 0)
-
-def _display(documentTree, document, indentation):
-    for i in range(0, indentation):
-        print '  ',
-    print document.relativeName
-    for child in document.childSet.itervalues():
-        _display(documentTree, child, indentation + 1)
-
-

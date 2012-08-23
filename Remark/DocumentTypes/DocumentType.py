@@ -10,6 +10,9 @@ class DocumentType(object):
     def name(self):
         return ''
 
+    def linkDescription(self, document):
+        return ''
+
     def parseTags(self, fileName, lines = 100):
         None         
         

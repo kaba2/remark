@@ -282,7 +282,7 @@ in the 'remark-footer' div. */
     /*visibility: hidden;*/
     
     /* The position is given by us, not deduced from others. */
-    position: absolute;
+    /* position: absolute; */
     
     /* The position is like this. */
     left: 80%;
@@ -305,8 +305,10 @@ in the 'remark-footer' div. */
 /* Styling for ParentList list-items. */
 #remark .ParentList li
 {
-    /*background-color: rgba(0, 0, 255, 0.25);*/
-    padding: 1em;
+    float: left;
+    
+    background-color: rgba(0, 0, 255, 0.25);
+    padding: 0.5em;
 }
 
 /* Syling for DocumentTree lists. */
@@ -314,7 +316,12 @@ in the 'remark-footer' div. */
 {
     /* Get rid of default-indentation for lists. */
     margin: 0;
-    padding: 0;
+    /*padding: 0;*/
+    
+    /* Give some indendation to nested lists. */
+    padding-left: 3em;
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
 
     /* Get rid of default-dots for the list items. */
     list-style-type: none;
@@ -323,6 +330,7 @@ in the 'remark-footer' div. */
 /* Styling for DocumentTree list-items. */ 
 #remark .DocumentTree ol li
 {
+    padding-bottom: 0em;
 }
 
 #remark .DocChildren div

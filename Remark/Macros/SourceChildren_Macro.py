@@ -44,6 +44,8 @@ class SourceChildren_Macro(object):
             document = sortedMap[i]
             reference = sortedMap[beginIndex]
             
+            # Note that it is really the _description_ we want to
+            # use here, rather than the link description.
             desc = document.tag('description')
             if desc != '':
                 # If there are multiple descriptions, one is chosen

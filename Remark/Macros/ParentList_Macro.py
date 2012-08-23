@@ -9,7 +9,7 @@ from Common import htmlDiv
 class ParentList_Macro(object):
     def expand(self, parameter, remarkConverter):
         scope = remarkConverter.scopeStack.top()
-        className = scope.getString('ParentList.class-name', 'ParentList')
+        className = scope.getString('ParentList.class_name', 'ParentList')
 
         # Gather document's parents one by one.
         parentSet = []
@@ -24,7 +24,7 @@ class ParentList_Macro(object):
         text = []
         for document in reversed(parentSet):
             linkText = remarkConverter.remarkLink(
-                document.tag('description'), 
+                document.linkDescription(), 
                 remarkConverter.document, document)
 
             # Strictly speaking, Markdown does not

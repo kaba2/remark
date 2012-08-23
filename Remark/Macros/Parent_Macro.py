@@ -11,7 +11,7 @@ class Parent_Macro(object):
         document = remarkConverter.document
         parent = document.parent
        
-        return [remarkConverter.remarkLink('Back to ' + parent.tag('description'),
+        return [remarkConverter.remarkLink('Back to ' + parent.linkDescription(),
                                            document, parent)]
 
     def outputType(self):

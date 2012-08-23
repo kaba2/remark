@@ -200,8 +200,6 @@ class RemarkConverter(object):
         
         scope.insert('file_name', [document.fileName])
         scope.insert('relative_name', [document.relativeName])
-        scope.insert('parent_file_name', [document.parent.fileName])
-        scope.insert('parent_relative_name', [document.parent.relativeName])
         
         self.lastReportFrom = ''
         self.used = False
@@ -695,7 +693,7 @@ def addHtmlBoilerPlate(text, document, htmlHead):
     htmlText.append('<html>')
     htmlText.append('<head>')
     htmlText.append('<meta http-equiv="Content-Type" content="text/html; charset=utf-8">')
-    htmlText.append('<title>' + document.tag('description') + '</title>')
+    htmlText.append('<title>' + document.linkDescription() + '</title>')
     htmlText.append('<link rel="stylesheet" type="text/css" href="' + remarkCss + '" />')
     htmlText.append('<link rel="stylesheet" type="text/css" href="' + pygmentsCss + '" />')
 

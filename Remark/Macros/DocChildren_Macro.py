@@ -13,7 +13,7 @@ class DocChildren_Macro(object):
         scope = remarkConverter.scopeStack.top()
 
         # Variables
-        className = scope.getString('DocChildren.class-name', 'DocChildren')
+        className = scope.getString('DocChildren.class_name', 'DocChildren')
         title = scope.getString('DocChildren.title', 'Learn more')
         
         # Construct the ignore set.
@@ -48,28 +48,13 @@ class DocChildren_Macro(object):
         text.append('')
        
         # Sort the links alphabetically by their desciption.        
-        childSet.sort(lambda x, y: cmp(x.tag('description'), y.tag('description')))        
+        childSet.sort(lambda x, y: cmp(x.linkDescription(), y.linkDescription()))        
         
         for child in childSet:
-            linkText = remarkConverter.remarkLink(child.tag('description'),
+            linkText = remarkConverter.remarkLink(child.linkDescription(),
                                                   document, child)
             text.append('1. ' + linkText)
         
-        # The following code uses a table to divide the links
-        # into equal-sized columns. This is bad since it mixes
-        # presentation and semantics.
-        '''
-        outputDirectory = document.relativeDirectory
-
-        linkSet = []
-        for child in childSet:
-            linkTarget = linkAddress(outputDirectory, child.relativeName)
-            linkDescription = child.tag('description')
-            linkSet.append((outputDocumentName(linkTarget), linkDescription))
-            
-        text += linkTable(linkSet)
-        '''
-
         text.append('')
                                
         return htmlDiv(text, className)
