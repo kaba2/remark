@@ -10,6 +10,9 @@ from Common import fileExtension, copyIfNecessary
 import sys
 import os.path
 import shutil
+import cairo 
+import rsvg 
+import math
 
 try: 
     from PIL import Image
@@ -54,14 +57,18 @@ class Gallery_Macro:
         # Generate html entries and thumbnails.
         text = ['<div class="highslide-gallery">']
 
+        supportedSet = ['.gif', '.jpeg', '.jpg', '.png', '.svg']
+
         for entry in entrySet:
             inputImageName = entry[0]
             imageDocument, unique = documentTree.findDocumentHard(inputImageName, document.relativeDirectory)
             if imageDocument == None:
-                remarkConverter.reportWarning('Gallery_Macro: Image file ' + inputImageName + ' was not found. Ignoring it.')
+                remarkConverter.reportWarning('Gallery_Macro: Image file ' + inputImageName + 
+                                              ' was not found. Ignoring it.')
                 continue
             if not unique:
-                remarkConverter.reportWarning('Gallery_Macro: Image file ' + inputImageName + ' is ambiguous. Picking arbitrarily.')
+                remarkConverter.reportWarning('Gallery_Macro: Image file ' + inputImageName + 
+                                              ' is ambiguous. Picking arbitrarily.')
             imageRootName = imageDocument.relativeName
             
             caption = entry[1]
@@ -70,23 +77,32 @@ class Gallery_Macro:
             
             sourceImageFullName = os.path.join(inputRootDirectory, imageRootName)
 
-            thumbnailSet = ['.bmp', '.gif', '.jpeg', '.jpg', '.pcx', 
-                            '.png', '.pbm', '.pgm', '.ppm', '.tga', '.tif', '.tiff']
-
-            useThumbnail = (fileExtension(imageFileName).lower() in thumbnailSet)
+            # See if we support the file-extension.
+            imageFileExtension = fileExtension(imageFileName).lower()
+            if not imageFileExtension in supportedSet:
+                remarkConverter.reportWarning('Gallery_Macro: ' + imageFileExtension + 
+                                              ' file-extension is not supported.')
+                continue
            
             imageDocName = linkAddress(document.relativeDirectory, imageRootName)
-            if useThumbnail:
-                thumbDocName = linkAddress(document.relativeDirectory, thumbRootName)
-            else:
-                thumbDocName = imageDocName
+            thumbDocName = linkAddress(document.relativeDirectory, thumbRootName)
             
             title = caption
             if caption == '':
-                title = 'Click to enlarge'    
+                title = 'Click to enlarge'
+
+            expandTime = 250
+            if imageFileExtension == '.svg':
+                expandTime = 0
+
+            restoreTime = 0
                              
             # Generate html-entry.
-            text += ['<a href="' + imageDocName + '" class="highslide" onclick="return hs.expand(this)">',
+            text += ['<a href="' + imageDocName + '" class="highslide" ' + 
+                     'onclick="' + 
+                     'hs.expandDuration = ' + repr(expandTime) + '; ' + 
+                     'hs.restoreDuration = ' + repr(restoreTime) + '; ' + 
+                     'return hs.expand(this)">',
                      '\t<img src="' + thumbDocName + '" ' + 
                      'alt="' + caption + '" ' +
                      'title="' + title + '" ' + 
@@ -98,21 +114,65 @@ class Gallery_Macro:
                          '</div>',]
             
             # Generate thumbnail image if necessary.
-            if useThumbnail:
-                targetDirectory = os.path.join(targetRootDirectory, 'remark_files/thumbnails');
-                if not os.path.exists(targetDirectory):
-                    os.makedirs(targetDirectory)
+            targetDirectory = os.path.join(targetRootDirectory, 'remark_files/thumbnails');
+            if not os.path.exists(targetDirectory):
+                os.makedirs(targetDirectory)
                 
-                targetImageFullName = os.path.join(targetRootDirectory, thumbRootName)
-                if not os.path.exists(targetImageFullName):
-                    try:
+            targetImageFullName = os.path.join(targetRootDirectory, thumbRootName)
+            thumbnailUpToDate = (os.path.exists(targetImageFullName) and
+                                 os.path.getmtime(sourceImageFullName) <= os.path.getmtime(targetImageFullName))
+
+            if not thumbnailUpToDate:
+                try:
+                    if imageFileExtension != '.svg':
+                        # For PNG, JPEG, and GIF we use the Python Imaging Library to
+                        # produce the thumbnails.
                         image = Image.open(sourceImageFullName)
                         image.thumbnail((thumbnailMaxWidth, thumbnailMaxHeight), Image.ANTIALIAS)
                         image.save(targetImageFullName, 'PNG')
-                        remarkConverter.report('Gallery_Macro: Created a thumbnail for ' + imageFileName + '.') 
-                    except IOError:
-                        remarkConverter.reportWarning('Gallery_Macro: Cannot create thumbnail for ' + imageFileName + '.')
-                        continue
+                    else:
+                        # For SVG, we use the pycairo library together with the
+                        # pyrsvg library to produce the thumbnails.
+
+                        # Load the svg image.
+                        svgImage = rsvg.Handle(sourceImageFullName)
+                        svgWidth = svgImage.get_dimension_data()[0]
+                        svgHeight = svgImage.get_dimension_data()[1]
+                        
+                        # Compute the scaling ratio.
+                        # We want to restrict the maximum number of
+                        # pixels in both dimensions, but want to do
+                        # it such that the aspect ratio is preserved.
+                        xRatio = float(thumbnailMaxWidth) / svgWidth
+                        yRatio = float(thumbnailMaxHeight) / svgHeight
+                        ratio = min(xRatio, yRatio, 1.0)
+
+                        # Compute the number of pixels in the thumbnail.
+                        thumbnailWidth = int(math.ceil(ratio * svgWidth))
+                        thumbnailHeight = int(math.ceil(ratio * svgHeight))
+
+                        # Allocate the pixel-based image.
+                        image =  cairo.ImageSurface(cairo.FORMAT_ARGB32, 
+                                                    thumbnailWidth, thumbnailHeight) 
+
+                        # The context contains the current transformation matrix etc.
+                        context = cairo.Context(image)
+
+                        # Scale down the coordinate system, so that the svg-image
+                        # fits to the thumbnail pixels.
+                        context.scale(ratio, ratio)
+
+                        # Draw the svg-image as a pixel-based image.
+                        svgImage.render_cairo(context) 
+
+                        # Write the pixel-based image as a PNG image.
+                        image.write_to_png(targetImageFullName)
+
+                    remarkConverter.report('Gallery_Macro: Created a thumbnail for ' + imageFileName + '.')
+                except IOError as err: 
+                    print err
+                    remarkConverter.reportWarning('Gallery_Macro: Cannot create thumbnail for ' + imageFileName + '. ')
+                    continue
         
         text.append('</div>')
         

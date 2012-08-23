@@ -8,13 +8,11 @@ Description
 
 ### Action
 
-Generates an image gallery. Thumbnails are automatically generated for 
-_pixel-based_ images with filename extensions .bmp, .gif, .jpeg, .jpg, .pcx, 
-.png, .pbm, .pgm, .ppm, .tga, .tif, and .tiff. Other image-formats,
-such as the vector-based .svg, are passed on as they are. While Remark will
-pass many image formats into the html code, note that [well-supported 
-image-formats][ImageFormats] in browsers currently include 
-only PNG, JPEG, GIF, and SVG.
+Generates an image gallery. The supported image formats are PNG,
+JPEG, GIF, and SVG. These image formats are the ones that are 
+[well-supported][ImageFormats] in browsers (as of October 2012).
+Thumbnails are automatically generated for images with filename 
+extensions .png, .gif, .jpeg, .jpg, and .svg. 
 
 [ImageFormats]: http://en.wikipedia.org/wiki/Comparison_of_browsers
 
@@ -53,9 +51,7 @@ thumbnail_max_height
 The pixel-count defines the resolution of the thumbnail image
 for the pixel-based images; if the number of pixels is too low 
 compared to the presentation size (defined by the CSS), the 
-thumbnail image will look blurry. Naturally, vector-based
-images, such as svg, do not need separate thumbnails and are
-unaffected by these variables.
+thumbnail image will look blurry.
 
 ### Width and height of thumbnails
 
@@ -64,12 +60,6 @@ the image thumbnails, modify the `max-width` and `max-height`
 properties of the `.highslide img` selector in `highslide.css`.
 The defaults for these are 45% and 20% (of the containing element), 
 respectively.
-
-Internet Explorer 9 has a bug in its CSS handling which sometimes
-causes the thumbnails of SVG-images to render in wrong sizes, 
-see more [here][Problems].
-
-[Problems]: [[Ref]]: problem.txt
 
 Example
 -------
