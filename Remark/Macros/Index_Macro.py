@@ -36,7 +36,7 @@ class Index_Macro(object):
         
         for directory in directorySet:
             linkDescription = directory + '/'
-            linkTarget = os.path.join(directory, 'directory.index')
+            linkTarget = os.path.join(directory, 'directory.remark-index')
             linkSet.append((outputDocumentName(linkTarget), linkDescription))
        
         for fileName in fileSet:

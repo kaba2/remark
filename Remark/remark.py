@@ -143,8 +143,8 @@ use wildcards (e.g. *.png).""")
     associateDocumentType('.hpp', cppCodeViewType)
     associateDocumentType('.py', genericCodeViewType)
     associateDocumentType('.m', genericCodeViewType)
-    associateDocumentType('.index', directoryViewType)
-    associateDocumentType('.orphan', orphanType)
+    associateDocumentType('.remark-index', directoryViewType)
+    associateDocumentType('.remark-orphan', orphanType)
     
     # Construct a document tree from the input directory.
     documentTree = DocumentTree(inputDirectory, options.lines)

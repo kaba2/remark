@@ -11,13 +11,13 @@ document.
 Rather than having to physically create a file with this document type,
 Remark creates such documents virtually and automatically into the 
 document tree. One such document is generated into each directory and 
-is named `directory.index`.
+is named `directory.remark-index`.
 
 Properties
 ----------
 
 Input extension
-: .index
+: .remark-index
 
 Output extension
 : .htm

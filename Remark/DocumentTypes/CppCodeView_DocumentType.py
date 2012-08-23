@@ -33,7 +33,7 @@ class CppCodeView_DocumentType(DocumentType):
                 '',
                 '[[Parent]]',
                 '',
-                '[[Link]]: directory.index',
+                '[[Link]]: directory.remark-index',
                 '',
                 '[[-+CppCode]]: [[-Body]]',]
          

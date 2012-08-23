@@ -49,7 +49,7 @@ Document template
 	
 		[[Parent]]
 	
-		[[Link]]: directory.index
+		[[Link]]: directory.remark-index
 	
 		[[-+CppCode]]: [[-Body]]
 

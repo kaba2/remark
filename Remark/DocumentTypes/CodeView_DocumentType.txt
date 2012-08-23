@@ -49,6 +49,6 @@ Document template
 	
 		[[Parent]]
 	
-		[[Link]]: directory.index
+		[[Link]]: directory.remark-index
 	
 		[[-+Code]]: [[-Body]]

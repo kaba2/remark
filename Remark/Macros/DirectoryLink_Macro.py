@@ -24,7 +24,7 @@ class DirectoryLink_Macro(object):
                 remarkConverter.reportWarning('DirectoryLink: "' + linkFileName + '" is ambiguous. Picking arbitrarily.')
             
             if linkDocument != None:
-                linkTarget = documentTree.findDocumentLocal('directory.index', 
+                linkTarget = documentTree.findDocumentLocal('directory.remark-index', 
                                                        linkDocument.relativeDirectory)
 
                 text.append(remarkConverter.remarkLink(linkDocument.relativeDirectory + '/',

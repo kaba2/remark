@@ -34,7 +34,7 @@ This
 		macros.txt
 		remark_syntax.txt
 		../../remark_syntax.txt
-		directory.index
+		directory.remark-index
 	
 produces this:
 
@@ -42,7 +42,7 @@ produces this:
 	macros.txt
 	remark_syntax.txt
 	../../remark_syntax.txt
-	directory.index
+	directory.remark-index
 
 See also
 --------
