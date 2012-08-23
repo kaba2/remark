@@ -325,6 +325,11 @@ in the 'remark-footer' div. */
 {
 }
 
+#remark .DocChildren div
+{
+    padding-bottom: 5em;
+}
+
 /* Styling for DocChildren lists. */
 #remark .DocChildren ol
 {
@@ -339,7 +344,12 @@ in the 'remark-footer' div. */
 /* Styling for DocChildren list-items. */ 
 #remark .DocChildren ol li
 {
+    /* The items are placed side-by-side, until the
+    right-edge and they wrap to the next row. */
     float: left;
+    /* Since the width of an item is 50%, there are
+    at most 2 items per row. */
     width: 50%;
+    /* Add some vertical spacing between items. */
     padding-bottom: 1em;
 }

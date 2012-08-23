@@ -64,15 +64,15 @@ If a file does not have parent document even after implicit linking,
 it is linked to a special orphan document. This guarantees that each
 file has a parent document. By generating a web-page that contains all 
 the orphans, the user has a useful list of those files
-which are not linked to the documentation. This is what the .orphan
+which are not linked to the documentation. This is what the .remark-orphan
 document type is used for.
 
 Adding virtual documents
 ------------------------
 
-Using the list of involved directories, a `directory.index` document is
+Using the list of involved directories, a `directory.remark-index` document is
 generated to each sub-directory of the document tree. In addition,
-an `orphan.orphan` document is generated to the root directory of the
+an `orphan.remark-orphan` document is generated to the root directory of the
 document tree.
 
 Generating output

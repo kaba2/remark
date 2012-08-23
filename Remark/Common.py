@@ -103,12 +103,13 @@ _documentTypeMap = dict()
 
 def associateDocumentType(inputExtension, documentType):
     global _documentTypeMap
-    _documentTypeMap[inputExtension] = documentType
+    _documentTypeMap[inputExtension.lower()] = documentType
 
 def documentType(inputExtension):
     global _documentTypeMap
-    if inputExtension in _documentTypeMap:
-        return _documentTypeMap[inputExtension]
+    lowerExtension = inputExtension.lower()
+    if lowerExtension in _documentTypeMap:
+        return _documentTypeMap[lowerExtension]
     return None
 
 def copyIfNecessary(inputRelativeName, inputDirectory, 
@@ -123,7 +124,7 @@ def copyIfNecessary(inputRelativeName, inputDirectory,
         os.makedirs(finalOutputDirectory)
 
     if not os.path.exists(inputFilePath):
-        print 'Error: the file ' + inputRelativeName + ' does not exist. Ignoring it.'
+        print 'Error: CopyIfNecessary: the file ' + inputRelativeName + ' does not exist. Ignoring it.'
         return
 
     # The output file is up-to-date if it exists and has a 

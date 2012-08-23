@@ -51,9 +51,9 @@ class DocumentTree(object):
         
         self.rootDirectory = rootDirectory
         self.root = Document('root')
-        self.orphan = Document('orphan.orphan')
+        self.orphan = Document('orphan.remark-orphan')
         self.orphan.tagSet['description'] = 'Orphans'
-        self.documentMap = {'orphan.orphan' : self.orphan}
+        self.documentMap = {'orphan.remark-orphan' : self.orphan}
         self.fileNameMap = {}
         self.parserLines = parserLines
         
@@ -253,7 +253,7 @@ class DocumentTree(object):
         # We wish to generate an index to each directory in the
         # directory tree.
         for directory in self.directorySet:
-            relativeName = os.path.join(directory, 'directory.index')
+            relativeName = os.path.join(directory, 'directory.remark-index')
             document = self.insertDocument(relativeName)
             document.tagSet['description'] = unixDirectoryName(document.relativeDirectory) + '/'
 

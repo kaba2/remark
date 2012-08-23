@@ -32,7 +32,7 @@ class CodeView_DocumentType(DocumentType):
                 '',
                 '[[Parent]]',
                 '',
-                '[[Link]]: directory.index',
+                '[[Link]]: directory.remark-index',
                 '',
                 '[[-+Code]]: [[-Body]]',]
          

@@ -6,7 +6,7 @@ Orphan document type
 The Orphan document type is used to generate a page which
 lists its documentation children as well as its source children.
 Remark makes use of this document type by creating a 
-virtual `orphan.orphan` node in the root of document tree,
+virtual `orphan.remark-orphan` node in the root of document tree,
 called the _orphan node_. Those documents which do not
 find a parent document elsewhere are assigned as children
 of the orphan node. The role of the orphan document is
@@ -18,7 +18,7 @@ Properties
 ----------
 
 Input Extension
-: .orphan
+: .remark-orphan
 
 Output extension
 : .htm

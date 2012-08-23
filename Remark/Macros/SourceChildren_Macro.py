@@ -21,7 +21,8 @@ class SourceChildren_Macro(object):
 
         # Gather the list of source files.
         
-        sortedMap = [x for x in document.childSet.itervalues() if x.extension != '.txt']
+        sortedMap = [x for x in document.childSet.itervalues() 
+                    if x.extension != '.txt']
         
         if len(sortedMap) == 0:
             return []
