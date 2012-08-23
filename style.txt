@@ -21,6 +21,17 @@ reload the page in your browser to see the changes.
 Links
 -----
 
-[Cascading Style Sheets][CSS]
+[Cascading Style Sheets at W3C][CSS] is the official website
+of the CSS.
+
+[Cascading Style Sheets at Sitepoint][Sitepoint] is an
+excellent reference site for CSS.
+
+[CSS Zen garden][Garden] is a demonstration of the abilities of 
+CSS to completely change the look and feel of html.
 
 [CSS]: http://www.w3.org/Style/CSS/
+
+[Sitepoint]: http://reference.sitepoint.com/css
+
+[Garden]: http://csszengarden.com/

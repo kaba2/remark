@@ -3,14 +3,12 @@ SourceChildren macro
 
 [[Parent]]: macros.txt
 
-Description
------------
+The SourceChildren macro generates a list of links to the source-code 
+children of the currently processed document. This list is preceded by 
+a level-1 heading.
 
-### Action
-
-Generates a list of links to the source code
-children of the currently processed document.
-This list is preceded by a level-1 heading.
+Properties
+----------
 
 ### Output type
 
@@ -22,11 +20,13 @@ Disabled.
 
 ### Parameters
 
-Title. Default 'Files'.
+Ignored.
 
 ### Variables
 
-None
+SourceChildren.title
+:	The header name to use.
+	Default 'Files'.
 
 Example
 -------
@@ -36,3 +36,4 @@ This
 	[[SourceChildren]]
 	
 produces the following section (we don't want to duplicate it here).
+

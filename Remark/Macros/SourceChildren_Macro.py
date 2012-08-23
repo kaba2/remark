@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Description: SourceChildren_Macro class
+# Description: SourceChildren macro
 # Detail: Generates links to source code children.
 
 import os.path
@@ -9,7 +9,7 @@ import string
 from MacroRegistry import registerMacro
 from Common import linkAddress, outputDocumentName
 
-class SourceChildren_Macro:
+class SourceChildren_Macro(object):
     def expand(self, parameter, remarkConverter):
         document = remarkConverter.document
                 
@@ -99,12 +99,13 @@ class SourceChildren_Macro:
         # Output the links in the groups together
         # with a description for the group.
         
-        if parameter == []:
-            title = 'Files'
-        else:
-            title = parameter[0]
-            
-        text = ['', title, '-' * (len(title) - 1), '']
+        scope = remarkConverter.scopeStack.top()
+        text = []
+        text.append('')
+        text.append(scope.getString('SourceChildren.title', 'Files'))
+        text.append('---')
+        text.append('')
+
         for group in groupSet:
             # Output description for the group.
             description = group[0]
@@ -122,9 +123,9 @@ class SourceChildren_Macro:
                 
             # Output the links in the group.
             for child in group[2]:
-                linkDescription = child.fileName
-                linkTarget = linkAddress(outputDirectory, child.relativeName)
-                text.append(remarkConverter.remarkLink(linkDescription, outputDocumentName(linkTarget)))
+                text.append(remarkConverter.remarkLink(child.fileName,
+                                                       document,
+                                                       child))
                 text.append('')
             
         return text

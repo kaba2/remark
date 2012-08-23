@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Description: FileLink_Macro class
+# Description: FileLink macro
 # Detail: Generates a link to a document in the document tree.
 
 import os.path
@@ -8,7 +8,7 @@ import os.path
 from MacroRegistry import registerMacro
 from Common import linkAddress, outputDocumentName
 
-class FileLink_Macro:
+class FileLink_Macro(object):
     def expand(self, parameter, remarkConverter):
         document = remarkConverter.document
         documentTree = remarkConverter.documentTree
@@ -19,16 +19,15 @@ class FileLink_Macro:
         text = []
         
         for linkFileName in parameter:
-            linkDocument, unique = documentTree.findDocumentHard(linkFileName, document.relativeDirectory)
+            linkDocument, unique = documentTree.findDocument(linkFileName, document.relativeDirectory)
             if not unique:
                 remarkConverter.reportWarning('FileLink: "' + linkFileName + '" is ambiguous. Picking arbitrarily.')
             
             if linkDocument != None:
-                linkDescription = linkDocument.fileName
-                linkTarget = linkAddress(document.relativeDirectory, linkDocument.relativeName)
-                text.append(remarkConverter.remarkLink(linkDescription, outputDocumentName(linkTarget)))
+                text.append(remarkConverter.remarkLink(linkDocument.fileName,
+                                                       document, linkDocument))
                 if len(parameter) > 1:                
-                    text += ['']
+                    text.append('')
             else:
                 remarkConverter.reportWarning('FileLink: "' + linkFileName + '" not found. Ignoring it.')
             

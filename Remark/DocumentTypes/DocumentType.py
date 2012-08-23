@@ -3,10 +3,13 @@
 # Description: DocumentType base-class
 # Documentation: document_types.txt
 
-class DocumentType:
+class DocumentType(object):
     def __init__(self):
         None        
         
+    def name(self):
+        return ''
+
     def parseTags(self, fileName, lines = 100):
         None         
         

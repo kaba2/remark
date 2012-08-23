@@ -3,14 +3,11 @@ Comment macro
 
 [[Parent]]: macros.txt
 
-Description
------------
+The Comment macro produces nothing. Its purpose is to allow 
+commenting the Remark source.
 
-The intent of this macro is to allow commenting of the Remark source.
-
-### Action
-
-Returns nothing.
+Properties
+----------
 
 ### Output type
 

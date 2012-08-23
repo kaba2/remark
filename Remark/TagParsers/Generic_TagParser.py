@@ -7,7 +7,7 @@ from Common import openFileUtfOrLatin
 
 import string
 
-class Generic_TagParser:
+class Generic_TagParser(object):
     def __init__(self, tagRegexMap, maxLines = 100):
         self.tagRegexMap = tagRegexMap
         self.maxLines = maxLines

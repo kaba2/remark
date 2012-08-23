@@ -3,16 +3,13 @@ DocChildren macro
 
 [[Parent]]: macros.txt
 
-Description
------------
-
-### Action
-
-Generates a list of links to the documentation
-children of the currently processed document.
-This list is preceded by a level-1 heading.
-The heading is not generated if there are no
+The DocChildren macro generates a list of links to the documentation
+children of the currently processed document. This list is preceded 
+by a level-1 heading. The heading is not generated if there are no
 documentation children.
+
+Properties
+----------
 
 ### Output type
 
@@ -27,6 +24,11 @@ Disabled.
 Ignored.
 
 ### Variables
+
+DocChildren.class_name
+: 	The name of the html-class to give to the `<div>` tag. The html-class 
+	allows to style the generated list using CSS.
+	Default 'DocChildren'.
 
 DocChildren.title
 :	The title of the heading. Default 'Learn more'.

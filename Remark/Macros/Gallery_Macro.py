@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Description: Gallery_Macro class
+# Description: Gallery macro
 # Detail: Generates an image gallery with thumbnails.
 
 from MacroRegistry import registerMacro
@@ -18,14 +18,14 @@ except ImportError, e:
     print 'Error: Python Imaging Library missing. Please install it first.'
     sys.exit(1)
 
-class Gallery_Macro:
+class Gallery_Macro(object):
     def expand(self, parameter, remarkConverter):
         documentTree = remarkConverter.documentTree
-        scope = remarkConverter.scopeStack.top()
         document = remarkConverter.document
         inputRootDirectory = remarkConverter.inputRootDirectory
         outputRootDirectory = remarkConverter.outputRootDirectory
         
+        scope = remarkConverter.scopeStack.top()
         thumbnailMaxWidth = scope.getInteger('Gallery.thumbnail_max_width', 400)
         thumbnailMaxHeight = scope.getInteger('Gallery.thumbnail_max_height', 400)
 
@@ -37,7 +37,7 @@ class Gallery_Macro:
                 continue
             if neatLine[0] == '-':
                 if len(entrySet) == 0:
-                    remarkConverter.reportWarning('Gallery_Macro: Caption was defined before any image was given. Ignoring it.')
+                    remarkConverter.reportWarning('Gallery: Caption was defined before any image was given. Ignoring it.')
                     continue
                 
                 # Caption follows.
@@ -78,25 +78,25 @@ class Gallery_Macro:
             caption = entry[1]
 
             # Find the image using the file-searching algorithm.
-            input, unique = documentTree.findDocumentHard(entryName, document.relativeDirectory)
+            input, unique = documentTree.findDocument(entryName, document.relativeDirectory)
             if input == None:
                 # The image-file was not found. Report a warning and skip
                 # the file.
-                remarkConverter.reportWarning('Gallery_Macro: Image file ' + entryName + 
+                remarkConverter.reportWarning('Gallery: Image file ' + entryName + 
                                               ' was not found. Ignoring it.')
                 continue
 
             if not unique:
                 # There are many matching image files with the given name.
                 # Report a warning, pick one arbitrarily, and continue.
-                remarkConverter.reportWarning('Gallery_Macro: Image file ' + entryName + 
+                remarkConverter.reportWarning('Gallery: Image file ' + entryName + 
                                               ' is ambiguous. Picking arbitrarily.')
             
             # See if we support the file-extension.
             if not input.extension in supportedSet:
                 # This file-extension is not supported. Report a warning
                 # and skip the file.
-                remarkConverter.reportWarning('Gallery_Macro: ' + input.relativeName + 
+                remarkConverter.reportWarning('Gallery: ' + input.relativeName + 
                                               ' has an unsupported file-extension. Ignoring it.')
                 continue
            
@@ -110,12 +110,15 @@ class Gallery_Macro:
                     # not in the directory of the document.
                     pixelFileName = changeExtension(input.fileName, extension)
                     #print 'Searching for', pixelFileName
-                    pixelDocument = documentTree.findDocument(pixelFileName,
+                    pixelDocument = documentTree.findDocumentLocal(pixelFileName,
                                                               input.relativeDirectory)
                     if pixelDocument != None:
                         # We found a pixel-based alternative image.
                         break
                         
+            # Find out input names.
+            inputLinkName = linkAddress(document.relativeDirectory, input.relativeName)
+
             # Find out thumbnail names.
             thumbRelativeName = 'remark_files/thumbnails/' + changeExtension(input.fileName, '-thumb.png')
             thumbLinkName = linkAddress(document.relativeDirectory, thumbRelativeName)
@@ -123,8 +126,8 @@ class Gallery_Macro:
                 # If we could not find a pixel-based image, we will use
                 # the vector-based image as the thumbnail itself.
                 thumbRelativeName = input.relativeName
-                thumbLinkName = input.linkName
-                remarkConverter.reportWarning('Gallery_Macro: Using ' + input.relativeName + ' as its own thumbnail. ' +
+                thumbLinkName = inputLinkName
+                remarkConverter.reportWarning('Gallery: Using ' + input.relativeName + ' as its own thumbnail. ' +
                                               'Provide a pixel-based alternative image to generate a thumbnail.')
 
             # These are the zoom-in and zoom-out time, 
@@ -143,7 +146,7 @@ class Gallery_Macro:
             if caption == '':
                 title = 'Click to enlarge'
 
-            text += ['<a href="' + input.linkName + '" class="highslide" ' + 
+            text += ['<a href="' + inputLinkName + '" class="highslide" ' + 
                      'onclick="' +
                      'hs.expandDuration = ' + repr(expandTime) + '; ' + 
                      'hs.restoreDuration = ' + repr(restoreTime) + '; ' + 
@@ -182,14 +185,14 @@ class Gallery_Macro:
                         image.save(thumbFullName, 'PNG')
                         
                         # Report the generation of a thumbnail.
-                        message = 'Gallery_Macro: Created a thumbnail for ' + input.relativeName
+                        message = 'Gallery: Created a thumbnail for ' + input.relativeName
                         if pixelDocument != input:
                             message += ' from ' + pixelDocument.relativeName
                         message += '.'
                         remarkConverter.report(message)
                 except IOError as err: 
                     #print err
-                    remarkConverter.reportWarning('Gallery_Macro: Cannot create a thumbnail for ' + 
+                    remarkConverter.reportWarning('Gallery: Cannot create a thumbnail for ' + 
                                                   input.relativeName + '. ')
                     continue
         

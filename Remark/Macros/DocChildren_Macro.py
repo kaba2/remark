@@ -1,29 +1,32 @@
 # -*- coding: utf-8 -*-
 
-# Description: DocChildren_Macro class
+# Description: DocChildren macro
 # Detail: Generates links to documentation children.
 
 from MacroRegistry import registerMacro
-from Common import linkAddress, outputDocumentName, linkTable
+from Common import linkAddress, outputDocumentName, linkTable, htmlDiv
 
-class DocChildren_Macro:
+class DocChildren_Macro(object):
     def expand(self, parameter, remarkConverter):
         document = remarkConverter.document
         documentTree = remarkConverter.documentTree
         scope = remarkConverter.scopeStack.top()
-        
-        outputDirectory = document.relativeDirectory
+
+        # Variables
+        className = scope.getString('DocChildren.class-name', 'DocChildren')
+        title = scope.getString('DocChildren.title', 'Learn more')
         
         # Construct the ignore set.
         ignoreList = scope.search('DocChildren.no_links_for')
         if ignoreList == None:
             ignoreList = []
+
         # The files to ignore are given by relative names
         # and may use the implicit parent directory search.
         # Therefore we need to first find the document which
         # is meant.
         for i in range(0, len(ignoreList)):
-            ignoreDocument = documentTree.findDocumentOutwards(ignoreList[i], document.relativeDirectory)
+            ignoreDocument = documentTree.findDocumentUpwards(ignoreList[i], document.relativeDirectory)
             if ignoreDocument != None:
                 # Only now do we have a comparable relative name.
                 ignoreList[i] = ignoreDocument.relativeName
@@ -31,34 +34,45 @@ class DocChildren_Macro:
                 ignoreList[i] = None 
         ignoreSet = set(ignoreList)
 
-        childSet = [child for child in document.childSet.itervalues() if child.extension == '.txt' and not child.relativeName in ignoreSet]
-        
+        # Only accept those child documents which are not on the ignore set.
+        childSet = [child for child in document.childSet.itervalues() 
+                    if child.extension == '.txt' and not child.relativeName in ignoreSet]
         if len(childSet) == 0:
             return []
 
-        title = 'Learn more'
-        
-        scopeTitle = scope.search('DocChildren.title')
-        if scopeTitle != None:
-            if len(scopeTitle) != 1:
-                remarkConverter.reportWarning('DocChildren: \'DocChildren.title\' should be a one-line parameter. Ignoring it and using the default.')
-            else:
-                title = scopeTitle[0]
-            
-           
-        text = ['\n' + title, '-' * len(title) + '\n']
-        
-        linkSet = []
-                
+        # Create the title.
+        text = []
+        text.append('')
+        text.append(title)
+        text.append('---')
+        text.append('')
+       
+        # Sort the links alphabetically by their desciption.        
         childSet.sort(lambda x, y: cmp(x.tag('description'), y.tag('description')))        
+        
+        for child in childSet:
+            linkText = remarkConverter.remarkLink(child.tag('description'),
+                                                  document, child)
+            text.append('1. ' + linkText)
+        
+        # The following code uses a table to divide the links
+        # into equal-sized columns. This is bad since it mixes
+        # presentation and semantics.
+        '''
+        outputDirectory = document.relativeDirectory
+
+        linkSet = []
         for child in childSet:
             linkTarget = linkAddress(outputDirectory, child.relativeName)
             linkDescription = child.tag('description')
             linkSet.append((outputDocumentName(linkTarget), linkDescription))
             
         text += linkTable(linkSet)
+        '''
+
+        text.append('')
                                
-        return text
+        return htmlDiv(text, className)
 
     def outputType(self):
         return 'remark'

@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 
-# Description: Html_Macro class
+# Description: Html macro
 # Detail: Copies the input to output and treats it as html.
 
 from MacroRegistry import registerMacro
 
-class Html_Macro:
+class Html_Macro(object):
     def expand(self, parameter, remarkConverter):
         return parameter
 

@@ -13,20 +13,20 @@ import copy
 
 from MacroRegistry import findMacro
 from Common import changeExtension, outputDocumentName, documentType, unixDirectoryName, copyIfNecessary
-from Common import asciiMathMlName, remarkVersion, globalOptions
+from Common import asciiMathMlName, remarkVersion, globalOptions, linkAddress
 
-class Scope:
+class Scope(object):
     def __init__(self, parent, name):
-        self.parent_ = parent
-        self.name_ = name
-        self.nameSet_ = dict()
-        
+        self.parent = parent
+        self.name = name
+        self.nameSet = dict()
+
     def name(self):
-        return self.name_
+        return self.name
     
     def insert(self, name, data):
         #print 'Inserted', name, data
-        self.nameSet_[name] = data
+        self.nameSet[name] = data
         
     def append(self, name, data):
         result = self.search(name)
@@ -36,16 +36,16 @@ class Scope:
             self.insert(name, data)
 
     def parent(self):
-        return self.parent_
+        return self.parent
     
     def outer(self):
-        if self.parent_ == None:
+        if self.parent == None:
             return self
-        return self.parent_
+        return self.parent
     
     def shallowSearch(self, name):
-        if name in self.nameSet_:
-            return self.nameSet_[name]
+        if name in self.nameSet:
+            return self.nameSet[name]
         return None
     
     def search(self, name):
@@ -53,8 +53,8 @@ class Scope:
         result = self.shallowSearch(name)        
         if result != None:
             return result
-        if self.parent_ != None:
-            return self.parent_.search(name)
+        if self.parent != None:
+            return self.parent.search(name)
         return None
     
     def searchScope(self, name):
@@ -62,9 +62,28 @@ class Scope:
         result = self.shallowSearch(name)        
         if result != None:
             return self
-        if self.parent_ != None:
-            return self.parent_.searchScope(name)
+        if self.parent != None:
+            return self.parent.searchScope(name)
         return self
+
+    def get(self, name, defaultValue = []):
+        variable = self.search(name)
+        if variable == None:
+            return defaultValue
+
+        return defaultValue
+
+    def getString(self, name, defaultValue):
+        variable = self.get(name)
+
+        if variable == []:
+            return defaultValue
+
+        if len(variable) > 1:
+            print 'Warning: parameter', name, 
+            print 'has multiple lines. Ignoring the rest of the lines.'
+        
+        return variable[0]
 
     def getInteger(self, name, defaultValue):
         value = None
@@ -85,28 +104,39 @@ class Scope:
             
         return value
 
-class ScopeStack:
+class ScopeStack(object):
     def __init__(self):
-        self.stack_ = []
+        self.scopeStack = []
         
     def open(self, name):
         #print 'Scope opened.'
         parent = None
-        if len(self.stack_) > 0:
+        if len(self.scopeStack) > 0:
             parent = self.top()                
-        self.stack_.append(Scope(parent, name))
+        self.scopeStack.append(Scope(parent, name))
         
     def close(self):
         #print 'Scope closed.'
-        self.stack_.pop()
+        self.scopeStack.pop()
         
     def top(self):
-        return self.stack_[-1]
+        return self.scopeStack[-1]
     
     def bottom(self):
-        return self.stack_[0]  
+        return self.scopeStack[0]
 
-class MacroInvocation:
+    def printScopes(self):
+        print len(self.scopeStack)
+        tabs = 0;
+        for scope in self.scopeStack:
+            print '\t' * tabs
+            print scope.name, 'scope:'
+            print
+            for entry in scope.nameSet.iteritems():
+                print entry[0], ':', entry[1]
+            tabs += 1
+
+class MacroInvocation(object):
     def __init__(self, name,
                  parameterSet,
                  outputExpansion,
@@ -122,7 +152,7 @@ class MacroInvocation:
         self.endRow = endRow
         self.endColumn = endColumn
         
-class RemarkConverter:
+class RemarkConverter(object):
     def __init__(self, document, template, documentTree, 
                  inputRootDirectory, outputRootDirectory):
         self.scopeStack = ScopeStack()
@@ -180,8 +210,14 @@ class RemarkConverter:
         result = self.linkIndex
         self.linkIndex += 1
         return result
-        
-    def remarkLink(self, description, target):
+
+    def remarkLink(self, description, fromDocument, toDocument):
+        linkSource = linkAddress(fromDocument.relativeDirectory, 
+                                 toDocument.relativeName)
+        linkTarget = outputDocumentName(linkSource)
+        return self.markdownLink(description, linkTarget)
+
+    def markdownLink(self, description, htmlLink):
         # The automatically generated Markdown
         # links are named as 'RemarkLink_x' where
         # x is an integer that runs from 0 upwards
@@ -195,8 +231,7 @@ class RemarkConverter:
         # could be an inline link. Instead we store the
         # definitions so that we can output them to the
         # end of the document. 
-         
-        self.linkSet.append((name, unixDirectoryName(target)))
+        self.linkSet.append((name, unixDirectoryName(htmlLink)))
         
         return text
     

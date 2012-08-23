@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Description: CppCode_Macro class
+# Description: CppCode macro
 # Detail: Generates colored html from C++ source code. 
 
 import os.path
@@ -21,17 +21,17 @@ def _linkConverter(regexMatch, documentTree, document):
     
     # First interpret the include filename as
     # a relative path w.r.t. the current directory.
-    linkDocument = documentTree.findDocument(searchName, document.relativeDirectory)
+    linkDocument = documentTree.findDocumentLocal(searchName, document.relativeDirectory)
     
     if linkDocument == None:
         # No file was found. Now interpret the
         # include filename as a relative path w.r.t.
         # the input root directory.
-        linkDocument = documentTree.findDocumentByName(searchName)
+        linkDocument = documentTree.findDocumentByRelativeName(searchName)
         
     if linkDocument == None:
         # Still no file was found. Try hard.
-        linkDocument, unique = documentTree.findDocumentHard(searchName, document.relativeDirectory)
+        linkDocument, unique = documentTree.findDocument(searchName, document.relativeDirectory)
         if not unique:
             # We don't accept ambiguous links.
             print 'Warning: CppCode: Include filename', searchName, 'is ambiguous. Skipping linking.' 
@@ -44,7 +44,7 @@ def _linkConverter(regexMatch, documentTree, document):
     linkName = linkAddress(document.relativeDirectory, linkDocument.relativeName) + '.htm'
     return regexMatch.group(1) + '<a href = "' + linkName + '">' + includeName + '</a>' + string.rstrip(regexMatch.group(3))
     
-class CppCode_Macro:
+class CppCode_Macro(object):
     def expand(self, parameter, remarkConverter):
         document = remarkConverter.document
         documentTree = remarkConverter.documentTree 

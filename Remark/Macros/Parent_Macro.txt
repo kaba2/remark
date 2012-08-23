@@ -3,20 +3,14 @@ Parent macro
 
 [[Parent]]: macros.txt
 
-Description
------------
+The Parent macro generates a link to the parent document labeled
+with its description. The Parent macro has a double role in Remark. 
+As a macro it does not use its parameter in anyway. However, as a tag 
+it is used to deduce the parent-child relations between documents: here 
+the parameter is essential.
 
-This macro has a double role in Remark. As a macro
-it does not use its parameter in anyway. However,
-as a tag it is used to deduce the parent-child
-relations between documents: here the parameter
-is essential.
-
-### Action
-
-Generates a link to the parent document. The labels 
-for the link is set to the description of the parent 
-document. 
+Properties
+----------
 
 ### Output type
 

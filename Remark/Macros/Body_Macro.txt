@@ -3,12 +3,11 @@ Body macro
 
 [[Parent]]: macros.txt
 
-Description
------------
+The Body macro reads the currently considered document from a file and
+expands into its contents.
 
-### Action
-
-Reads the currently considered document from a file. Returns its contents.
+Properties
+----------
 
 ### Output type
 

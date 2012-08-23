@@ -28,7 +28,7 @@ from DocumentTree import Document
 from DocumentTree import DocumentTree
 
 from DocumentTypes.CppCodeView_DocumentType import CppCodeView_DocumentType
-from DocumentTypes.GenericCodeView_DocumentType import GenericCodeView_DocumentType
+from DocumentTypes.CodeView_DocumentType import CodeView_DocumentType
 from DocumentTypes.RemarkPage_DocumentType import RemarkPage_DocumentType
 from DocumentTypes.DirectoryView_DocumentType import DirectoryView_DocumentType
 from DocumentTypes.Orphan_DocumentType import Orphan_DocumentType
@@ -130,7 +130,7 @@ use wildcards (e.g. *.png).""")
     
     remarkPageType = RemarkPage_DocumentType()
     cppCodeViewType = CppCodeView_DocumentType()
-    genericCodeViewType= GenericCodeView_DocumentType()
+    genericCodeViewType= CodeView_DocumentType()
     directoryViewType = DirectoryView_DocumentType()
     orphanType = Orphan_DocumentType()
        
