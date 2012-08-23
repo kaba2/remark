@@ -3,13 +3,12 @@ Ref macro
 
 [[Parent]]: macros.txt
 
-Description
------------
+The Ref macro returns the relative output-names of the given documents.
+Its purpose is to allow using Markdown links in the text, while still
+making use of implicit Remark-linking.
 
-### Action
-
-Returns the relative output names of the given 
-documents.
+Properties
+----------
 
 ### Output type
 
@@ -21,7 +20,7 @@ Disabled.
 
 ### Parameters
 
-A list of target document paths for which the links are to be generated.
+A list of files for which the links are to be generated.
 
 ### Variables
 

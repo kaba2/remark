@@ -23,9 +23,42 @@ def remarkVersion():
 def asciiMathMlName():
     return 'ASCIIMathMLwFallback.js'
 
-def linkAddress(fromDirectory, toFile):
-    relativeName = os.path.relpath(toFile, fromDirectory)
-    return unixDirectoryName(relativeName)
+def htmlDiv(enclosedText, className = ''):
+    text = []
+    text.append('')
+    
+    # Enclose the link list in a <div> block and give it a class, 
+    # so that it can be styled with CSS.
+    if className != '':
+        text.append('<div class = "' + className + '">')
+    else:
+        text.append('<div>')
+    
+    # Note that this empty line is essential for Markdown
+    # not to interpret the following stuff as html.
+    text.append('')
+    text += enclosedText
+    text.append('')
+
+    text.append('</div>')
+    text.append('')
+
+    return text
+
+
+def linkAddress(fromRelativeDirectory, toRelativeFileName):
+    '''
+    Forms a unix-style relative-path from the given relative 
+    directory to the given relative file-name.
+
+    fromRelativeDirectory:
+        The relative directory in which the link resides.
+
+    toRelativeFileName:
+        The relative file-name of the file being linked to.
+    '''
+    relativePath = os.path.relpath(toRelativeFileName, fromRelativeDirectory)
+    return unixDirectoryName(relativePath)
 
 def openFileUtfOrLatin(fileName):
     try:

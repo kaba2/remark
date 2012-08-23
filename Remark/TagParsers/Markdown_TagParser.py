@@ -10,7 +10,7 @@ import string
 import re
 import codecs
          
-class Markdown_TagParser:
+class Markdown_TagParser(object):
     def __init__(self, tagRegexMap, maxLines):
         self.genericParser = Generic_TagParser(tagRegexMap, maxLines)
         self.maxLines = maxLines

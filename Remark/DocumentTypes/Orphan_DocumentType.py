@@ -10,6 +10,9 @@ class Orphan_DocumentType(DocumentType):
     def __init__(self):
         None
 
+    def name(self):
+        return 'Orphan'
+
     def parseTags(self, fileName, lines = 100):
         parser = Empty_TagParser()
         return parser.parse(fileName)

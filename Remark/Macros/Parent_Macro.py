@@ -1,20 +1,18 @@
 # -*- coding: utf-8 -*-
 
-# Description: Parent_Macro class
+# Description: Parent macro
 # Detail: Generates a link to the parent documentation.
 
 from MacroRegistry import registerMacro
 from Common import linkAddress, outputDocumentName
 
-class Parent_Macro:
+class Parent_Macro(object):
     def expand(self, parameter, remarkConverter):
         document = remarkConverter.document
-        
         parent = document.parent
-        linkTarget = linkAddress(document.relativeDirectory, parent.relativeName)
-
-        return [remarkConverter.remarkLink('Back to ' + parent.tag('description'), 
-                                          outputDocumentName(linkTarget))]
+       
+        return [remarkConverter.remarkLink('Back to ' + parent.tag('description'),
+                                           document, parent)]
 
     def outputType(self):
         return 'remark'

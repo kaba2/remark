@@ -1,9 +1,9 @@
-GenericCodeView document type
-=============================
+CodeView document type
+======================
 
 [[Parent]]: document_types.txt
 
-The GenericCodeView document type offers a highlighted view to source 
+The CodeView document type offers a highlighted view to source 
 code files in various programming languages. 
 
 Specification of tags
@@ -42,6 +42,8 @@ AsciiMath interpretation
 Document template
 :	
 		
+		[[ParentList]]
+		
 		[[file_name]]
 		===
 	
@@ -49,4 +51,4 @@ Document template
 	
 		[[Link]]: directory.index
 	
-		[[-+GenericCode]]: [[-Body]]
+		[[-+Code]]: [[-Body]]

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Description: DirectoryLink_Macro class
+# Description: DirectoryLink macro
 # Detail: Generates a relative link to the containing directory.
 
 import os.path
@@ -8,7 +8,7 @@ import os.path
 from MacroRegistry import registerMacro
 from Common import linkAddress, outputDocumentName
 
-class DirectoryLink_Macro:
+class DirectoryLink_Macro(object):
     def expand(self, parameter, remarkConverter):
         document = remarkConverter.document
         documentTree = remarkConverter.documentTree
@@ -19,17 +19,19 @@ class DirectoryLink_Macro:
         text = []
         
         for linkFileName in parameter:
-            linkDocument, unique = documentTree.findDocumentHard(linkFileName, document.relativeDirectory)
+            linkDocument, unique = documentTree.findDocument(linkFileName, document.relativeDirectory)
             if not unique:
                 remarkConverter.reportWarning('DirectoryLink: "' + linkFileName + '" is ambiguous. Picking arbitrarily.')
             
             if linkDocument != None:
-                linkDescription = linkDocument.relativeDirectory + '/'
-                linkTarget = linkAddress(document.relativeDirectory, 
-                                         os.path.join(linkDocument.relativeDirectory, 'directory.index'))
-                text.append(remarkConverter.remarkLink(linkDescription, outputDocumentName(linkTarget)))
+                linkTarget = documentTree.findDocumentLocal('directory.index', 
+                                                       linkDocument.relativeDirectory)
+
+                text.append(remarkConverter.remarkLink(linkDocument.relativeDirectory + '/',
+                                                       document, linkTarget))
+
                 if len(parameter) > 1:
-                    text += ['']
+                    text.append('')
             else:
                 remarkConverter.reportWarning('DirectoryLink: "' + linkFileName + '" not found. Ignoring it.')
             

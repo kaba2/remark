@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
-# Description: Index_Macro class
-# Detail: Generates a html file to traverse the documentation tree directly. 
+# Description: Index macro
+# Detail: Generates a html file to traverse the directory tree directly. 
 
 import string
 import os.path
@@ -10,7 +10,7 @@ from Common import linkAddress, linkTable
 from Common import outputDocumentName, unixDirectoryName
 from MacroRegistry import registerMacro
 
-class Index_Macro:
+class Index_Macro(object):
     def expand(self, parameter, remarkConverter):
         document = remarkConverter.document
         documentTree = remarkConverter.documentTree
@@ -29,7 +29,7 @@ class Index_Macro:
             if os.path.isdir(fullName):
                 if relativeName in documentTree.directorySet:
                     directorySet.append(entry)
-            elif documentTree.findDocumentByName(relativeName):
+            elif documentTree.findDocumentByRelativeName(relativeName):
                 fileSet.append(entry)
         
         linkSet = []        

@@ -72,6 +72,13 @@ Alternatively one can use:
 
 	[[get some_file_list]]
 
+which also produces
+
+[[+Verbatim]]:
+	[[Gallery.thumb_min_length]]
+	
+	[[some_file_list]]
+
 However, we encourage using the first form
 because it has less clutter.
 	

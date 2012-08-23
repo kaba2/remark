@@ -12,6 +12,9 @@ class CppCodeView_DocumentType(DocumentType):
     def __init__(self):
         None
 
+    def name(self):
+        return 'CppCodeView'
+
     def parseTags(self, fileName, lines = 100):
         regexMap = {'description' : re.compile(r'[ \t]+Description:[ \t]+(.*)'),
                     'detail' : re.compile(r'[ \t]+Detail:[ \t]+(.*)'),
@@ -23,7 +26,9 @@ class CppCodeView_DocumentType(DocumentType):
         return parser.parse(fileName)
         
     def generateMarkdown(self, fileName):
-        return ['[[file_name]]',
+        return ['[[ParentList]]',
+                '',
+                '[[file_name]]',
                 '===',
                 '',
                 '[[Parent]]',

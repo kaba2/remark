@@ -3,18 +3,13 @@ Html macro
 
 [[Parent]]: macros.txt
 
-Description
------------
+The Html macro copies its input as it is. Its purpose is to embed 
+html directly into the generated html page. While the Markdown syntax 
+also allows embedding html directly, the problem with that approach is 
+that newlines are interpreted as ending the html block. 
 
-This macro can be used to embed html directly into the
-generated html page. Note that Markdown syntax also allows 
-embedding html directly, however, the problem with that
-approach is that newlines are interpreted as ending the 
-html block. 
-
-### Action
-
-Copies the input as it is.
+Properties
+----------
 
 ### Output type
 
@@ -26,7 +21,7 @@ Disabled.
 
 ### Parameters
 
-The text to copy.
+The html-code to embed.
 
 ### Variables
 

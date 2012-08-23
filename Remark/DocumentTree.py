@@ -17,13 +17,12 @@ def filePrefix(relativeName):
     index = string.rfind(relativeName, '.')
     return relativeName[0 : index]
 
-class Document:
+class Document(object):
     def __init__(self, relativeName):
         # Precompute commonly needed names.
         self.relativeName = unixDirectoryName(relativeName)
         self.relativeDirectory, self.fileName = os.path.split(relativeName)
         self.extension = fileExtension(self.fileName).lower()
-        self.linkName = linkAddress(self.relativeDirectory, self.relativeName)
 
         self.tagSet = {'description' : '', 
                        'detail' : '',
@@ -43,7 +42,10 @@ class Document:
             return self.tagSet[name]
         return defaultValue
 
-class DocumentTree:
+    def documentType(self):
+        return documentType(self.extension)
+
+class DocumentTree(object):
     def __init__(self, rootDirectory, parserLines = 100):
         assert os.path.isdir(rootDirectory)
         
@@ -110,23 +112,28 @@ class DocumentTree:
         self.documentMap[document.relativeName] = document
         return document
 
-    def findDocument(self, documentName, relativeDirectory):
+    def findDocumentLocal(self, documentName, relativeDirectory):
         '''
         Finds a document corresponding to the given filename 'documentName'.
         The document is only searched in the given relative directory 
-        'relativeDirectory'. Example:
-        documentTree.findDocument('spam.txt', 'eggs/bar/') 
-        See also: findDocumentOutwards().
-        '''
-        return self.findDocumentByName(unixDirectoryName(os.path.join(relativeDirectory, documentName)))
+        'relativeDirectory'. For example:
+        
+        documentTree.findDocumentLocal('spam.txt', 'eggs/bar/') 
 
-    def findDocumentByName(self, relativeName):
+        See also: findDocumentUpwards().
+        '''
+        relativeName = unixDirectoryName(
+            os.path.join(relativeDirectory, documentName))
+
+        return self.findDocumentByRelativeName(relativeName)
+
+    def findDocumentByRelativeName(self, relativeName):
         '''
         Finds a document corresponding to the given relative name and 
         relative directory.
         Example:
-        documentTree.findDocument('eggs/bar/spam.txt') 
-        See also: findDocumentOutwards().
+        documentTree.findDocumentLocal('eggs/bar/spam.txt') 
+        See also: findDocumentUpwards().
         '''
         #relativeName = unixDirectoryName(relativeName)
         if relativeName in self.documentMap:
@@ -136,14 +143,14 @@ class DocumentTree:
         # Document file was not found.
         return None
 
-    def findDocumentOutwards(self, documentName, relativeDirectory):
+    def findDocumentUpwards(self, documentName, relativeDirectory):
         '''
         Finds a document corresponding to the given filename 'documentName'.
         The search starts from the given relative directory 'relativeDirectory',
         and whenever unsuccessful, is continued outwards to
         parent directories until either the document is found
         or root directory is reached. Example:
-        documentTree.findDocumentOutwards('spam.txt', 'eggs/bar/')         
+        documentTree.findDocumentUpwards('spam.txt', 'eggs/bar/')         
         '''
         #assert os.path.isdir(relativeDirectory)
             
@@ -151,11 +158,11 @@ class DocumentTree:
         if fileName != documentName:
             # This is a relative path: don't
             # search from anywhere else.
-            document = self.findDocument(documentName, relativeDirectory) 
+            document = self.findDocumentLocal(documentName, relativeDirectory) 
             return document
 
         while True:
-            document = self.findDocument(documentName, relativeDirectory)
+            document = self.findDocumentLocal(documentName, relativeDirectory)
             if document != None:
                 return document
             
@@ -169,7 +176,7 @@ class DocumentTree:
         # Document file was not found.
         return None                           
 
-    def findDocumentHard(self, documentName, relativeDirectory):
+    def findDocument(self, documentName, relativeDirectory):
         '''
         Returns: A pair (document, unique), such that 'document'
         contains the found document (possibly None) and
@@ -183,12 +190,12 @@ class DocumentTree:
         if fileName != documentName:
             # This is a relative path: don't
             # search from anywhere else.
-            document = self.findDocument(documentName, relativeDirectory)
+            document = self.findDocumentLocal(documentName, relativeDirectory)
             if document != None:
                 # Check whether this search could have been equivalently
                 # been done with a pure filename.
                 (checkDocument, checkUnique) = \
-                    self.findDocumentHard(fileName, relativeDirectory)
+                    self.findDocument(fileName, relativeDirectory)
                 if checkDocument == document and checkUnique:
                     print
                     print ('Warning: Used relative form ' + documentName + 
@@ -215,7 +222,7 @@ class DocumentTree:
         # 2) Parent directories
         # 3) Other directories
         
-        document = self.findDocumentOutwards(documentName, relativeDirectory)
+        document = self.findDocumentUpwards(documentName, relativeDirectory)
         if document != None:
             return (document, True)
             
@@ -288,7 +295,7 @@ class DocumentTree:
                 # the directory containing the document file.
                 parentName = document.tagSet['parent']
                 
-                parent, unique = self.findDocumentHard(parentName, 
+                parent, unique = self.findDocument(parentName, 
                                                        document.relativeDirectory)
                 if not unique:
                     print
@@ -489,7 +496,7 @@ class DocumentTree:
             # the directory containing the document file.
             referenceName = document.tagSet['parentOf']
             
-            reference = self.findDocumentHard(referenceName, 
+            reference = self.findDocument(referenceName, 
                                                document.relativeDirectory)[0]
             if reference == None:
                 # If a reference file can't be found, it can be

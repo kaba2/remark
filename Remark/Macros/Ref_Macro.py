@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Description: Ref_Macro class
+# Description: Ref macro
 # Detail: Finds the relative output name of a file in document tree.
 
 import os.path
@@ -8,7 +8,7 @@ import os.path
 from MacroRegistry import registerMacro
 from Common import linkAddress, outputDocumentName
 
-class Ref_Macro:
+class Ref_Macro(object):
     def expand(self, parameter, remarkConverter):
         document = remarkConverter.document
         documentTree = remarkConverter.documentTree
@@ -16,7 +16,7 @@ class Ref_Macro:
         text = []
         
         for linkFileName in parameter:
-            linkDocument, unique = documentTree.findDocumentHard(linkFileName, document.relativeDirectory)
+            linkDocument, unique = documentTree.findDocument(linkFileName, document.relativeDirectory)
             if not unique:
                 remarkConverter.reportWarning('Ref: "' + linkFileName + '" is ambiguous. Picking arbitrarily.')
             

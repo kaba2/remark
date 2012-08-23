@@ -3,14 +3,11 @@ Link macro
 
 [[Parent]]: macros.txt
 
-Description
------------
+The Link macro generates links to documents in the documentation tree,
+labeled with their descriptions.
 
-### Action
-
-Generates links to documents in the
-documentation tree. The labels for the links are set
-to the descriptions of the target documents. 
+Properties
+----------
 
 ### Output type
 
@@ -22,7 +19,7 @@ Disabled.
 
 ### Parameters
 
-A list of target document paths for which the links are to be generated.
+A list of files for which the links are to be generated.
 
 ### Variables
 

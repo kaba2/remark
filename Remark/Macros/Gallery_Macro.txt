@@ -3,18 +3,16 @@ Gallery macro
 
 [[Parent]]: macros.txt
 
-Description
------------
-
-### Action
-
-Generates an image gallery. The supported image formats are PNG,
-JPEG, GIF, and SVG. These image formats are the ones that are 
+The Gallery macro generates an image gallery. The supported image formats 
+are PNG, JPEG, GIF, and SVG. These image formats are the ones that are 
 [well-supported][ImageFormats] in browsers (as of October 2012).
 Thumbnails are automatically generated for images with filename 
 extensions .png, .gif, .jpeg, .jpg. 
 
 [ImageFormats]: http://en.wikipedia.org/wiki/Comparison_of_browsers
+
+Properties
+----------
 
 ### Output type
 
@@ -41,11 +39,11 @@ Specification of captions is not required.
 
 ### Variables
 
-thumbnail_max_width 
+Gallery.thumbnail_max_width 
 : 	A maximum for the width of a thumbnail in pixels.
 	Default 400.
 
-thumbnail_max_height
+Gallery.thumbnail_max_height
 : 	A maximum for the height of a thumbnail in pixels.
 	Default 400.
 

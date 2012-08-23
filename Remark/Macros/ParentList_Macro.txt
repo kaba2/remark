@@ -1,0 +1,43 @@
+ParentList macro
+================
+
+[[Parent]]: macros.txt
+
+The ParentList macro generates an ordered list of links for the parent 
+documents of the current document, starting from the earliest ancestor.
+This ordered list is enclosed in a `<div>` block, so that the links in 
+the document-tree can be styled using CSS.
+
+Properties
+-----------
+
+### Output type
+
+Remark
+
+### Output expansion default
+
+Disabled.
+
+### Parameters
+
+Ignored.
+
+### Variables
+
+ParentList.class_name
+: 	The name of the html-class to give to the `<div>` tag. The html-class 
+	allows to style the generated list using CSS.
+	Default 'ParentList'.
+
+Examples
+--------
+
+This
+
+	[[ParentList]]
+		
+produces this:
+
+[[ParentList]]
+

@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 
-# Description: Verbatim_Macro class
+# Description: Verbatim macro
 # Detail: Reinterprets input as preformatted text.
 
 from MacroRegistry import registerMacro
 
-class Verbatim_Macro:
+class Verbatim_Macro(object):
     def expand(self, parameter, remarkConverter):
         text = []
         

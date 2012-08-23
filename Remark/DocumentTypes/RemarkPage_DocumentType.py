@@ -12,6 +12,9 @@ class RemarkPage_DocumentType(DocumentType):
     def __init__(self):
         None
 
+    def name(self):
+        return 'RemarkPage'
+
     def parseTags(self, fileName, lines = 100):
         parser = Markdown_TagParser({'parent' : re.compile(r'\[\[Parent\]\]:[ \t]*(.*)')}, lines)
         return parser.parse(fileName)
@@ -19,6 +22,7 @@ class RemarkPage_DocumentType(DocumentType):
     def generateMarkdown(self, fileName):
         return  ['[[set RemarkPage.mid_text]]',
                  '[[set RemarkPage.end_text]]',
+                 '[[ParentList]]',
                  '[[Body]]',
                  '[[DocChildren]]',
                  '[[RemarkPage.mid_text]]',

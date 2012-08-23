@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Description: Body_Macro class
+# Description: Body macro
 # Detail: Reads a document from file.
 
 from Common import readFile
@@ -8,7 +8,7 @@ from MacroRegistry import registerMacro
 
 import os.path 
 
-class Body_Macro:
+class Body_Macro(object):
     def expand(self, parameter, remarkConverter):
         document = remarkConverter.document
         

@@ -3,15 +3,13 @@ Index macro
 
 [[Parent]]: macros.txt
 
-Description
------------
+The Index macro generates a directory-listing from the files and 
+directories in the same directory as the currently processed document. 
+Each directory and file is given as a link. Directories are listed before
+files. Both directories and files are listed in alphabetical order. 
 
-### Action
-
-Generates a directory listing from the files
-and directories in the same directory as the
-currently processed document file. Each directory
-and file is given as a link.
+Properties
+----------
 
 ### Output type
 
@@ -28,14 +26,6 @@ Ignored.
 ### Variables
 
 None.
-
-Details
--------
-
-Directories will be listed before files. Both directories and files
-are listed in alphabetical order. The list is displayed differently
-depending on the number of items in the list: Remark chooses from 
-1 to 3 columns to represent the list.
 
 Example
 -------

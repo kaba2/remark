@@ -1,10 +1,9 @@
 Variables
 =========
 
-[[Parent]]: remark_syntax.txt
+[[Parent]]: macro.txt
 
-Variables can be used to store text temporarily and
-this way parameterize the behavior of macros
-and Remark. However, at the same time variables have a 
-dual role as user-defined text transformations. 
+Variables can be used to store text temporarily and this way parametrize 
+the behavior of macros and Remark. However, at the same time variables 
+have a dual role as user-defined text transformations. 
 

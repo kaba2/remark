@@ -42,6 +42,7 @@ AsciiMath interpretation
 
 Document template
 :	
+		[[ParentList]]
 		
 		[[file_name]]
 		===

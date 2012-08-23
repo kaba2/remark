@@ -1,0 +1,47 @@
+DocumentTree macro
+==================
+
+[[Parent]]: macros.txt
+
+The DocumentTree macro generates a hierarhical, alphabetically ordered list of the 
+[RemarkPage][RemarkPage]-documents in the document tree, using the current document 
+as the root document. This ordered list is enclosed in a `<div>` block, 
+so that the links in the document-tree can be styled using CSS.
+
+[RemarkPage]: [[Ref]]: RemarkPage_DocumentType.txt
+
+Properties
+-----------
+
+### Output type
+
+Remark
+
+### Output expansion default
+
+Disabled.
+
+### Parameters
+
+Ignored.
+
+### Variables
+
+DocumentTree.class_name
+: 	The name of the html-class to give to the `<div>` tag. The html-class 
+	allows to style the generated list using CSS.
+	Default 'DocumentTree'.
+
+Examples
+--------
+
+This
+
+	[[DocumentTree]]
+		
+produces this:
+
+[[DocumentTree]]
+
+which is a bit condensed example since this document does not have
+any RemarkPage-children.

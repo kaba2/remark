@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Description: GenericCode_Macro class
+# Description: Code macro
 # Detail: Generates colored html from many kinds of source code.
 
 import os.path
@@ -13,7 +13,7 @@ from pygments import highlight
 from pygments.lexers import guess_lexer, guess_lexer_for_filename
 from pygments.formatters import HtmlFormatter
 
-class GenericCode_Macro:
+class Code_Macro(object):
     def expand(self, parameter, remarkConverter):
         document = remarkConverter.document
         
@@ -43,4 +43,7 @@ class GenericCode_Macro:
     def postConversion(self, inputDirectory, outputDirectory):
         None
 
-registerMacro('GenericCode', GenericCode_Macro())
+registerMacro('Code', Code_Macro())
+registerMacro('GenericCode', Code_Macro())
+
+

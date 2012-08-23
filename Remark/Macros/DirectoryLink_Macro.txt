@@ -3,13 +3,11 @@ DirectoryLink macro
 
 [[Parent]]: macros.txt
 
-Description
------------
+The DirectoryLink macro generates links to the directories 
+containing the given documents.
 
-### Action
-
-Generates links to the containing directories of documents 
-in the documentation tree.  
+Properties
+----------
 
 ### Output type
 
@@ -21,7 +19,7 @@ Disabled.
 
 ### Parameters
 
-A list of target document paths for which the links are to be generated.
+A list of files for which the links are to be generated.
 
 ### Variables
 
