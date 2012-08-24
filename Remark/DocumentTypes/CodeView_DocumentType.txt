@@ -13,7 +13,7 @@ Name
 :	CodeView
 
 Input extensions
-:	.py, .m
+:	.py, .m, .pl, .pm
 
 Output extension
 :	input extension + `.htm`	

@@ -23,9 +23,9 @@ AsciiMath interpretation
 : Disabled
 
 Document template
-:	
+:	[[Verbatim]]:
 		[[ParentList]]
-		
+				
 		[[tag file_name]]
 		===
 	

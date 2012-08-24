@@ -65,4 +65,7 @@ This is indeed the case: the Parent macro has been given
 a double-role both as a tag and a macro.   
 
 The description is extracted from the first encountered heading.
-A detailed description can not be given.
+The detailed description is not used (but you can set it yourself
+with the [set_tag][Tags] command if needed).
+
+[Tags]: [[Ref]]: tags.txt
