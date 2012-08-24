@@ -33,11 +33,11 @@ the following invocation of the Verbatim macro
 explicitly disables the expansion of the output and 
 enables the expansion of the parameter. 
 	
-	[[-+Verbatim]]: [[description]] 
+	[[-+Verbatim]]: [[tag description]] 
 
 The example above produces:
 
-[[-+Verbatim]]: [[description]]
+[[-+Verbatim]]: [[tag description]]
 
 If only one sign is given, then that sign is assumed
 for both expansions, i.e. - = -- and + = ++.

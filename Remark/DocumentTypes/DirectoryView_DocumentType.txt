@@ -28,7 +28,7 @@ AsciiMath interpretation
 Document template
 : 
 
-		[[description]]
+		[[tag description]]
 		===
 		
 		[[Index]]

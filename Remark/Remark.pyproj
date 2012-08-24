@@ -90,9 +90,6 @@
     <Content Include="..\main_features.txt">
       <Link>main_features.txt</Link>
     </Content>
-    <Content Include="..\predefined_variables.txt">
-      <Link>predefined_variables.txt</Link>
-    </Content>
     <Content Include="..\problem.txt">
       <Link>problem.txt</Link>
     </Content>
@@ -155,6 +152,7 @@
     <Content Include="Macros\Parent_Macro.txt" />
     <Content Include="Macros\Ref_Macro.txt" />
     <Content Include="Macros\SourceChildren_Macro.txt" />
+    <Content Include="Macros\tags.txt" />
     <Content Include="Macros\Verbatim_Macro.txt" />
     <Content Include="remark_files\ASCIIMathMLwFallback.js" />
     <Content Include="remark_files\highslide\highslide-full.js" />

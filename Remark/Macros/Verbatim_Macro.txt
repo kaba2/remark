@@ -30,8 +30,8 @@ Examples
 
 This
 
-	[[+Verbatim]]: [[description]]
+	[[+Verbatim]]: [[tag description]]
 		
 produces this:
 
-[[+Verbatim]]: [[description]]
+[[+Verbatim]]: [[tag description]]

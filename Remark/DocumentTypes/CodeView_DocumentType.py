@@ -30,7 +30,7 @@ class CodeView_DocumentType(DocumentType):
     def generateMarkdown(self, fileName):
         return ['[[ParentList]]',
                 '',
-                '[[file_name]]',
+                '[[tag file_name]]',
                 '===',
                 '',
                 '[[Parent]]',

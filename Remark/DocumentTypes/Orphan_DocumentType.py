@@ -14,7 +14,7 @@ class Orphan_DocumentType(DocumentType):
         return 'Orphan'
 
     def linkDescription(self, document):
-        return document.tag('description')
+        return ''.join(document.tag('description'))
 
     def parseTags(self, fileName, lines = 100):
         parser = Empty_TagParser()

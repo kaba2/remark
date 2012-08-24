@@ -14,7 +14,7 @@ class DirectoryView_DocumentType(DocumentType):
         return 'DirectoryView'
 
     def linkDescription(self, document):
-        return document.tag('description')
+        return ''.join(document.tag('description'))
 
     def parseTags(self, fileName, lines = 100):
         parser = Empty_TagParser()
@@ -23,7 +23,7 @@ class DirectoryView_DocumentType(DocumentType):
     def generateMarkdown(self, fileName):
         return ['[[ParentList]]',
                 '',
-                '[[description]]',
+                '[[tag description]]',
                 '===',
                 '',
                 '[[Index]]',]

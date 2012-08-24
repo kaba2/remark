@@ -24,9 +24,12 @@ class Document(object):
         self.relativeDirectory, self.fileName = os.path.split(relativeName)
         self.extension = fileExtension(self.fileName).lower()
 
-        self.tagSet = {'description' : '', 
-                       'detail' : '',
-                       'author' : ''}
+        self.tagSet = {'description' : [''], 
+                       'detail' : [''],
+                       'author' : [''],
+                       'file_name' : [self.fileName],
+                       'relative_name' : [self.relativeName],
+                       'html_head' : [''],}
         self.parent = None
         self.childSet = dict()
         self.directorySet = set()
@@ -37,10 +40,10 @@ class Document(object):
         self.childSet[child.relativeName] = child
         child.parent = self
         
-    def tag(self, name, defaultValue = ''):
+    def tag(self, name, defaultText = ['']):
         if name in self.tagSet:
             return self.tagSet[name]
-        return defaultValue
+        return defaultText
 
     def documentType(self):
         return documentType(self.extension)

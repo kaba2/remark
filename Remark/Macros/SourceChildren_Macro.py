@@ -46,7 +46,7 @@ class SourceChildren_Macro(object):
             
             # Note that it is really the _description_ we want to
             # use here, rather than the link description.
-            desc = document.tag('description')
+            desc = ''.join(document.tag('description'))
             if desc != '':
                 # If there are multiple descriptions, one is chosen
                 # arbitrarily and a warning is emitted.
@@ -54,7 +54,7 @@ class SourceChildren_Macro(object):
                     print 'Warning:', document.relativeName, ': multiple descriptions for a group.'                     
                 description = desc
 
-            det = document.tag('detail')
+            det = ''.join(document.tag('detail'))
             if det != '':
                 # If there are multiple details, one is chosen
                 # arbitrarily and a warning is emitted.

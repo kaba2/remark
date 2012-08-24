@@ -191,16 +191,6 @@ class RemarkConverter(object):
         self.inlineGroupId = 4
         self.externalGroupId = 5
         self.recursionDepth = 0
-        
-        scope = self.scopeStack.top() 
-        # All the tags that a parser collects
-        # are available as variables for Remark.
-        for key, value in document.tagSet.items(): 
-            scope.insert(key, [value])
-        
-        scope.insert('file_name', [document.fileName])
-        scope.insert('relative_name', [document.relativeName])
-        
         self.lastReportFrom = ''
         self.used = False
 
@@ -378,12 +368,14 @@ class RemarkConverter(object):
 
     def expandBuiltInMacro(self, macroNameSet, parameterSet, scope):
         macroName = macroNameSet[0]
+        document = self.document
         
-        getCommand = False
+        macroText = ['']    
         macroHandled = False
+        getCommand = False
 
         if not macroHandled and macroName == 'set':
-            # Setting a scope variable, e.g.
+            # Sets a scope variable, e.g.
             # [[set variable]]: some input
             if len(macroNameSet) < 2:
                 self.reportWarning('set command is missing the variable name. Ignoring it.')
@@ -393,6 +385,30 @@ class RemarkConverter(object):
                     scope.insert(variableName, parameterSet)
                 else:
                     scope.insert(variableName, [''])
+            macroHandled = True
+
+        if not macroHandled and macroName == 'set_tag':
+            # Sets a document tag, e.g.
+            # [[set_tag some-tag]]: some input
+            if len(macroNameSet) < 2:
+                self.reportWarning('set-tag command is missing the tag-name. Ignoring it.')
+            else:
+                tagName = macroNameSet[1]
+                document.tagSet[tagName] = parameterSet
+            macroHandled = True
+
+        if not macroHandled and macroName == 'tag':
+            # Retrieves a tag, e.g.
+            # [[tag some-tag]]
+            if len(macroNameSet) < 2:
+                self.reportWarning('tag command is missing the tag-name. Ignoring it.')
+            else:
+                tagName = macroNameSet[1]
+                if tagName in document.tagSet:
+                    macroText = document.tag(tagName)
+                else:
+                    self.reportWarning('Tag ' + tagName + 
+                                       ' has not been defined. Ignoring it.')
             macroHandled = True
 
         if not macroHandled and macroName == 'set_outer':
@@ -486,15 +502,14 @@ class RemarkConverter(object):
 
         # This part takes care of actually fetching a variable.
         # It is shared between get (both forms), outer, and get_outer.
-        macroText = ['']    
         if getCommand:
             # Get the variable.
             result = getScope.search(getName)
             if result != None:
                 macroText = result
             else:
-                self.reportWarning('Variable \'' + getName + 
-                                   '\' not found. Ignoring it.')
+                self.reportWarning('Variable ' + getName + 
+                                   ' has not been defined. Ignoring it.')
 
         return macroText, macroHandled
 
@@ -503,18 +518,22 @@ class RemarkConverter(object):
         # the current position.
         scope = self.scopeStack.top()
         
-        macroHandled = False
-        macroNameSet = string.split(macroInvocation.name)
-        macroName = macroNameSet[0]
-        parameterSet = macroInvocation.parameterSet
-        
         # By default, the output will be expanded. 
         # If a proper macro is invoked, then its
         # decision overrides this default.
         expandMore = True
+
+        # Retrieve the macro names and parameters.
+        macroNameSet = string.split(macroInvocation.name)
+        macroName = macroNameSet[0]
+        parameterSet = macroInvocation.parameterSet
         
+        # This is where we will gather the expanded
+        # contents of the macro.
         macroText = ['']
-        if not macroHandled and len(macroNameSet) == 1:
+        macroHandled = False
+
+        if len(macroNameSet) == 1:
             # Search for the macro.
             macro = findMacro(macroName)
 
