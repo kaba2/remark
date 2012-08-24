@@ -68,16 +68,12 @@ being able to add keys into the registry.
 * Download and install Python from [here][Python_Installer].
 * Download and install Python Markdown from [here][Markdown_Installer].
 * Download and install Python Imaging Library from [here][PIL_Installer].
-* Download and install Python Gtk using the _all-in-one_ installer from 
-[here][PyGtk_Installer]. When running the installer, you must explicitly 
-enable the installation of the pyrsvg library.
 * Download and install SetupTools from [here][SetupTools_Installer].
 This installs the `easy_install` tool used to install Pygments.
 
 [Python_Installer]: http://www.python.org/download/
 [Markdown_Installer]: http://freewisdom.org/projects/python-markdown/Installation
 [PIL_Installer]: http://www.pythonware.com/products/pil/
-[PyGtk_Installer]: http://pygtk.org/downloads.html
 [SetupTools_Installer]: http://pypi.python.org/pypi/setuptools
 
 Open up the command-line, and type in:
