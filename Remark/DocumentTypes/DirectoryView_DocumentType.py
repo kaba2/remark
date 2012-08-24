@@ -14,7 +14,7 @@ class DirectoryView_DocumentType(DocumentType):
         return 'DirectoryView'
 
     def linkDescription(self, document):
-        return ''.join(document.tag('description'))
+        return document.tagString('description')
 
     def parseTags(self, fileName, lines = 100):
         parser = Empty_TagParser()

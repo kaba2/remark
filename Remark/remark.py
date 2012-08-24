@@ -101,14 +101,15 @@ use wildcards (e.g. *.png).""")
             print 'Error: The prologue file', prologueFileName, 'could not be read.'
             sys.exit(1)
 
-    title = 'Remark ' + remarkVersion()
+    if globalOptions().verbose:
+        title = 'Remark ' + remarkVersion()
 
-    print
-    print title
-    for i in range(0, len(title)):
-        sys.stdout.write('=')
-    print
-    print
+        print
+        print title
+        for i in range(0, len(title)):
+            sys.stdout.write('=')
+        print
+        print
 
     startTime = time.clock()
     
@@ -123,8 +124,9 @@ use wildcards (e.g. *.png).""")
         print 'Error: Input directory \'' + inputDirectory + '\' does not exist.'
         sys.exit(1)
 
-    print 'Input directory:', inputDirectory
-    print 'Output directory:', outputDirectory
+    if globalOptions().verbose:
+        print 'Input directory:', inputDirectory
+        print 'Output directory:', outputDirectory
 
     # Associate document types with filename extensions.
     
@@ -208,8 +210,9 @@ use wildcards (e.g. *.png).""")
 
     # Output the time taken to produce the documentation.
     endTime = time.clock()
-    print
-    print str(round(endTime, 2)) + ' seconds.'
+    if globalOptions().verbose:
+        print
+        print str(round(endTime, 2)) + ' seconds.'
     
     if globalOptions().verbose:
         print

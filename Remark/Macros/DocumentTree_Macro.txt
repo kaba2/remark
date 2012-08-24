@@ -40,6 +40,10 @@ DocumentTree.max_depth
 :	Maximum depth for a document to be listed.
 	Default 10.
 
+DocumentTree.exclude_set
+:	A set of tags, one per row. If a document has any of these 
+	tags defined, then it will be excluded from the tree. Default [].
+
 Examples
 --------
 

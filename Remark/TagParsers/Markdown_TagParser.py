@@ -36,7 +36,7 @@ class Markdown_TagParser(object):
                 match = lineRegex.search(fileLine)
                 if match != None:
                     # We have found a header!
-                    tagSet['description'] = string.strip(previousLine)
+                    tagSet['description'] = [string.strip(previousLine)]
                     break
                     
                 # We want to remember the previous line

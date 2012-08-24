@@ -47,45 +47,27 @@ Variables can be defined and redefined as follows.
 Note that with `set_many` it is not possible to
 assign multi-line parameters.
 
-Retrieving a variable
----------------------
+Retrieving variables
+--------------------
 
 The text contained in a variable can be obtained
-in this way:
+like this:
 
 	[[Gallery.thumb_min_length]]
 
 	[[some_file_list]]
 	
-This simply expands into the stored text:
+which produces
 
 [[+Verbatim]]:
 	[[Gallery.thumb_min_length]]
 	
 	[[some_file_list]]
 
-### Alternative form
-
-Alternatively one can use:
-
-	[[get Gallery.thumb_min_length]]
-
-	[[get some_file_list]]
-
-which also produces
-
-[[+Verbatim]]:
-	[[Gallery.thumb_min_length]]
-	
-	[[some_file_list]]
-
-However, we encourage using the first form
-because it has less clutter.
-	
 Appending to a variable
 -----------------------
 
-Lines can be appended into a variable like this:
+Text can be appended at the end of a variable like this:
 
 	[[add some_file_list]]:
 		third_file.txt
@@ -102,19 +84,51 @@ Yields:
 [[+Verbatim]]:
 	[[some_file_list]]
 
+### Alternative 
+
+Alternatively, variables can be appended to like this:
+
+	[[+set some_file_list]]:
+		[[some_file_list]]
+		fourth_file.txt
+
+[[+set some_file_list]]:
+	[[some_file_list]]
+	fourth_file.txt
+
+After which invoking
+
+	[[some_file_list]]
+	
+Yields:
+
+[[+Verbatim]]:
+	[[some_file_list]]
+
+However, writing instead
+
+	[[set some_file_list]]:
+		[[some_file_list]]
+		fourth_file.txt
+
+and then
+
+	[[some_file_list]]
+
+will send Remark into a never-ending loop 
+(Python cuts the recursion).
+
 Variable scopes
 ---------------
 
-Each variable lives in some scope which
-defines its visibility and life-time. Each macro
-invocation creates a child-scope into the current
-scope. Variables defined inside the macro invocation
-are placed into this scope. When a macro finishes, its scope
-is closed and all the local variables in the scope are 
-destroyed. When no macro invocations are active, the
-only active scope is the _global scope_. Child scopes
-can refer to variables in the parent scopes, but not
-vice versa. When a variable that does not exist in the 
+Each variable lives in some scope which defines its visibility and 
+life-time. Each macro-invocation creates a child-scope into the 
+current scope. Variables defined inside the macro-invocation are 
+placed into this scope. When a macro finishes, its scope is closed 
+and all the local variables in the scope are destroyed. When no 
+macro invocations are active, the only active scope is the _global 
+scope_. Child scopes can refer to variables in the parent scopes, 
+but not vice versa. When a variable that does not exist in the 
 current scope is set, a new local variable is created.
 Consider the following example:
 

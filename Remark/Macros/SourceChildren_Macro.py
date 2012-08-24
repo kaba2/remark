@@ -46,20 +46,20 @@ class SourceChildren_Macro(object):
             
             # Note that it is really the _description_ we want to
             # use here, rather than the link description.
-            desc = ''.join(document.tag('description'))
+            desc = document.tagString('description')
             if desc != '':
                 # If there are multiple descriptions, one is chosen
                 # arbitrarily and a warning is emitted.
                 if description != '':
-                    print 'Warning:', document.relativeName, ': multiple descriptions for a group.'                     
+                    print 'Warning:', document.relativeName, ': multiple descriptions for a document-group.'                     
                 description = desc
 
-            det = ''.join(document.tag('detail'))
+            det = document.tagString('detail')
             if det != '':
                 # If there are multiple details, one is chosen
                 # arbitrarily and a warning is emitted.
                 if detail != '':
-                    print 'Warning:', document.relativeName, ': multiple details for a group.'                     
+                    print 'Warning:', document.relativeName, ': multiple details for a document-group.'                     
                 detail = det
 
             if i == len(sortedMap) - 1 or not same(sortedMap[i + 1].relativeName, reference.relativeName):
@@ -89,7 +89,7 @@ class SourceChildren_Macro(object):
             if group[0] == '':
                 group[0] = '-'
                 print
-                print 'Warning: Description missing for the file-group'
+                print 'Warning: Description missing for the document-group'
                 print 
                 for child in group[2]:
                     print child.relativeName

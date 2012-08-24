@@ -168,12 +168,40 @@ class RemarkConverter(object):
 
         # Here we form regular expressions to identify
         # Remark macro invocations in the text.
-        self.macroIdentifier = r'([a-zA-Z_. ][a-zA-Z0-9_. ]*)'
+
+        # This matches a macro-identifier. The macro
+        # identifier is the string between [[ and ]].
+        # It may include characters a to z, A to Z,
+        # 0 to 9, the - and the _.
+        # Examples: 'set some-variable', 'Gallery'.
+        self.macroIdentifier = r'([a-zA-Z_.\- ][a-zA-Z0-9_.\- ]*)'
+        
+        # This matches whitespace, which to us means
+        # spaces and tabs.
         self.whitespace = r'[ \t]*'
-        self.optionalInlineParameter = r'(?::' + self.whitespace + r'((?:(?!]]).)*))?'
+
+        # This matches an optional inline parameter.
+        # Starting from the outside, the whole thing is optional.
+        # The first parentheses (?: ) are just for grouping. The
+        # inline parameter must start with ':', following by optional
+        # whitespace. If something is left, the inline parameter is
+        # that what becomes before ]].
+        self.optionalInlineParameter = r'(?::' + self.whitespace + r'((?:(?!\]\]).)*))?'
+        
+        # The one-line parameter starts with a ':' and continues to
+        # to end of the line. The dot . matches anything except \n. 
+        # The leading white-space is eaten away.
         self.optionalOneLineParameter = r'(?::' + self.whitespace + r'(.*))?'
-        self.optionalOutputExpansion = r'(\+|-)?'
-        self.optionalParameterExpansion = r'(\+|-)?'
+
+        self.optionalOutputExpansion = r'(\+|\-)?'
+        self.optionalParameterExpansion = r'(\+|\-)?'
+
+        # Piece together the whole regex for macro-invocation.
+        # It is something which start with [[, ends with ]],
+        # has expansion-signs either none, +, -, ++, +-, -+, or --,
+        # has a macro identifier, and then an optional inline
+        # parameter. Finally, ther is an optional one-line paramater
+        # after the ]].
         self.macroRegex = re.compile(r'\[\[' + 
                                      self.optionalOutputExpansion +
                                      self.optionalParameterExpansion + 
@@ -231,11 +259,12 @@ class RemarkConverter(object):
             
         print 'Warning:', text
         
-    def report(self, text):
+    def report(self, text, verbose = False):
         if self.lastReportFrom != self.document.relativeName:
             self.lastReportFrom = self.document.relativeName
-            print
-            print self.document.relativeName, ':'
+            if not verbose or globalOptions().verbose:
+                print
+                print self.document.relativeName, ':'
     
         print text
         
@@ -264,10 +293,11 @@ class RemarkConverter(object):
         #     More parameters
         #
         # Options 3 and 4 are together called external parameters.
-        
+
         matchBegin = match.start(self.wholeGroupId)
         matchEnd = match.end(self.wholeGroupId)
         macroName = match.group(self.identifierGroupId) 
+
         inlineParameter = match.group(self.inlineGroupId)
         onelineParameter = match.group(self.externalGroupId)
         outputExpansion = match.group(self.outputExpansionGroupId)
@@ -394,7 +424,7 @@ class RemarkConverter(object):
                 self.reportWarning('set-tag command is missing the tag-name. Ignoring it.')
             else:
                 tagName = macroNameSet[1]
-                document.tagSet[tagName] = parameterSet
+                document.setTag(tagName, parameterSet)
             macroHandled = True
 
         if not macroHandled and macroName == 'tag':
@@ -467,17 +497,6 @@ class RemarkConverter(object):
                     outerScope.append(variableName, [''])
             macroHandled = True
 
-        if not macroHandled and macroName == 'get':
-            # Getting a scope variable, alternative form, e.g.
-            # [[get variable]]
-            if len(macroNameSet) < 2:
-                self.reportWarning('get command is missing the variable name. Ignoring it.')
-            else:
-                getCommand = True
-                getName = macroNameSet[1]
-                getScope = scope
-            macroHandled = True
-
         if not macroHandled and (macroName == 'outer' or macroName == 'get_outer'):
             # Getting a global variable, e.g.
             # [[outer variable]]
@@ -514,6 +533,13 @@ class RemarkConverter(object):
         return macroText, macroHandled
 
     def expandMacro(self, macroInvocation):
+        # This is where we will gather the expanded
+        # contents of the macro.
+        macroText = ['']
+        macroHandled = False
+
+        self.recursionDepth += 1
+
         # This function expands the given macro in
         # the current position.
         scope = self.scopeStack.top()
@@ -528,11 +554,6 @@ class RemarkConverter(object):
         macroName = macroNameSet[0]
         parameterSet = macroInvocation.parameterSet
         
-        # This is where we will gather the expanded
-        # contents of the macro.
-        macroText = ['']
-        macroHandled = False
-
         if len(macroNameSet) == 1:
             # Search for the macro.
             macro = findMacro(macroName)
@@ -593,6 +614,8 @@ class RemarkConverter(object):
             macroText = self.convertRecurse(macroText)
             self.scopeStack.close()
        
+        self.recursionDepth -= 1
+
         return macroText            
 
     def convert(self, text):
@@ -619,8 +642,7 @@ class RemarkConverter(object):
     def convertRecurse(self, text):
         # Our strategy is to trace the 'text' line
         # by line while expanding the macros to 'newText'.
-        self.recursionDepth += 1
-        
+
         newText = ['']
         row = 0
         column = 0
@@ -690,8 +712,6 @@ class RemarkConverter(object):
             row = macroInvocation.endRow
             column = macroInvocation.endColumn
         
-        self.recursionDepth -= 1
-            
         # The last '' is extraneous.
         if newText[-1] == '':
             return newText[0 : -1]
@@ -793,9 +813,7 @@ def convert(template, document, documentTree,
     
     headText = remarkConverter.htmlHeader()
     
-    userHeadText = remarkConverter.scopeStack.top().search('html_head')
-    if userHeadText != None:
-        headText += userHeadText
+    headText += document.tag('html_head')
               
     # Convert Markdown to html.
     text = convertMarkdownToHtml(text)

@@ -1,9 +1,9 @@
-Document tags
+Document-tags
 =============
 
 [[Parent]]: macro.txt
 
-A _document tag_, or a tag, is a document-specific key-text pair, where 
+A _document-tag_, or a tag, is a document-specific key-text pair, where 
 the text can be queried and modified by its key. In contrast to 
 [variables][Variables], tags do not have scope, and they persist for
 the whole execution of Remark. This allows to embed meta-data into
@@ -15,7 +15,7 @@ documents, which can then be used by the [macros][Macro].
 Setting a tag
 -------------
 
-A document tag can be set by the `set_tag` command, and retrieved by
+A document-tag can be set by the `set_tag` command, and retrieved by
 the `tag` command. For example, the following
 
 [[Verbatim]]:
@@ -27,10 +27,81 @@ the `tag` command. For example, the following
 
 produces
 
-[[tag author]]
+[[+Verbatim]]:
+	[[set_tag author]]: 
+		John Doe
+		Jane Doe
 
-[[set_tag author]]: 
-	John Doe
-	Jane Doe
+	[[tag author]]
 
-[[tag author]]
+Predefined tags
+---------------
+
+Remark predefines the following tags for each document.
+They may by freely be changed. The difference is that 
+they are provided useful initial values by the tag parsers 
+before starting the conversion. The predefined tags are:
+
+description
+:	Contains the document's description. This is what is
+	used as a description of the document when generating
+	the SourceChildren macro.
+
+link_description
+:	Contains a description of the document most suitable
+	for a link-name. This is defined by the document-type
+	of the document. For most of the document-types this
+	is the same as the description, however, for code files
+	the link-description is the relative file-name.
+
+detail
+:	A more detailed description of the document.
+	Empty by default.
+
+author
+:	The author(s) of the document. Empty by default.
+
+file_name
+:	The file-name of the document, without preceding directories.
+
+relative_name
+:	The path to the document, relative to the root input directory.
+
+relative_directory
+:	The directory containing the document, relative to the root 
+	input directory.
+
+extension
+:	The file-extension of the input-document, in lower-case.
+
+html_head
+:	The contents of this tag will be pasted to the head-section
+	of the html-code. Empty by default.
+
+### Example
+
+This
+
+[[Verbatim]]:
+	Description: [[tag description]]
+	Link-description: [[tag link_description]]
+	Detail: [[tag detail]]
+	Author: [[tag author]]
+	Filename: [[tag file_name]]
+	Relative name: [[tag relative_name]]
+	Relative directory: [[tag relative_directory]]
+	File extension: [[tag extension]]
+	Html-head: [[tag html_head]]
+
+produces this
+
+[[+Verbatim]]:
+	Description: [[tag description]]
+	Link-description: [[tag link_description]]
+	Detail: [[tag detail]]
+	Author: [[tag author]]
+	Filename: [[tag file_name]]
+	Relative name: [[tag relative_name]]
+	Relative directory: [[tag relative_directory]]
+	File extension: [[tag extension]]
+	Html-head: [[tag html_head]]

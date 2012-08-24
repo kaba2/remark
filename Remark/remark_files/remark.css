@@ -238,11 +238,13 @@ to be unique). */
     /*font-weight: bold;*/
     /*font-size: 1em;*/
     color: Maroon;
+    padding-bottom: 0em;
 }
 
 /* Definition lists: The definition of the thing. */
 #remark dd
 {
+    padding-bottom: 1em;
 }
 
 /* ParentList */
