@@ -260,13 +260,14 @@ class RemarkConverter(object):
         print 'Warning:', text
         
     def report(self, text, verbose = False):
-        if self.lastReportFrom != self.document.relativeName:
+       if verbose and (not globalOptions().verbose):
+           return
+
+       if self.lastReportFrom != self.document.relativeName:
             self.lastReportFrom = self.document.relativeName
-            if not verbose or globalOptions().verbose:
-                print
-                print self.document.relativeName, ':'
-    
-        print text
+            print
+            print self.document.relativeName, ':'
+            print text
         
     def extractMacro(self, row, match, text): 
         # This function extracts the information from
