@@ -282,6 +282,12 @@ to be unique). */
     padding-bottom: 0.5em;
 }
 
+/* Add a '>' after each ParentList list-item. */
+#remark .ParentList li :after
+{
+    content: ">";
+}
+
 /* DocumentTree */
 /* ------------ */
 

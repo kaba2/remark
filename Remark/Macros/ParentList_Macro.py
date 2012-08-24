@@ -24,7 +24,7 @@ class ParentList_Macro(object):
         text = []
         for document in reversed(parentSet):
             linkText = remarkConverter.remarkLink(
-                document.linkDescription() + '>', 
+                document.linkDescription(), 
                 remarkConverter.document, document)
 
             # Strictly speaking, Markdown does not
