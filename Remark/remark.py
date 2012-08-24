@@ -145,6 +145,8 @@ use wildcards (e.g. *.png).""")
     associateDocumentType('.hpp', cppCodeViewType)
     associateDocumentType('.py', codeViewType)
     associateDocumentType('.m', codeViewType)
+    associateDocumentType('.pm', codeViewType)
+    associateDocumentType('.pl', codeViewType)
     associateDocumentType('.remark-index', directoryViewType)
     associateDocumentType('.remark-orphan', orphanType)
     
