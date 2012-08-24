@@ -4,9 +4,20 @@ Default stylesheet for Remark.
 
 html, body 
 {
-    /* We need this for positioning the footer. */
+    margin:0;
+    padding:0;
     height: 100%;
 }
+
+#remark-all
+{
+    /* We need this for positioning the footer. */
+    position: relative;
+    min-height: 100%;
+    padding: 0;
+    padding-bottom: 1em;
+}
+
 
 /* All of Remark-generated content is located at
 at div-block whose id is 'remark' (id's are supposed
@@ -25,8 +36,6 @@ to be unique). */
     sides. I find this easier to read. */
     margin-left: 25%;
     margin-right: 25%;
-    /* There should be some empty space before the footer. */
-    padding-bottom: 60px;
 }
 
 /* Verbatim content */
@@ -235,46 +244,6 @@ to be unique). */
 {
 }
 
-/* The remark-all div contains the remark div and the remark-footer div.*/
-#remark-all
-{
-    /* We need the relative positioning to use the min-height.*/
-    position: relative;
-    /* The 100% min-height is here because we want to place
-    the footer at least one screen down (so it can't be seen
-    without scrolling). */
-    min-height: 100%;
-}
-
-/* Remark generates the time-date and the link to itself 
-in the 'remark-footer' div. */
-
-#remark-footer 
-{
-    position: absolute;
-    width: 100%;
-    bottom: 0;
-}
-
-#remark-footer p 
-{
-    border-top: 1px dotted #716f64;
-    font-size: 0.7em;
-    font-family:'Trebuchet MS',Arial;
-    color: #716f64;
-}
-#remark-footer a 
-{ 
-    text-decoration: none; 
-    color: #716f64; 
-}
-
-#remark-footer a:hover 
-{ 
-    text-decoration: underline; 
-    color: #600; 
-}
-
 /* ParentList */
 /* ---------- */
 
@@ -287,13 +256,10 @@ in the 'remark-footer' div. */
     /* The position is given by us, not deduced from others. */
     /* position: absolute; */
     
-    /* The position is like this. */
-    left: 80%;
-    top: 5em;
-    
     /* Get rid of default-indentation for lists. */
     margin: 0;
     padding: 0;
+    padding-top: 1em;
     
     /* Get rid of default-dots for the list items. */
     list-style-type: none;
@@ -392,4 +358,50 @@ in the 'remark-footer' div. */
     width: 50%;
     /* Add some vertical spacing between items. */
     padding-bottom: 1em;
+}
+
+/* The remark-all div contains the remark div and the remark-footer div.*/
+#remark-all
+{
+    /* Height of the footer */
+    padding-bottom: 3em;
+}
+
+/* Remark generates the time-date and the link to itself 
+in the 'remark-footer' div. */
+
+#remark-footer 
+{
+    position: absolute;
+    bottom: 0;
+    width: 50%;
+    margin-left: 25%;
+    margin-right: 25%;
+}
+
+#remark-footer p 
+{
+    border-top: 1px dotted #716f64;
+    font-size: 0.7em;
+    font-family:'Trebuchet MS',Arial;
+    color: #716f64;
+}
+#remark-footer a 
+{ 
+    text-decoration: none; 
+    color: #716f64; 
+}
+
+#remark-footer a:hover 
+{ 
+    text-decoration: underline; 
+    color: #600; 
+}
+
+#remark .remark-end-list
+{
+    display: table;
+    clear: left;
+    padding: 0;
+    border: 0;
 }

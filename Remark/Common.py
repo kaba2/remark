@@ -39,8 +39,9 @@ def htmlDiv(enclosedText, className = ''):
     text.append('')
     text += enclosedText
     text.append('')
-
     text.append('</div>')
+    text.append('')
+    text.append('<div class = "remark-end-list"></div>')
     text.append('')
 
     return text

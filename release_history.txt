@@ -27,6 +27,8 @@ exist _or_ the source file has been modified after the target file.
 * Fixed a crash when facing Unicode decode errors in tag parsers
 and when generating such files. Replaced with a warning to pinpoint
 the problematic file and continuing.
+* Made Remark name links to code-files with their filenames, rather
+than with their descriptions.
 
 ### Interface
 
@@ -41,9 +43,15 @@ pure form would already be unambiguous. This enforces robust linking.
 
 ### Macros
 
+* ParentList: New macro.
+* DocumentTree: New macro.
 * Gallery: Increased the default number of pixels in thumbnails.
 * Gallery: Made the macro work also with vector-based images, such
 as .svg.
+* DocChildren and Index: Changed the listings to lists rather than 
+tables for better CSS-styling. Added `class_name` variables.
+* Renamed GenericCode macro to Code macro, and made GenericCode an 
+alias of Code.
 
 ### Documentation
 
