@@ -179,7 +179,7 @@ class Gallery_Macro(object):
                     if pixelDocument != None:
                         # For pixel-based images, we use the Python Imaging Library to
                         # produce the thumbnails (as PNG).
-                        pixelFullName = os.path.join(outputRootDirectory, pixelDocument.relativeName)
+                        pixelFullName = os.path.join(inputRootDirectory, pixelDocument.relativeName)
                         image = Image.open(pixelFullName)
                         image.thumbnail((thumbnailMaxWidth, thumbnailMaxHeight), Image.ANTIALIAS)
                         image.save(thumbFullName, 'PNG')
@@ -191,7 +191,6 @@ class Gallery_Macro(object):
                         message += '.'
                         remarkConverter.report(message)
                 except IOError as err: 
-                    #print err
                     remarkConverter.reportWarning('Gallery: Cannot create a thumbnail for ' + 
                                                   input.relativeName + '. ')
                     continue
