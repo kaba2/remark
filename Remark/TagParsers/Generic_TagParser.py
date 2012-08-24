@@ -20,12 +20,12 @@ class Generic_TagParser(object):
                 for tagName, tagRegex in self.tagRegexMap.iteritems():
                     match = tagRegex.search(fileLine)
                     if match != None:
-                        if tagName in tagSet and tagSet[tagName] != '':
+                        if tagName in tagSet and tagSet[tagName] != ['']:
+                            print
                             print 'Warning:', fileName, 
-                            print ': Multiple definitions for the tag', 
-                            print tagName                         
+                            print ": Multiple definitions for the tag '" + tagName + "'."
                         else:
-                            tagSet[tagName] = string.strip(match.group(1))
+                            tagSet[tagName] = [string.strip(match.group(1))]
                         break
                 lineNumber += 1
                 if lineNumber >= self.maxLines:

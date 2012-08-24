@@ -8,14 +8,7 @@ import os.path
 import string
 import re
 from Common import documentType, unixDirectoryName, linkAddress, fileExtension
-
-def fileSuffix(relativeName):
-    index = string.rfind(relativeName, '.')
-    return relativeName[index :]
-
-def filePrefix(relativeName):
-    index = string.rfind(relativeName, '.')
-    return relativeName[0 : index]
+from Common import globalOptions, withoutFileExtension
 
 class Document(object):
     def __init__(self, relativeName):
@@ -23,27 +16,39 @@ class Document(object):
         self.relativeName = unixDirectoryName(relativeName)
         self.relativeDirectory, self.fileName = os.path.split(relativeName)
         self.extension = fileExtension(self.fileName).lower()
-
-        self.tagSet = {'description' : [''], 
-                       'detail' : [''],
-                       'author' : [''],
-                       'file_name' : [self.fileName],
-                       'relative_name' : [self.relativeName],
-                       'html_head' : [''],}
         self.parent = None
         self.childSet = dict()
         self.directorySet = set()
+        self.tagSet = {}
+
+        # Set the default-tags.
+        self.setTag('description')
+        self.setTag('link_description')
+        self.setTag('detail')
+        self.setTag('author')
+        self.setTag('file_name', [self.fileName])
+        self.setTag('relative_name', [self.relativeName])
+        self.setTag('relative_directory', [self.relativeDirectory])
+        self.setTag('extension', [self.extension])
+        self.setTag('html_head')
         
     def insertChild(self, child):
         if child.parent != None:
             print 'Error: A child was already linked to a parent.'
         self.childSet[child.relativeName] = child
         child.parent = self
+    
+    def setTag(self, name, value = ['']):
+        assert isinstance(value, list)
+        self.tagSet[name] = value
         
     def tag(self, name, defaultText = ['']):
         if name in self.tagSet:
             return self.tagSet[name]
         return defaultText
+
+    def tagString(self, name, default = ''):
+        return ''.join(self.tag(name, [default]))
 
     def documentType(self):
         return documentType(self.extension)
@@ -61,60 +66,86 @@ class DocumentTree(object):
         
         self.rootDirectory = rootDirectory
         self.orphan = Document('orphan.remark-orphan')
-        self.orphan.tagSet['description'] = 'Orphans'
+        self.orphan.setTag('description', ['Orphans'])
         self.documentMap = {'orphan.remark-orphan' : self.orphan}
         self.fileNameMap = {}
         self.parserLines = parserLines
         
     def compute(self):      
-        print  
-        print 'Gathering directories...',
+
+        # Gather directories
+
+        if globalOptions().verbose:
+            print  
+            print 'Gathering directories...',
         self._gatherDirectories();
-        print 'Done.'
+        if globalOptions().verbose:
+            print 'Done.'
 
-        print
-        print 'Inserting virtual documents...',
+        # Insert virtual documents.
+
+        if globalOptions().verbose:
+            print
+            print 'Inserting virtual documents...',
         self._insertVirtualDocuments();
-        print 'Done.'
+        if globalOptions().verbose:
+            print 'Done.'
 
-        print
-        print 'Constructing file-name map...',
+        # Construct file-name map.
+
+        if globalOptions().verbose:
+            print
+            print 'Constructing file-name map...',
         self._constructFileNameMap()
-        print 'Done.'
+        if globalOptions().verbose:
+            print 'Done.'
 
-        print
-        print 'Parsing tags'
-        print '------------'
+        # Parse the tags.
+
+        if globalOptions().verbose:
+            print
+            print 'Parsing tags'
+            print '------------'
         self._parseTags()
-        print
-        print 'Done.'
+        if globalOptions().verbose:
+            print
+            print 'Done.'
         
-        print
-        print 'Resolving explicit links'
-        print '------------------------'
+        # Resolve explicit links
+        if globalOptions().verbose:
+            print
+            print 'Resolving explicit links'
+            print '------------------------'
         self._resolveExplicitLinks()
-        print
-        print 'Done.'
+        if globalOptions().verbose:
+            print
+            print 'Done.'
         
-        print
-        print 'Resolving implicit links'
-        print '------------------------'
+        if globalOptions().verbose:
+            print
+            print 'Resolving implicit links'
+            print '------------------------'
         self._resolveImplicitLinks()
-        print
-        print 'Done.'
+        if globalOptions().verbose:
+            print
+            print 'Done.'
         
-        print
-        print 'Resolving reference links'
-        print '-------------------------'
+        if globalOptions().verbose:
+            print
+            print 'Resolving reference links'
+            print '-------------------------'
         self._resolveReferenceLinks()
-        print
-        print 'Done.'
+        if globalOptions().verbose:
+            print
+            print 'Done.'
 
-        print
-        print 'Linking orphans...',
+        if globalOptions().verbose:
+            print
+            print 'Linking orphans...',
         self._linkOrphans()
-        print
-        print 'Done.'
+        if globalOptions().verbose:
+            print
+            print 'Done.'
         
     def insertDocument(self, relativeName):
         document = Document(relativeName)
@@ -209,7 +240,7 @@ class DocumentTree(object):
                     print
                     print ('Warning: Used relative form ' + documentName + 
                            ' where pure form ' + fileName + 
-                           ' is unambiguous.')
+                           ' would have been unambiguous.')
             return (document, True)
         
         #print '"', fileName, '"'
@@ -241,11 +272,17 @@ class DocumentTree(object):
     # Private stuff
     
     def _fullName(self, relativeName):
+        '''
+        Returns the full path of the given relative-name relative
+        to the input root-directory.
+        '''
         return os.path.normpath(os.path.join(self.rootDirectory, relativeName))
 
     def _gatherDirectories(self):
-        # Gather the set of directories in which the files reside at
-        # (and their parent directories).
+        '''
+        Gathers the set of directories in which the files reside at
+        (and their parent directories).
+        '''
         directorySet = set()
         for document in self.documentMap.itervalues():
             directory = document.relativeDirectory
@@ -259,21 +296,33 @@ class DocumentTree(object):
         self.directorySet = directorySet
 
     def _insertVirtualDocuments(self):
-        # We wish to generate an index to each directory in the
-        # directory tree.
+        ''' 
+        Generates a directory.remark-index virtual document to each
+        directory. This provides the directory listings.
+        '''
         for directory in self.directorySet:
+            # Form the relative name of the document.
             relativeName = os.path.join(directory, 'directory.remark-index')
+            
+            # Insert a document with that relative name.
             document = self.insertDocument(relativeName)
-            document.tagSet['description'] = unixDirectoryName(document.relativeDirectory) + '/'
+            
+            # Give the document the description from the unix-style
+            # directory name combined with a '/' to differentiate 
+            # visually that it is a directory.
+            description = unixDirectoryName(document.relativeDirectory) + '/'
+
+            # Add the description to the document.
+            document.setTag('description', [description])
 
     def _parseTags(self):
         '''
         For each document in 'self.documentMap', runs its
-        associated parser.
+        associated tag-parser.
         '''        
         for document in self.documentMap.itervalues():
             try:
-                key = fileSuffix(document.relativeName)
+                key = fileExtension(document.relativeName)
                 type = documentType(key)
                 if type != None:
                     tagSet = type.parseTags(self._fullName(document.relativeName), self.parserLines)
@@ -281,9 +330,6 @@ class DocumentTree(object):
             except UnicodeDecodeError:
                 print 'Warning:', document.relativeName,
                 print ': Tag parsing failed because of a unicode decode error.'
-            except:
-                print 'Warning:', document.relativeName,
-                print ': Tag parsing failed for some reason.'
             
     def _resolveExplicitLinks(self):
         '''
@@ -302,10 +348,10 @@ class DocumentTree(object):
             if 'parent' in document.tagSet:
                 # The parent file path in the tag is given relative to 
                 # the directory containing the document file.
-                parentName = document.tagSet['parent']
+                parentName = document.tagString('parent')
                 
                 parent, unique = self.findDocument(parentName, 
-                                                       document.relativeDirectory)
+                                                   document.relativeDirectory)
                 if not unique:
                     print
                     print 'Warning: parent file is ambiguous for', 
@@ -382,7 +428,7 @@ class DocumentTree(object):
             
             #print 'Implicit find for', document.relativeName
             searchDirectory = document.relativeDirectory
-            searchName = filePrefix(document.fileName)
+            searchName = withoutFileExtension(document.fileName)
             # The implicit linking only concerns
             # source files. 
             if document.extension != '.txt':
@@ -403,7 +449,7 @@ class DocumentTree(object):
                     # directory.
                     if thatDirectory != searchDirectory:
                         break
-                    thatName = filePrefix(thatDocument.fileName)
+                    thatName = withoutFileExtension(thatDocument.fileName)
                     if thatName != searchName:
                         break
                     lastIndex = lastIndex + 1
@@ -430,7 +476,7 @@ class DocumentTree(object):
                         # The filename of the parent document must be a 
                         # prefix of the documents filename, without
                         # suffixes.                            
-                        thatName = filePrefix(thatDocument.fileName)
+                        thatName = withoutFileExtension(thatDocument.fileName)
                         if searchName.startswith(thatName):
                             # If we have already found a match,
                             # and we find a candidate which
@@ -442,7 +488,7 @@ class DocumentTree(object):
                             # Either the file must be a documentation file
                             # or it must have a parent.                                
                             #print 'Candidate', thatDocument.relativeName
-                            if fileSuffix(thatDocument.fileName) == '.txt':
+                            if fileExtension(thatDocument.fileName) == '.txt':
                                 # We have found a match from a documentation
                                 # file! 
                                 documentationMatches.add(thatDocument)
@@ -503,10 +549,10 @@ class DocumentTree(object):
             
             # The parent file path in the tag is given relative to 
             # the directory containing the document file.
-            referenceName = document.tagSet['parentOf']
+            referenceName = document.tagString('parentOf')
             
             reference = self.findDocument(referenceName, 
-                                               document.relativeDirectory)[0]
+                                          document.relativeDirectory)[0]
             if reference == None:
                 # If a reference file can't be found, it can be
                 # because of a typo in the tag or a missing file. 

@@ -16,7 +16,7 @@ class RemarkPage_DocumentType(DocumentType):
         return 'RemarkPage'
 
     def linkDescription(self, document):
-        return ''.join(document.tag('description'))
+        return document.tagString('description')
 
     def parseTags(self, fileName, lines = 100):
         parser = Markdown_TagParser({'parent' : re.compile(r'\[\[Parent\]\]:[ \t]*(.*)')}, lines)
