@@ -16,7 +16,7 @@ than 1.1.3.
 Remark 1.5.0
 ------------
 
-Release date 22.08.2012
+Release date 24.08.2012
 
 [Original webpage][Remark-1.5.0]
 
@@ -48,6 +48,8 @@ pure form would already be unambiguous. This enforces robust linking.
 * Gallery: Increased the default number of pixels in thumbnails.
 * Gallery: Made the macro work also with vector-based images, such
 as .svg.
+* Gallery: Added support for multiple image formats, so as to
+generate thumbnails for .svg from a pixel-based alternative image.
 * DocChildren and Index: Changed the listings to lists rather than 
 tables for better CSS-styling. Added `class_name` variables.
 * Renamed GenericCode macro to Code macro, and made GenericCode an 
