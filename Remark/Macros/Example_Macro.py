@@ -14,7 +14,6 @@ class Example_Macro(object):
         text.append('[[Verbatim]]:')
         for line in parameter:
             text.append('\t' + line)
-            print text[-1]
         text.append('produces this')
         text.append('')
         text += parameter
