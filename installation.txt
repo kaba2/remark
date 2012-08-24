@@ -24,16 +24,9 @@ This library is used to highlight source code.
 
 This library is used to create thumbnails for image galleries.
 
-### [Python GTK][PyGtk]
-
-A sub-library of PyGtk, called PyRsvg, is used to convert SVG
-images to PNG. The PyRsvg in turn uses PyCairo to render the
-svg image to a pixel-based image.
-
 [PythonMarkdown]: http://www.freewisdom.org/projects/python-markdown/
 [Pygments]: http://pygments.org/
 [PIL]: http://www.pythonware.com/products/pil/
-[PyGtk]: http://pygtk.org
  
 Javascript dependencies
 -----------------------
@@ -55,16 +48,19 @@ We distribute it with Remark.
 [Highslide]: http://highslide.com/
 [AsciiMathML]: http://www1.chapman.edu/~jipsen/asciimath.html
 
-Installation on Windows
------------------------
+Windows and 32-bit Python
+-------------------------
 
-First, make sure that you have the 32-bit Python installed (not 64-bit). 
-The 64-bit version is problematic because it often happens that there 
-is no installer for the 64-bit version of a Python library. In particular,
-such installers are missing for the PyGtk and Python Markdown.
+The following summarizes the installation on Windows with 
+32-bit Python installed.
+
+The easiest way to install Remark is to make sure that you have the 32-bit 
+Python installed (not 64-bit). The 64-bit version is problematic because it 
+often happens that there is no installer for a 64-bit version of a Python 
+library. In particular, such an installer is missing for Python Markdown. 
 Naturally, you should then install all the Python libraries as 32-bit.
 
-On Windows 7 (and other 64-bit Windows?), make sure that you run all 
+On Windows 7 (and Vista?), make sure that you run all 
 the installers as an administrator (right click --> run as administrator). 
 Otherwise, for example, the Python Markdown installer complains of not 
 being able to add keys into the registry.
@@ -90,12 +86,46 @@ Open up the command-line, and type in:
 
 This installs the Pygments library.
 
+Windows and 64-bit Python
+-------------------------
+
+The following summarizes the installation on Windows with 
+64-bit Python installed.
+
+The steps are the same as for Windows and 32-bit Python. However,
+the installers for the Python Markdown 2.0 and Python Imaging
+Library 1.1.7 do not work straightforwardly in Windows 7 (when 
+writing this in 18.06.2012) if you have 64-bit Python installed. 
+The solution for the Python Imaging Library is to obtain a 64-bit 
+installer from [here][PIL-64].
+
+[PIL-64]: http://www.lfd.uci.edu/~gohlke/pythonlibs/
+
+The solution for the Markdown installer is to first write the 
+following in Notepad:
+
+	Windows Registry Editor Version 5.00 
+
+	[HKEY_CURRENT_USER\Software\Python] 
+	[HKEY_CURRENT_USER\Software\Python\Pythoncore]
+	[HKEY_CURRENT_USER\Software\Python\Pythoncore\2.7] 
+	[HKEY_CURRENT_USER\Software\Python\Pythoncore\2.7\InstallPath]
+	@="C:\\Python27" 
+	[HKEY_CURRENT_USER\Software\Python\Pythoncore\2.7\PythonPath]
+	@="C:\\Python27;C:\\Python27\\Lib\\;C:\\Python27\\DLLs\\"
+
+save this in a file with extension .reg, and then run it using 
+Registry Editor (right click --> Open with). Do note to replace 
+the Python version, and the Python directory above if they are not 
+what you use. At first it would seem that this also helps 
+with the Python Imaging Library installer (32-bit version); although 
+the installation completes, the library does not work.
+
 Summary
 -------
 
 After installing Python, Python Markdown, Python Imaging Library, 
-Python Gtk, SetupTools, and Pygments, you should be ready to use 
-Remark. 
+SetupTools, and Pygments, you should be ready to use Remark. 
 
 See also
 --------
