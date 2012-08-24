@@ -90,7 +90,8 @@ to be unique). */
     font-size: 1.6em;
     font-weight: normal;
     color: #656565;
-    margin: 1.5em 0em 1em 0em;
+    margin: 0;
+    margin-bottom: 1em;
     /* Draw a dotted line under the heading. */
     border-bottom: 2px dotted #aca899;
     /* Make some space between the heading and the line under it.*/ 
@@ -400,7 +401,7 @@ in the 'remark-footer' div. */
 
 #remark .remark-end-list
 {
-    display: table;
+    display: block;
     clear: left;
     padding: 0;
     border: 0;
