@@ -376,26 +376,15 @@ class RemarkConverter(object):
                 # line.
                 htmlText[j] = '<span class="p"></span>'
 
-    def expandMacro(self, macroInvocation):
-        # This function expands the given macro in
-        # the current position.
-        scope = self.scopeStack.top()
-        
-        macroHandled = False
-        macroNameSet = string.split(macroInvocation.name)
+    def expandBuiltInMacro(self, macroNameSet, parameterSet, scope):
         macroName = macroNameSet[0]
-        parameterSet = macroInvocation.parameterSet
+        
         getCommand = False
-        
-        # By default, the output will be expanded. 
-        # If a proper macro is invoked, then its
-        # decision overrides this default.
-        expandMore = True
-        
-        macroText = ['']        
-      
-        if macroName == 'set':
-            # Setting a scope variable.
+        macroHandled = False
+
+        if not macroHandled and macroName == 'set':
+            # Setting a scope variable, e.g.
+            # [[set variable]]: some input
             if len(macroNameSet) < 2:
                 self.reportWarning('set command is missing the variable name. Ignoring it.')
             else:
@@ -405,9 +394,10 @@ class RemarkConverter(object):
                 else:
                     scope.insert(variableName, [''])
             macroHandled = True
-        
-        if macroName == 'set_outer':
-            # Setting a variable at outer scope.
+
+        if not macroHandled and macroName == 'set_outer':
+            # Setting a variable at outer scope, e.g.
+            # [[set_outer variable]]: some input
             if len(macroNameSet) < 2:
                 self.reportWarning('set_outer command is missing the variable name. Ignoring it.')
             else:
@@ -419,8 +409,37 @@ class RemarkConverter(object):
                     outerScope.insert(variableName, [''])
             macroHandled = True
 
-        if macroName == 'add_outer':
-            # Setting a variable at outer scope.
+        if not macroHandled and macroName == 'set_many':
+            # Setting to many scope variables, e.g.
+            # [[set_many Gallery]]:
+            #       width 250
+            #       height 500
+            prefix = ''
+            if len(macroNameSet) >= 2:
+                prefix = macroNameSet[1] + '.'
+            for line in parameterSet:
+                if line.strip() != '':
+                    nameValue = line.split(None, 1)
+                    if len(nameValue) == 2:
+                        scope.insert(prefix + nameValue[0].strip(), [nameValue[1].strip()])
+                    else:
+                        self.reportWarning('set_many: variable ' + nameValue[0] + 
+                                           'has no assigned value. Ignoring it.')
+            macroHandled = True
+
+        if not macroHandled and macroName == 'add':
+            # Appending to a scope variable, e.g.
+            # [[add variable]]: some new input
+            if len(macroNameSet) < 2:
+                self.reportWarning('add command is missing the variable name. Ignoring it.')
+            else:
+                variableName = macroNameSet[1]
+                scope.append(variableName, parameterSet)
+            macroHandled = True
+
+        if not macroHandled and macroName == 'add_outer':
+            # Adding a new line to a variable at outer scope, e.g.
+            # [[add_outer variable]]: some new input
             if len(macroNameSet) < 2:
                 self.reportWarning('add_outer command is missing the variable name. Ignoring it.')
             else:
@@ -432,32 +451,9 @@ class RemarkConverter(object):
                     outerScope.append(variableName, [''])
             macroHandled = True
 
-        if not macroHandled and macroName == 'set_many':
-            prefix = ''
-            if len(macroNameSet) >= 2:
-                prefix = macroNameSet[1] + '.'
-            # Setting to many scope variables.
-            for line in parameterSet:
-                if line.strip() != '':
-                    nameValue = line.split(None, 1)
-                    if len(nameValue) == 2:
-                        scope.insert(prefix + nameValue[0].strip(), [nameValue[1].strip()])
-                    else:
-                        self.reportWarning('set_many: variable ' + nameValue[0] + 
-                                           'has no assigned value. Ignoring it.')
-            macroHandled = True
-        
-        if not macroHandled and macroName == 'add':
-            # Appending to a scope variable.
-            if len(macroNameSet) < 2:
-                self.reportWarning('add command is missing the variable name. Ignoring it.')
-            else:
-                variableName = macroNameSet[1]
-                scope.append(variableName, parameterSet)
-            macroHandled = True
-        
         if not macroHandled and macroName == 'get':
-            # Getting a scope variable, alternative form.
+            # Getting a scope variable, alternative form, e.g.
+            # [[get variable]]
             if len(macroNameSet) < 2:
                 self.reportWarning('get command is missing the variable name. Ignoring it.')
             else:
@@ -465,9 +461,10 @@ class RemarkConverter(object):
                 getName = macroNameSet[1]
                 getScope = scope
             macroHandled = True
-        
+
         if not macroHandled and (macroName == 'outer' or macroName == 'get_outer'):
-            # Getting a global variable.
+            # Getting a global variable, e.g.
+            # [[outer variable]]
             if len(macroNameSet) < 2:
                 self.reportWarning(macroName + ' command is missing the variable name. Ignoring it.')
             else:
@@ -476,6 +473,47 @@ class RemarkConverter(object):
                 getScope = scope.outer().searchScope(macroNameSet[1])
             macroHandled = True
 
+        # This needs to be handled last, so that one can use
+        # built-in macros without parameters, such as
+        # [[set_many]].
+        if not macroHandled and len(macroNameSet) == 1:
+            # Getting a scope variable, main form, e.g.
+            # [[variable]]
+            getName = macroName
+            getCommand = True
+            getScope = scope
+            macroHandled = True
+
+        # This part takes care of actually fetching a variable.
+        # It is shared between get (both forms), outer, and get_outer.
+        macroText = ['']    
+        if getCommand:
+            # Get the variable.
+            result = getScope.search(getName)
+            if result != None:
+                macroText = result
+            else:
+                self.reportWarning('Variable \'' + getName + 
+                                   '\' not found. Ignoring it.')
+
+        return macroText, macroHandled
+
+    def expandMacro(self, macroInvocation):
+        # This function expands the given macro in
+        # the current position.
+        scope = self.scopeStack.top()
+        
+        macroHandled = False
+        macroNameSet = string.split(macroInvocation.name)
+        macroName = macroNameSet[0]
+        parameterSet = macroInvocation.parameterSet
+        
+        # By default, the output will be expanded. 
+        # If a proper macro is invoked, then its
+        # decision overrides this default.
+        expandMore = True
+        
+        macroText = ['']
         if not macroHandled and len(macroNameSet) == 1:
             # Search for the macro.
             macro = findMacro(macroName)
@@ -511,22 +549,15 @@ class RemarkConverter(object):
                     
                 macroHandled = True
 
-        if not macroHandled and len(macroNameSet) == 1:
-            # Getting a scope variable.
-            getName = macroName
-            getCommand = True
-            getScope = scope
-            macroHandled = True
-            
-        if getCommand:
-            # Getting a scope variable.
-            result = getScope.search(getName)
-            if result != None:
-                macroText = result
-            else:
-                self.reportWarning('Variable \'' + getName + 
-                                   '\' not found. Ignoring it.')
+        # Handle built-in macros.
+        # Note that this has to be done after the external
+        # macros, since otherwise the variable retrieval
+        # [[variable]] would match those macros.
+        if not macroHandled:
+            macroText, macroHandled = self.expandBuiltInMacro(
+                macroNameSet, parameterSet, scope)
 
+        # If no macro was recognized, report a warning and continue.
         if not macroHandled:
             self.reportWarning('Don\'t know how to handle macro "' + 
                                macroInvocation.name + '". Ignoring it.')
