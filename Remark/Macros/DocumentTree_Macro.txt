@@ -32,8 +32,12 @@ DocumentTree.class_name
 	allows to style the generated list using CSS.
 	Default 'DocumentTree'.
 
+DocumentTree.min_depth
+:	Minimum depth for a document to be listed.
+	Default 1 (i.e. the current document is not listed).
+
 DocumentTree.max_depth
-:	Maximum depth for the listed tree.
+:	Maximum depth for a document to be listed.
 	Default 10.
 
 Examples
@@ -47,5 +51,4 @@ produces this:
 
 [[DocumentTree]]
 
-which is a bit condensed example since this document does not have
-any RemarkPage-children.
+i.e. nothing since this document does not have any RemarkPage-children.
