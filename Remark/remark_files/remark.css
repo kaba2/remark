@@ -275,6 +275,9 @@ in the 'remark-footer' div. */
     color: #600; 
 }
 
+/* ParentList */
+/* ---------- */
+
 /* Styling for ParentList lists. */
 #remark .ParentList ol
 {
@@ -307,9 +310,13 @@ in the 'remark-footer' div. */
 {
     float: left;
     
-    background-color: rgba(0, 0, 255, 0.25);
-    padding: 0.5em;
+    /* background-color: rgba(0, 0, 255, 0.25); */
+    padding-right: 1em;
+    padding-bottom: 0.5em;
 }
+
+/* DocumentTree */
+/* ------------ */
 
 /* Syling for DocumentTree lists. */
 #remark .DocumentTree ol
@@ -333,10 +340,8 @@ in the 'remark-footer' div. */
     padding-bottom: 0em;
 }
 
-#remark .DocChildren div
-{
-    padding-bottom: 5em;
-}
+/* DocChildren */
+/* ----------- */
 
 /* Styling for DocChildren lists. */
 #remark .DocChildren ol
@@ -351,6 +356,33 @@ in the 'remark-footer' div. */
 
 /* Styling for DocChildren list-items. */ 
 #remark .DocChildren ol li
+{
+    /* The items are placed side-by-side, until the
+    right-edge and they wrap to the next row. */
+    float: left;
+    /* Since the width of an item is 50%, there are
+    at most 2 items per row. */
+    width: 50%;
+    /* Add some vertical spacing between items. */
+    padding-bottom: 1em;
+}
+
+/* Index */
+/* ----- */
+
+/* Styling for Index lists. */
+#remark .Index ol
+{
+    /* Get rid of default-indentation for lists. */
+    margin: 0;
+    padding: 0;
+
+    /* Get rid of default-dots for the list items. */
+    list-style-type: none;
+}
+
+/* Styling for Index list-items. */ 
+#remark .Index ol li
 {
     /* The items are placed side-by-side, until the
     right-edge and they wrap to the next row. */

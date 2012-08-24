@@ -6,7 +6,7 @@
 import string
 import os.path
 
-from Common import linkAddress, linkTable
+from Common import linkAddress, linkTable, htmlDiv
 from Common import outputDocumentName, unixDirectoryName
 from MacroRegistry import registerMacro
 
@@ -14,12 +14,16 @@ class Index_Macro(object):
     def expand(self, parameter, remarkConverter):
         document = remarkConverter.document
         documentTree = remarkConverter.documentTree
+        scope = remarkConverter.scopeStack.top()
+
+        # Variables
+        className = scope.getString('Index.class_name', 'Index')
         
         fullPath = os.path.join(documentTree.rootDirectory, document.relativeDirectory)
         entrySet = ['..'] + os.listdir(fullPath)
-
-        text = []
-      
+     
+        # Gather the files and directories in the
+        # document's directory.
         fileSet = []
         directorySet = []
         for entry in entrySet:
@@ -32,23 +36,23 @@ class Index_Macro(object):
             elif documentTree.findDocumentByRelativeName(relativeName):
                 fileSet.append(entry)
         
-        linkSet = []        
-        
+        # Create links for the directories.
+        text = []
         for directory in directorySet:
-            linkDescription = directory + '/'
-            linkTarget = os.path.join(directory, 'directory.remark-index')
-            linkSet.append((outputDocumentName(linkTarget), linkDescription))
-       
+            linkDirectory = os.path.join(document.relativeDirectory, directory)
+            directoryDocument = documentTree.findDocumentLocal('directory.remark-index', linkDirectory)
+            text.append(' 1. ' + remarkConverter.remarkLink(directory + '/',
+                                                   document, directoryDocument))
+        
+        # Create links for the files.
         for fileName in fileSet:
-            linkTarget = outputDocumentName(fileName)
-            linkDescription = fileName
-            linkSet.append((linkTarget, linkDescription))
-            
-        text += linkTable(linkSet)
+            fileDocument = documentTree.findDocumentLocal(fileName, document.relativeDirectory)
+            text.append(' 1. ' + remarkConverter.remarkLink(fileName,
+                                                   document, fileDocument))
                     
         text.append('')
 
-        return text
+        return htmlDiv(text, className)
 
     def outputType(self):
         return 'remark'
