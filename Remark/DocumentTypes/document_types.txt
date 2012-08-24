@@ -1,7 +1,7 @@
 Document types
 ==============
 
-[[Parent]]: implementation.txt
+[[Parent]]: remark_syntax.txt
 
 This page contains the currently available document types.
 

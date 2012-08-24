@@ -16,6 +16,9 @@ is named `directory.remark-index`.
 Properties
 ----------
 
+Name
+:	DirectoryView
+
 Input extension
 : .remark-index
 
