@@ -71,7 +71,7 @@ class Scope(object):
         if variable == None:
             return defaultValue
 
-        return defaultValue
+        return variable
 
     def getString(self, name, defaultValue):
         variable = self.get(name)

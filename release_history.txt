@@ -47,8 +47,9 @@ pure form would already be unambiguous. This enforces robust linking.
 
 ### Macros
 
-* ParentList: New macro.
-* DocumentTree: New macro.
+* ParentList: New macro to generate a list of parent documents.
+* DocumentTree: New macro to generate parts or all of the document tree.
+* Example: New macro to easily generate examples in Remark.
 * Gallery: Increased the default number of pixels in thumbnails.
 * Gallery: Made the macro work also with vector-based images, such
 as .svg.

@@ -41,18 +41,30 @@ DocumentTree.max_depth
 	Default 10.
 
 DocumentTree.exclude_set
-:	A set of tags, one per row. If a document has any of these 
-	tags defined, then it will be excluded from the tree. Default [].
+:	A set of identifiers, one per row. If a document has any of these
+	identifiers as the value of the exclude_tag, then it will be 
+	excluded from the tree. Default [].
+
+DocumentTree.exclude_tag
+:	An identifier specifying the tag to use for deciding exclusion.
+	Default 'document_type'.
 
 Examples
 --------
 
-This
-
+[[Example]]:
 	[[DocumentTree]]
-		
-produces this:
 
-[[DocumentTree]]
+[[Example]]:
+	[[set DocumentTree.min_depth: 0]]
+	[[DocumentTree]]
 
-i.e. nothing since this document does not have any RemarkPage-children.
+[[Example]]:
+	[[set DocumentTree.min_depth: 0]]
+	[[set DocumentTree.exclude_set]]:
+		CppCodeView
+		CodeView
+	[[DocumentTree]]
+
+
+

@@ -17,6 +17,9 @@ the documentation.
 Properties
 ----------
 
+Name
+:	Orphan
+
 Input Extension
 : .remark-orphan
 

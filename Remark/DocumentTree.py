@@ -16,10 +16,15 @@ class Document(object):
         self.relativeName = unixDirectoryName(relativeName)
         self.relativeDirectory, self.fileName = os.path.split(relativeName)
         self.extension = fileExtension(self.fileName).lower()
+        self.documentType = documentType(self.extension)
+        self.documentTypeName = ''
         self.parent = None
         self.childSet = dict()
         self.directorySet = set()
         self.tagSet = {}
+
+        if self.documentType != None:
+            self.documentTypeName = self.documentType.name()
 
         # Set the default-tags.
         self.setTag('description')
@@ -31,6 +36,7 @@ class Document(object):
         self.setTag('relative_directory', [self.relativeDirectory])
         self.setTag('extension', [self.extension])
         self.setTag('html_head')
+        self.setTag('document_type', [self.documentTypeName])
         
     def insertChild(self, child):
         if child.parent != None:
@@ -50,15 +56,12 @@ class Document(object):
     def tagString(self, name, default = ''):
         return ''.join(self.tag(name, [default]))
 
-    def documentType(self):
-        return documentType(self.extension)
-
     def linkDescription(self):
-        type = self.documentType()
+        type = self.documentType
         if type == None:
             return ''
         
-        return self.documentType().linkDescription(self)
+        return self.documentType.linkDescription(self)
 
 class DocumentTree(object):
     def __init__(self, rootDirectory, parserLines = 100):

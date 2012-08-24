@@ -6,29 +6,11 @@ CodeView document type
 The CodeView document type offers a highlighted view to source 
 code files in various programming languages. 
 
-Specification of tags
----------------------
-
-The tags are specified in the comments. Their form are as follows:
-
-### Parent document
-
-	Documentation: name_of_documentation.txt
-
-### Description
-
-	Description: Useful description here
-
-### Detailed description
-
-	Detail: A more detailed description here
-
-### Author
-
-	Author: Name or alias of the author	
-	
 Properties
 ----------
+
+Name
+:	CodeView
 
 Input extensions
 :	.py, .m
@@ -52,3 +34,24 @@ Document template
 		[[Link]]: directory.remark-index
 	
 		[[-+Code]]: [[-Body]]
+
+Specification of tags
+---------------------
+
+The tags are specified in the comments. Their form are as follows:
+
+### Parent document
+
+	Documentation: name_of_documentation.txt
+
+### Description
+
+	Description: Useful description here
+
+### Detailed description
+
+	Detail: A more detailed description here
+
+### Author
+
+	Author: Name or alias of the author	
