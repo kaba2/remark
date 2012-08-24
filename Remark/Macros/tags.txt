@@ -1,0 +1,36 @@
+Document tags
+=============
+
+[[Parent]]: macro.txt
+
+A _document tag_, or a tag, is a document-specific key-text pair, where 
+the text can be queried and modified by its key. In contrast to 
+[variables][Variables], tags do not have scope, and they persist for
+the whole execution of Remark. This allows to embed meta-data into
+documents, which can then be used by the [macros][Macro].
+
+[Variables]: [[Ref]]: variables.txt
+[Macro]: [[Ref]]: macro.txt
+
+Setting a tag
+-------------
+
+A document tag can be set by the `set_tag` command, and retrieved by
+the `tag` command. For example, the following
+
+[[Verbatim]]:
+	[[set_tag author]]: 
+		John Doe 
+		Jane Doe
+
+	[[tag author]]
+
+produces
+
+[[tag author]]
+
+[[set_tag author]]: 
+	John Doe
+	Jane Doe
+
+[[tag author]]
