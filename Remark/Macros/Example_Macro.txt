@@ -1,0 +1,35 @@
+Example macro
+=============
+
+[[Parent]]: macros.txt
+
+The Example macro wraps its parameter into a verbatim block, and
+then replicates the parameter. This makes it easy to construct
+simple examples.
+
+Properties
+----------
+
+### Output type
+
+Remark
+
+### Output expansion default
+
+Enabled.
+
+### Parameters
+
+The text to copy.
+
+### Variables
+
+None.
+
+Examples
+--------
+
+[[Example]]:
+	[[Example]]:
+		[[set text]]: Hello world!
+		[[text]]

@@ -138,6 +138,7 @@
     <Content Include="Macros\DirectoryLink_Macro.txt" />
     <Content Include="Macros\DocChildren_Macro.txt" />
     <Content Include="Macros\DocumentTree_Macro.txt" />
+    <Content Include="Macros\Example_Macro.txt" />
     <Content Include="Macros\FileLink_Macro.txt" />
     <Content Include="Macros\file_searching_algorithm.txt" />
     <Content Include="Macros\Gallery_Macro.txt" />
