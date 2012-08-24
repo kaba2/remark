@@ -25,7 +25,10 @@ Ignored.
 
 ### Variables
 
-None.
+Index.class_name
+: 	The name of the html-class to give to the `<div>` tag. The html-class 
+	allows to style the generated list using CSS.
+	Default 'Index'.
 
 Example
 -------

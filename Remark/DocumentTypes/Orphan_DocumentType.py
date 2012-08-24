@@ -21,7 +21,9 @@ class Orphan_DocumentType(DocumentType):
         return parser.parse(fileName)
         
     def generateMarkdown(self, fileName):
-        return ['Orphans',
+        return ['[[ParentList]]',
+                '',
+                'Orphans',
                 '=======',
                 '',
                 '[[DocChildren]]',

@@ -21,7 +21,9 @@ class DirectoryView_DocumentType(DocumentType):
         return parser.parse(fileName)
         
     def generateMarkdown(self, fileName):
-        return ['[[description]]',
+        return ['[[ParentList]]',
+                '',
+                '[[description]]',
                 '===',
                 '',
                 '[[Index]]',]
