@@ -9,9 +9,6 @@ from DocumentType import DocumentType
 from TagParsers.Dictionary_TagParser import Dictionary_TagParser 
 
 class CppCodeView_DocumentType(DocumentType):
-    def __init__(self):
-        None
-
     def name(self):
         return 'CppCodeView'
 

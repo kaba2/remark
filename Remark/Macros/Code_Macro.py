@@ -14,6 +14,9 @@ from pygments.lexers import guess_lexer, guess_lexer_for_filename
 from pygments.formatters import HtmlFormatter
 
 class Code_Macro(object):
+    def name(self):
+        return 'Code'
+
     def expand(self, parameter, remarkConverter):
         document = remarkConverter.document
         

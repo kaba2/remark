@@ -7,6 +7,9 @@ from MacroRegistry import registerMacro
 from Common import unixRelativePath, outputDocumentName
 
 class Parent_Macro(object):
+    def name(self):
+        return 'Parent'
+
     def expand(self, parameter, remarkConverter):
         document = remarkConverter.document
         parent = document.parent

@@ -19,6 +19,9 @@ except ImportError, e:
     sys.exit(1)
 
 class Gallery_Macro(object):
+    def name(self):
+        return 'Gallery'
+
     def expand(self, parameter, remarkConverter):
         documentTree = remarkConverter.documentTree
         document = remarkConverter.document
@@ -37,7 +40,7 @@ class Gallery_Macro(object):
                 continue
             if neatLine[0] == '-':
                 if len(entrySet) == 0:
-                    remarkConverter.reportWarning('Gallery: Caption was defined before any image was given. Ignoring it.')
+                    remarkConverter.reportWarning('Caption was defined before any image was given. Ignoring it.')
                     continue
                 
                 # Caption follows.
@@ -82,21 +85,21 @@ class Gallery_Macro(object):
             if input == None:
                 # The image-file was not found. Report a warning and skip
                 # the file.
-                remarkConverter.reportWarning('Gallery: Image file ' + entryName + 
+                remarkConverter.reportWarning('Image file ' + entryName + 
                                               ' was not found. Ignoring it.')
                 continue
 
             if not unique:
                 # There are many matching image files with the given name.
                 # Report a warning, pick one arbitrarily, and continue.
-                remarkConverter.reportWarning('Gallery: Image file ' + entryName + 
+                remarkConverter.reportWarning('Image file ' + entryName + 
                                               ' is ambiguous. Picking arbitrarily.')
             
             # See if we support the file-extension.
             if not input.extension in supportedSet:
                 # This file-extension is not supported. Report a warning
                 # and skip the file.
-                remarkConverter.reportWarning('Gallery: ' + input.relativeName + 
+                remarkConverter.reportWarning('Image file ' + input.relativeName + 
                                               ' has an unsupported file-extension. Ignoring it.')
                 continue
            
@@ -127,7 +130,7 @@ class Gallery_Macro(object):
                 # the vector-based image as the thumbnail itself.
                 thumbRelativeName = input.relativeName
                 thumbLinkName = inputLinkName
-                remarkConverter.reportWarning('Gallery: Using ' + input.relativeName + ' as its own thumbnail. ' +
+                remarkConverter.reportWarning('Using ' + input.relativeName + ' as its own thumbnail. ' +
                                               'Provide a pixel-based alternative image to generate a thumbnail.')
 
             # These are the zoom-in and zoom-out time, 
@@ -191,7 +194,7 @@ class Gallery_Macro(object):
                         message += '.'
                         remarkConverter.report(message, True)
                 except IOError as err: 
-                    remarkConverter.reportWarning('Gallery: Cannot create a thumbnail for ' + 
+                    remarkConverter.reportWarning('Cannot create a thumbnail for ' + 
                                                   input.relativeName + '. ')
                     continue
         

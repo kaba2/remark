@@ -10,6 +10,9 @@ from MacroRegistry import registerMacro
 from Common import unixRelativePath, outputDocumentName
 
 class SourceChildren_Macro(object):
+    def name(self):
+        return 'SourceChildren'
+
     def expand(self, parameter, remarkConverter):
         document = remarkConverter.document
                 
@@ -51,7 +54,10 @@ class SourceChildren_Macro(object):
                 # If there are multiple descriptions, one is chosen
                 # arbitrarily and a warning is emitted.
                 if description != '':
-                    print 'Warning:', document.relativeName, ': multiple descriptions for a document-group.'                     
+                    message = ['Multiple descriptions for a document-group.',
+                              'Current: ' + description,
+                              'New: ' + desc]
+                    remarkConverter.reportWarning(message)
                 description = desc
 
             det = document.tagString('detail')
@@ -59,7 +65,10 @@ class SourceChildren_Macro(object):
                 # If there are multiple details, one is chosen
                 # arbitrarily and a warning is emitted.
                 if detail != '':
-                    print 'Warning:', document.relativeName, ': multiple details for a document-group.'                     
+                    message = ['Multiple details for a document-group. ',
+                              'Current: ' + detail,
+                              'New: ' + det]
+                    remarkConverter.reportWarning(message)
                 detail = det
 
             if i == len(sortedMap) - 1 or not same(sortedMap[i + 1].relativeName, reference.relativeName):
@@ -88,11 +97,10 @@ class SourceChildren_Macro(object):
         for group in groupSet:
             if group[0] == '':
                 group[0] = '-'
-                print
-                print 'Warning: Description missing for the document-group'
-                print 
+                message = 'Description missing for the document-group'
                 for child in group[2]:
-                    print child.relativeName
+                    message += '\n' + child.fileName
+                remarkConverter.reportWarning(message)
         
         # Order the groups in alphabetical order w.r.t.
         # their descriptions. 

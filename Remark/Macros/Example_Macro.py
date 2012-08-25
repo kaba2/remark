@@ -5,6 +5,9 @@
 from MacroRegistry import registerMacro
 
 class Example_Macro(object):
+    def name(self):
+        return 'Example'
+
     def expand(self, parameter, remarkConverter):
         
         text = []

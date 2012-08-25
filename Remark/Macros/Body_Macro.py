@@ -9,6 +9,9 @@ from MacroRegistry import registerMacro
 import os.path 
 
 class Body_Macro(object):
+    def name(self):
+        return 'Body'
+
     def expand(self, parameter, remarkConverter):
         document = remarkConverter.document
         
