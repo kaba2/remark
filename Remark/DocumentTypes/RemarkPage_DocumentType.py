@@ -5,7 +5,7 @@
 import re
 
 from DocumentType import DocumentType
-from TagParsers.Markdown_TagParser import Markdown_TagParser
+from TagParsers.Remark_TagParser import Remark_TagParser
 from Common import changeExtension 
 
 class RemarkPage_DocumentType(DocumentType):
@@ -19,7 +19,7 @@ class RemarkPage_DocumentType(DocumentType):
         return document.tagString('description')
 
     def parseTags(self, fileName, lines = 100):
-        parser = Markdown_TagParser({'parent' : re.compile(r'\[\[Parent\]\]:[ \t]*(.*)')}, lines)
+        parser = Remark_TagParser({'parent' : re.compile(r'\[\[Parent\]\]:[ \t]*(.*)')}, lines)
         return parser.parse(fileName)
         
     def generateMarkdown(self, fileName):

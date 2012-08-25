@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Description: Macro expansion algorithm, variables, and html conversion.
+# Description: Converts Remark to html
 # Documentation: core_stuff.txt
 
 import re

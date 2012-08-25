@@ -54,8 +54,8 @@
     <Compile Include="Macros\__init__.py" />
     <Compile Include="Remark.py" />
     <Compile Include="TagParsers\Empty_TagParser.py" />
-    <Compile Include="TagParsers\Generic_TagParser.py" />
-    <Compile Include="TagParsers\Markdown_TagParser.py" />
+    <Compile Include="TagParsers\Regex_TagParser.py" />
+    <Compile Include="TagParsers\Remark_TagParser.py" />
     <Compile Include="TagParsers\__init__.py" />
     <Compile Include="__init__.py" />
   </ItemGroup>

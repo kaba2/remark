@@ -3,11 +3,8 @@ Implementation
 
 [[Parent]]: remark.txt
 
-This section describes the implementation of Remark. 
-The information here is not needed to use Remark.
-Before reading this section, you should read everything from 
-the [user documentation][UserDocumentation].
+This section describes the implementation of Remark, which is of interest 
+mainly to developers. 
 
-[UserDocumentation]: [[Ref]]: user_documentation.txt
 
 

@@ -33,8 +33,8 @@ from DocumentTypes.RemarkPage_DocumentType import RemarkPage_DocumentType
 from DocumentTypes.DirectoryView_DocumentType import DirectoryView_DocumentType
 from DocumentTypes.Orphan_DocumentType import Orphan_DocumentType
 
-from TagParsers.Generic_TagParser import Generic_TagParser
-from TagParsers.Markdown_TagParser import Markdown_TagParser
+from TagParsers.Regex_TagParser import Regex_TagParser
+from TagParsers.Remark_TagParser import Remark_TagParser
 from TagParsers.Empty_TagParser import Empty_TagParser
 
 from Convert import convertAll

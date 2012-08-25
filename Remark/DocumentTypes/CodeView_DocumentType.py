@@ -5,7 +5,7 @@
 import re
 
 from DocumentType import DocumentType
-from TagParsers.Generic_TagParser import Generic_TagParser 
+from TagParsers.Regex_TagParser import Regex_TagParser 
 
 class CodeView_DocumentType(DocumentType):
     def __init__(self):
@@ -24,7 +24,7 @@ class CodeView_DocumentType(DocumentType):
                     'parentOf' : re.compile(r'[ \t]+DocumentationOf:[ \t]+(.*)'),
                     'author' : re.compile(r'[ \t]+Author:[ \t]+(.*)')}
         
-        parser = Generic_TagParser(regexMap, lines)
+        parser = Regex_TagParser(regexMap, lines)
         return parser.parse(fileName)
         
     def generateMarkdown(self, fileName):

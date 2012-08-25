@@ -1,30 +1,29 @@
 # -*- coding: utf-8 -*-
 
-# Description: Markdown_TagParser class
+# Description: Remark tag parser
+# Detail: Parses the description-tag from the header, and tags based on given regular-expressions.
 # Documentation: tag_parsers.txt
 
-from Generic_TagParser import Generic_TagParser
+from Regex_TagParser import Regex_TagParser
 from Common import openFileUtfOrLatin
 
 import string
 import re
 import codecs
          
-class Markdown_TagParser(object):
+class Remark_TagParser(object):
     def __init__(self, tagRegexMap, maxLines):
-        self.genericParser = Generic_TagParser(tagRegexMap, maxLines)
+        self.genericParser = Regex_TagParser(tagRegexMap, maxLines)
         self.maxLines = maxLines
         
     def parse(self, fileName):
         # Let the generic parser handle those tags
         # which can be found via regular expressions.
-        
         tagSet = self.genericParser.parse(fileName)
         
         # This way we only have to handle the description.
         # The description is a file line which precedes
-        # a row of equality signs. 
-                
+        # a row of equality signs.                 
         lineRegex = re.compile(r'[ \t]*((==+=)|(--+-))')
         previousLine = ''
         
@@ -32,7 +31,6 @@ class Markdown_TagParser(object):
             lineNumber = 0
             for fileLine in file:
                 # Search for a description
-                
                 match = lineRegex.search(fileLine)
                 if match != None:
                     # We have found a header!
@@ -42,7 +40,6 @@ class Markdown_TagParser(object):
                 # We want to remember the previous line
                 # to be able to give the description when
                 # we detect a header line.
-                
                 previousLine = fileLine
                 lineNumber += 1
                 if lineNumber >= self.maxLines:

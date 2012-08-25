@@ -1,13 +1,14 @@
 # -*- coding: utf-8 -*-
 
-# Description: Generic_TagParser class
+# Description: Regex tag parser
+# Detail: Parses tags based on given regular-expressions.
 # Documentation: tag_parsers.txt
 
 from Common import openFileUtfOrLatin
 
 import string
 
-class Generic_TagParser(object):
+class Regex_TagParser(object):
     def __init__(self, tagRegexMap, maxLines = 100):
         self.tagRegexMap = tagRegexMap
         self.maxLines = maxLines
