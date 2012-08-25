@@ -1,7 +1,7 @@
 Html macro
 ==========
 
-[[Parent]]: macros.txt
+[[Parent]]: available_macros.txt
 
 The Html macro copies its input as it is. Its purpose is to embed 
 html directly into the generated html page. While the Markdown syntax 

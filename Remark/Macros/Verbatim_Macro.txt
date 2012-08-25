@@ -1,7 +1,7 @@
 Verbatim macro
 ==============
 
-[[Parent]]: macros.txt
+[[Parent]]: available_macros.txt
 
 The Verbatim macro inserts a tab in front of each line of the
 input parameter, thus reinterpreting text as verbatim content. 

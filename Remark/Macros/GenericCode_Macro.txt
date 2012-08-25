@@ -1,7 +1,7 @@
 GenericCode macro
 =================
 
-[[Parent]]: macros.txt
+[[Parent]]: available_macros.txt
 
 The GenericCode macro is an alias for the [Code][Code] macro.
 

@@ -1,7 +1,7 @@
 Ref macro
 =========
 
-[[Parent]]: macros.txt
+[[Parent]]: available_macros.txt
 
 The Ref macro returns the relative output-names of the given documents.
 Its purpose is to allow using Markdown links in the text, while still

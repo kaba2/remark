@@ -13,10 +13,10 @@ Name
 :	CodeView
 
 Input extensions
-:	.py, .m, .pl, .pm
+:	.py, .m, .pl, .pm, .css, .js, .lua
 
 Output extension
-:	input extension + `.htm`	
+:	Input extension + `.htm`	
 
 AsciiMath interpretation
 :	Disabled
@@ -34,6 +34,9 @@ Document template
 		[[Link]]: directory.remark-index
 	
 		[[-+Code]]: [[-Body]]
+
+Document syntax
+:	The used programming language syntax.
 
 Specification of tags
 ---------------------

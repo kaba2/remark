@@ -19,7 +19,7 @@ class RemarkPage_DocumentType(DocumentType):
         return document.tagString('description')
 
     def parseTags(self, fileName, lines = 100):
-        parser = Remark_TagParser({'parent' : re.compile(r'\[\[Parent\]\]:[ \t]*(.*)')}, lines)
+        parser = Remark_TagParser({'parent' : '[[Parent]]'}, lines)
         return parser.parse(fileName)
         
     def generateMarkdown(self, fileName):

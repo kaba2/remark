@@ -1,7 +1,7 @@
 Macro expansion
 ===============
 
-[[Parent]]: macro.txt
+[[Parent]]: macros.txt
 
 Macro expansion refers to the process of taking a
 macro invocation and replacing it with the output

@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 
 # Description: Remark tag parser
-# Detail: Parses the description-tag from the header, and tags based on given regular-expressions.
+# Detail: Parses the description-tag from the header, and tags based on names.
 # Documentation: tag_parsers.txt
 
-from Regex_TagParser import Regex_TagParser
+from Dictionary_TagParser import Dictionary_TagParser
 from Common import openFileUtfOrLatin
 
 import string
@@ -12,14 +12,14 @@ import re
 import codecs
          
 class Remark_TagParser(object):
-    def __init__(self, tagRegexMap, maxLines):
-        self.genericParser = Regex_TagParser(tagRegexMap, maxLines)
+    def __init__(self, tagMap, maxLines):
+        self.dictionaryParser = Dictionary_TagParser(tagMap, maxLines)
         self.maxLines = maxLines
         
     def parse(self, fileName):
         # Let the generic parser handle those tags
         # which can be found via regular expressions.
-        tagSet = self.genericParser.parse(fileName)
+        tagSet = self.dictionaryParser.parse(fileName)
         
         # This way we only have to handle the description.
         # The description is a file line which precedes

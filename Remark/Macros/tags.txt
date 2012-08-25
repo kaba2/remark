@@ -1,7 +1,7 @@
 Document-tags
 =============
 
-[[Parent]]: macro.txt
+[[Parent]]: macros.txt
 
 A _document-tag_, or a tag, is a document-specific key-text pair, where 
 the text can be queried and modified by its key. In contrast to 
@@ -10,7 +10,7 @@ the whole execution of Remark. This allows to embed meta-data into
 documents, which can then be used by the [macros][Macro].
 
 [Variables]: [[Ref]]: variables.txt
-[Macro]: [[Ref]]: macro.txt
+[Macro]: [[Ref]]: macros.txt
 
 Setting a tag
 -------------

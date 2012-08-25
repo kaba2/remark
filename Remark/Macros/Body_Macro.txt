@@ -1,7 +1,7 @@
 Body macro
 ==========
 
-[[Parent]]: macros.txt
+[[Parent]]: available_macros.txt
 
 The Body macro reads the currently considered document from a file and
 expands into its contents.

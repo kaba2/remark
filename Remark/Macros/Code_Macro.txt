@@ -1,7 +1,7 @@
 Code macro
 ==========
 
-[[Parent]]: macros.txt
+[[Parent]]: available_macros.txt
 
 The Code macro highlights source code. The syntax-highlighting is 
 carried out by the Pygments library.

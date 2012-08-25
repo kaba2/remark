@@ -1,7 +1,7 @@
 DirectoryLink macro
 ===================
 
-[[Parent]]: macros.txt
+[[Parent]]: available_macros.txt
 
 The DirectoryLink macro generates links to the directories 
 containing the given documents.
@@ -31,7 +31,7 @@ Example
 This
 	
 	[[DirectoryLink]]: 
-		macros.txt
+		available_macros.txt
 		remark_syntax.txt
 		../../remark_syntax.txt
 		directory.remark-index
@@ -39,7 +39,7 @@ This
 produces this:
 
 [[DirectoryLink]]: 
-	macros.txt
+	available_macros.txt
 	remark_syntax.txt
 	../../remark_syntax.txt
 	directory.remark-index

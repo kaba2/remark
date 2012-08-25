@@ -2,7 +2,7 @@
 
 # Description: Remark.Macros package initialization. 
 # Detail: Import declarations for macros.
-# Documentation: macros.txt
+# Documentation: available_macros.txt
 
 __all__ = ['Body_Macro',
            'Code_Macro',

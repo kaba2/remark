@@ -1,7 +1,7 @@
 Link macro
 ==========
 
-[[Parent]]: macros.txt
+[[Parent]]: available_macros.txt
 
 The Link macro generates links to documents in the document tree,
 labeled with their descriptions.
@@ -31,7 +31,7 @@ Example
 This
 	
 	[[Link]]: 
-		macros.txt
+		available_macros.txt
 		remark_syntax.txt
 		../../remark_syntax.txt
 		directory.remark-index
@@ -39,7 +39,7 @@ This
 produces this:
 
 [[Link]]: 
-	macros.txt
+	available_macros.txt
 	remark_syntax.txt
 	../../remark_syntax.txt
 	directory.remark-index

@@ -1,0 +1,6 @@
+Available macros
+================
+
+[[Parent]]: macros.txt
+
+This page lists all the currently available macros.

@@ -1,7 +1,7 @@
 Gallery macro
 =============
 
-[[Parent]]: macros.txt
+[[Parent]]: available_macros.txt
 
 The Gallery macro generates an image gallery. The supported image formats 
 are PNG, JPEG, GIF, and SVG. These image formats are the ones that are 

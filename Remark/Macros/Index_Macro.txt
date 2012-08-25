@@ -1,7 +1,7 @@
 Index macro
 ===========
 
-[[Parent]]: macros.txt
+[[Parent]]: available_macros.txt
 
 The Index macro generates a directory-listing from the files and 
 directories in the same directory as the currently processed document. 
