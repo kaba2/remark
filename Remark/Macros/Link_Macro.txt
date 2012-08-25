@@ -3,7 +3,7 @@ Link macro
 
 [[Parent]]: macros.txt
 
-The Link macro generates links to documents in the documentation tree,
+The Link macro generates links to documents in the document tree,
 labeled with their descriptions.
 
 Properties

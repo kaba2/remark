@@ -6,7 +6,7 @@
 import os.path
 
 from MacroRegistry import registerMacro
-from Common import linkAddress, outputDocumentName
+from Common import unixRelativePath, outputDocumentName
 
 class FileLink_Macro(object):
     def expand(self, parameter, remarkConverter):

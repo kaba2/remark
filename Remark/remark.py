@@ -38,7 +38,7 @@ from TagParsers.Markdown_TagParser import Markdown_TagParser
 from TagParsers.Empty_TagParser import Empty_TagParser
 
 from Convert import convertAll
-from Common import unixDirectoryName, linkAddress, readFile
+from Common import unixDirectoryName, unixRelativePath, readFile
 from Common import documentType, associateDocumentType, remarkVersion
 from Common import asciiMathMlName, copyIfNecessary, setGlobalOptions, globalOptions
 from optparse import OptionParser
@@ -57,7 +57,7 @@ should be copied if they are not converted. This list can
 use wildcards (e.g. *.png).""")
     
     optionParser.add_option('-l', '--lines',
-        dest = 'lines',
+        dest = 'maxTagLines',
         type = 'int',
         default = 100,
         help = """maximum number of lines for a tag-parser to scan a file for tags (default 100)""")
@@ -84,7 +84,7 @@ use wildcards (e.g. *.png).""")
         optionParser.print_help()
         sys.exit(1)
         
-    if options.lines <= 0:
+    if options.maxTagLines <= 0:
         print 'Error: The maximum number of lines to scan for tags must be at least 1.'
         sys.exit(1)
 
@@ -151,8 +151,7 @@ use wildcards (e.g. *.png).""")
     associateDocumentType('.remark-orphan', orphanType)
     
     # Construct a document tree from the input directory.
-    documentTree = DocumentTree(inputDirectory, options.lines)
-    #display(documentTree)
+    documentTree = DocumentTree(inputDirectory)
 
     # Recursively gather files starting from the input directory.
     if globalOptions().verbose:
@@ -162,7 +161,7 @@ use wildcards (e.g. *.png).""")
     for pathName, directorySet, fileNameSet in os.walk(inputDirectory):
         for fileName in fileNameSet:
             fullName = os.path.normpath(os.path.join(pathName, fileName))
-            relativeName = linkAddress(inputDirectory, fullName)
+            relativeName = unixRelativePath(inputDirectory, fullName)
             if documentType(os.path.splitext(fileName)[1]) != None:
                 # The file has an associated document type,
                 # take it in.            

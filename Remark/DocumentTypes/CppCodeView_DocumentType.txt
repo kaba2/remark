@@ -46,6 +46,7 @@ The tags are specified in the comments. Their form are as follows:
 ### Parent document
 
 	Documentation: name_of_documentation.txt
+	DocumentationOf: use_the_documentation_for_this.h
 
 ### Description
 

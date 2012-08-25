@@ -6,7 +6,7 @@
 import os.path
 
 from MacroRegistry import registerMacro
-from Common import linkAddress, outputDocumentName
+from Common import unixRelativePath, outputDocumentName
 
 class Ref_Macro(object):
     def expand(self, parameter, remarkConverter):
@@ -21,7 +21,7 @@ class Ref_Macro(object):
                 remarkConverter.reportWarning('Ref: "' + linkFileName + '" is ambiguous. Picking arbitrarily.')
             
             if linkDocument != None:
-                linkTarget = linkAddress(document.relativeDirectory, linkDocument.relativeName)
+                linkTarget = unixRelativePath(document.relativeDirectory, linkDocument.relativeName)
                 text.append(outputDocumentName(linkTarget))
                 if len(parameter) > 1:                
                     text += ['']

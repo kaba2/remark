@@ -3,13 +3,26 @@
 # Description: Macro registry
 # Documentation: core_stuff.txt
 
-_expanderMap = dict()
+_macroMap = dict()
 
-def registerMacro(name, expander):
+def registerMacro(name, macro):
+    '''
+    Registers a macro-object by a name.
+
+    See also:
+    findMacro()
+    '''
     #print "Macro '" + name + "' registered."
-    _expanderMap[name] = expander
-    
+    _macroMap[name] = macro
+
 def findMacro(name):
-    if name in _expanderMap:
-        return _expanderMap[name]
-    return None
+    '''
+    Returns a registered macro-object by its name,
+    provided such exists (otherwise returns None).
+    The search is case-sensitive.
+
+    See also:
+    registerMacro()
+    '''
+    return _macroMap.get(name)
+

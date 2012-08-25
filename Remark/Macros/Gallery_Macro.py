@@ -4,7 +4,7 @@
 # Detail: Generates an image gallery with thumbnails.
 
 from MacroRegistry import registerMacro
-from Common import linkAddress, unixDirectoryName, changeExtension
+from Common import unixRelativePath, unixDirectoryName, changeExtension
 from Common import fileExtension, copyIfNecessary
 
 import sys
@@ -117,11 +117,11 @@ class Gallery_Macro(object):
                         break
                         
             # Find out input names.
-            inputLinkName = linkAddress(document.relativeDirectory, input.relativeName)
+            inputLinkName = unixRelativePath(document.relativeDirectory, input.relativeName)
 
             # Find out thumbnail names.
             thumbRelativeName = 'remark_files/thumbnails/' + changeExtension(input.fileName, '-thumb.png')
-            thumbLinkName = linkAddress(document.relativeDirectory, thumbRelativeName)
+            thumbLinkName = unixRelativePath(document.relativeDirectory, thumbRelativeName)
             if pixelDocument == None:
                 # If we could not find a pixel-based image, we will use
                 # the vector-based image as the thumbnail itself.
@@ -207,9 +207,9 @@ class Gallery_Macro(object):
 
     def htmlHead(self, remarkConverter):
         document = remarkConverter.document;
-        scriptFile = linkAddress(document.relativeDirectory, 'remark_files/highslide/highslide-full.js')
-        styleFile = linkAddress(document.relativeDirectory, 'remark_files/highslide/highslide.css')
-        graphicsDir = linkAddress(document.relativeDirectory, 'remark_files/highslide/graphics')
+        scriptFile = unixRelativePath(document.relativeDirectory, 'remark_files/highslide/highslide-full.js')
+        styleFile = unixRelativePath(document.relativeDirectory, 'remark_files/highslide/highslide.css')
+        graphicsDir = unixRelativePath(document.relativeDirectory, 'remark_files/highslide/graphics')
         
         return ['<script type="text/javascript" src="' + scriptFile + '"></script>',
                 '<link rel="stylesheet" type="text/css" href="' + styleFile + '" />',

@@ -13,7 +13,7 @@ import copy
 
 from MacroRegistry import findMacro
 from Common import changeExtension, outputDocumentName, documentType, unixDirectoryName, copyIfNecessary
-from Common import asciiMathMlName, remarkVersion, globalOptions, linkAddress
+from Common import asciiMathMlName, remarkVersion, globalOptions, unixRelativePath
 
 class Scope(object):
     def __init__(self, parent, name):
@@ -44,9 +44,7 @@ class Scope(object):
         return self.parent
     
     def shallowSearch(self, name):
-        if name in self.nameSet:
-            return self.nameSet[name]
-        return None
+        return self.nameSet.get(name)
     
     def search(self, name):
         #print 'Recursive search for', name
@@ -228,7 +226,7 @@ class RemarkConverter(object):
         return result
 
     def remarkLink(self, description, fromDocument, toDocument):
-        linkSource = linkAddress(fromDocument.relativeDirectory, 
+        linkSource = unixRelativePath(fromDocument.relativeDirectory, 
                                  toDocument.relativeName)
         linkTarget = outputDocumentName(linkSource)
         return self.markdownLink(description, linkTarget)

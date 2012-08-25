@@ -24,11 +24,16 @@ def asciiMathMlName():
     return 'ASCIIMathMLwFallback.js'
 
 def htmlDiv(enclosedText, className = ''):
+    '''
+    Encloses the given text in a <div> block and gives it a
+    html-class, so that it can be styled with CSS.
+
+    className:
+    The name of the html-class to give to the div block.
+    '''
     text = []
     text.append('')
     
-    # Enclose the link list in a <div> block and give it a class, 
-    # so that it can be styled with CSS.
     if className != '':
         text.append('<div class = "' + className + '">')
     else:
@@ -47,21 +52,26 @@ def htmlDiv(enclosedText, className = ''):
     return text
 
 
-def linkAddress(fromRelativeDirectory, toRelativeFileName):
+def unixRelativePath(fromRelativeDirectory, toRelativePath):
     '''
-    Forms a unix-style relative-path from the given relative 
-    directory to the given relative file-name.
+    Forms a unix-style relative-path from the given relative
+    directory to the given relative path.
 
     fromRelativeDirectory:
         The relative directory in which the link resides.
 
-    toRelativeFileName:
-        The relative file-name of the file being linked to.
+    toRelativePath:
+        A relative path to link to.
     '''
-    relativePath = os.path.relpath(toRelativeFileName, fromRelativeDirectory)
+    relativePath = os.path.relpath(toRelativePath, fromRelativeDirectory)
     return unixDirectoryName(relativePath)
 
 def openFileUtfOrLatin(fileName):
+    '''
+    Opens a file for reading as utf-8 decoded.
+    If the decoding fails, opens the file for reading 
+    as latin-1 decoded (then every character is legal).
+    '''
     try:
         file = codecs.open(fileName, mode = 'rU', encoding = 'utf-8-sig')
     except UnicodeDecodeError:
@@ -73,9 +83,16 @@ def openFileUtfOrLatin(fileName):
     return file    
 
 def readFile(fileName):
+    '''
+    Opens a file using openFileUtfOrLatin, and reads the contents 
+    into a list of strings correponding to the rows of the file.
+    '''
     fileSize = os.path.getsize(fileName)
     maxSize = globalOptions().maxFileSize
     if fileSize >= maxSize:
+        # If the file is very large, then it probably is not
+        # part of the Remark documentation. Refuse to read
+        # such files.
         print
         print 'Warning:', fileName, 
         print 'is larger than', maxSize, 'bytes (it is', fileSize, 'bytes).',
@@ -95,6 +112,7 @@ def readFile(fileName):
         return []
 
     # Remove possible newlines from the ends of the lines.
+    # The lines are encoded by the list-structure instead.
     for i in range(0, len(text)):
         text[i] = text[i].rstrip('\r\n')
             
@@ -103,15 +121,23 @@ def readFile(fileName):
 _documentTypeMap = dict()
 
 def associateDocumentType(inputExtension, documentType):
+    '''
+    Associates the given filename-extension to the given document-type
+    object. The filename-extension-key is always stored lower-case,
+    so that we can be case-insensitive for it.
+    '''
     global _documentTypeMap
     _documentTypeMap[inputExtension.lower()] = documentType
 
 def documentType(inputExtension):
+    '''
+    Returns the document-type object associated to a given
+    filename-extension. The association can be set by the
+    associateDocumentType() function. The filename-extension
+    comparison is case-insensitive.
+    '''
     global _documentTypeMap
-    lowerExtension = inputExtension.lower()
-    if lowerExtension in _documentTypeMap:
-        return _documentTypeMap[lowerExtension]
-    return None
+    return _documentTypeMap.get(inputExtension.lower())
 
 def copyIfNecessary(inputRelativeName, inputDirectory, 
                     outputRelativeName, outputDirectory):
@@ -159,52 +185,3 @@ def withoutFileExtension(fileName):
 def changeExtension(fileName, newExtension):
     return withoutFileExtension(fileName) + newExtension
 
-def linkTable(linkSet):
-    text = []
-    links = len(linkSet)
-    if links <= 4:
-        # If there are at most 4 documentation
-        # children, they are simply listed below each other.
-        for link in linkSet:
-            linkTarget = link[0]
-            linkDescription = link[1]
-            # For some reason the <p></p> has to be there, or
-            # otherwise the result is garbage. I think it's
-            # Python Markdown which can't digest it without
-            # them.
-            tableEntry = '<p><a href="' + linkTarget + '">' + linkDescription + '</a></p>'
-            text.append(tableEntry)
-    else:
-        # Otherwise the children are shown
-        # using a table of 2 or 3 columns. 
-
-        tableColumns = 2
-        tableRows = (links + tableColumns - 1) / tableColumns
-
-        tableRow = 0
-        tableColumn = 0
-        text.append('<table class = "learn-more">')
-        
-        while tableRow < tableRows:
-            tableIndex = tableRow + tableColumn * tableRows
-            tableEntry = ''
-            if tableIndex < links:
-                link = linkSet[tableIndex] 
-                linkTarget = link[0]
-                linkDescription = link[1]
-                tableEntry = '<a href="' + linkTarget + '">' + linkDescription + '</a>'
-
-            if tableColumn == 0:
-                text.append('<tr>')
-               
-            text.append('<td>' + tableEntry + '</td>')                                
-                
-            tableColumn += 1
-            if tableColumn == tableColumns:
-                text.append('</tr>')
-                tableRow += 1
-                tableColumn = 0             
-
-        text.append('</table>')
-    return text
-    
