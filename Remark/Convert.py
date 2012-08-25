@@ -217,8 +217,11 @@ class RemarkConverter(object):
         self.inlineGroupId = 4
         self.externalGroupId = 5
         self.recursionDepth = 0
-        self.lastReportFrom = ''
         self.used = False
+        
+        self.currentMacro = None
+        self.lastReportFrom = None
+        self.lastReportMacro = None
 
     def linkId(self):
         result = self.linkIndex
@@ -250,22 +253,34 @@ class RemarkConverter(object):
         return text
     
     def reportWarning(self, text):
-        if self.lastReportFrom != self.document.relativeName:
-            self.lastReportFrom = self.document.relativeName
-            print
-            print self.document.relativeName, ':'
-            
-        print 'Warning:', text
+        self.report(text, False, True)
         
-    def report(self, text, verbose = False):
-       if verbose and (not globalOptions().verbose):
-           return
+    def report(self, text, verbose = False, warning = False):
+        if verbose and (not globalOptions().verbose):
+            return
 
-       if self.lastReportFrom != self.document.relativeName:
-            self.lastReportFrom = self.document.relativeName
+        print
+        if (self.lastReportFrom == None or 
+            self.lastReportFrom != self.document):
+            self.lastReportFrom = self.document
+            print self.document.relativeName
+            print '-' * len(self.document.relativeName)
             print
-            print self.document.relativeName, ':'
+
+        if (self.lastReportMacro == None or
+            self.lastReportMacro != self.currentMacro):
+            self.lastReportMacro = self.currentMacro
+            print '### ' + self.currentMacro.name()
+            print
+
+        if warning:
+            print 'Warning:',
+
+        if isinstance(text, basestring):
             print text
+        else:
+            for line in text:
+                print line
         
     def extractMacro(self, row, match, text): 
         # This function extracts the information from
@@ -567,7 +582,9 @@ class RemarkConverter(object):
                 # in suppress list.
                 if not macroName in suppressList:
                     # Run the actual macro.
+                    self.currentMacro = macro
                     macroText = macro.expand(parameterSet, self)
+                    self.currentMacro = None
                     if macroText == []:
                         macroText = ['']
                     

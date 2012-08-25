@@ -9,9 +9,6 @@ from TagParsers.Remark_TagParser import Remark_TagParser
 from Common import changeExtension 
 
 class RemarkPage_DocumentType(DocumentType):
-    def __init__(self):
-        None
-
     def name(self):
         return 'RemarkPage'
 

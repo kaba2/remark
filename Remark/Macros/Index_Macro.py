@@ -11,6 +11,9 @@ from Common import outputDocumentName, unixDirectoryName
 from MacroRegistry import registerMacro
 
 class Index_Macro(object):
+    def name(self):
+        return 'Index'
+
     def expand(self, parameter, remarkConverter):
         document = remarkConverter.document
         documentTree = remarkConverter.documentTree

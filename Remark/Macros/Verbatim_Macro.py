@@ -6,6 +6,9 @@
 from MacroRegistry import registerMacro
 
 class Verbatim_Macro(object):
+    def name(self):
+        return 'Verbatim'
+
     def expand(self, parameter, remarkConverter):
         text = []
         

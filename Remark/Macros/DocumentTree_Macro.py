@@ -7,6 +7,9 @@ from MacroRegistry import registerMacro
 from Common import htmlDiv
 
 class DocumentTree_Macro(object):
+    def name(self):
+        return 'DocumentTree'
+
     def expand(self, parameter, remarkConverter):
         scope = remarkConverter.scopeStack.top()
 

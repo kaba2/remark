@@ -7,6 +7,9 @@ from MacroRegistry import registerMacro
 from Common import unixRelativePath, outputDocumentName, htmlDiv
 
 class DocChildren_Macro(object):
+    def name(self):
+        return 'DocChildren'
+
     def expand(self, parameter, remarkConverter):
         document = remarkConverter.document
         documentTree = remarkConverter.documentTree

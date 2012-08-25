@@ -4,9 +4,6 @@
 # Documentation: document_types.txt
 
 class DocumentType(object):
-    def __init__(self):
-        None        
-        
     def name(self):
         return ''
 

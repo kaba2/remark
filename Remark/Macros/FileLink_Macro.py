@@ -9,6 +9,9 @@ from MacroRegistry import registerMacro
 from Common import unixRelativePath, outputDocumentName
 
 class FileLink_Macro(object):
+    def name(self):
+        return 'FileLink'
+
     def expand(self, parameter, remarkConverter):
         document = remarkConverter.document
         documentTree = remarkConverter.documentTree
@@ -21,7 +24,7 @@ class FileLink_Macro(object):
         for linkFileName in parameter:
             linkDocument, unique = documentTree.findDocument(linkFileName, document.relativeDirectory)
             if not unique:
-                remarkConverter.reportWarning('FileLink: "' + linkFileName + '" is ambiguous. Picking arbitrarily.')
+                remarkConverter.reportWarning('Document ' + linkFileName + ' is ambiguous. Picking arbitrarily.')
             
             if linkDocument != None:
                 text.append(remarkConverter.remarkLink(linkDocument.fileName,
@@ -29,7 +32,7 @@ class FileLink_Macro(object):
                 if len(parameter) > 1:                
                     text.append('')
             else:
-                remarkConverter.reportWarning('FileLink: "' + linkFileName + '" not found. Ignoring it.')
+                remarkConverter.reportWarning('Document ' + linkFileName + ' not found. Ignoring it.')
             
         return text
     

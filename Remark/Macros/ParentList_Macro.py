@@ -7,6 +7,9 @@ from MacroRegistry import registerMacro
 from Common import htmlDiv
 
 class ParentList_Macro(object):
+    def name(self):
+        return 'ParentList'
+
     def expand(self, parameter, remarkConverter):
         scope = remarkConverter.scopeStack.top()
         className = scope.getString('ParentList.class_name', 'ParentList')

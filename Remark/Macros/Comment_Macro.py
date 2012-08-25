@@ -6,6 +6,9 @@
 from MacroRegistry import registerMacro
 
 class Comment_Macro(object):
+    def name(self):
+        return 'Comment'
+
     def expand(self, parameter, remarkConverter):
         # This macro simply eats its parameter. This allows
         # for commenting.

@@ -6,6 +6,9 @@
 from MacroRegistry import registerMacro
 
 class Copy_Macro(object):
+    def name(self):
+        return 'Copy'
+
     def expand(self, parameter, remarkConverter):
         return parameter
 

@@ -15,7 +15,10 @@ from pygments import highlight
 from pygments.lexers import CppLexer
 from pygments.formatters import HtmlFormatter
 
-def _linkConverter(regexMatch, documentTree, document):
+def _linkConverter(regexMatch, remarkConverter):
+    document = remarkConverter.document
+    documentTree = remarkConverter.documentTree 
+        
     searchName = unixDirectoryName(regexMatch.group(2))
     includeName = regexMatch.group(2)
     
@@ -34,7 +37,8 @@ def _linkConverter(regexMatch, documentTree, document):
         linkDocument, unique = documentTree.findDocument(searchName, document.relativeDirectory)
         if not unique:
             # We don't accept ambiguous links.
-            print 'Warning: CppCode: Include filename', searchName, 'is ambiguous. Skipping linking.' 
+            remarkConverter.reportWarning('Include filename ' + searchName + 
+                                          ' is ambiguous. Skipping linking.')
             linkDocument = None
         
     if linkDocument == None:
@@ -45,10 +49,10 @@ def _linkConverter(regexMatch, documentTree, document):
     return regexMatch.group(1) + '<a href = "' + linkName + '">' + includeName + '</a>' + string.rstrip(regexMatch.group(3))
     
 class CppCode_Macro(object):
+    def name(self):
+        return 'CppCode'
+
     def expand(self, parameter, remarkConverter):
-        document = remarkConverter.document
-        documentTree = remarkConverter.documentTree 
-        
         # Hilight the text.
         hilightedText = highlight(string.join(parameter, '\n'), CppLexer(), HtmlFormatter())
 
@@ -57,7 +61,7 @@ class CppCode_Macro(object):
         
         # Copy the source and replace the includes with links.
         includeRegex = re.compile(r'(#include[ \t]+(?:(?:&quot)|(?:&lt));)(.*)((?:(?:&quot)|(?:&gt));)')
-        replacer = lambda match: _linkConverter(match, documentTree, document)
+        replacer = lambda match: _linkConverter(match, remarkConverter)
         convertedText = []
         for line in hilightedText:
             # Replace include file names with links to source files.

@@ -32,7 +32,16 @@ class Dictionary_TagParser(object):
         # the parentheses capture the tag-key,
         # while text captures the tag-text.
         tags = 0
-        regex = r'('
+
+        # This is meant to cover for the possible comment mark.
+        # By excluding preceding numbers and letters we cut off
+        # the possibility of it being something else than a
+        # tag-key : tag-text pattern.
+        regex = r'^[^a-zA-Z0-9:]*'
+        #regex = r'^.*'
+                
+        # The tag-key (captured).
+        regex += r'('
         for tagKey in tagMap.itervalues():
             # The tag-name may contain characters that
             # are meta-characters in a regular expression.
@@ -43,11 +52,13 @@ class Dictionary_TagParser(object):
             tags +=1
         regex += r')'
         
-        # The colon : surrounded by whitespace.
-        regex += '[ \t]*:[ \t]*'
+        # The :, but not ::, surrounded by whitespace.
+        # The :: is common in C++. For example, I had
+        # a source-code line which began with 'Detail::'.
+        regex += r'[ \t]*:(?!:)[ \t]*'
         
-        # The tag-text (captured).
-        regex += '(.*)'
+        # The tag-text (captured). It extends to the end of the line.
+        regex += r'(.*)'
 
         # Compile the regex to a regex-object.
         self.tagRegex = re.compile(regex)
@@ -64,25 +75,26 @@ class Dictionary_TagParser(object):
         with openFileUtfOrLatin(fileName) as file:
             lineNumber = 0
             for fileLine in file:
-                match = self.tagRegex.search(fileLine)
+                match = self.tagRegex.match(fileLine)
                 if match != None:
                     # The first group is the tag-name.
                     tagKey = match.group(1)
+                    # The second group is the tag-text.
+                    tagText = match.group(2).strip()
                     
                     # Find out the corresponding tag-name.
                     tagName = self.tagKeyMap.get(tagKey)
                     assert tagName != None
 
                     # See if the tag has already been defined.
-                    if tagName in tagSet and tagSet[tagName] != ['']:
+                    if tagSet.get(tagName, [''])[0] != '':
                         # The tag has already been defined.
                         # Ignore the later definition.
                         print
                         print 'Warning:', fileName, 
-                        print ": Multiple definitions for the tag '" + tagName + "'."
+                        print ": Extraneous definition for the tag '" + tagName + "':",
+                        print "'" + tagText + "'", "current: '" + tagSet[tagName][0] + "'"
                     else:
-                        # The second group is the tag-text.
-                        tagText = match.group(2).strip()
                         tagSet[tagName] = [tagText]
 
                 lineNumber += 1

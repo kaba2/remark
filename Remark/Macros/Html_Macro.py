@@ -6,6 +6,9 @@
 from MacroRegistry import registerMacro
 
 class Html_Macro(object):
+    def name(self):
+        return 'Html'
+
     def expand(self, parameter, remarkConverter):
         return parameter
 

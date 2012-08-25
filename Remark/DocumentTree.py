@@ -522,7 +522,7 @@ class DocumentTree(object):
                                                    document.relativeDirectory)
                 if not unique:
                     print
-                    print 'Warning: parent-file is ambiguous for', 
+                    print 'Warning: parent is ambiguous for', 
                     print document.relativeName, '. The search was for:', parentName                                     
 
                 if parent == None:
@@ -530,7 +530,7 @@ class DocumentTree(object):
                     # because of a typo in the tag or a missing file. 
                     # In any case we warn the user.
                     print
-                    print 'Warning: parent-file was not found for',
+                    print 'Warning: parent was not found for',
                     print document.relativeName, '. The search was for:', parentName
                 else:
                     # Parent file was found. Update parent-child pointers.
