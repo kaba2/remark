@@ -3,8 +3,7 @@ Tag parsers
 
 [[Parent]]: implementation.txt
 
-Tag parsers are responsible for extracting the
-tag information from documents. Each document type
-has its own associated tag parser. Parsing the tags
-is quite trivial, and mostly consists of regular
-expression searches.
+_Tag parsers_ extract tags from document-files with the main purpose of
+deducing the parent-child relations of the documents (to form the 
+document-tree) as well as the descriptions of the documents (to be able
+to name links). Each document-type defines its own associated tag parser. 

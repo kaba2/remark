@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
-# Description: Empty_TagParser class
+# Description: Empty tag parser
+# Detail: Does not parse any tags.
 # Documentation: tag_parsers.txt
 
 class Empty_TagParser(object):
