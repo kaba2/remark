@@ -11,16 +11,30 @@ import shutil
 globalOptions_ = None
 
 def setGlobalOptions(options):
+    '''
+    Sets the global options object. The global options 
+    can then be accessed by globalOptions().
+    '''
     global globalOptions_
     globalOptions_ = options
 
 def globalOptions():
+    '''
+    Returns the global options object.
+    '''
     return globalOptions_;
 
 def remarkVersion():
+    '''
+    Returns the version of Remark as a string.
+    '''
     return '1.5.0'
 
 def asciiMathMlName():
+    '''
+    Returns the name of the Javascript file to
+    use for AsciiMathML.
+    '''
     return 'ASCIIMathMLwFallback.js'
 
 def htmlDiv(enclosedText, className = ''):
@@ -85,7 +99,7 @@ def openFileUtfOrLatin(fileName):
 def readFile(fileName):
     '''
     Opens a file using openFileUtfOrLatin, and reads the contents 
-    into a list of strings correponding to the rows of the file.
+    into a list of strings corresponding to the rows of the file.
     '''
     fileSize = os.path.getsize(fileName)
     maxSize = globalOptions().maxFileSize
@@ -141,7 +155,27 @@ def documentType(inputExtension):
 
 def copyIfNecessary(inputRelativeName, inputDirectory, 
                     outputRelativeName, outputDirectory):
+    '''
+    Copies an input-file only if the output-file does not exist,
+    or the input-file has a modification time-stamp later than 
+    with the output-file. If the input-file does not exist,
+    nothing is done.
 
+    inputRelativeName (string):
+    The name of the input-file, relative to the input-directory.
+
+    inputDirectory (string):
+    The input-directory.
+
+    outputRelativeName (string):
+    The name of the output-file, relative to the output-directory.
+
+    inputDirectory (string):
+    The output-directory.
+
+    returns:
+    A boolean stating if the file was actually copied.
+    '''
     inputFilePath = os.path.join(inputDirectory, inputRelativeName)
     outputFilePath = os.path.join(outputDirectory, outputRelativeName)
 
@@ -152,7 +186,7 @@ def copyIfNecessary(inputRelativeName, inputDirectory,
 
     if not os.path.exists(inputFilePath):
         print 'Error: CopyIfNecessary: the file ' + inputRelativeName + ' does not exist. Ignoring it.'
-        return
+        return False
 
     # The output file is up-to-date if it exists and has a 
     # modification time-stamp not later than with the input file.
@@ -165,7 +199,15 @@ def copyIfNecessary(inputRelativeName, inputDirectory,
             print 'Copying', inputRelativeName, '...'
         shutil.copy(inputFilePath, outputFilePath)
 
+    return not fileUpToDate
+
 def outputDocumentName(name):
+    '''
+    Returns the name of the output-document given the input-document
+    filename. This is given by the document-type associated to the 
+    filename-extension of the given filename. If the file does not
+    have a document-type, then the name is returned as it is.
+    '''
     inputExtension = os.path.splitext(name)[1]
     type = documentType(inputExtension)
     outputName = name
@@ -174,14 +216,27 @@ def outputDocumentName(name):
     return unixDirectoryName(outputName) 
 
 def unixDirectoryName(name):
+    '''
+    Returns a normalized unix-style directory-name of the given 
+    directory-name (unix-style or not).
+    '''
     return string.replace(os.path.normpath(name), '\\', '/')                
 
 def fileExtension(fileName):
+    '''
+    Returns the filename-extensions of the the filename.
+    '''
     return os.path.splitext(fileName)[1]
 
 def withoutFileExtension(fileName):
+    '''
+    Returns the filename without the filename-extension.
+    '''
     return os.path.splitext(fileName)[0]
 
 def changeExtension(fileName, newExtension):
+    '''
+    Changes the filename-extension to another.
+    '''
     return withoutFileExtension(fileName) + newExtension
 
