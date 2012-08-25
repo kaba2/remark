@@ -24,6 +24,7 @@
     <Compile Include="Common.py" />
     <Compile Include="Convert.py" />
     <Compile Include="DocumentTree.py" />
+    <Compile Include="DocumentTypes\Copy_DocumentType.py" />
     <Compile Include="DocumentTypes\CppCodeView_DocumentType.py" />
     <Compile Include="DocumentTypes\DirectoryView_DocumentType.py" />
     <Compile Include="DocumentTypes\DocumentType.py" />
@@ -53,7 +54,7 @@
     <Compile Include="Macros\Verbatim_Macro.py" />
     <Compile Include="Macros\__init__.py" />
     <Compile Include="Remark.py" />
-    <Compile Include="TagParsers\Empty_TagParser.py" />
+    <Compile Include="TagParsers\Dictionary_TagParser.py" />
     <Compile Include="TagParsers\Regex_TagParser.py" />
     <Compile Include="TagParsers\Remark_TagParser.py" />
     <Compile Include="TagParsers\__init__.py" />
@@ -123,6 +124,7 @@
     </Content>
     <Content Include="algorithm.txt" />
     <Content Include="core_stuff.txt" />
+    <Content Include="DocumentTypes\Copy_DocumentType.txt" />
     <Content Include="DocumentTypes\CppCodeView_DocumentType.txt" />
     <Content Include="DocumentTypes\DirectoryView_DocumentType.txt" />
     <Content Include="DocumentTypes\document_types.txt" />
@@ -146,8 +148,8 @@
     <Content Include="Macros\Html_Macro.txt" />
     <Content Include="Macros\Index_Macro.txt" />
     <Content Include="Macros\Link_Macro.txt" />
-    <Content Include="Macros\macro.txt" />
     <Content Include="Macros\macros.txt" />
+    <Content Include="Macros\available_macros.txt" />
     <Content Include="Macros\macro_expansion.txt" />
     <Content Include="Macros\macro_invocation.txt" />
     <Content Include="Macros\ParentList_Macro.txt" />

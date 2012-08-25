@@ -1,7 +1,7 @@
 Copy macro
 ==========
 
-[[Parent]]: macros.txt
+[[Parent]]: available_macros.txt
 
 The Copy macro copies the input as it is. Its purpose is to 
 prohibit macro expansion.

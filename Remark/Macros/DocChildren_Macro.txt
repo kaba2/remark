@@ -1,7 +1,7 @@
 DocChildren macro
 =================
 
-[[Parent]]: macros.txt
+[[Parent]]: available_macros.txt
 
 The DocChildren macro generates a list of links to the documentation
 children of the currently processed document. This list is preceded 

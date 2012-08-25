@@ -1,7 +1,7 @@
 FileLink macro
 ==============
 
-[[Parent]]: macros.txt
+[[Parent]]: available_macros.txt
 
 The FileLink macro generates document-links labeled with document 
 filenames.
@@ -31,7 +31,7 @@ Example
 This
 	
 	[[FileLink]]: 
-		macros.txt
+		available_macros.txt
 		remark_syntax.txt
 		../../remark_syntax.txt
 		directory.remark-index
@@ -39,7 +39,7 @@ This
 produces this:
 
 [[FileLink]]: 
-	macros.txt
+	available_macros.txt
 	remark_syntax.txt
 	../../remark_syntax.txt
 	directory.remark-index

@@ -36,7 +36,7 @@ class DocChildren_Macro(object):
 
         # Only accept those child documents which are not on the ignore set.
         childSet = [child for child in document.childSet.itervalues() 
-                    if child.extension == '.txt' and not child.relativeName in ignoreSet]
+                    if child.tagString('document_type') == 'RemarkPage' and not child.relativeName in ignoreSet]
         if len(childSet) == 0:
             return []
 

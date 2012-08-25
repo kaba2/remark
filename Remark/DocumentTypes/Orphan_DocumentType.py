@@ -3,7 +3,6 @@
 # Description: Orphan_DocumentType class
 
 from DocumentType import DocumentType
-from TagParsers.Empty_TagParser import Empty_TagParser
 from Common import changeExtension 
 
 class Orphan_DocumentType(DocumentType):
@@ -17,8 +16,7 @@ class Orphan_DocumentType(DocumentType):
         return document.tagString('description')
 
     def parseTags(self, fileName, lines = 100):
-        parser = Empty_TagParser()
-        return parser.parse(fileName)
+        return {}
         
     def generateMarkdown(self, fileName):
         return ['[[ParentList]]',

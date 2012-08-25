@@ -1,7 +1,7 @@
 ParentList macro
 ================
 
-[[Parent]]: macros.txt
+[[Parent]]: available_macros.txt
 
 The ParentList macro generates an ordered list of links for the parent 
 documents of the current document, starting from the earliest ancestor.

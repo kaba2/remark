@@ -1,7 +1,7 @@
 Parent macro
 ============
 
-[[Parent]]: macros.txt
+[[Parent]]: available_macros.txt
 
 The Parent macro generates a link to the parent document labeled
 with its description. The Parent macro has a double role in Remark. 

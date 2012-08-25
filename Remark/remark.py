@@ -33,10 +33,6 @@ from DocumentTypes.RemarkPage_DocumentType import RemarkPage_DocumentType
 from DocumentTypes.DirectoryView_DocumentType import DirectoryView_DocumentType
 from DocumentTypes.Orphan_DocumentType import Orphan_DocumentType
 
-from TagParsers.Regex_TagParser import Regex_TagParser
-from TagParsers.Remark_TagParser import Remark_TagParser
-from TagParsers.Empty_TagParser import Empty_TagParser
-
 from Convert import convertAll
 from Common import unixDirectoryName, unixRelativePath, readFile
 from Common import documentType, associateDocumentType, remarkVersion
@@ -135,18 +131,14 @@ use wildcards (e.g. *.png).""")
     directoryViewType = DirectoryView_DocumentType()
     codeViewType= CodeView_DocumentType()
     orphanType = Orphan_DocumentType()
+
+    remarkPageSet = ['.txt']
+    cppCodeViewSet = ['.cpp', '.cc', '.h', '.hh', '.hpp']
+    codeViewSet = ['.py', '.m', '.pm', '.pl', '.css', '.js', '.lua']
        
-    associateDocumentType('.txt', remarkPageType)
-    associateDocumentType('.cpp', cppCodeViewType)
-    associateDocumentType('.cc', cppCodeViewType)
-    associateDocumentType('.c', cppCodeViewType)
-    associateDocumentType('.h', cppCodeViewType)
-    associateDocumentType('.hh', cppCodeViewType)
-    associateDocumentType('.hpp', cppCodeViewType)
-    associateDocumentType('.py', codeViewType)
-    associateDocumentType('.m', codeViewType)
-    associateDocumentType('.pm', codeViewType)
-    associateDocumentType('.pl', codeViewType)
+    associateDocumentType(remarkPageSet, remarkPageType)
+    associateDocumentType(cppCodeViewSet, cppCodeViewType)
+    associateDocumentType(codeViewSet, codeViewType)
     associateDocumentType('.remark-index', directoryViewType)
     associateDocumentType('.remark-orphan', orphanType)
     

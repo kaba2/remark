@@ -1,7 +1,7 @@
 Example macro
 =============
 
-[[Parent]]: macros.txt
+[[Parent]]: available_macros.txt
 
 The Example macro wraps its parameter into a verbatim block, and
 then replicates the parameter. This makes it easy to construct

@@ -1,7 +1,7 @@
 CppCode macro
 =============
 
-[[Parent]]: macros.txt
+[[Parent]]: available_macros.txt
 
 The CppCode macro highlights C++ source code and links the include
 directives to other C++ source-code files in the document tree.

@@ -139,9 +139,16 @@ def associateDocumentType(inputExtension, documentType):
     Associates the given filename-extension to the given document-type
     object. The filename-extension-key is always stored lower-case,
     so that we can be case-insensitive for it.
+
+    inputExtension (string or list-of-strings):
+    The file-extensions to associate to the given document-type.
     '''
     global _documentTypeMap
-    _documentTypeMap[inputExtension.lower()] = documentType
+    if isinstance(inputExtension, basestring):
+        _documentTypeMap[inputExtension.lower()] = documentType
+    else:
+        for extension in inputExtension:
+            associateDocumentType(extension, documentType)            
 
 def documentType(inputExtension):
     '''

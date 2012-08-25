@@ -1,7 +1,7 @@
 SourceChildren macro
 ====================
 
-[[Parent]]: macros.txt
+[[Parent]]: available_macros.txt
 
 The SourceChildren macro generates a list of links to the source-code 
 children of the currently processed document. This list is preceded by 

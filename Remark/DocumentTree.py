@@ -33,11 +33,6 @@ class Document(object):
         # The document-type of this document.
         self.documentType = documentType(self.extension)
 
-        # The name of the document-type of this document.
-        self.documentTypeName = ''
-        if self.documentType != None:
-            self.documentTypeName = self.documentType.name()
-
         # The parent-document of this document.
         self.parent = None
 
@@ -65,7 +60,13 @@ class Document(object):
         self.setTag('relative_directory', [self.relativeDirectory])
         self.setTag('extension', [self.extension])
         self.setTag('html_head')
-        self.setTag('document_type', [self.documentTypeName])
+
+        # The name of the document-type of this document.
+        documentTypeName = ''
+        if self.documentType != None:
+            documentTypeName = self.documentType.name()
+
+        self.setTag('document_type', [documentTypeName])
         
     def insertChild(self, child):
         '''
@@ -599,8 +600,8 @@ class DocumentTree(object):
             searchName = withoutFileExtension(document.fileName)
             # The implicit linking only concerns
             # source files. 
-            if document.extension != '.txt':
-                # This is a source file.
+            if document.tagString('document_type') != 'RemarkPage':
+                # This is a source file (i.e. non-RemarkPage).
             
                 # Find the last document in the array
                 # which has identical filename to the searched
@@ -656,7 +657,7 @@ class DocumentTree(object):
                             # Either the file must be a documentation file
                             # or it must have a parent.                                
                             #print 'Candidate', thatDocument.relativeName
-                            if fileExtension(thatDocument.fileName) == '.txt':
+                            if thatDocument.tagString('document_type') == 'RemarkPage':
                                 # We have found a match from a documentation
                                 # file! 
                                 documentationMatches.add(thatDocument)

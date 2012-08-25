@@ -1,7 +1,7 @@
 File searching algorithm
 ========================
 
-[[Parent]]: macro.txt
+[[Parent]]: macros.txt
 
 Many of the macros, such as the [[Link: Link_Macro.txt]], 
 [[Link: FileLink_Macro.txt]], [[Link: DirectoryLink_Macro.txt]], 

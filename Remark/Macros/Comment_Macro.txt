@@ -1,7 +1,7 @@
 Comment macro
 =============
 
-[[Parent]]: macros.txt
+[[Parent]]: available_macros.txt
 
 The Comment macro produces nothing. Its purpose is to allow 
 commenting the Remark source.

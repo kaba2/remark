@@ -1,7 +1,7 @@
 DocumentTree macro
 ==================
 
-[[Parent]]: macros.txt
+[[Parent]]: available_macros.txt
 
 The DocumentTree macro generates a hierarhical, alphabetically ordered list of the 
 [RemarkPage][RemarkPage]-documents in the document tree, using the current document 

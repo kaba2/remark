@@ -1,6 +1,14 @@
-Available macros
-================
+Macros
+======
 
-[[Parent]]: macro.txt
+[[Parent]]: remark_syntax.txt
 
-This page lists all the currently available macros.
+Macros are functions that map input text in some syntax to output 
+text in Remark syntax. The functionalities of macros are implemented 
+as Python classes. During its action, a macro has access to the whole
+functionality offered by Remark. Most importantly macros
+have access to the document tree. This way macros are able to 
+produce the correct descriptions and link targets which have been 
+deduced from the Remark source files.
+ 
+
