@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
 
-# Description: RemarkPage_DocumentType class
+# Description: RemarkPage document-type
 
 import re
 
 from DocumentType import DocumentType
 from TagParsers.Remark_TagParser import Remark_TagParser
 from Common import changeExtension 
+from Convert import saveRemarkToHtml
 
 class RemarkPage_DocumentType(DocumentType):
     def name(self):
@@ -19,8 +20,8 @@ class RemarkPage_DocumentType(DocumentType):
         parser = Remark_TagParser({'parent' : '[[Parent]]'}, lines)
         return parser.parse(fileName)
         
-    def generateMarkdown(self, fileName):
-        return  ['[[set RemarkPage.mid_text]]',
+    def convert(self, document, documentTree, outputRootDirectory):
+        remarkText = ['[[set RemarkPage.mid_text]]',
                  '[[set RemarkPage.end_text]]',
                  '[[ParentList]]',
                  '[[Body]]',
@@ -28,6 +29,9 @@ class RemarkPage_DocumentType(DocumentType):
                  '[[RemarkPage.mid_text]]',
                  '[[SourceChildren]]',
                  '[[RemarkPage.end_text]]',]
+
+        saveRemarkToHtml(remarkText, document, documentTree, 
+                         outputRootDirectory)
          
     def mathEnabled(self):
         return True

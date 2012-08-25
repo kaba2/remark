@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 
-# Description: Orphan_DocumentType class
+# Description: Orphan document-type
 
 from DocumentType import DocumentType
 from Common import changeExtension 
+from Convert import saveRemarkToHtml
 
 class Orphan_DocumentType(DocumentType):
     def name(self):
@@ -15,15 +16,18 @@ class Orphan_DocumentType(DocumentType):
     def parseTags(self, fileName, lines = 100):
         return {}
         
-    def generateMarkdown(self, fileName):
-        return ['[[ParentList]]',
+    def convert(self, document, documentTree, outputRootDirectory):
+        remarkText = ['[[ParentList]]',
                 '',
                 'Orphans',
                 '=======',
                 '',
                 '[[DocChildren]]',
                 '[[SourceChildren]]',]
-         
+
+        saveRemarkToHtml(remarkText, document, documentTree, 
+                         outputRootDirectory)
+        
     def mathEnabled(self):
         return False
 

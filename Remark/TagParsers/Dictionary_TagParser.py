@@ -92,8 +92,9 @@ class Dictionary_TagParser(object):
                         # Ignore the later definition.
                         print
                         print 'Warning:', fileName, 
-                        print ": Extraneous definition for the tag '" + tagName + "':",
-                        print "'" + tagText + "'", "current: '" + tagSet[tagName][0] + "'"
+                        print ": Extraneous definition for the tag '" + tagName + "'"
+                        print 'Current:', tagSet[tagName][0]
+                        print 'New:', tagText
                     else:
                         tagSet[tagName] = [tagText]
 

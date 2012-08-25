@@ -132,7 +132,24 @@ def readFile(fileName):
             
     return text
 
+def writeFile(text, outputFullName):
+    # If the directories do not exist, create them.
+    outputDirectory = os.path.split(outputFullName)[0]
+    if not os.path.exists(outputDirectory):
+        os.makedirs(outputDirectory)
+
+    # Save the text to a file.
+    with codecs.open(outputFullName, mode = 'w', encoding = 'utf-8') as outputFile:
+        for line in text:
+            outputFile.write(line)
+            outputFile.write('\n')
+
 _documentTypeMap = dict()
+_defaultDocumentType = None
+
+def setDefaultDocumentType(documentType):
+    global _defaultDocumentType
+    _defaultDocumentType = documentType
 
 def associateDocumentType(inputExtension, documentType):
     '''
@@ -150,15 +167,23 @@ def associateDocumentType(inputExtension, documentType):
         for extension in inputExtension:
             associateDocumentType(extension, documentType)            
 
+def strictDocumentType(inputExtension):
+    '''
+    Returns the document-type object associated to a given
+    filename-extension. If there is no such, None is
+    returned instead. The filename-extension comparison is 
+    case-insensitive.
+    '''
+    return _documentTypeMap.get(inputExtension.lower())
+
 def documentType(inputExtension):
     '''
     Returns the document-type object associated to a given
-    filename-extension. The association can be set by the
-    associateDocumentType() function. The filename-extension
-    comparison is case-insensitive.
+    filename-extension. If there is no such, the default
+    document-type object is returned instead. The 
+    filename-extension comparison is case-insensitive.
     '''
-    global _documentTypeMap
-    return _documentTypeMap.get(inputExtension.lower())
+    return _documentTypeMap.get(inputExtension.lower(), _defaultDocumentType)
 
 def copyIfNecessary(inputRelativeName, inputDirectory, 
                     outputRelativeName, outputDirectory):
@@ -202,8 +227,6 @@ def copyIfNecessary(inputRelativeName, inputDirectory,
         os.path.getmtime(inputFilePath) <= os.path.getmtime(outputFilePath))
 
     if not fileUpToDate:
-        if globalOptions().verbose:
-            print 'Copying', inputRelativeName, '...'
         shutil.copy(inputFilePath, outputFilePath)
 
     return not fileUpToDate

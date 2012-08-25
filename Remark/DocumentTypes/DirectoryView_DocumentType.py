@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 
-# Description: DirectoryView_DocumentType class
+# Description: DirectoryView document-type
 
 from DocumentType import DocumentType
 from Common import changeExtension 
+from Convert import saveRemarkToHtml
 
 class DirectoryView_DocumentType(DocumentType):
     def name(self):
@@ -15,14 +16,17 @@ class DirectoryView_DocumentType(DocumentType):
     def parseTags(self, fileName, lines = 100):
         return {}
         
-    def generateMarkdown(self, fileName):
-        return ['[[ParentList]]',
+    def convert(self, document, documentTree, outputRootDirectory):
+        remarkText = ['[[ParentList]]',
                 '',
                 '[[tag description]]',
                 '===',
                 '',
                 '[[Index]]',]
-         
+
+        saveRemarkToHtml(remarkText, document, documentTree, 
+                         outputRootDirectory)
+
     def mathEnabled(self):
         return False
 

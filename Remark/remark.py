@@ -32,11 +32,13 @@ from DocumentTypes.CodeView_DocumentType import CodeView_DocumentType
 from DocumentTypes.RemarkPage_DocumentType import RemarkPage_DocumentType
 from DocumentTypes.DirectoryView_DocumentType import DirectoryView_DocumentType
 from DocumentTypes.Orphan_DocumentType import Orphan_DocumentType
+from DocumentTypes.Copy_DocumentType import Copy_DocumentType
 
 from Convert import convertAll
 from Common import unixDirectoryName, unixRelativePath, readFile
 from Common import documentType, associateDocumentType, remarkVersion
 from Common import asciiMathMlName, copyIfNecessary, setGlobalOptions, globalOptions
+from Common import setDefaultDocumentType, strictDocumentType
 from optparse import OptionParser
 
 from time import clock
@@ -131,11 +133,13 @@ use wildcards (e.g. *.png).""")
     directoryViewType = DirectoryView_DocumentType()
     codeViewType= CodeView_DocumentType()
     orphanType = Orphan_DocumentType()
+    copyType = Copy_DocumentType()
 
     remarkPageSet = ['.txt']
     cppCodeViewSet = ['.cpp', '.cc', '.h', '.hh', '.hpp']
     codeViewSet = ['.py', '.m', '.pm', '.pl', '.css', '.js', '.lua']
        
+    setDefaultDocumentType(copyType)
     associateDocumentType(remarkPageSet, remarkPageType)
     associateDocumentType(cppCodeViewSet, cppCodeViewType)
     associateDocumentType(codeViewSet, codeViewType)
@@ -154,7 +158,7 @@ use wildcards (e.g. *.png).""")
         for fileName in fileNameSet:
             fullName = os.path.normpath(os.path.join(pathName, fileName))
             relativeName = unixRelativePath(inputDirectory, fullName)
-            if documentType(os.path.splitext(fileName)[1]) != None:
+            if strictDocumentType(os.path.splitext(fileName)[1]) != None:
                 # The file has an associated document type,
                 # take it in.            
                 documentTree.insertDocument(relativeName)
@@ -177,7 +181,7 @@ use wildcards (e.g. *.png).""")
         print '--------------------'
         print
     
-    convertAll(documentTree, inputDirectory, outputDirectory, prologue)
+    convertAll(documentTree, outputDirectory, prologue)
 
     # If there are no .css files already in the target directory,
     # copy the default ones there.

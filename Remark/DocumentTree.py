@@ -61,12 +61,7 @@ class Document(object):
         self.setTag('extension', [self.extension])
         self.setTag('html_head')
 
-        # The name of the document-type of this document.
-        documentTypeName = ''
-        if self.documentType != None:
-            documentTypeName = self.documentType.name()
-
-        self.setTag('document_type', [documentTypeName])
+        self.setTag('document_type', [self.documentType.name()])
         
     def insertChild(self, child):
         '''
@@ -435,15 +430,15 @@ class DocumentTree(object):
         # Return an arbitrary file.
         return (documentSet[0], False)
 
-    # Private stuff
-    
-    def _fullName(self, relativeName):
+    def fullName(self, document):
         '''
         Returns the join of the document-tree's root directory
-        and the given relative-path.
+        and the relative-name of the document.
         '''
-        return os.path.normpath(os.path.join(self.rootDirectory, relativeName))
+        return os.path.normpath(os.path.join(self.rootDirectory, document.relativeName))
 
+    # Private stuff
+    
     def _gatherDirectories(self):
         '''
         Gathers the set of directories in which the files reside at
@@ -490,9 +485,8 @@ class DocumentTree(object):
             try:
                 key = fileExtension(document.relativeName)
                 type = documentType(key)
-                if type != None:
-                    tagSet = type.parseTags(self._fullName(document.relativeName), globalOptions().maxTagLines)
-                    document.tagSet.update(tagSet)
+                tagSet = type.parseTags(self.fullName(document), globalOptions().maxTagLines)
+                document.tagSet.update(tagSet)
             except UnicodeDecodeError:
                 print 'Warning:', document.relativeName,
                 print ': Tag parsing failed because of a unicode decode error.'
@@ -539,8 +533,7 @@ class DocumentTree(object):
                 # This file uses a reference link, which will be
                 # handled later.
                 None     
-            elif (document.documentType != None and 
-                  document.documentType.name() == 'RemarkPage'):
+            elif document.documentType.name() == 'RemarkPage':
                 # This file is a documentation file and it is
                 # missing a parent tag. Warn about that.
                 print
