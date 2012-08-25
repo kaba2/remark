@@ -1,32 +1,61 @@
 # -*- coding: utf-8 -*-
 
-# Description: Documents and documentation tree
-# Detail: Deduction of parent-child relationships and their storage.
+# Description: Document tree
 # Documentation: core_stuff.txt
 
 import os.path
 import string
 import re
-from Common import documentType, unixDirectoryName, linkAddress, fileExtension
+from Common import documentType, unixDirectoryName, unixRelativePath, fileExtension
 from Common import globalOptions, withoutFileExtension
 
 class Document(object):
     def __init__(self, relativeName):
-        # Precompute commonly needed names.
-        self.relativeName = unixDirectoryName(relativeName)
-        self.relativeDirectory, self.fileName = os.path.split(relativeName)
-        self.extension = fileExtension(self.fileName).lower()
-        self.documentType = documentType(self.extension)
-        self.documentTypeName = ''
-        self.parent = None
-        self.childSet = dict()
-        self.directorySet = set()
-        self.tagSet = {}
+        '''
+        Constructs a document-object for the given file.
 
+        relativeName:
+        The path to the file, relative to the document-tree's
+        root-directory.
+        '''
+
+        # The relative-path to the document, with respect to
+        # the document-tree's root-directory.
+        self.relativeName = unixDirectoryName(relativeName)
+
+        # The relative-directory and the filename of the document.
+        self.relativeDirectory, self.fileName = os.path.split(relativeName)
+
+        # The file-name extension of this document, in lower-case
+        # to enable case-insensitivity.
+        self.extension = fileExtension(self.fileName).lower()
+
+        # The document-type of this document.
+        self.documentType = documentType(self.extension)
+
+        # The name of the document-type of this document.
+        self.documentTypeName = ''
         if self.documentType != None:
             self.documentTypeName = self.documentType.name()
 
-        # Set the default-tags.
+        # The parent-document of this document.
+        self.parent = None
+
+        # A map from document's relative-name (string) to a 
+        # document-object (Document).
+        self.childSet = {}
+
+        # A set of directories (strings). This will contain
+        # all the directories in which the documents reside,
+        # and also all their parent-directories up to the
+        # document-tree's root-directory.
+        self.directorySet = set()
+
+        # A map from a tag-name (string) to a text 
+        # (list of strings).
+        self.tagSet = {}
+
+        # The predefined document-tags.
         self.setTag('description')
         self.setTag('link_description')
         self.setTag('detail')
@@ -39,24 +68,60 @@ class Document(object):
         self.setTag('document_type', [self.documentTypeName])
         
     def insertChild(self, child):
-        if child.parent != None:
-            print 'Error: A child was already linked to a parent.'
+        '''
+        Inserts a new child-document for this document.
+        A document can be only be linked to at most one 
+        parent-document.
+        '''
+        assert child.parent == None
         self.childSet[child.relativeName] = child
         child.parent = self
     
-    def setTag(self, name, value = ['']):
-        assert isinstance(value, list)
-        self.tagSet[name] = value
-        
-    def tag(self, name, defaultText = ['']):
-        if name in self.tagSet:
-            return self.tagSet[name]
-        return defaultText
+    def setTag(self, tagName, text = ['']):
+        '''
+        Associates text with a given tag-name.
 
-    def tagString(self, name, default = ''):
-        return ''.join(self.tag(name, [default]))
+        tagName (string):
+        The name of the tag. It will be stripped 
+        of surrounding whitespace.
+
+        text (list of strings):
+        The text to associate to the tag-name.
+        '''
+        assert isinstance(text, list)
+        assert isinstance(tagName, basestring)
+        self.tagSet[tagName.strip()] = text
+        
+    def tag(self, tagName, defaultText = ['']):
+        '''
+        Returns the text associated with the given
+        tag-name. If the tag-name is not found, returns
+        the given default-value instead.
+        
+        tagName (string):
+        The tag-name to find. It will be stripped of
+        surrounding whitespace.
+        '''
+        assert isinstance(tagName, basestring)
+        return self.tagSet.get(tagName.strip(), defaultText)
+
+    def tagString(self, tagName, default = ''):
+        '''
+        Returns the tag-text associated with the given
+        tag-name, such that the lines of the tag-text are
+        joined together into a single string.
+        '''
+        return ''.join(self.tag(tagName, [default]))
 
     def linkDescription(self):
+        '''
+        Returns the link-description of the document.
+
+        returns:
+        The link-description given by the document-type,
+        if the document has a document-type. Otherwise
+        the empty string.
+        '''
         type = self.documentType
         if type == None:
             return ''
@@ -64,17 +129,59 @@ class Document(object):
         return self.documentType.linkDescription(self)
 
 class DocumentTree(object):
-    def __init__(self, rootDirectory, parserLines = 100):
+    def __init__(self, rootDirectory):
+        '''
+        Constructs an empty document-tree using the 
+        given directory as a root-directory.
+
+        rootDirectory (string):
+        The full-path to the directory to use as
+        root-directory of the document-tree.
+
+        See also:
+        compute()
+        insertDocument()
+        '''
         assert os.path.isdir(rootDirectory)
         
+        # The root-directory whose child-directories
+        # to construct the document-tree for.
         self.rootDirectory = rootDirectory
+
+        # Create the orphan document, to which all the
+        # unlinked documents will be given as children.
         self.orphan = Document('orphan.remark-orphan')
         self.orphan.setTag('description', ['Orphans'])
+
+        # A map from a document's relative-name (string) to 
+        # a document-object (Document).
         self.documentMap = {'orphan.remark-orphan' : self.orphan}
+
+        # A map from a filename (string) to documents
+        # with that filename (list of Document's).
         self.fileNameMap = {}
-        self.parserLines = parserLines
         
-    def compute(self):      
+    def insertDocument(self, relativeName):
+        '''
+        Inserts a document into the document-tree.
+
+        relativeName:
+        The relative path to the document w.r.t. to the
+        root directory of the document-tree.
+        '''
+        document = Document(relativeName)
+        self.documentMap[document.relativeName] = document
+        return document
+
+    def compute(self):
+        '''
+        Computes the document-tree starting from the root-directory
+        The documents have to be already inserted into it for this
+        to do anything.
+
+        See also:
+        insertDocument()
+        '''
 
         # Gather directories
 
@@ -115,6 +222,7 @@ class DocumentTree(object):
             print 'Done.'
         
         # Resolve explicit links
+
         if globalOptions().verbose:
             print
             print 'Resolving explicit links'
@@ -123,6 +231,8 @@ class DocumentTree(object):
         if globalOptions().verbose:
             print
             print 'Done.'
+
+        # Resolve implicit links
         
         if globalOptions().verbose:
             print
@@ -132,6 +242,8 @@ class DocumentTree(object):
         if globalOptions().verbose:
             print
             print 'Done.'
+
+        # Resolve reference links
         
         if globalOptions().verbose:
             print
@@ -142,6 +254,8 @@ class DocumentTree(object):
             print
             print 'Done.'
 
+        # Link orphans
+
         if globalOptions().verbose:
             print
             print 'Linking orphans...',
@@ -150,52 +264,70 @@ class DocumentTree(object):
             print
             print 'Done.'
         
-    def insertDocument(self, relativeName):
-        document = Document(relativeName)
-        self.documentMap[document.relativeName] = document
-        return document
-
-    def findDocumentLocal(self, documentName, relativeDirectory):
+    def findDocumentLocal(self, fileName, relativeDirectory):
         '''
-        Finds a document corresponding to the given filename 'documentName'.
-        The document is only searched in the given relative directory 
-        'relativeDirectory'. For example:
+        Finds a document corresponding to the given filename.
+        If the document is not found, returns None.
+        The document is only searched in the given relative 
+        directory.
         
+        Example:
         documentTree.findDocumentLocal('spam.txt', 'eggs/bar/') 
 
-        See also: findDocumentUpwards().
+        See also: 
+        findDocumentUpwards().
         '''
         relativeName = unixDirectoryName(
-            os.path.join(relativeDirectory, documentName))
+            os.path.join(relativeDirectory, fileName))
 
         return self.findDocumentByRelativeName(relativeName)
 
     def findDocumentByRelativeName(self, relativeName):
         '''
-        Finds a document corresponding to the given relative name and 
-        relative directory.
-        Example:
-        documentTree.findDocumentLocal('eggs/bar/spam.txt') 
-        See also: findDocumentUpwards().
-        '''
-        #relativeName = unixDirectoryName(relativeName)
-        if relativeName in self.documentMap:
-            # Found the document file!
-            return self.documentMap[relativeName]
+        Searches for a document by relative-name in all of the 
+        document-tree.
+
+        relativeName:
+        The path to the document file, relative to the 
+        document-tree's root directory.
         
-        # Document file was not found.
-        return None
+        returns:
+        The document-object if found, None otherwise.
+
+        Example:
+        documentTree.findDocumentByRelativeName('eggs/bar/spam.txt') 
+       
+        See also: 
+        findDocumentUpwards().
+        '''
+        return self.documentMap.get(relativeName)
 
     def findDocumentUpwards(self, documentName, relativeDirectory):
         '''
-        Finds a document corresponding to the given filename 'documentName'.
-        The search starts from the given relative directory 'relativeDirectory',
-        and whenever unsuccessful, is continued outwards to
-        parent directories until either the document is found
-        or root directory is reached. Example:
+        Searches for a document corresponding to the given document-name
+        starting from the given relative-directory and progressing 
+        to the parent-directories on unsuccessful searches. The search
+        terminates on the document-tree's root directory. If the 
+        document-name is a relative-path, no parent-directories will
+        be searched.
+
+        documentName:
+        The name of the file to search for. It can be either be a 
+        file-name, or a relative-path.
+
+        relativeDirectory:
+        The directory from which to start searching, relative to 
+        the document-tree root-directory.        
+
+        returns:
+        The document-object if successful, None otherwise.
+        
+        Example:
         documentTree.findDocumentUpwards('spam.txt', 'eggs/bar/')         
         '''
-        #assert os.path.isdir(relativeDirectory)
+
+        assert (relativeDirectory.strip() == '' or
+                os.path.isdir(relativeDirectory))
             
         fileName = os.path.split(documentName)[1]
         if fileName != documentName:
@@ -221,14 +353,31 @@ class DocumentTree(object):
 
     def findDocument(self, documentName, relativeDirectory):
         '''
-        Returns: A pair (document, unique), such that 'document'
-        contains the found document (possibly None) and
-        'unique' is a boolean that tells whether the choice
-        was unique or not.
+        Searches for a document corresponding to the given document-name
+        first from the given relative-directory upwards, and if not 
+        successful, then from all of the document-tree (then the
+        document can be ambiguous). If the document-name is a 
+        relative-path, no other directories will be searched.
+
+        documentName:
+        The name of the file to search for. It can be either a 
+        file-name, or a path relative to the document-tree root-directory.
+
+        relativeDirectory:
+        The directory from which to start searching, relative to 
+        the document-tree root-directory.        
+
+        returns: 
+        A pair (document, unique), such that 'document' contains the 
+        found document-object (possibly None) and 'unique' is a 
+        boolean that tells whether the choice was unique or not.
+        If the choise is not unique, the document is picked arbitrarily
+        over the choices.
         '''
         
         documentName = unixDirectoryName(documentName)
                 
+        # Handle the relative-path case first.
         fileName = os.path.split(documentName)[1]
         if fileName != documentName:
             # This is a relative path: don't
@@ -245,30 +394,43 @@ class DocumentTree(object):
                            ' where pure form ' + fileName + 
                            ' would have been unambiguous.')
             return (document, True)
+
+        # Since the document-name is not a relative-path,
+        # it is a filename.        
+               
+        # Search the filename over all of the document-tree.         
+        # Doing the search here is a different order compared to
+        # the function description. However, we only return a
+        # found document here if it is unique, or there is no
+        # such filename at all. This improves performance, since 
+        # it is just a dictionary lookup. Moreover, having unique
+        # filenames over the document tree is the normal case,
+        # so this is a relevant optimization.
+        documentSet = self.fileNameMap.get(fileName)
         
-        #print '"', fileName, '"'
-         
-        # See if there is a document of such name at all.
-        if not fileName in self.fileNameMap:
+        if documentSet == None:
+            # There is no such filename in the document-tree.
             return (None, True)
-             
-        documentSet = self.fileNameMap[fileName]
-        
+
         if len(documentSet) == 1:
             # There is a unique document with this
             # filename. Return it.
             return (documentSet[0], True)
         
         # There are multiple files with this filename.
-        # Priority is given in the following order:
-        # 1) Current directory
-        # 2) Parent directories
-        # 3) Other directories
-        
+
+        # See if the document can be found by following
+        # parent-directories.
         document = self.findDocumentUpwards(documentName, relativeDirectory)
         if document != None:
+            # The document was found by following
+            # parent-directories.
             return (document, True)
             
+        # The document is somewhere on the document-tree,
+        # is ambiguous, and can not be found by
+        # following parent-directories.
+
         # Return an arbitrary file.
         return (documentSet[0], False)
 
@@ -276,8 +438,8 @@ class DocumentTree(object):
     
     def _fullName(self, relativeName):
         '''
-        Returns the full path of the given relative-name relative
-        to the input root-directory.
+        Returns the join of the document-tree's root directory
+        and the given relative-path.
         '''
         return os.path.normpath(os.path.join(self.rootDirectory, relativeName))
 
@@ -328,7 +490,7 @@ class DocumentTree(object):
                 key = fileExtension(document.relativeName)
                 type = documentType(key)
                 if type != None:
-                    tagSet = type.parseTags(self._fullName(document.relativeName), self.parserLines)
+                    tagSet = type.parseTags(self._fullName(document.relativeName), globalOptions().maxTagLines)
                     document.tagSet.update(tagSet)
             except UnicodeDecodeError:
                 print 'Warning:', document.relativeName,
@@ -345,10 +507,12 @@ class DocumentTree(object):
             # type are linked to orphan straight away.
             if documentType(document.extension) == None:
                 document.parent = self.orphan
+
             # If a document specifies a parent, then this
             # is handled the same whether it is a documentation file
             # or a source file. Simply find the specified parent.
             if 'parent' in document.tagSet:
+
                 # The parent file path in the tag is given relative to 
                 # the directory containing the document file.
                 parentName = document.tagString('parent')
@@ -357,24 +521,25 @@ class DocumentTree(object):
                                                    document.relativeDirectory)
                 if not unique:
                     print
-                    print 'Warning: parent file is ambiguous for', 
+                    print 'Warning: parent-file is ambiguous for', 
                     print document.relativeName, '. The search was for:', parentName                                     
+
                 if parent == None:
                     # If a parent file can't be found, it can be
                     # because of a typo in the tag or a missing file. 
                     # In any case we warn the user.
                     print
-                    print 'Warning: parent file was not found for',
+                    print 'Warning: parent-file was not found for',
                     print document.relativeName, '. The search was for:', parentName
                 else:
-                    # Parent file was found. Update parent-child
-                    # pointers.
+                    # Parent file was found. Update parent-child pointers.
                     parent.insertChild(document)
             elif 'parentOf' in document.tagSet:
                 # This file uses a reference link, which will be
                 # handled later.
                 None     
-            elif document.extension == '.txt':
+            elif (document.documentType != None and 
+                  document.documentType.name() == 'RemarkPage'):
                 # This file is a documentation file and it is
                 # missing a parent tag. Warn about that.
                 print
@@ -590,7 +755,7 @@ class DocumentTree(object):
         Construct a map from filenames to documents.
         There can be multiple documents for a single
         filename and thus the documents are stored
-        in a list.
+        in a list for each filename.
         '''
         for document in self.documentMap.itervalues():
             if document.fileName in self.fileNameMap:

@@ -6,7 +6,7 @@
 import string
 import os.path
 
-from Common import linkAddress, linkTable, htmlDiv
+from Common import unixRelativePath, htmlDiv
 from Common import outputDocumentName, unixDirectoryName
 from MacroRegistry import registerMacro
 

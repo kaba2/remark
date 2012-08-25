@@ -9,7 +9,7 @@ import re
 
 from MacroRegistry import registerMacro
 
-from Common import linkAddress, unixDirectoryName
+from Common import unixRelativePath, unixDirectoryName
 
 from pygments import highlight
 from pygments.lexers import CppLexer
@@ -41,7 +41,7 @@ def _linkConverter(regexMatch, documentTree, document):
         # No file was found. Skip linking.
         return regexMatch.group(0)
 
-    linkName = linkAddress(document.relativeDirectory, linkDocument.relativeName) + '.htm'
+    linkName = unixRelativePath(document.relativeDirectory, linkDocument.relativeName) + '.htm'
     return regexMatch.group(1) + '<a href = "' + linkName + '">' + includeName + '</a>' + string.rstrip(regexMatch.group(3))
     
 class CppCode_Macro(object):
