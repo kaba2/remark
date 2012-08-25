@@ -15,7 +15,7 @@ class Body_Macro(object):
     def expand(self, parameter, remarkConverter):
         document = remarkConverter.document
         
-        fileName = remarkConverter.documentTree._fullName(document.relativeName);
+        fileName = remarkConverter.documentTree.fullName(document);
     
         text = readFile(fileName)
                                     

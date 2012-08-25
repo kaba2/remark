@@ -1,10 +1,8 @@
 # -*- coding: utf-8 -*-
 
-# Description: CppCodeView_DocumentType class
-# Author: Kalle Rutanen
+# Description: CppCodeView document-type
 
-import re
-
+from Convert import saveRemarkToHtml
 from DocumentType import DocumentType
 from TagParsers.Dictionary_TagParser import Dictionary_TagParser 
 
@@ -25,8 +23,8 @@ class CppCodeView_DocumentType(DocumentType):
         parser = Dictionary_TagParser(tagMap, lines)
         return parser.parse(fileName)
         
-    def generateMarkdown(self, fileName):
-        return ['[[ParentList]]',
+    def convert(self, document, documentTree, outputRootDirectory):
+        remarkText = ['[[ParentList]]',
                 '',
                 '[[tag file_name]]',
                 '===',
@@ -36,10 +34,14 @@ class CppCodeView_DocumentType(DocumentType):
                 '[[Link]]: directory.remark-index',
                 '',
                 '[[-+CppCode]]: [[-Body]]',]
+
+        saveRemarkToHtml(remarkText, document, documentTree, 
+                         outputRootDirectory)
          
     def mathEnabled(self):
         return False
 
     def outputName(self, fileName):
         return fileName + '.htm'
+
     

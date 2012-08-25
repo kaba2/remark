@@ -13,7 +13,7 @@ import copy
 
 from MacroRegistry import findMacro
 from Common import changeExtension, outputDocumentName, documentType, unixDirectoryName, copyIfNecessary
-from Common import asciiMathMlName, remarkVersion, globalOptions, unixRelativePath
+from Common import asciiMathMlName, remarkVersion, globalOptions, unixRelativePath, writeFile
 
 class Scope(object):
     def __init__(self, parent, name):
@@ -801,76 +801,90 @@ def addHtmlBoilerPlate(text, document, htmlHead):
 
     return htmlText
 
+def convertRemarkToMarkdown(remarkText, document, documentTree, 
+                            inputRootDirectory, outputRootDirectory):
+    '''
+    Converts Remark text to Markdown text. 
 
-def convert(template, document, documentTree, 
-            inputRootDirectory, outputRootDirectory):
+    remarkText (list of strings):
+    The Remark text to convert, string per row.
+
+    returns (list of strings):
+    The converted Markdown text.
+    '''
+    remarkConverter = RemarkConverter(document, remarkText, documentTree, 
+                                      inputRootDirectory, outputRootDirectory)
+
+    # Convert Remark to Markdown.
+    markdownText = remarkConverter.convert(remarkText)
+
+    # Return the resulting Markdown text.
+    return markdownText
+
+def convertRemarkToHtml(remarkText, document, documentTree, 
+                        outputRootDirectory):
+    '''
+    Converts Remark text to html.
+
+    remarkText (list of strings):
+    The Remark text to convert, string per row.
+
+    returns (list of strings):
+    The converted html text.
+    '''
+     
+    remarkConverter = RemarkConverter(document, remarkText, documentTree, 
+                                      documentTree.rootDirectory, 
+                                      outputRootDirectory)
+
+    # Convert Remark to Markdown
+    markdownText = remarkConverter.convert(remarkText)
+    
+    # Convert Markdown to html.
+    htmlText = convertMarkdownToHtml(markdownText)
+    
+    # Create the html head-section.
+    headText = remarkConverter.htmlHeader()
+    headText += document.tag('html_head')
+
+    # Add html boilerplate.
+    htmlText = addHtmlBoilerPlate(htmlText, document, headText)
+
+    # Return the resulting html-text.      
+    return htmlText
+
+def saveRemarkToHtml(remarkText, document, documentTree, 
+                     outputRootDirectory):
+    # Convert Remark to html.
+    htmlText = convertRemarkToHtml(
+            remarkText, document, documentTree, 
+            outputRootDirectory)
+
     # Find out some names.
-    outputRootDirectory = os.path.normpath(outputRootDirectory)
     outputRelativeName = outputDocumentName(document.relativeName)
     outputFullName = os.path.join(outputRootDirectory, outputRelativeName)
 
-    # If the directories do not exist, create them.
-    outputDirectory = os.path.split(outputFullName)[0]
-    if not os.path.exists(outputDirectory):
-        os.makedirs(outputDirectory)
+    # Write the resulting html.
+    writeFile(htmlText, outputFullName)
 
-    # Convert Remark to Markdown
-    remarkConverter = RemarkConverter(document, template, documentTree, 
-                                      inputRootDirectory, outputRootDirectory)
-    text = remarkConverter.convert(template)
-    #for line in text:
-    #    print line
+def convertAll(documentTree, outputRootDirectory, prologue):
     
-    # Save the text to a file.
-    #with codecs.open(outputFullName + '.txt', mode = 'w', encoding = 'utf-8') as outputFile:
-    #    for line in text:
-    #        outputFile.write(line)
-    #        outputFile.write('\n')
-    
-    headText = remarkConverter.htmlHeader()
-    
-    headText += document.tag('html_head')
-              
-    # Convert Markdown to html.
-    text = convertMarkdownToHtml(text)
-    
-    # Add html boilerplate.
-    text = addHtmlBoilerPlate(text, document, headText)
-       
-    # Save the text to a file.
-    with codecs.open(outputFullName, mode = 'w', encoding = 'utf-8') as outputFile:
-        for line in text:
-            outputFile.write(line)
-            outputFile.write('\n')
+    outputRootDirectory = os.path.normpath(outputRootDirectory)
 
-def convertAll(documentTree, inputRootDirectory, outputRootDirectory, prologue):
-    
     # We wish to convert the files in alphabetical order
-    # (in the map they are in hashed order).
+    # by their relative-name (in the map they are in hashed order).
     sortedDocumentSet = documentTree.documentMap.values()
     sortedDocumentSet.sort(lambda x, y: cmp(x.relativeName, y.relativeName))
-
-    inputRootDirectory = os.path.normpath(inputRootDirectory)
-    outputRootDirectory = os.path.normpath(outputRootDirectory)
-    
+   
     for document in sortedDocumentSet:
-        # Find out some names.
-        sourceFullName = os.path.join(inputRootDirectory, document.relativeName)
-        outputRelativeName = outputDocumentName(document.relativeName)
-        outputFullName = os.path.join(outputRootDirectory, outputRelativeName)
+        # Find out the document-type.
+        type = documentType(document.extension)
 
-        type = documentType(document.extension) 
-        if type == None:
-            # This file has no associated document type; copy it.
-            copyIfNecessary(document.relativeName, inputRootDirectory, 
-                            outputRelativeName, outputRootDirectory)
-        else:
-            if globalOptions().verbose:
-                print 'Generating', document.relativeName, '...'
+        if globalOptions().verbose:
+            print 'Generating', document.relativeName, '...'
 
-            template = type.generateMarkdown(sourceFullName)
-            convert(prologue + template, document, documentTree, 
-                    inputRootDirectory, outputRootDirectory)
+        # Let the document-type convert the document.
+        type.convert(document, documentTree, outputRootDirectory)
     
 def _leadingTabs(text):
     tabs = 0

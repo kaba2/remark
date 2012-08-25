@@ -25,7 +25,8 @@ class SourceChildren_Macro(object):
         # Gather the list of source files.
         
         sortedMap = [x for x in document.childSet.itervalues() 
-                    if x.tagString('document_type') != 'RemarkPage']
+                    if (x.tagString('document_type') == 'CppCodeView' or
+                        x.tagString('document_type') == 'CodeView')]
         
         if len(sortedMap) == 0:
             return []
