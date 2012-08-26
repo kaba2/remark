@@ -38,9 +38,9 @@ Predefined tags
 ---------------
 
 Remark predefines the following tags for each document.
-They may by freely be changed. The difference is that 
-they are provided useful initial values by the tag parsers 
-before starting the conversion. The predefined tags are:
+They can be freely changed. However, they are provided 
+useful initial values by the tag parsers before starting 
+the conversion. The predefined tags are:
 
 description
 :	Contains the document's description. This is what is
