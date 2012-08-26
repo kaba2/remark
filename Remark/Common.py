@@ -65,6 +65,14 @@ def htmlDiv(enclosedText, className = ''):
 
     return text
 
+def escapeMarkdown(text):
+    escapedText = ''
+    escapeSet = set(['*', '_'])
+    for c in text:
+        if c in escapeSet:
+            escapedText += '\\'
+        escapedText += c
+    return escapedText
 
 def unixRelativePath(fromRelativeDirectory, toRelativePath):
     '''

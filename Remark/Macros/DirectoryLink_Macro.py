@@ -6,7 +6,7 @@
 import os.path
 
 from MacroRegistry import registerMacro
-from Common import unixRelativePath, outputDocumentName
+from Common import unixRelativePath, outputDocumentName, escapeMarkdown
 
 class DirectoryLink_Macro(object):
     def name(self):
@@ -30,7 +30,7 @@ class DirectoryLink_Macro(object):
                 linkTarget = documentTree.findDocumentLocal('directory.remark-index', 
                                                        linkDocument.relativeDirectory)
 
-                text.append(remarkConverter.remarkLink(linkDocument.relativeDirectory + '/',
+                text.append(remarkConverter.remarkLink(escapeMarkdown(linkDocument.relativeDirectory + '/'),
                                                        document, linkTarget))
 
                 if len(parameter) > 1:

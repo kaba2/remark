@@ -6,7 +6,7 @@
 import string
 import os.path
 
-from Common import unixRelativePath, htmlDiv
+from Common import unixRelativePath, htmlDiv, escapeMarkdown
 from Common import outputDocumentName, unixDirectoryName
 from MacroRegistry import registerMacro
 
@@ -44,13 +44,13 @@ class Index_Macro(object):
         for directory in directorySet:
             linkDirectory = os.path.join(document.relativeDirectory, directory)
             directoryDocument = documentTree.findDocumentLocal('directory.remark-index', linkDirectory)
-            text.append(' 1. ' + remarkConverter.remarkLink(directory + '/',
+            text.append(' 1. ' + remarkConverter.remarkLink(escapeMarkdown(directory + '/'),
                                                    document, directoryDocument))
         
         # Create links for the files.
         for fileName in fileSet:
             fileDocument = documentTree.findDocumentLocal(fileName, document.relativeDirectory)
-            text.append(' 1. ' + remarkConverter.remarkLink(fileName,
+            text.append(' 1. ' + remarkConverter.remarkLink(escapeMarkdown(fileName),
                                                    document, fileDocument))
                     
         text.append('')

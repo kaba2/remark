@@ -7,7 +7,7 @@ import os.path
 import string
 
 from MacroRegistry import registerMacro
-from Common import unixRelativePath, outputDocumentName
+from Common import unixRelativePath, outputDocumentName, escapeMarkdown
 
 class SourceChildren_Macro(object):
     def name(self):
@@ -135,7 +135,7 @@ class SourceChildren_Macro(object):
                 
             # Output the links in the group.
             for child in group[2]:
-                text.append(remarkConverter.remarkLink(child.fileName,
+                text.append(remarkConverter.remarkLink(escapeMarkdown(child.fileName),
                                                        document,
                                                        child))
                 text.append('')

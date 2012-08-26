@@ -4,6 +4,7 @@
 
 import re
 
+from Common import escapeMarkdown
 from Common import copyIfNecessary
 from TagParsers.Dictionary_TagParser import Dictionary_TagParser 
 
@@ -12,7 +13,7 @@ class Copy_DocumentType(object):
         return 'Copy'
 
     def linkDescription(self, document):
-        return document.fileName
+        return escapeMarkdown(document.fileName)
 
     def parseTags(self, fileName, lines = 100):
         return {}
