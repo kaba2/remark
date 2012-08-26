@@ -4,12 +4,11 @@
 
 import re
 
-from DocumentType import DocumentType
 from TagParsers.Remark_TagParser import Remark_TagParser
 from Common import changeExtension 
 from Convert import saveRemarkToHtml
 
-class RemarkPage_DocumentType(DocumentType):
+class RemarkPage_DocumentType(object):
     def name(self):
         return 'RemarkPage'
 

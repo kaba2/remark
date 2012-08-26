@@ -3,10 +3,9 @@
 # Description: CodeView document-type
 
 from Convert import saveRemarkToHtml
-from DocumentType import DocumentType
 from TagParsers.Dictionary_TagParser import Dictionary_TagParser 
 
-class CodeView_DocumentType(DocumentType):
+class CodeView_DocumentType(object):
     def name(self):
         return 'CodeView'
 

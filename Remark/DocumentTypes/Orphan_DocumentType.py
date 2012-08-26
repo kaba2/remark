@@ -2,11 +2,10 @@
 
 # Description: Orphan document-type
 
-from DocumentType import DocumentType
 from Common import changeExtension 
 from Convert import saveRemarkToHtml
 
-class Orphan_DocumentType(DocumentType):
+class Orphan_DocumentType(object):
     def name(self):
         return 'Orphan'
 

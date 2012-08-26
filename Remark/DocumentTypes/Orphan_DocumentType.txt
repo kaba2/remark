@@ -21,15 +21,21 @@ Name
 :	Orphan
 
 Input Extension
-: .remark-orphan
+:	.remark-orphan
 
 Output extension
-: .htm
+:	.htm
+
+Input syntax
+:	None
+
+Output syntax
+:	Html
 
 AsciiMath interpretation
 :	Disabled
 
-Document template
+Generating Remark text
 : 
 
 		Orphans

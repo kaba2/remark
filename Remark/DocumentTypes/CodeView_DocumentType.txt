@@ -18,10 +18,16 @@ Input extensions
 Output extension
 :	Input extension + `.htm`	
 
+Input syntax
+:	The used programming language's syntax.
+
+Output syntax
+:	Html
+
 AsciiMath interpretation
 :	Disabled
 
-Document template
+Generating Remark text
 :	
 		
 		[[ParentList]]
@@ -34,9 +40,6 @@ Document template
 		[[Link]]: directory.remark-index
 	
 		[[-+Code]]: [[-Body]]
-
-Document syntax
-:	The used programming language syntax.
 
 Specification of tags
 ---------------------

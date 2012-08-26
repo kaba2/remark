@@ -3,10 +3,9 @@
 # Description: CppCodeView document-type
 
 from Convert import saveRemarkToHtml
-from DocumentType import DocumentType
 from TagParsers.Dictionary_TagParser import Dictionary_TagParser 
 
-class CppCodeView_DocumentType(DocumentType):
+class CppCodeView_DocumentType(object):
     def name(self):
         return 'CppCodeView'
 
