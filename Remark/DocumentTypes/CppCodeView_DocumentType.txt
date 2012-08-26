@@ -4,8 +4,7 @@ CppCodeView document type
 [[Parent]]: document_types.txt
 
 The CppCodeView document type offers a highlighted view to a C++ source 
-code file. In addition, the include-files are cross-linked to other files
-with the CppCodeView type within the document tree.
+code file. 
 
 Properties
 ----------
@@ -19,10 +18,16 @@ Input extensions
 Output extension
 :	input extension + `.htm`
 
+Input syntax
+:	C++, C
+
+Output syntax
+:	Html
+
 AsciiMath interpretation
 : Disabled
 
-Document template
+Generating Remark text
 :	[[Verbatim]]:
 		[[ParentList]]
 				
@@ -34,9 +39,6 @@ Document template
 		[[Link]]: directory.remark-index
 	
 		[[-+CppCode]]: [[-Body]]
-
-Document syntax
-:	C++
 
 Specification of tags
 ---------------------

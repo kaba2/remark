@@ -20,15 +20,21 @@ Name
 :	DirectoryView
 
 Input extension
-: .remark-index
+:	.remark-index
 
 Output extension
-: .htm
+:	.htm
+
+Input syntax
+:	None
+
+Output syntax
+:	Html
 
 AsciiMath interpretation
 :	Disabled
 
-Document template
+Generating Remark text
 : 
 
 		[[tag description]]

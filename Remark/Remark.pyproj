@@ -27,7 +27,6 @@
     <Compile Include="DocumentTypes\Copy_DocumentType.py" />
     <Compile Include="DocumentTypes\CppCodeView_DocumentType.py" />
     <Compile Include="DocumentTypes\DirectoryView_DocumentType.py" />
-    <Compile Include="DocumentTypes\DocumentType.py" />
     <Compile Include="DocumentTypes\CodeView_DocumentType.py" />
     <Compile Include="DocumentTypes\Orphan_DocumentType.py" />
     <Compile Include="DocumentTypes\RemarkPage_DocumentType.py" />

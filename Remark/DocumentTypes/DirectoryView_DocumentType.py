@@ -2,11 +2,10 @@
 
 # Description: DirectoryView document-type
 
-from DocumentType import DocumentType
 from Common import changeExtension 
 from Convert import saveRemarkToHtml
 
-class DirectoryView_DocumentType(DocumentType):
+class DirectoryView_DocumentType(object):
     def name(self):
         return 'DirectoryView'
 

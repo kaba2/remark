@@ -3,7 +3,10 @@ Copy document type
 
 [[Parent]]: document_types.txt
 
-The Copy document type is 
+The Copy document type copies its input file to the
+output file if the output file either does not
+exist or has a modification time-stamp not later than
+than the input file.
 
 Properties
 ----------
@@ -17,14 +20,14 @@ Input extension
 Output extension
 : 	Same as input extension.
 
+Input syntax:
+:	Any
+
+Output syntax:
+:	The same as input syntax.
+
 AsciiMath interpretation
 :	Disabled
-
-Document template
-:	Empty
-
-Document syntax
-:	Binary
 
 Specification of tags
 ---------------------

@@ -3,5 +3,8 @@ Document types
 
 [[Parent]]: remark_syntax.txt
 
-This page contains the currently available document types.
+A _document type_ encapsulates the conversion of a document to another.
+Every document has a document type. If a document-type is not given
+explicitly, the default document type is the Copy document type.
+This page lists the currently available document types.
 

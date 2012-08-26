@@ -5,10 +5,9 @@
 import re
 
 from Common import copyIfNecessary
-from DocumentType import DocumentType
 from TagParsers.Dictionary_TagParser import Dictionary_TagParser 
 
-class Copy_DocumentType(DocumentType):
+class Copy_DocumentType(object):
     def name(self):
         return 'Copy'
 
