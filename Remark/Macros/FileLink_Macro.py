@@ -6,7 +6,7 @@
 import os.path
 
 from MacroRegistry import registerMacro
-from Common import unixRelativePath, outputDocumentName
+from Common import unixRelativePath, outputDocumentName, escapeMarkdown
 
 class FileLink_Macro(object):
     def name(self):
@@ -27,7 +27,7 @@ class FileLink_Macro(object):
                 remarkConverter.reportWarning('Document ' + linkFileName + ' is ambiguous. Picking arbitrarily.')
             
             if linkDocument != None:
-                text.append(remarkConverter.remarkLink(linkDocument.fileName,
+                text.append(remarkConverter.remarkLink(escapeMarkdown(linkDocument.fileName),
                                                        document, linkDocument))
                 if len(parameter) > 1:                
                     text.append('')

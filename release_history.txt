@@ -30,8 +30,9 @@ the problematic file and continuing.
 * Made Remark name links to code-files with their filenames, rather
 than with their descriptions.
 * Added document-tags.
-* Removed predefined variables, and replaced them with document
-tags.
+* Escaped Markdown meta-characters in path-based link-descriptions
+(e.g. \_\_init\_\_.py instead of __init__.py).
+* Removed predefined variables, and replaced them with document tags.
 * Removed get-command.
 
 ### Interface
@@ -45,11 +46,20 @@ to spot warnings and errors.
 * Added a warning about using the relative form in links where the 
 pure form would already be unambiguous. This enforces robust linking.
 
+### Document types
+
+* Generalized the concept of a document type not only to describe
+the conversion by Remark syntax, but to completely abstract the
+conversion process.
+* Every document in the document tree now has a document type.
+* Added the Copy document type, which simply copies the input file
+to the output file. This is the default document type.
+
 ### Macros
 
-* ParentList: New macro to generate a list of parent documents.
-* DocumentTree: New macro to generate parts or all of the document tree.
-* Example: New macro to easily generate examples in Remark.
+* Added the ParentList macro to generate a list of parent documents.
+* Added the DocumentTree macro to generate parts or all of the document tree.
+* Added the Example macro to easily generate examples in Remark.
 * Gallery: Increased the default number of pixels in thumbnails.
 * Gallery: Made the macro work also with vector-based images, such
 as .svg.
@@ -59,6 +69,14 @@ generate thumbnails for .svg from a pixel-based alternative image.
 tables for better CSS-styling. Added `class_name` variables.
 * Renamed GenericCode macro to Code macro, and made GenericCode an 
 alias of Code.
+
+### Tag parsers
+
+* Added the Dictionary_TagParser which uses a much more efficient
+search algorithm than the previous Regex_TagParser (one regex for 
+all tags, instead of one regex per each tag).
+* Removed Empty_TagParser.
+* Removed Regex_TagParser.
 
 ### Documentation
 
