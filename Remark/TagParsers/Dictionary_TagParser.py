@@ -10,7 +10,7 @@ import re
 import string
 
 class Dictionary_TagParser(object):
-    def __init__(self, tagMap, maxLines = 100):
+    def __init__(self, tagMap):
         '''
         Searches for tag-definitions of the form tag-key : tag-text
         where tag-key and tag-text are both strings and the tag-text 
@@ -21,11 +21,7 @@ class Dictionary_TagParser(object):
         A map from a tag-name to a tag-key. The map has to
         invertible; there is a unique tag-name for each tag-key.        
         For example: {'description' : 'Description', ...}
-
-        maxLines:
-        Maximum number of lines to parse.
         '''
-        self.maxLines = maxLines
         
         # Construct a regex of the form
         # (tag1|tag2|tag3|...) : text
@@ -70,7 +66,7 @@ class Dictionary_TagParser(object):
         for tagName, tagKey in tagMap.items():
             self.tagKeyMap[tagKey] = tagName
                 
-    def parse(self, fileName):
+    def parse(self, fileName, maxLines):
         tagSet = {}
         with openFileUtfOrLatin(fileName) as file:
             lineNumber = 0
@@ -81,7 +77,7 @@ class Dictionary_TagParser(object):
                     tagKey = match.group(1)
                     # The second group is the tag-text.
                     tagText = match.group(2).strip()
-                    
+
                     # Find out the corresponding tag-name.
                     tagName = self.tagKeyMap.get(tagKey)
                     assert tagName != None
@@ -99,9 +95,10 @@ class Dictionary_TagParser(object):
                         tagSet[tagName] = [tagText]
 
                 lineNumber += 1
-                if lineNumber >= self.maxLines:
+                if lineNumber >= maxLines:
                     # All tags must occur within 'maxLines' lines.
                     break
+
         return tagSet
 
 

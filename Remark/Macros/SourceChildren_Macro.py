@@ -27,7 +27,7 @@ class SourceChildren_Macro(object):
         sortedMap = [x for x in document.childSet.itervalues() 
                     if (x.tagString('document_type') == 'CppCodeView' or
                         x.tagString('document_type') == 'CodeView')]
-        
+
         if len(sortedMap) == 0:
             return []
 
@@ -45,12 +45,12 @@ class SourceChildren_Macro(object):
         description = ''
         detail = ''
         for i in range(0, len(sortedMap)):
-            document = sortedMap[i]
+            sourceDocument = sortedMap[i]
             reference = sortedMap[beginIndex]
             
             # Note that it is really the _description_ we want to
             # use here, rather than the link description.
-            desc = document.tagString('description')
+            desc = sourceDocument.tagString('description')
             if desc != '':
                 # If there are multiple descriptions, one is chosen
                 # arbitrarily and a warning is emitted.
@@ -61,7 +61,7 @@ class SourceChildren_Macro(object):
                     remarkConverter.reportWarning(message)
                 description = desc
 
-            det = document.tagString('detail')
+            det = sourceDocument.tagString('detail')
             if det != '':
                 # If there are multiple details, one is chosen
                 # arbitrarily and a warning is emitted.
@@ -105,7 +105,6 @@ class SourceChildren_Macro(object):
         
         # Order the groups in alphabetical order w.r.t.
         # their descriptions. 
-        
         groupSet.sort(lambda x, y: cmp(x[0], y[0]))
         
         # Output the links in the groups together
