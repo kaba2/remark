@@ -18,7 +18,7 @@ class DirectoryView_DocumentType(object):
     def convert(self, document, documentTree, outputRootDirectory):
         remarkText = ['[[ParentList]]',
                 '',
-                '[[tag description]]',
+                '[[tag link_description]]',
                 '===',
                 '',
                 '[[Index]]',]

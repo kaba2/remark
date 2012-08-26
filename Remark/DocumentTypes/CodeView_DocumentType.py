@@ -29,7 +29,7 @@ class CodeView_DocumentType(object):
         remarkText = [
                 '[[ParentList]]',
                 '',
-                '[[tag file_name]]',
+                '[[tag link_description]]',
                 '===',
                 '',
                 '[[Parent]]',

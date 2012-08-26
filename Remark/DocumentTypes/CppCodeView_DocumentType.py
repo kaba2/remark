@@ -29,7 +29,7 @@ class CppCodeView_DocumentType(object):
     def convert(self, document, documentTree, outputRootDirectory):
         remarkText = ['[[ParentList]]',
                 '',
-                '[[tag file_name]]',
+                '[[tag link_description]]',
                 '===',
                 '',
                 '[[Parent]]',

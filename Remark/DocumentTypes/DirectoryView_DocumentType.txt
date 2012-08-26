@@ -37,7 +37,7 @@ AsciiMath interpretation
 Generating Remark text
 : 
 
-		[[tag description]]
+		[[tag link_description]]
 		===
 		
 		[[Index]]

@@ -52,7 +52,6 @@ class Document(object):
 
         # The predefined document-tags.
         self.setTag('description')
-        self.setTag('link_description')
         self.setTag('detail')
         self.setTag('author')
         self.setTag('file_name', [self.fileName])
@@ -60,8 +59,10 @@ class Document(object):
         self.setTag('relative_directory', [self.relativeDirectory])
         self.setTag('extension', [self.extension])
         self.setTag('html_head')
-
         self.setTag('document_type', [self.documentType.name()])
+        # This will be filled in later, after the
+        # description-tags have been parsed.
+        self.setTag('link_description')
         
     def insertChild(self, child):
         '''
@@ -483,6 +484,7 @@ class DocumentTree(object):
                 type = documentType(key)
                 tagSet = type.parseTags(self.fullName(document))
                 document.tagSet.update(tagSet)
+                document.setTag('link_description', [type.linkDescription(document)])
                 
                 #print
                 #print document.relativeName + ':'

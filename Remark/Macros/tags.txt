@@ -49,7 +49,8 @@ description
 
 link_description
 :	Contains a description of the document most suitable
-	for a link-name. This is defined by the document-type
+	for a link-name, with possible escaping for the Markdown
+	meta-characters. This is defined by the document-type
 	of the document. For most of the document-types this
 	is the same as the description, however, for code files
 	the link-description is the relative file-name.
