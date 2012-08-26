@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Description: Converts Remark to html
+# Description: Converts Remark to Markdown and html
 # Documentation: core_stuff.txt
 
 import re
