@@ -24,7 +24,7 @@ Input syntax:
 :	Any
 
 Output syntax:
-:	The same as input syntax.
+:	Same as input syntax.
 
 AsciiMath interpretation
 :	Disabled

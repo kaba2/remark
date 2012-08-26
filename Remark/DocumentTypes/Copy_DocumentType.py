@@ -30,4 +30,4 @@ class Copy_DocumentType(object):
         return False
 
     def outputName(self, fileName):
-        return fileName + '.htm'
+        return fileName
