@@ -32,7 +32,7 @@ Generating Remark text
 		
 		[[ParentList]]
 		
-		[[tag file_name]]
+		[[tag link_description]]
 		===
 	
 		[[Parent]]
