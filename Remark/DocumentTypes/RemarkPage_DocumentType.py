@@ -5,19 +5,21 @@
 import re
 
 from TagParsers.Remark_TagParser import Remark_TagParser
-from Common import changeExtension 
+from Common import changeExtension, globalOptions 
 from Convert import saveRemarkToHtml
 
 class RemarkPage_DocumentType(object):
+    def __init__(self):
+        self.tagParser = Remark_TagParser({'parent' : '[[Parent]]'})
+
     def name(self):
         return 'RemarkPage'
 
     def linkDescription(self, document):
         return document.tagString('description')
 
-    def parseTags(self, fileName, lines = 100):
-        parser = Remark_TagParser({'parent' : '[[Parent]]'}, lines)
-        return parser.parse(fileName)
+    def parseTags(self, fileName):
+        return self.tagParser.parse(fileName, globalOptions().maxTagLines)
         
     def convert(self, document, documentTree, outputRootDirectory):
         remarkText = ['[[set RemarkPage.mid_text]]',

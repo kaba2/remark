@@ -7,7 +7,7 @@ import os.path
 import string
 import re
 from Common import documentType, unixDirectoryName, unixRelativePath, fileExtension
-from Common import globalOptions, withoutFileExtension
+from Common import globalOptions, withoutFileExtension, strictDocumentType
 
 class Document(object):
     def __init__(self, relativeName):
@@ -485,8 +485,14 @@ class DocumentTree(object):
             try:
                 key = fileExtension(document.relativeName)
                 type = documentType(key)
-                tagSet = type.parseTags(self.fullName(document), globalOptions().maxTagLines)
+                tagSet = type.parseTags(self.fullName(document))
                 document.tagSet.update(tagSet)
+                
+                #print
+                #print document.relativeName + ':'
+                #for tagName, tagText in tagSet.iteritems():
+                #    print tagName, ':', tagText
+
             except UnicodeDecodeError:
                 print 'Warning:', document.relativeName,
                 print ': Tag parsing failed because of a unicode decode error.'
@@ -500,18 +506,16 @@ class DocumentTree(object):
         for document in self.documentMap.itervalues():
             # Documents which are not associated to a document
             # type are linked to orphan straight away.
-            if documentType(document.extension) == None:
+            if strictDocumentType(document.extension) == None:
                 document.parent = self.orphan
 
-            # If a document specifies a parent, then this
-            # is handled the same whether it is a documentation file
-            # or a source file. Simply find the specified parent.
+            # See if the document specifies a parent document.
             if 'parent' in document.tagSet:
-
                 # The parent file path in the tag is given relative to 
                 # the directory containing the document file.
                 parentName = document.tagString('parent')
                 
+                # See if we can find the parent document.
                 parent, unique = self.findDocument(parentName, 
                                                    document.relativeDirectory)
                 if not unique:
@@ -594,8 +598,6 @@ class DocumentTree(object):
             # The implicit linking only concerns
             # source files. 
             if document.tagString('document_type') != 'RemarkPage':
-                # This is a source file (i.e. non-RemarkPage).
-            
                 # Find the last document in the array
                 # which has identical filename to the searched
                 # one, without considering suffixes.

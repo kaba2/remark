@@ -15,7 +15,7 @@ class Copy_DocumentType(object):
     def linkDescription(self, document):
         return escapeMarkdown(document.fileName)
 
-    def parseTags(self, fileName, lines = 100):
+    def parseTags(self, fileName):
         return {}
 
     def convert(self, document, documentTree, outputRootDirectory):

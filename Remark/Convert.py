@@ -229,9 +229,9 @@ class RemarkConverter(object):
         return result
 
     def remarkLink(self, description, fromDocument, toDocument):
-        linkSource = unixRelativePath(fromDocument.relativeDirectory, 
-                                 toDocument.relativeName)
-        linkTarget = outputDocumentName(linkSource)
+        fromDirectory = fromDocument.relativeDirectory
+        toFile = outputDocumentName(toDocument.relativeName)
+        linkTarget = unixRelativePath(fromDirectory, toFile)
         return self.markdownLink(description, linkTarget)
 
     def markdownLink(self, description, htmlLink):

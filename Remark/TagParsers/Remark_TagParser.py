@@ -5,21 +5,21 @@
 # Documentation: tag_parsers.txt
 
 from Dictionary_TagParser import Dictionary_TagParser
-from Common import openFileUtfOrLatin
+from Common import openFileUtfOrLatin, globalOptions
 
 import string
 import re
 import codecs
          
 class Remark_TagParser(object):
-    def __init__(self, tagMap, maxLines):
-        self.dictionaryParser = Dictionary_TagParser(tagMap, maxLines)
-        self.maxLines = maxLines
+    def __init__(self, tagMap):
+        self.dictionaryParser = Dictionary_TagParser(tagMap)
         
-    def parse(self, fileName):
+    def parse(self, fileName, maxLines):
         # Let the generic parser handle those tags
         # which can be found via regular expressions.
-        tagSet = self.dictionaryParser.parse(fileName)
+        tagSet = self.dictionaryParser.parse(fileName,
+                                             globalOptions().maxTagLines)
         
         # This way we only have to handle the description.
         # The description is a file line which precedes
@@ -42,7 +42,7 @@ class Remark_TagParser(object):
                 # we detect a header line.
                 previousLine = fileLine
                 lineNumber += 1
-                if lineNumber >= self.maxLines:
+                if lineNumber >= maxLines:
                     # All tags must appear within 'maxLines' lines. 
                     break
         return tagSet
