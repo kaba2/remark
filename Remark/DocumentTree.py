@@ -138,8 +138,7 @@ class DocumentTree(object):
         compute()
         insertDocument()
         '''
-        assert os.path.isdir(rootDirectory)
-        
+
         # The root-directory whose child-directories
         # to construct the document-tree for.
         self.rootDirectory = rootDirectory
@@ -322,9 +321,6 @@ class DocumentTree(object):
         documentTree.findDocumentUpwards('spam.txt', 'eggs/bar/')         
         '''
 
-        assert (relativeDirectory.strip() == '' or
-                os.path.isdir(relativeDirectory))
-            
         fileName = os.path.split(documentName)[1]
         if fileName != documentName:
             # This is a relative path: don't
