@@ -15,9 +15,9 @@ from pygments import highlight
 from pygments.lexers import CppLexer
 from pygments.formatters import HtmlFormatter
 
-def _linkConverter(regexMatch, remarkConverter):
-    document = remarkConverter.document
-    documentTree = remarkConverter.documentTree 
+def _linkConverter(regexMatch, remark):
+    document = remark.document
+    documentTree = remark.documentTree 
         
     searchName = unixDirectoryName(regexMatch.group(2))
     includeName = regexMatch.group(2)
@@ -37,7 +37,7 @@ def _linkConverter(regexMatch, remarkConverter):
         linkDocument, unique = documentTree.findDocument(searchName, document.relativeDirectory)
         if not unique:
             # We don't accept ambiguous links.
-            remarkConverter.reportWarning('Include filename ' + searchName + 
+            remark.reportWarning('Include filename ' + searchName + 
                                           ' is ambiguous. Skipping linking.')
             linkDocument = None
         
@@ -52,7 +52,7 @@ class CppCode_Macro(object):
     def name(self):
         return 'CppCode'
 
-    def expand(self, parameter, remarkConverter):
+    def expand(self, parameter, remark):
         # Hilight the text.
         hilightedText = highlight(string.join(parameter, '\n'), CppLexer(), HtmlFormatter())
 
@@ -61,7 +61,7 @@ class CppCode_Macro(object):
         
         # Copy the source and replace the includes with links.
         includeRegex = re.compile(r'(#include[ \t]+(?:(?:&quot)|(?:&lt));)(.*)((?:(?:&quot)|(?:&gt));)')
-        replacer = lambda match: _linkConverter(match, remarkConverter)
+        replacer = lambda match: _linkConverter(match, remark)
         convertedText = []
         for line in hilightedText:
             # Replace include file names with links to source files.
@@ -75,7 +75,7 @@ class CppCode_Macro(object):
     def pureOutput(self):
         return True
 
-    def htmlHead(self, remarkConverter):
+    def htmlHead(self, remark):
         return []                
 
     def postConversion(self, inputDirectory, outputDirectory):

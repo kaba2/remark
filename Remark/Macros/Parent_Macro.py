@@ -10,11 +10,11 @@ class Parent_Macro(object):
     def name(self):
         return 'Parent'
 
-    def expand(self, parameter, remarkConverter):
-        document = remarkConverter.document
+    def expand(self, parameter, remark):
+        document = remark.document
         parent = document.parent
        
-        return [remarkConverter.remarkLink('Back to ' + parent.linkDescription(),
+        return [remark.remarkLink('Back to ' + parent.linkDescription(),
                                            document, parent)]
 
     def outputType(self):
@@ -23,7 +23,7 @@ class Parent_Macro(object):
     def pureOutput(self):
         return True
 
-    def htmlHead(self, remarkConverter):
+    def htmlHead(self, remark):
         return []                
 
     def postConversion(self, inputDirectory, outputDirectory):

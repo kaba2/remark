@@ -12,16 +12,16 @@ class Ref_Macro(object):
     def name(self):
         return 'Ref'
 
-    def expand(self, parameter, remarkConverter):
-        document = remarkConverter.document
-        documentTree = remarkConverter.documentTree
+    def expand(self, parameter, remark):
+        document = remark.document
+        documentTree = remark.documentTree
         
         text = []
         
         for linkFileName in parameter:
             linkDocument, unique = documentTree.findDocument(linkFileName, document.relativeDirectory)
             if not unique:
-                remarkConverter.reportWarning('Document ' + linkFileName + ' is ambiguous. Picking arbitrarily.')
+                remark.reportWarning('Document ' + linkFileName + ' is ambiguous. Picking arbitrarily.')
             
             if linkDocument != None:
                 linkTarget = unixRelativePath(document.relativeDirectory, linkDocument.relativeName)
@@ -29,7 +29,7 @@ class Ref_Macro(object):
                 if len(parameter) > 1:                
                     text += ['']
             else:
-                remarkConverter.reportWarning('Document ' + linkFileName + ' not found. Ignoring it.')
+                remark.reportWarning('Document ' + linkFileName + ' not found. Ignoring it.')
             
         return text
     
@@ -39,7 +39,7 @@ class Ref_Macro(object):
     def pureOutput(self):
         return True
 
-    def htmlHead(self, remarkConverter):
+    def htmlHead(self, remark):
         return []                
 
     def postConversion(self, inputDirectory, outputDirectory):

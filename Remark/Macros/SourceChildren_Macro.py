@@ -13,8 +13,8 @@ class SourceChildren_Macro(object):
     def name(self):
         return 'SourceChildren'
 
-    def expand(self, parameter, remarkConverter):
-        document = remarkConverter.document
+    def expand(self, parameter, remark):
+        document = remark.document
                 
         def prefixOf(left, right):
             return string.find(os.path.splitext(right)[0], os.path.splitext(left)[0]) == 0
@@ -58,7 +58,7 @@ class SourceChildren_Macro(object):
                     message = ['Multiple descriptions for a document-group.',
                               'Current: ' + description,
                               'New: ' + desc]
-                    remarkConverter.reportWarning(message)
+                    remark.reportWarning(message)
                 description = desc
 
             det = sourceDocument.tagString('detail')
@@ -69,7 +69,7 @@ class SourceChildren_Macro(object):
                     message = ['Multiple details for a document-group. ',
                               'Current: ' + detail,
                               'New: ' + det]
-                    remarkConverter.reportWarning(message)
+                    remark.reportWarning(message)
                 detail = det
 
             if i == len(sortedMap) - 1 or not same(sortedMap[i + 1].relativeName, reference.relativeName):
@@ -101,7 +101,7 @@ class SourceChildren_Macro(object):
                 message = 'Description missing for the document-group'
                 for child in group[2]:
                     message += '\n' + child.fileName
-                remarkConverter.reportWarning(message)
+                remark.reportWarning(message)
         
         # Order the groups in alphabetical order w.r.t.
         # their descriptions. 
@@ -110,7 +110,7 @@ class SourceChildren_Macro(object):
         # Output the links in the groups together
         # with a description for the group.
         
-        scope = remarkConverter.scopeStack.top()
+        scope = remark.scopeStack.top()
         text = []
         text.append('')
         text.append(scope.getString('SourceChildren.title', 'Files'))
@@ -134,7 +134,7 @@ class SourceChildren_Macro(object):
                 
             # Output the links in the group.
             for child in group[2]:
-                text.append(remarkConverter.remarkLink(escapeMarkdown(child.fileName),
+                text.append(remark.remarkLink(escapeMarkdown(child.fileName),
                                                        document,
                                                        child))
                 text.append('')
@@ -147,7 +147,7 @@ class SourceChildren_Macro(object):
     def pureOutput(self):
         return True
 
-    def htmlHead(self, remarkConverter):
+    def htmlHead(self, remark):
         return []                
 
     def postConversion(self, inputDirectory, outputDirectory):

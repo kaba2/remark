@@ -14,10 +14,10 @@ class Index_Macro(object):
     def name(self):
         return 'Index'
 
-    def expand(self, parameter, remarkConverter):
-        document = remarkConverter.document
-        documentTree = remarkConverter.documentTree
-        scope = remarkConverter.scopeStack.top()
+    def expand(self, parameter, remark):
+        document = remark.document
+        documentTree = remark.documentTree
+        scope = remark.scopeStack.top()
 
         # Variables
         className = scope.getString('Index.class_name', 'Index')
@@ -44,13 +44,13 @@ class Index_Macro(object):
         for directory in directorySet:
             linkDirectory = os.path.join(document.relativeDirectory, directory)
             directoryDocument = documentTree.findDocumentLocal('directory.remark-index', linkDirectory)
-            text.append(' 1. ' + remarkConverter.remarkLink(escapeMarkdown(directory + '/'),
+            text.append(' 1. ' + remark.remarkLink(escapeMarkdown(directory + '/'),
                                                    document, directoryDocument))
         
         # Create links for the files.
         for fileName in fileSet:
             fileDocument = documentTree.findDocumentLocal(fileName, document.relativeDirectory)
-            text.append(' 1. ' + remarkConverter.remarkLink(escapeMarkdown(fileName),
+            text.append(' 1. ' + remark.remarkLink(escapeMarkdown(fileName),
                                                    document, fileDocument))
                     
         text.append('')
@@ -63,7 +63,7 @@ class Index_Macro(object):
     def pureOutput(self):
         return False
 
-    def htmlHead(self, remarkConverter):
+    def htmlHead(self, remark):
         return []                
 
     def postConversion(self, inputDirectory, outputDirectory):

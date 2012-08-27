@@ -12,14 +12,10 @@ class Body_Macro(object):
     def name(self):
         return 'Body'
 
-    def expand(self, parameter, remarkConverter):
-        document = remarkConverter.document
-        
-        fileName = remarkConverter.documentTree.fullName(document);
-    
-        text = readFile(fileName)
-                                    
-        return text
+    def expand(self, parameter, remark):
+        document = remark.document
+        fileName = remark.documentTree.fullName(document);
+        return readFile(fileName)
     
     def outputType(self):
         return 'remark'
@@ -27,7 +23,7 @@ class Body_Macro(object):
     def pureOutput(self):
         return False
     
-    def htmlHead(self, remarkConverter):
+    def htmlHead(self, remark):
         return []                
 
     def postConversion(self, inputDirectory, outputDirectory):

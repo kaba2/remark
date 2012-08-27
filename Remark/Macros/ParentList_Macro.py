@@ -10,13 +10,13 @@ class ParentList_Macro(object):
     def name(self):
         return 'ParentList'
 
-    def expand(self, parameter, remarkConverter):
-        scope = remarkConverter.scopeStack.top()
+    def expand(self, parameter, remark):
+        scope = remark.scopeStack.top()
         className = scope.getString('ParentList.class_name', 'ParentList')
 
         # Gather document's parents one by one.
         parentSet = []
-        document = remarkConverter.document
+        document = remark.document
         while document != document.parent:
             parentSet.append(document)
             document = document.parent
@@ -26,9 +26,9 @@ class ParentList_Macro(object):
         level = 1
         text = []
         for document in reversed(parentSet):
-            linkText = remarkConverter.remarkLink(
+            linkText = remark.remarkLink(
                 document.linkDescription(), 
-                remarkConverter.document, document)
+                remark.document, document)
 
             # Strictly speaking, Markdown does not
             # use the actual numbers, so we could
@@ -46,7 +46,7 @@ class ParentList_Macro(object):
     def pureOutput(self):
         return False
 
-    def htmlHead(self, remarkConverter):
+    def htmlHead(self, remark):
         return []                
 
     def postConversion(self, inputDirectory, outputDirectory):

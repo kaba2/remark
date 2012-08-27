@@ -8,7 +8,7 @@ class Example_Macro(object):
     def name(self):
         return 'Example'
 
-    def expand(self, parameter, remarkConverter):
+    def expand(self, parameter, remark):
         
         text = []
         text.append('')
@@ -30,7 +30,7 @@ class Example_Macro(object):
     def pureOutput(self):
         return False
 
-    def htmlHead(self, remarkConverter):
+    def htmlHead(self, remark):
         return []                
 
     def postConversion(self, inputDirectory, outputDirectory):

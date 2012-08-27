@@ -9,7 +9,7 @@ class Comment_Macro(object):
     def name(self):
         return 'Comment'
 
-    def expand(self, parameter, remarkConverter):
+    def expand(self, parameter, remark):
         # This macro simply eats its parameter. This allows
         # for commenting.
         return []
@@ -20,7 +20,7 @@ class Comment_Macro(object):
     def pureOutput(self):
         return True
 
-    def htmlHead(self, remarkConverter):
+    def htmlHead(self, remark):
         return []                
 
     def postConversion(self, inputDirectory, outputDirectory):
