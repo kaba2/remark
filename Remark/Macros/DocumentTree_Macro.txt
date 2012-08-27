@@ -33,27 +33,27 @@ DocumentTree.class_name
 	Default `DocumentTree`.
 
 DocumentTree.exclude
-:	A list of tag-name glob pairs (e.g. file_name *.txt), one per row, 
+:	A list of tag-name/glob pairs (e.g. file_name *.txt), one per row, 
 	where the glob decides whether a given document with a given tag-value 
 	is to be excluded from the list. Default empty (matches nothing).
 
 DocumentTree.exclude_regex
-:	A list of tag-name regular expression pairs (e.g. file_name .*\.txt), 
+:	A list of tag-name/regex pairs (e.g. file_name .*\.txt), 
 	one per row, where the regex decides whether a given document with a 
 	given tag-value is to be excluded from the list. 
 	Default empty (matches nothing).
 
 DocumentTree.root_document
 :	The document to use as the root node.
-	Default `[[tag file_name]]` (pre-expanded).
+	Default `[[tag file_name]]` (expanded).
 
 DocumentTree.include
-:	A list of tag-name glob pairs (e.g. file_name *.txt), one per row, 
+:	A list of tag-name/glob pairs (e.g. file_name *.txt), one per row, 
 	where the glob decides whether a given document with a given tag-value 
 	is to be included in the list. Default `file_name *` (matches everything).
 
 DocumentTree.include_regex
-:	A list of tag-name regular expression pairs (e.g. file_name .*\.txt), 
+:	A list of tag-name/regex pairs (e.g. file_name .*\.txt), 
 	one per row, where the regex decides whether a given document with a 
 	given tag-value is to be included in the list. 
 	Default empty (matches nothing).
@@ -79,12 +79,14 @@ If both a regex pattern and a glob pattern is given, they
 are combined as alternatives.
 
 A document is said to _match_ when
+
  * it matches the include pattern, and
  * it does not match the exclude pattern.
 
 ### Non-compact representation
 
-In the non-compact representation, a document is listed if and only
+In the _non-compact_ representation, a document is listed if and only if
+
  * its depth is at least `min_depth` and at most `max_depth`, and
  * it matches, or it has matching descendants. 
  
@@ -92,7 +94,8 @@ This preserves the parent-child relation between documents.
 
 ### Compact representation
 
-In the compact representation, a document is listed if and only if:
+In the _compact_ representation, a document is listed if and only if
+
  * its depth is at least `min_depth` and at most `max_depth`, and
  * it matches, or it has matching children, or it has at least two 
  children with matching descendants.

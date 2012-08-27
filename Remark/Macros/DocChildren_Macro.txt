@@ -28,15 +28,15 @@ Ignored.
 DocChildren.class_name
 : 	The name of the html-class to give to the `<div>` tag. The html-class 
 	allows to style the generated list using CSS.
-	Default 'DocChildren'.
+	Default `DocChildren`.
 
 DocChildren.exclude
-:	A list of tag-name glob pairs (e.g. file_name *.txt), one per row, 
+:	A list of tag-name/glob pairs (e.g. file_name *.txt), one per row, 
 	where the glob decides whether a given document with a given tag-value 
 	is to be excluded from the list. Default empty (matches nothing).
 
 DocChildren.exclude_regex
-:	A list of tag-name regular expression pairs (e.g. file_name .*\.txt), 
+:	A list of tag-name/regex pairs (e.g. file_name .*\.txt), 
 	one per row, where the regex decides whether a given document with a 
 	given tag-value is to be excluded from the list. 
 	Default empty (matches nothing).
@@ -46,12 +46,12 @@ DocChildren.root_document
 	Default `[[tag file_name]]` (pre-expanded).
 
 DocChildren.include
-:	A list of tag-name glob pairs (e.g. file_name *.txt), one per row, 
+:	A list of tag-name/glob pairs (e.g. file_name *.txt), one per row, 
 	where the glob decides whether a given document with a given tag-value 
 	is to be included in the list. Default `document_type RemarkPage`.
 
 DocChildren.include_regex
-:	A list of tag-name regular expression pairs (e.g. file_name .*\.txt), 
+:	A list of tag-name/regex pairs (e.g. file_name .*\.txt), 
 	one per row, where the regex decides whether a given document with a 
 	given tag-value is to be included in the list. 
 	Default empty (matches nothing).
