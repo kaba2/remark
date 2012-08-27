@@ -40,14 +40,25 @@ DocumentTree.max_depth
 :	Maximum depth for a document to be listed.
 	Default 10.
 
-DocumentTree.exclude_set
-:	A set of identifiers, one per row. If a document has any of these
-	identifiers as the value of the tag given by the `exclude_tag`, then
-	it will be excluded from the tree. Default empty.
+DocumentTree.filter
+:	A glob which decides whether a given document with a given 
+	filter-tag value is to be included in the list. A glob is
+	a pattern matching string familiar from file systems. For
+	example, *.txt ?at.png matches paper.txt, bat.png and 
+	cat.png. Default * (matches everything).
 
-DocumentTree.exclude_tag
-:	An identifier specifying the tag to use for deciding exclusion.
+DocumentTree.filter_tag
+:	An identifier specifying the tag to use for filtering.
 	Default 'document_type'.
+
+DocumentTree.regex_filter
+:	A regular expression which decides whether a given document 
+	with a given filter-tag value is to be included in the list.
+	The regular expression is given in Python's regular expression
+	syntax. For example, (ab)*\.txt matches .txt, ab.txt, abab.txt,
+	and so on. The regex filter takes precedence over the glob
+	filter. It is more powerful, but at the same time less
+	readable. Default empty.
 
 Examples
 --------
@@ -56,13 +67,15 @@ Examples
 	[[DocumentTree]]
 
 [[Example]]:
-	[[set DocumentTree.min_depth: 0]]
+	[[set_many DocumentTree]]:
+		min_depth 0
 	[[DocumentTree]]
 
 [[Example]]:
-	[[set DocumentTree.min_depth: 0]]
-	[[set DocumentTree.exclude_set]]:
-		CodeView
+	[[set_many DocumentTree]]:
+		min_depth 0
+		filter_tag document_type
+		filter RemarkPage
 	[[DocumentTree]]
 
 
