@@ -726,6 +726,17 @@ class Remark(object):
         
         return newText
     
+    def macro(self, macroName, macroParameter = ''):
+        text = ['[[' + macroName + ']]']
+        if isinstance(macroParameter, basestring):
+            if macroParameter.strip() != '':
+                text[0] += ': ' + macroParameter
+        elif len(macroParameter) > 0:
+            text[0] += ':'
+            for line in macroParameter:
+                text.append('\t' + line)
+        return self.convert(text)
+
     def htmlHeader(self):
         htmlText = []
         for macro in self.usedMacroSet:
