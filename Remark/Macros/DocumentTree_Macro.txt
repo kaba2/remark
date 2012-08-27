@@ -42,10 +42,16 @@ DocumentTree.max_depth
 
 DocumentTree.filter
 :	A glob which decides whether a given document with a given 
-	filter-tag value is to be included in the list. A glob is
-	a pattern matching string familiar from file systems. For
-	example, *.txt ?at.png matches paper.txt, bat.png and 
-	cat.png. Default * (matches everything).
+	filter-tag value is to be included in the list. Multiple
+	rows are joined into a single string separated by a space.
+	A glob is a pattern matching string familiar from file 
+	systems: * matches anything any number of times, ? matches
+	anything at most one time, and the braces can be used to 
+	list alternatives separated by commas, as in {a, b, c}.
+	Alternatives may also be separated by spaces. For example, 
+	?at.png *.tar.{gz, bz2} matches at.png, bat.png, cat.png, 
+	somefile.tar.gz and anotherfile.tar.bz2. 
+	Default * (matches everything).
 
 DocumentTree.filter_tag
 :	An identifier specifying the tag to use for filtering.
