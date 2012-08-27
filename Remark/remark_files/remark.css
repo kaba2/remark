@@ -302,8 +302,8 @@ to be unique). */
     /*padding: 0;*/
     
     /* Give some indendation to nested lists. */
-    padding-left: 3em;
-    padding-top: 0.5em;
+    padding-left: 2.5em;
+    padding-top: 0em;
     padding-bottom: 0.5em;
 
     /* Get rid of default-dots for the list items. */

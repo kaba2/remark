@@ -146,6 +146,22 @@ use wildcards (e.g. *.png).""")
     associateDocumentType('.remark-index', directoryViewType)
     associateDocumentType('.remark-orphan', orphanType)
     
+    # If there are no .css files already in the target directory,
+    # copy the default ones there. Note that it is important that
+    # these files are moved before generating the documents.
+    # This is because one wants to see changes in a style file
+    # as early as possible.
+
+    # This is the directory which contains 'remark.py'.
+    scriptDirectory = sys.path[0]
+    
+    copyIfNecessary('./remark_files/remark.css', scriptDirectory, 
+                    './remark_files/remark.css', outputDirectory)
+    copyIfNecessary('./remark_files/pygments.css', scriptDirectory, 
+                    './remark_files/pygments.css', outputDirectory)
+    copyIfNecessary('./remark_files/' + asciiMathMlName(), scriptDirectory, 
+                    './remark_files/' + asciiMathMlName(), outputDirectory)
+
     # Construct a document tree from the input directory.
     documentTree = DocumentTree(inputDirectory)
 
@@ -182,25 +198,6 @@ use wildcards (e.g. *.png).""")
         print
     
     convertAll(documentTree, outputDirectory, prologue)
-
-    # If there are no .css files already in the target directory,
-    # copy the default ones there.
-
-    if globalOptions().verbose:
-        print 
-        print 'Moving style files and AsciiMathML'
-        print '----------------------------------'
-        print
-
-    # This is the directory which contains 'remark.py'.
-    scriptDirectory = sys.path[0]
-    
-    copyIfNecessary('./remark_files/remark.css', scriptDirectory, 
-                    './remark_files/remark.css', outputDirectory)
-    copyIfNecessary('./remark_files/pygments.css', scriptDirectory, 
-                    './remark_files/pygments.css', outputDirectory)
-    copyIfNecessary('./remark_files/' + asciiMathMlName(), scriptDirectory, 
-                    './remark_files/' + asciiMathMlName(), outputDirectory)
 
     if globalOptions().verbose:
         print 'Done.'

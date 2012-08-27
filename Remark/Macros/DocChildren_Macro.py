@@ -4,7 +4,7 @@
 # Detail: Generates links to documentation children.
 
 from MacroRegistry import registerMacro
-from Common import unixRelativePath, outputDocumentName, htmlDiv, macroCall
+from Common import unixRelativePath, outputDocumentName, htmlDiv
 
 class DocChildren_Macro(object):
     def name(self):
@@ -16,6 +16,7 @@ class DocChildren_Macro(object):
         scope = remark.scopeStack.top()
 
         # Variables
+        self.rootName = scope.getString('DocChildren.root_document', document.fileName)
         self.className = scope.getString('DocChildren.class_name', 'DocChildren')
         self.title = scope.getString('DocChildren.title', 'Learn more')
         self.includeGlob = scope.get('DocChildren.include', ['document_type RemarkPage'])
@@ -23,26 +24,29 @@ class DocChildren_Macro(object):
         self.excludeGlob = scope.get('DocChildren.exclude')
         self.excludeRegex = scope.get('DocChildren.exclude_regex')
 
-        text = ['']
-        text += macroCall('set_many DocumentTree',
-                         ['min_depth 1',
-                          'max_depth 1',
-                          'class_name ' + self.className])
+        # We will run the following in advance
+        # because we want to know whether the
+        # DocumentTree gives any output or not.
 
-        text += macroCall('set DocumentTree.include',
-                         self.includeGlob)
+        remark.macro('set_many DocumentTree',
+                     ['min_depth 1',
+                     'max_depth 1',
+                     'class_name ' + self.className,
+                     'root_document ' + self.rootName])
 
-        text += macroCall('set DocumentTree.include_regex',
-                         self.includeRegex)
+        remark.macro('set DocumentTree.include',
+                     self.includeGlob)
 
-        text += macroCall('set DocumentTree.exclude',
-                          self.excludeGlob)
+        remark.macro('set DocumentTree.include_regex',
+                     self.includeRegex)
 
-        text += macroCall('set DocumentTree.exclude_regex',
-                          self.excludeRegex)
+        remark.macro('set DocumentTree.exclude',
+                     self.excludeGlob)
+
+        remark.macro('set DocumentTree.exclude_regex',
+                     self.excludeRegex)
       
-        remark.convert(text)
-        treeText = remark.convert(['[[DocumentTree]]'])
+        treeText = remark.macro('DocumentTree')
 
         text = []
         # Only create the title if at least 

@@ -152,6 +152,7 @@
     <Content Include="Macros\macro_invocation.txt" />
     <Content Include="Macros\ParentList_Macro.txt" />
     <Content Include="Macros\Parent_Macro.txt" />
+    <Content Include="Macros\pattern_matching.txt" />
     <Content Include="Macros\Ref_Macro.txt" />
     <Content Include="Macros\SourceChildren_Macro.txt" />
     <Content Include="Macros\tags.txt" />

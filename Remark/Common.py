@@ -67,17 +67,6 @@ def htmlDiv(enclosedText, className = ''):
 
     return text
 
-def macroCall(macroName, macroParameter = ''):
-    text = ['[[' + macroName + ']]']
-    if isinstance(macroParameter, basestring):
-        if macroParameter.strip() != '':
-            text[0] += ': ' + macroParameter
-    elif len(macroParameter) > 0:
-        text[0] += ':'
-        for line in macroParameter:
-            text.append('\t' + line)
-    return text
-
 def globToRegex(glob):
     if not isinstance(glob, basestring):
         regexSet = []

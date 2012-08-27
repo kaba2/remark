@@ -101,12 +101,29 @@ class DocumentTree_Macro(object):
     def _workDocument(self, document, text, depth):
         # Limit the reporting to given maximum depth.
         if depth > self.maxDepth:
-            return
+            return False, False
 
         # Protect against self-recursion.
         selfRecursive = document in self.visitedSet
         if not selfRecursive:
             self.visitedSet.add(document)
+
+        # Sort the children by link-description.
+        childSet = document.childSet.values()
+        childSet.sort(lambda x, y: cmp(x.linkDescription(), y.linkDescription()))        
+
+        # Recurse to output the children, but only
+        # if we have not visited this document before.
+        localText = []
+        childMatches = 0
+        usefulBranches = 0
+        if not selfRecursive:
+            for child in childSet:
+                match, useful = self._workDocument(child, localText, depth + 1)
+                if match:
+                    childMatches += 1
+                if useful:
+                    usefulBranches += 1
 
         # Filter by exclusion.
         exclude = False
@@ -124,25 +141,36 @@ class DocumentTree_Macro(object):
                 include = True
                 break
 
-        report = False
-        if (depth >= self.minDepth and 
-            (not exclude) and include):
+        match = (not exclude) and include
+
+        # We will report a node if
+        #
+        # * the current node matches, or
+        # * some child node matches, or
+        # * there are at least two branches which 
+        # contain matching nodes.
+        #
+        # This way the tree gets compacted, but not 
+        # distorted (retains the ancestor-descendant 
+        # relation, but not the parent-child relation).
+        report = ((match or 
+                  childMatches > 0 or
+                  usefulBranches > 1) and
+                  depth >= self.minDepth)
+        
+        if report:
             # Add this document to the list of links.
             linkText = self.remark.remarkLink(
                     document.linkDescription(), 
                     self.document, document)
-            listPrefix = '    ' * (depth - self.minDepth) + ' 1. '
-            text.append(listPrefix + linkText)
-            report = True
+            text.append(' 1. ' + linkText)
+            #text.append('')
+            for line in localText:
+                text.append('\t' + line)
+        else:
+            text += localText
 
-        # Sort the children by link-description.
-        childSet = document.childSet.values()
-        childSet.sort(lambda x, y: cmp(x.linkDescription(), y.linkDescription()))        
+        return match, (usefulBranches > 0 or match)
 
-        # Recurse to output the children, but only
-        # if we have not visited this document before.
-        if not selfRecursive:
-            for child in childSet:
-                self._workDocument(child, text, depth + 1)
-        
+               
 registerMacro('DocumentTree', DocumentTree_Macro())

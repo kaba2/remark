@@ -30,11 +30,42 @@ DocChildren.class_name
 	allows to style the generated list using CSS.
 	Default 'DocChildren'.
 
+DocChildren.exclude
+:	A list of tag-name glob pairs (e.g. file_name *.txt), one per row, 
+	where the glob decides whether a given document with a given tag-value 
+	is to be excluded from the list. Default empty (matches nothing).
+
+DocChildren.exclude_regex
+:	A list of tag-name regular expression pairs (e.g. file_name .*\.txt), 
+	one per row, where the regex decides whether a given document with a 
+	given tag-value is to be excluded from the list. 
+	Default empty (matches nothing).
+
+DocChildren.root_document
+:	The document to use as the root node.
+	Default `[[tag file_name]]` (pre-expanded).
+
+DocChildren.include
+:	A list of tag-name glob pairs (e.g. file_name *.txt), one per row, 
+	where the glob decides whether a given document with a given tag-value 
+	is to be included in the list. Default `document_type RemarkPage`.
+
+DocChildren.include_regex
+:	A list of tag-name regular expression pairs (e.g. file_name .*\.txt), 
+	one per row, where the regex decides whether a given document with a 
+	given tag-value is to be included in the list. 
+	Default empty (matches nothing).
+
 DocChildren.title
 :	The title of the heading. Default 'Learn more'.
 
-DocChildren.no_links_for
-: 	A list of links to not include in the generation. Default empty.
+Notes
+-----
+
+When specifying patterns, multiple rows are interpreted as alternatives. 
+Possible surrounding whitespace is stripped off for each line.
+If both a regex pattern and a glob pattern is given, they
+are combined as alternatives.
 
 Example
 -------
@@ -51,3 +82,7 @@ i.e. nothing because this document has no children.
 For a more interesting example see the parent document
 of this document.
 
+See also
+--------
+
+[[Link]]: pattern_matching.txt
