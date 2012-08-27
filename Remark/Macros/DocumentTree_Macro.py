@@ -7,7 +7,7 @@ import fnmatch
 import re
 
 from MacroRegistry import registerMacro
-from Common import htmlDiv
+from Common import htmlDiv, globToRegex, combineRegex
 
 class DocumentTree_Macro(object):
     def name(self):
@@ -21,34 +21,36 @@ class DocumentTree_Macro(object):
         self.minDepth = scope.getInteger('DocumentTree.min_depth', 1)
         self.maxDepth = scope.getInteger('DocumentTree.max_depth', 10)
         self.includeTag = scope.getString('DocumentTree.include_tag', 'document_type')
-        self.includeGlob = scope.getString('DocumentTree.include', '*', ' ')
-        self.includeRegex = scope.getString('DocumentTree.include_regex', '', r'\n')
+        self.includeGlob = scope.get('DocumentTree.include', ['*'])
+        self.includeRegex = scope.get('DocumentTree.include_regex')
         self.excludeTag = scope.getString('DocumentTree.exclude_tag', 'document_type')
-        self.excludeGlob = scope.getString('DocumentTree.exclude', '', ' ')
-        self.excludeRegex = scope.getString('DocumentTree.exclude_regex', '', r'\n')
+        self.excludeGlob = scope.get('DocumentTree.exclude')
+        self.excludeRegex = scope.get('DocumentTree.exclude_regex')
 
         # Precomputation
         self.remarkConverter = remarkConverter
         self.document = remarkConverter.document
         self.documentTree = remarkConverter.documentTree
 
-        if self.includeRegex != '':
-            # Use the regular expression for filtering.
-            self.includeFilter = re.compile(self.includeRegex)
+        # Find out the include filter.
+        if self.includeRegex == []:
+            self.includeRegex = globToRegex(self.includeGlob)
         else:
-            # Use the glob for filtering.
-            self.includeFilter = re.compile(fnmatch.translate(self.includeGlob))
+            self.includeRegex = combineRegex(self.includeRegex) + r'\Z'
+        self.includeFilter = re.compile(self.includeRegex)
 
-        if self.excludeRegex != '':
-            # Use the regular expression for filtering.
-            self.excludeFilter = re.compile(self.excludeRegex)
+        # Find out the exclude filter.
+        if self.excludeRegex == []:
+            self.excludeRegex = globToRegex(self.excludeGlob)
         else:
-            # Use the glob for filtering.
-            self.excludeFilter = re.compile(fnmatch.translate(self.excludeGlob))
+            self.excludeRegex = combineRegex(self.excludeRegex) + r'\Z'
+        self.excludeFilter = re.compile(self.excludeRegex)
+
+        print combineRegex(self.excludeRegex)
 
         # Start reporting the document-tree using the
         # current document as the root document.
-        text = []
+        text = ['']
         self._workDocument(self.document, text, 0)
 
         return htmlDiv(text, self.className)
@@ -66,31 +68,39 @@ class DocumentTree_Macro(object):
         None
 
     def _workDocument(self, document, text, depth):
-        # Limit the reporting to given depth-interval.
+        # Limit the reporting to given maximum depth.
         if depth > self.maxDepth:
             return
 
-        # Only report those documents which match the
-        # filter.
-        excludeValue = document.tagString(self.excludeTag)
-        if self.excludeFilter.match(excludeValue) != None:
-            return
+        excludeValue = document.tagString(self.excludeTag).strip()
+        includeValue = document.tagString(self.includeTag).strip()
 
-        includeValue = document.tagString(self.includeTag)
-        if self.includeFilter.match(includeValue) == None: 
-            return
+        # Filter by inclusion, exclusion, and depth.
 
-        listPrefix = '    ' * (depth - self.minDepth) + ' 1. '
+        exclude = (self.excludeFilter.match(excludeValue) == None)
+        include = (self.includeFilter.match(includeValue) != None)
 
-        if depth >= self.minDepth:
+        report = False
+        if (depth >= self.minDepth and 
+            (not exclude) and include):
             # Add this document to the list of links.
             linkText = self.remarkConverter.remarkLink(
-                 document.linkDescription(), 
-                 self.document, document)
+                    document.linkDescription(), 
+                    self.document, document)
+            listPrefix = '    ' * (depth - self.minDepth) + ' 1. '
             text.append(listPrefix + linkText)
+            report = True
+
+        newDepth = depth
+        if report:
+            newDepth = depth + 1
+    
+        # Sort the children by link-description.
+        childSet = document.childSet.values()
+        childSet.sort(lambda x, y: cmp(x.linkDescription(), y.linkDescription()))        
 
         # Recurse to output the children.
-        for child in document.childSet.itervalues():
-            self._workDocument(child, text, depth + 1)
+        for child in childSet:
+            self._workDocument(child, text, newDepth)
         
 registerMacro('DocumentTree', DocumentTree_Macro())

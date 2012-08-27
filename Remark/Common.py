@@ -7,6 +7,8 @@ import os.path
 import string
 import codecs
 import shutil
+import fnmatch
+import re
 
 globalOptions_ = None
 
@@ -64,6 +66,29 @@ def htmlDiv(enclosedText, className = ''):
     text.append('')
 
     return text
+
+def globToRegex(glob):
+    if not isinstance(glob, basestring):
+        regexSet = []
+        for line in glob:
+            regexSet.append(globToRegex(line))
+        return combineRegex(regexSet)
+
+    return fnmatch.translate(glob.strip())
+
+def combineRegex(regex):
+    regexString = ''
+    if isinstance(regex, basestring):
+        regexString = regex
+    else:
+        regexSet = []
+        for line in regex:
+            regexSet.append(line.strip())
+        if regexSet != []:
+            # Join together as alternatives, grouped
+            # in non-capturing parentheses.
+            regexString = r'(?:' + r')|('.join(regexSet) + r')'
+    return regexString
 
 def escapeMarkdown(text):
     escapedText = ''
