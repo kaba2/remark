@@ -73,23 +73,19 @@ Globs and regular expressions
 
 A _glob_ is a pattern matching string familiar from file 
 systems: * matches anything any number of times, ? matches
-anything at most one time, and the braces can be used to 
-list alternatives separated by commas, as in {a, b, c}.
-Alternatives may also be separated by spaces. For example, 
-?at.png *.tar.{gz, bz2} matches at.png, bat.png, cat.png, 
-somefile.tar.gz and anotherfile.tar.bz2. If a glob is
-given in multiple rows, the rows are joined into a single 
-string separated by a space.
+anything at most one time, [seq] matches any character in seq,
+and [!seq] matches any character not in seq. For example, ?at.png 
+matches at.png, bat.png, and cat.png. 
 
 A regular expression is given in Python's regular expression 
 syntax. For example, (ab)*\.txt matches .txt, ab.txt, abab.txt, 
-and so on. The regex filters take precedence over the glob 
-filters. Regular expressions are more powerful than globs,
-but they are also less readable. If a regular expression
-is given in multiple rows, the rows are joined together 
-separated by a regex matching the newline character \n. 
+and so on. The regex is appended \Z so that it must match the 
+whole string. Regular expressions are more powerful than globs,
+but they are also less readable.
 
-Exclusion takes priority over include. 
+Multiple rows are interpreted as alternatives. Possible 
+surrounding whitespace is stripped off for each line.
+Regex filters take precedence over glob filters. 
 
 Examples
 --------
