@@ -20,21 +20,31 @@ class DocumentTree_Macro(object):
         self.className = scope.getString('DocumentTree.class_name', 'DocumentTree')
         self.minDepth = scope.getInteger('DocumentTree.min_depth', 1)
         self.maxDepth = scope.getInteger('DocumentTree.max_depth', 10)
-        self.filterTag = scope.getString('DocumentTree.filter_tag', 'document_type')
-        self.filter = scope.getString('DocumentTree.filter', '*', ' ')
-        self.regexFilter = scope.getString('DocumentTree.regex_filter', '', r'\n')
+        self.includeTag = scope.getString('DocumentTree.include_tag', 'document_type')
+        self.includeGlob = scope.getString('DocumentTree.include', '*', ' ')
+        self.includeRegex = scope.getString('DocumentTree.include_regex', '', r'\n')
+        self.excludeTag = scope.getString('DocumentTree.exclude_tag', 'document_type')
+        self.excludeGlob = scope.getString('DocumentTree.exclude', '', ' ')
+        self.excludeRegex = scope.getString('DocumentTree.exclude_regex', '', r'\n')
 
         # Precomputation
         self.remarkConverter = remarkConverter
         self.document = remarkConverter.document
         self.documentTree = remarkConverter.documentTree
 
-        if self.regexFilter != '':
+        if self.includeRegex != '':
             # Use the regular expression for filtering.
-            self.filterRegex = re.compile(self.regexFilter)
+            self.includeFilter = re.compile(self.includeRegex)
         else:
             # Use the glob for filtering.
-            self.filterRegex = re.compile(fnmatch.translate(self.filter))
+            self.includeFilter = re.compile(fnmatch.translate(self.includeGlob))
+
+        if self.excludeRegex != '':
+            # Use the regular expression for filtering.
+            self.excludeFilter = re.compile(self.excludeRegex)
+        else:
+            # Use the glob for filtering.
+            self.excludeFilter = re.compile(fnmatch.translate(self.excludeGlob))
 
         # Start reporting the document-tree using the
         # current document as the root document.
@@ -62,8 +72,12 @@ class DocumentTree_Macro(object):
 
         # Only report those documents which match the
         # filter.
-        tag = document.tagString(self.filterTag, None)
-        if self.filterRegex.match(tag) == None: 
+        excludeValue = document.tagString(self.excludeTag)
+        if self.excludeFilter.match(excludeValue) != None:
+            return
+
+        includeValue = document.tagString(self.includeTag)
+        if self.includeFilter.match(includeValue) == None: 
             return
 
         listPrefix = '    ' * (depth - self.minDepth) + ' 1. '
