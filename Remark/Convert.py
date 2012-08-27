@@ -71,19 +71,15 @@ class Scope(object):
 
         return variable
 
-    def getString(self, name, defaultValue):
+    def getString(self, name, defaultValue = '', joinString = ''):
         variable = self.get(name)
 
         if variable == []:
             return defaultValue
 
-        if len(variable) > 1:
-            print 'Warning: parameter', name, 
-            print 'has multiple lines. Ignoring the rest of the lines.'
-        
-        return variable[0]
+        return joinString.join(variable)
 
-    def getInteger(self, name, defaultValue):
+    def getInteger(self, name, defaultValue = 0):
         value = None
         text = self.search(name)
         
