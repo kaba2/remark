@@ -29,6 +29,7 @@ class DocumentTree_Macro(object):
         self.includeRegex = scope.get('DocumentTree.include_regex')
         self.excludeGlob = scope.get('DocumentTree.exclude')
         self.excludeRegex = scope.get('DocumentTree.exclude_regex')
+        self.compact = scope.getInteger('DocumentTree.compact', 1)
 
         self.includeMap = {}
         self._parse(self.includeGlob, self.includeMap, globToRegex)
@@ -143,20 +144,31 @@ class DocumentTree_Macro(object):
 
         match = (not exclude) and include
 
-        # We will report a node if
+        # In the non-compacting mode,
+        # we will report a document if and only if
         #
-        # * the current node matches, or
-        # * some child node matches, or
-        # * there are at least two branches which 
-        # contain matching nodes.
+        # * it has the proper depth, and 
+        # * it matches or it has matching descendants.
         #
-        # This way the tree gets compacted, but not 
-        # distorted (retains the ancestor-descendant 
-        # relation, but not the parent-child relation).
-        report = ((match or 
-                  childMatches > 0 or
-                  usefulBranches > 1) and
+        # This retains the parent-child relation.
+        report = ((match or usefulBranches > 0) and 
                   depth >= self.minDepth)
+
+        if self.compact != 0:
+            # In the compacting mode, we will report 
+            # a document if and only if
+            #
+            # * it has the proper depth, and
+            # * it matches, or its child matches, or it
+            #   has at least two children which have
+            #   matching descendants.
+            #
+            # This retains the ancestor-descendant 
+            # relation, but not the parent-child relation.
+            report = ((match or 
+                      childMatches > 0 or
+                      usefulBranches > 1) and
+                      depth >= self.minDepth)
         
         if report:
             # Add this document to the list of links.

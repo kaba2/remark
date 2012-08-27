@@ -66,6 +66,10 @@ DocumentTree.min_depth
 :	Minimum depth for a document to be listed.
 	Default 1 (i.e. the root-document is not listed).
 
+DocumentTree.compact
+:	An integer specifying whether to use a compact representation for 
+	the tree (non-zero), or not (zero). Default 1.
+
 Notes
 -----
 
@@ -74,6 +78,28 @@ Possible surrounding whitespace is stripped off for each line.
 If both a regex pattern and a glob pattern is given, they
 are combined as alternatives.
 
+A document is said to _match_ when
+ * it matches the include pattern, and
+ * it does not match the exclude pattern.
+
+### Non-compact representation
+
+In the non-compact representation, a document is listed if and only
+ * its depth is at least `min_depth` and at most `max_depth`, and
+ * it matches, or it has matching descendants. 
+ 
+This preserves the parent-child relation between documents.
+
+### Compact representation
+
+In the compact representation, a document is listed if and only if:
+ * its depth is at least `min_depth` and at most `max_depth`, and
+ * it matches, or it has matching children, or it has at least two 
+ children with matching descendants.
+
+This preserves the ancestor-descendant relation between documents, 
+but not necessarily the parent-child relation.
+ 
 Examples
 --------
 
