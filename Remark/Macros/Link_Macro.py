@@ -12,9 +12,9 @@ class Link_Macro(object):
     def name(self):
         return 'Link'
 
-    def expand(self, parameter, remarkConverter):
-        document = remarkConverter.document
-        documentTree = remarkConverter.documentTree
+    def expand(self, parameter, remark):
+        document = remark.document
+        documentTree = remark.documentTree
         
         if parameter == []:
             return []
@@ -24,16 +24,16 @@ class Link_Macro(object):
         for linkFileName in parameter:
             linkDocument, unique = documentTree.findDocument(linkFileName, document.relativeDirectory)
             if not unique:
-                remarkConverter.reportWarning('Document ' + linkFileName + ' is ambiguous. Picking arbitrarily.')
+                remark.reportWarning('Document ' + linkFileName + ' is ambiguous. Picking arbitrarily.')
             
             if linkDocument != None:
-                text.append(remarkConverter.remarkLink(linkDocument.linkDescription(),
+                text.append(remark.remarkLink(linkDocument.linkDescription(),
                                                        document, linkDocument))
 
                 if len(parameter) > 1:                
                     text.append('')
             else:
-                remarkConverter.reportWarning('Document ' + linkFileName + ' not found. Ignoring it.')
+                remark.reportWarning('Document ' + linkFileName + ' not found. Ignoring it.')
             
         return text
 
@@ -43,7 +43,7 @@ class Link_Macro(object):
     def pureOutput(self):
         return True
 
-    def htmlHead(self, remarkConverter):
+    def htmlHead(self, remark):
         return []                
 
     def postConversion(self, inputDirectory, outputDirectory):

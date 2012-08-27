@@ -4,63 +4,62 @@
 # Detail: Generates links to documentation children.
 
 from MacroRegistry import registerMacro
-from Common import unixRelativePath, outputDocumentName, htmlDiv
+from Common import unixRelativePath, outputDocumentName, htmlDiv, macroCall
 
 class DocChildren_Macro(object):
     def name(self):
         return 'DocChildren'
 
-    def expand(self, parameter, remarkConverter):
-        document = remarkConverter.document
-        documentTree = remarkConverter.documentTree
-        scope = remarkConverter.scopeStack.top()
+    def expand(self, parameter, remark):
+        document = remark.document
+        documentTree = remark.documentTree
+        scope = remark.scopeStack.top()
 
         # Variables
-        className = scope.getString('DocChildren.class_name', 'DocChildren')
-        title = scope.getString('DocChildren.title', 'Learn more')
-        
-        # Construct the ignore set.
-        ignoreList = scope.search('DocChildren.no_links_for')
-        if ignoreList == None:
-            ignoreList = []
+        self.className = scope.getString('DocChildren.class_name', 'DocChildren')
+        self.title = scope.getString('DocChildren.title', 'Learn more')
+        self.includeGlob = scope.get('DocChildren.include', ['document_type RemarkPage'])
+        self.includeRegex = scope.get('DocChildren.include_regex')
+        self.excludeGlob = scope.get('DocChildren.exclude')
+        self.excludeRegex = scope.get('DocChildren.exclude_regex')
 
-        # The files to ignore are given by relative names
-        # and may use the implicit parent directory search.
-        # Therefore we need to first find the document which
-        # is meant.
-        for i in range(0, len(ignoreList)):
-            ignoreDocument = documentTree.findDocumentUpwards(ignoreList[i], document.relativeDirectory)
-            if ignoreDocument != None:
-                # Only now do we have a comparable relative name.
-                ignoreList[i] = ignoreDocument.relativeName
-            else:
-                ignoreList[i] = None 
-        ignoreSet = set(ignoreList)
+        text = ['']
+        text += macroCall('set_many DocumentTree',
+                         ['min_depth 1',
+                          'max_depth 1',
+                          'class_name ' + self.className])
 
-        # Only accept those child documents which are not on the ignore set.
-        childSet = [child for child in document.childSet.itervalues() 
-                    if child.tagString('document_type') == 'RemarkPage' and not child.relativeName in ignoreSet]
-        if len(childSet) == 0:
-            return []
+        text += macroCall('set DocumentTree.include',
+                         self.includeGlob)
 
-        # Create the title.
+        text += macroCall('set DocumentTree.include_regex',
+                         self.includeRegex)
+
+        text += macroCall('set DocumentTree.exclude',
+                          self.excludeGlob)
+
+        text += macroCall('set DocumentTree.exclude_regex',
+                          self.excludeRegex)
+      
+        remark.convert(text)
+        treeText = remark.convert(['[[DocumentTree]]'])
+
         text = []
-        text.append('')
-        text.append(title)
-        text.append('---')
-        text.append('')
-       
-        # Sort the links alphabetically by their desciption.        
-        childSet.sort(lambda x, y: cmp(x.linkDescription(), y.linkDescription()))        
-        
-        for child in childSet:
-            linkText = remarkConverter.remarkLink(child.linkDescription(),
-                                                  document, child)
-            text.append('1. ' + linkText)
-        
-        text.append('')
-                               
-        return htmlDiv(text, className)
+        # Only create the title if at least 
+        # one link was produced.
+        if (treeText != ['']):
+
+            # Create the title.
+            text.append('')
+            if (self.title != ''):
+                text.append(self.title)
+                text.append('---')
+                text.append('')
+            
+            # Append the links.
+            text += treeText
+
+        return text
 
     def outputType(self):
         return 'remark'
@@ -68,7 +67,7 @@ class DocChildren_Macro(object):
     def pureOutput(self):
         return False
 
-    def htmlHead(self, remarkConverter):
+    def htmlHead(self, remark):
         return []                
 
     def postConversion(self, inputDirectory, outputDirectory):

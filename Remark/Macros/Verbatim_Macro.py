@@ -9,7 +9,7 @@ class Verbatim_Macro(object):
     def name(self):
         return 'Verbatim'
 
-    def expand(self, parameter, remarkConverter):
+    def expand(self, parameter, remark):
         text = []
         
         for line in parameter:
@@ -23,7 +23,7 @@ class Verbatim_Macro(object):
     def pureOutput(self):
         return True
 
-    def htmlHead(self, remarkConverter):
+    def htmlHead(self, remark):
         return []                
 
     def postConversion(self, inputDirectory, outputDirectory):

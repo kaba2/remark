@@ -146,7 +146,7 @@ class MacroInvocation(object):
         self.endRow = endRow
         self.endColumn = endColumn
         
-class RemarkConverter(object):
+class Remark(object):
     def __init__(self, document, template, documentTree, 
                  inputRootDirectory, outputRootDirectory):
         self.scopeStack = ScopeStack()
@@ -266,8 +266,9 @@ class RemarkConverter(object):
         if (self.lastReportMacro == None or
             self.lastReportMacro != self.currentMacro):
             self.lastReportMacro = self.currentMacro
-            print '### ' + self.currentMacro.name()
-            print
+            if self.currentMacro != None:
+                print '### ' + self.currentMacro.name()
+                print
 
         if warning:
             print 'Warning:',
@@ -458,6 +459,8 @@ class RemarkConverter(object):
                 self.reportWarning('set_outer command is missing the variable name. Ignoring it.')
             else:
                 variableName = macroNameSet[1]
+                if scope.outer() == scope:
+                    self.reportWarning('set_outer: already at global scope.')
                 outerScope = scope.outer().searchScope(variableName)
                 if parameterSet != []:
                     outerScope.insert(variableName, parameterSet)
@@ -476,11 +479,11 @@ class RemarkConverter(object):
             for line in parameterSet:
                 if line.strip() != '':
                     nameValue = line.split(None, 1)
+                    variable = prefix + nameValue[0].strip()
                     if len(nameValue) == 2:
-                        scope.insert(prefix + nameValue[0].strip(), [nameValue[1].strip()])
+                        scope.insert(variable, [nameValue[1].strip()])
                     else:
-                        self.reportWarning('set_many: variable ' + nameValue[0] + 
-                                           'has no assigned value. Ignoring it.')
+                        scope.insert(variable, [])
             macroHandled = True
 
         if not macroHandled and macroName == 'add':
@@ -537,7 +540,7 @@ class RemarkConverter(object):
             if result != None:
                 macroText = result
             else:
-                self.reportWarning('Variable ' + getName + 
+                self.reportWarning('get: variable ' + getName + 
                                    ' has not been defined. Ignoring it.')
 
         return macroText, macroHandled
@@ -623,35 +626,26 @@ class RemarkConverter(object):
             # Expand recursively.
             self.scopeStack.open(macroInvocation.name)
             self.scopeStack.top().insert('parameter', macroInvocation.parameterSet)
-            macroText = self.convertRecurse(macroText)
+            macroText = self.convert(macroText)
             self.scopeStack.close()
        
         self.recursionDepth -= 1
 
         return macroText            
 
-    def convert(self, text):
-        if self.used:
-            self.reportWarning('The conversion object was already used.')
-            return []
-        
-        newText = self.convertRecurse(text)
+    def postConversion(self):
+        text = []
         
         # Add link definitions
         for link in self.linkSet:
-            # Note, the link target is wrapped in angle brackets
-            # so that it also works with URLs that have a space
-            # in them.
-            newText.append('[' + link[0] + ']: ' + link[1])
+            text.append('[' + link[0] + ']: ' + link[1])
             
         for macro in self.usedMacroSet:
             macro.postConversion(self.inputRootDirectory, 
                                  self.outputRootDirectory)
+        return text
 
-        self.used = True
-        return newText
-
-    def convertRecurse(self, text):
+    def convert(self, text):
         # Our strategy is to trace the 'text' line
         # by line while expanding the macros to 'newText'.
 
@@ -706,7 +700,7 @@ class RemarkConverter(object):
             # requests so.
             if macroInvocation.parameterExpansion:
                 self.scopeStack.open(macroInvocation.name)
-                macroInvocation.parameterSet = self.convertRecurse(macroInvocation.parameterSet)
+                macroInvocation.parameterSet = self.convert(macroInvocation.parameterSet)
                 self.scopeStack.close()
 
             # Recursively expand the macro.
@@ -716,8 +710,10 @@ class RemarkConverter(object):
             #for line in macroText:
             #    print line
            
-            # Append the resulting text to 'newText'.
+            # Append the first line to the end of the
+            # latest line.
             newText[-1] += macroText[0]
+            # Append the other lines on the following lines.
             newText += macroText[1 :]
             
             # Move on.
@@ -808,11 +804,12 @@ def convertRemarkToMarkdown(remarkText, document, documentTree,
     returns (list of strings):
     The converted Markdown text.
     '''
-    remarkConverter = RemarkConverter(document, remarkText, documentTree, 
+    remark = Remark(document, remarkText, documentTree, 
                                       inputRootDirectory, outputRootDirectory)
 
     # Convert Remark to Markdown.
-    markdownText = remarkConverter.convert(remarkText)
+    markdownText = remark.convert(remarkText)
+    markdownText += remark.postConversion()
 
     # Return the resulting Markdown text.
     return markdownText
@@ -829,18 +826,19 @@ def convertRemarkToHtml(remarkText, document, documentTree,
     The converted html text.
     '''
      
-    remarkConverter = RemarkConverter(document, remarkText, documentTree, 
+    remark = Remark(document, remarkText, documentTree, 
                                       documentTree.rootDirectory, 
                                       outputRootDirectory)
 
     # Convert Remark to Markdown
-    markdownText = remarkConverter.convert(remarkText)
+    markdownText = remark.convert(remarkText)
+    markdownText += remark.postConversion()
     
     # Convert Markdown to html.
     htmlText = convertMarkdownToHtml(markdownText)
     
     # Create the html head-section.
-    headText = remarkConverter.htmlHeader()
+    headText = remark.htmlHeader()
     headText += document.tag('html_head')
 
     # Add html boilerplate.

@@ -13,45 +13,54 @@ class DocumentTree_Macro(object):
     def name(self):
         return 'DocumentTree'
 
-    def expand(self, parameter, remarkConverter):
-        scope = remarkConverter.scopeStack.top()
+    def expand(self, parameter, remark):
+        # Precomputation
+        self.remark = remark
+        self.document = remark.document
+        self.documentTree = remark.documentTree
+        scope = remark.scopeStack.top()
 
         # Variables
-        self.className = scope.getString('DocumentTree.class_name', 'DocumentTree')
         self.minDepth = scope.getInteger('DocumentTree.min_depth', 1)
         self.maxDepth = scope.getInteger('DocumentTree.max_depth', 10)
-        self.includeTag = scope.getString('DocumentTree.include_tag', 'document_type')
-        self.includeGlob = scope.get('DocumentTree.include', ['*'])
+        self.rootName = scope.getString('DocumentTree.root_document', self.document.fileName)
+        self.className = scope.getString('DocumentTree.class_name', 'DocumentTree')
+        self.includeGlob = scope.get('DocumentTree.include', ['file_name *'])
         self.includeRegex = scope.get('DocumentTree.include_regex')
-        self.excludeTag = scope.getString('DocumentTree.exclude_tag', 'document_type')
         self.excludeGlob = scope.get('DocumentTree.exclude')
         self.excludeRegex = scope.get('DocumentTree.exclude_regex')
 
-        # Precomputation
-        self.remarkConverter = remarkConverter
-        self.document = remarkConverter.document
-        self.documentTree = remarkConverter.documentTree
+        self.includeMap = {}
+        self._parse(self.includeGlob, self.includeMap, globToRegex)
+        self._parse(self.includeRegex, self.includeMap, lambda x: x + r'\Z')
 
-        # Find out the include filter.
-        if self.includeRegex == []:
-            self.includeRegex = globToRegex(self.includeGlob)
-        else:
-            self.includeRegex = combineRegex(self.includeRegex) + r'\Z'
-        self.includeFilter = re.compile(self.includeRegex)
+        self.includeFilter = {}
+        for tagName, regex in self.includeMap.iteritems():
+            self.includeFilter[tagName] = re.compile(combineRegex(regex))
 
-        # Find out the exclude filter.
-        if self.excludeRegex == []:
-            self.excludeRegex = globToRegex(self.excludeGlob)
-        else:
-            self.excludeRegex = combineRegex(self.excludeRegex) + r'\Z'
-        self.excludeFilter = re.compile(self.excludeRegex)
+        self.excludeMap = {}
+        self._parse(self.excludeGlob, self.excludeMap, globToRegex)
+        self._parse(self.excludeRegex, self.excludeMap, lambda x: x + r'\Z')
 
-        print combineRegex(self.excludeRegex)
+        self.excludeFilter = {}
+        for tagName, regex in self.excludeMap.iteritems():
+            self.excludeFilter[tagName] = re.compile(combineRegex(regex))
+
+        rootDocument = self.documentTree.findDocument(self.rootName, 
+                                                      self.document.relativeDirectory)
+        if rootDocument == None:
+            self.remark.reportWarning(
+                'Document ' + self.rootName + ' was not found. Aborting.')
+            return []
 
         # Start reporting the document-tree using the
         # current document as the root document.
+        self.visitedSet = set()
         text = ['']
         self._workDocument(self.document, text, 0)
+
+        if text == ['']:
+            return []
 
         return htmlDiv(text, self.className)
 
@@ -61,46 +70,79 @@ class DocumentTree_Macro(object):
     def pureOutput(self):
         return False
 
-    def htmlHead(self, remarkConverter):
+    def htmlHead(self, remark):
         return []                
 
     def postConversion(self, inputDirectory, outputDirectory):
         None
+
+    def _parse(self, globSet, map, transform):
+        for line in globSet:
+            pairSet = line.split()
+            if len(pairSet) == 0:
+                continue
+            if len(pairSet) == 1:
+                self.remark.reportWarning(
+                     line + 
+                     ' missing either tag-name or tag-value. Ignoring it.')
+                continue;
+            if len(pairSet) > 2:
+                self.remark.reportWarning(
+                     line + ' has too many parameters. Ignoring it.')
+                continue
+            tagName = pairSet[0].strip()
+            tagValue = pairSet[1].strip()
+            regex = transform(tagValue)
+            if not tagName in map:
+                map[tagName] = [regex]
+            else:
+                map[tagName].append(regex)
 
     def _workDocument(self, document, text, depth):
         # Limit the reporting to given maximum depth.
         if depth > self.maxDepth:
             return
 
-        excludeValue = document.tagString(self.excludeTag).strip()
-        includeValue = document.tagString(self.includeTag).strip()
+        # Protect against self-recursion.
+        selfRecursive = document in self.visitedSet
+        if not selfRecursive:
+            self.visitedSet.add(document)
 
-        # Filter by inclusion, exclusion, and depth.
+        # Filter by exclusion.
+        exclude = False
+        for tagName, tagRegex in self.excludeFilter.iteritems():
+            excludeValue = document.tagString(tagName).strip()
+            if tagRegex.match(excludeValue) != None:
+                exclude = True
+                break
 
-        exclude = (self.excludeFilter.match(excludeValue) == None)
-        include = (self.includeFilter.match(includeValue) != None)
+        # Filter by inclusion.
+        include = False
+        for tagName, tagRegex in self.includeFilter.iteritems():
+            includeValue = document.tagString(tagName).strip()
+            if tagRegex.match(includeValue) != None:
+                include = True
+                break
 
         report = False
         if (depth >= self.minDepth and 
             (not exclude) and include):
             # Add this document to the list of links.
-            linkText = self.remarkConverter.remarkLink(
+            linkText = self.remark.remarkLink(
                     document.linkDescription(), 
                     self.document, document)
             listPrefix = '    ' * (depth - self.minDepth) + ' 1. '
             text.append(listPrefix + linkText)
             report = True
 
-        newDepth = depth
-        if report:
-            newDepth = depth + 1
-    
         # Sort the children by link-description.
         childSet = document.childSet.values()
         childSet.sort(lambda x, y: cmp(x.linkDescription(), y.linkDescription()))        
 
-        # Recurse to output the children.
-        for child in childSet:
-            self._workDocument(child, text, newDepth)
+        # Recurse to output the children, but only
+        # if we have not visited this document before.
+        if not selfRecursive:
+            for child in childSet:
+                self._workDocument(child, text, depth + 1)
         
 registerMacro('DocumentTree', DocumentTree_Macro())

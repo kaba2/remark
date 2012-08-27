@@ -17,11 +17,11 @@ class Code_Macro(object):
     def name(self):
         return 'Code'
 
-    def expand(self, parameter, remarkConverter):
-        document = remarkConverter.document
+    def expand(self, parameter, remark):
+        document = remark.document
         
         # Prepare for Pygments input.
-        inputText = string.join(parameter, '\n')
+        inputText = '\n'.join(parameter)
 
         # Try to guess the type of the code.
         lexer = guess_lexer_for_filename(document.fileName, inputText)
@@ -40,7 +40,7 @@ class Code_Macro(object):
     def pureOutput(self):
         return True
 
-    def htmlHead(self, remarkConverter):
+    def htmlHead(self, remark):
         return []                
 
     def postConversion(self, inputDirectory, outputDirectory):

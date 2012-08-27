@@ -204,13 +204,17 @@ Consider the following example:
 	[[set word: world]]
 	
 	[[set my_macro]]:
+		[[set word: cello]]
 		[[set_outer word: jello]]
+		Hello [[word]]!
 		Hello [[outer word]]!
 	
 [[set word: world]]
 
 [[set my_macro]]:
+	[[set word: cello]]
 	[[set_outer word: jello]]
+	Hello [[word]]!
 	Hello [[outer word]]!
 
 Then this:

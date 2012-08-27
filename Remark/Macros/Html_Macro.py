@@ -9,7 +9,7 @@ class Html_Macro(object):
     def name(self):
         return 'Html'
 
-    def expand(self, parameter, remarkConverter):
+    def expand(self, parameter, remark):
         return parameter
 
     def outputType(self):
@@ -18,7 +18,7 @@ class Html_Macro(object):
     def pureOutput(self):
         return True
 
-    def htmlHead(self, remarkConverter):
+    def htmlHead(self, remark):
         return []                
 
     def postConversion(self, inputDirectory, outputDirectory):

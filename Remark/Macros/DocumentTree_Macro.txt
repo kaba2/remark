@@ -30,43 +30,47 @@ Ignored.
 DocumentTree.class_name
 : 	The name of the html-class to give to the `<div>` tag. The html-class 
 	allows to style the generated list using CSS.
-	Default DocumentTree.
+	Default `DocumentTree`.
 
-DocumentTree.min_depth
-:	Minimum depth for a document to be listed.
-	Default 1 (i.e. the current document is not listed).
+DocumentTree.exclude
+:	A glob which decides whether a given document with a given
+	exclude-tag is to be excluded from the list.
+	Default empty (matches nothing).
 
-DocumentTree.max_depth
-:	Maximum depth for a document to be listed.
-	Default 10.
+DocumentTree.exclude_regex
+:	A regular expression which decides whether a given document 
+	with a given exclude-tag value is to be excluded from the list.
+	Default empty (the glob is used instead).
+
+DocumentTree.exclude_tag
+:	An identifier specifying the tag to use for exclude filtering. 
+	Default `document_type`.
+
+DocumentTree.root_document
+:	The document to use as the root node.
+	Default `[[tag file_name]]` (pre-expanded).
 
 DocumentTree.include
 :	A glob which decides whether a given document with a given 
 	include-tag value is to be included in the list. 
-	Default * (matches everything).
+	Default `file_name *` (matches anything).
+
+DocumentTree.include_regex
+:	A regular expression which decides whether a given document 
+	with a given include-tag value is to be included in the list.
+	Default empty (the glob is used instead).
 
 DocumentTree.include_tag
 :	An identifier specifying the tag to use for include filtering.
 	Default 'document_type'.
 
-DocumentTree.include_regex
-:	A regular expression which decides whether a given document 
-	with a given include-tag value is to be included in the list.
-	Default empty.
+DocumentTree.max_depth
+:	Maximum depth for a document to be listed.
+	Default 10.
 
-DocumentTree.exclude
-:	A glob which decides whether a given document with a given
-	exclude-tag is to be excluded from the list.
-	Default empty.
-
-DocumentTree.exclude_tag
-:	An identifier specifying the tag to use for exclude filtering. 
-	Default 'document_type'.
-
-DocumentTree.exclude_regex
-:	A regular expression which decides whether a given document 
-	with a given exclude-tag value is to be excluded from the list.
-	Default empty.
+DocumentTree.min_depth
+:	Minimum depth for a document to be listed.
+	Default 1 (i.e. the current document is not listed).
 
 Globs and regular expressions
 -----------------------------
@@ -79,13 +83,14 @@ matches at.png, bat.png, and cat.png.
 
 A regular expression is given in Python's regular expression 
 syntax. For example, (ab)*\.txt matches .txt, ab.txt, abab.txt, 
-and so on. The regex is appended \Z so that it must match the 
+and so on. The regex is appended \\Z so that it must match the 
 whole string. Regular expressions are more powerful than globs,
 but they are also less readable.
 
 Multiple rows are interpreted as alternatives. Possible 
 surrounding whitespace is stripped off for each line.
-Regex filters take precedence over glob filters. 
+If both regex filters and glob filters are given, they
+are combined as alternatives.
 
 Examples
 --------
@@ -101,8 +106,7 @@ Examples
 [[Example]]:
 	[[set_many DocumentTree]]:
 		min_depth 0
-		include_tag document_type
-		include RemarkPage
+		include document_type RemarkPage
 	[[DocumentTree]]
 
 
