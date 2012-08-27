@@ -57,7 +57,7 @@ DocChildren.include_regex
 	Default empty (matches nothing).
 
 DocChildren.title
-:	The title of the heading. Default 'Learn more'.
+:	The title of the heading. Default `Learn more`.
 
 Notes
 -----

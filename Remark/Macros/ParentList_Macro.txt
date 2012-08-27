@@ -28,7 +28,7 @@ Ignored.
 ParentList.class_name
 : 	The name of the html-class to give to the `<div>` tag. The html-class 
 	allows to style the generated list using CSS.
-	Default 'ParentList'.
+	Default `ParentList`.
 
 Examples
 --------
