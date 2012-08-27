@@ -26,7 +26,7 @@ Ignored.
 
 SourceChildren.title
 :	The header name to use.
-	Default 'Files'.
+	Default `Files`.
 
 Example
 -------
