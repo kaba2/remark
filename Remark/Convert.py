@@ -483,7 +483,7 @@ class Remark(object):
                     if len(nameValue) == 2:
                         scope.insert(variable, [nameValue[1].strip()])
                     else:
-                        scope.insert(variable, [])
+                        scope.insert(variable, [''])
             macroHandled = True
 
         if not macroHandled and macroName == 'add':
