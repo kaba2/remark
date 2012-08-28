@@ -3,47 +3,54 @@ Implicit rules
 
 [[Parent]]: user_documentation.txt
 
-A large part of the convenience of Remark relies on implicit
-rules which fill in the details when those are not given.
-Such implicit rules save work by minimizing the effort that 
-needs to be done to build and maintain the documentation. 
+This section describes the rules that are used to deduce descriptions 
+and parents for a document for which they have not been explicitly
+specified.
 
-Implicit description
---------------------
+Unspecified descriptions
+------------------------
 
-Often a group of documents can be described by a single description. 
-To reduce the number of tag embeddings in these cases, Remark defines 
-the following implicit rules:
+Remark uses the following rules to deduce a description for a document
+without an explicitly specified description.
 
- * Files which reside in the same directory and have the same name without 
- the extension share the same description.
+ * Documents which reside in the same directory and have the same 
+ filename without the extension share the same description.
  
- * A document which does not have a description after the previous rule 
- is given (if exists) the description of the source file which:
+ * If the above does not apply, then a document is given (if exists) 
+ the description of the document which:
  	1. is in the same directory
  	2. has a description
  	3. without the extension has a filename which is the longest prefix 
  	of the name of the to-be-described file.
 
-Implicit parent
----------------
+* If no description can be found, a warning is emitted to inform
+about the missing description.
 
-If a document with the RemarkPage type does not specify a parent, 
-it is assigned the orphan node as the parent. If some other type of document
-does not specify a parent, Remark gives the file an implicitly-defined 
-parent. The logic for this goes as follows:
+Implicit parents
+----------------
 
- * In the same directory, search for the longest prefix file (excluding the 
- file itself). Give documents with RemarkPage type priority over other 
- documents. Only consider those files which have a parent document. If there 
- are multiple candidate files, pick one arbitrarily (Remark reports a warning 
- about the ambiguity). 
+Remark uses the following rules to deduce an unspecified parent for
+a document without an explicitly specified parent. 
+
+ * If the document's type is RemarkPage, it is assigned the orphan 
+ node as the parent. 
+
+ * Otherwise, the parent is deduced as follows:
+
+	 * Among the documents which have a parent, a document with the longest 
+	 prefix is searched from the same directory (excluding the document itself). 
  
- * If a document with the RemarkPage type is found, assign it as a parent. 
+	 * If no such document can be found, the orphan node is assigned as the parent.
 
- * Otherwise, if some other type of document is found, assign its parent 
- as a parent. 
+	 * If there is a unique such document, it is assigned as the parent.
 
- * Otherwise, assign the orphan node as a parent.
+	 * If there are multiple such documents, priority is given to files with the 
+	 RemarkPage document type. 
+ 
+	 * If the choice is still ambiguous, one of the files is picked arbitrarily, 
+	 and a warning is emitted to inform about the ambiguity.
+ 
+
+ 
 
 
