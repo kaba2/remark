@@ -3,6 +3,9 @@ Problems and solutions
 
 [[Parent]]: user_documentation.txt
 
+This section contains some problems that you might run into when using
+Remark, and the solutions of those problems.
+
 SVG-images that do not get loaded
 ---------------------------------
 
