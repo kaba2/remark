@@ -54,7 +54,7 @@ link-names between the documents in the document tree.
 
 Remark groups the input files based on similar filenames, and uses
 the grouping to implicitly deduce parent documents and descriptions. 
-This greatly reduces the need to tag the files.
+This reduces the need to tag the files.
 
 [Tags]: [[Ref]]: tags.txt
 
