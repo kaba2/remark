@@ -3,8 +3,8 @@ Problems and solutions
 
 [[Parent]]: user_documentation.txt
 
-Why don't SVG-images get loaded?
---------------------------------
+SVG-images that do not get loaded
+---------------------------------
 
 If an SVG-image does not get loaded when you run a Remark-generated
 html-file from a server, but it does get loaded when you run it from
@@ -18,38 +18,37 @@ for the `lighttpd` web-server, you should modify the configuration file
 The former string is the file-extension of the SVG-image file format, 
 while the latter is its MIME-type.
 
-What if I pass a non-UTF-8 encoded file to Remark?
---------------------------------------------------
+Files that are not UTF-8 encoded
+--------------------------------
 
 If you pass Remark a file that is not a valid UTF-8 encoding, Remark 
 emits a warning and assumes that the file has been encoded in Latin-1. 
 This process is a bit inefficient since in this case the file has to be 
 read twice.  
 
-Why are some parts incorrectly interpreted as mathematical expressions?
------------------------------------------------------------------------
+Mathematical expressions in wrong places
+----------------------------------------
 
-Unfortunately, the AsciiMathML Javascript library affects the whole 
-generated page and can't be scoped. This is problematic in some cases. 
-For example, in Python code an empty string is denoted by two 
-subsequent '. This will be erased from the output because AsciiMathML 
-interprets it as a start of a mathematical expression.
-Remark solves this problem partially by making it configurable per 
-document type whether AsciiMath should be interpreted or not: currently
-only documentation files (.txt) are interpreted. It would be nice if 
-there were a Python library that did AsciiMath to MathML conversion...
+The AsciiMathML Javascript library affects the whole generated page and 
+can't be scoped. This is problematic in some cases. For example, in Python 
+code an empty string is denoted by two subsequent '. This will be erased 
+from the output because AsciiMathML interprets it as a start of a 
+mathematical expression. Remark solves this problem partially by making 
+it configurable per document type whether AsciiMath should be interpreted 
+or not: currently only documentation files (.txt) are interpreted. This
+way, for example, Python files can be shown correctly in the CodeView
+document type.
 
-How can I write verbatim content directly after a multi-line parameter?
------------------------------------------------------------------------
+Verbatim content after a multi-line parameter
+---------------------------------------------
 
 Indentation has a double role. It is used both to denote
 verbatim content in Markdown and to denote the range of a multi-line
 parameter for a macro in Remark. Therefore, if one wants to write
 verbatim content directly after a multi-line parameter, there must
 be some way to tell Remark where the multi-line parameter
-ends. A way to solve this problem without including
-extra content is to use the Comment macro either without
-a parameter or with a one-line parameter. For example:
+ends and the verbatim content starts. This can be achieved by
+using the [Verbatim][Verbatim_Macro] macro. For example:
 
 	[[CppCode]]:
 		int square(int x)
@@ -62,33 +61,15 @@ a parameter or with a one-line parameter. For example:
 			return x * x * x;
 		}
 	
-	[[Comment]]: This comment marks the end of the parameter.
-	
+	[[Verbatim]]:
 		Verbatim content here. 
 
-We expect this to be a rather rare problem. Most of the time
-verbatim content is preceded by an explanation which at the
-same time marks the end of a parameter. For example:
-		
-	[[CppCode]:
-		int square(int x)
-		{
-			return x * x;
-		}
-		
-		int cube(int x)
-		{
-			return x * x * x;
-		}
+[Verbatim_Macro]: [[Ref]]: Verbatim_Macro.txt
 
-	This sentence marks the end of the parameter.
-	Here's some verbatim content:
-	
-		Verbatim content here. 
+Injecting html to the head section
+----------------------------------
 
-How can I inject html code to the head section of the page?
------------------------------------------------------------
-
-Store text in the `html_head` variable.
+Html-code can be injected into the head-section of a html-file
+by storing text in the `html_head` tag.
 
 
