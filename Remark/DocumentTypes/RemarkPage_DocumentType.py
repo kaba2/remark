@@ -5,7 +5,7 @@
 import re
 
 from TagParsers.Remark_TagParser import Remark_TagParser
-from Common import changeExtension, globalOptions 
+from Common import changeExtension, globalOptions, fileUpToDate
 from Convert import saveRemarkToHtml
 
 class RemarkPage_DocumentType(object):
@@ -34,6 +34,10 @@ class RemarkPage_DocumentType(object):
         saveRemarkToHtml(remarkText, document, documentTree, 
                          outputRootDirectory)
          
+    def upToDate(self, document, documentTree, outputRootDirectory):
+        return fileUpToDate(document.relativeName, documentTree.rootDirectory, 
+                            self.outputName(document.relativeName), outputRootDirectory)
+
     def mathEnabled(self):
         return True
 

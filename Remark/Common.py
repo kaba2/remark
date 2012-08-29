@@ -249,20 +249,27 @@ def copyIfNecessary(inputRelativeName, inputDirectory,
     if not os.path.exists(finalOutputDirectory):
         os.makedirs(finalOutputDirectory)
 
+    upToDate = fileUpToDate(inputDirectory, inputRelativeName,
+                        outputDirectory, outputRelativeName)
+
+    if not upToDate:
+        shutil.copy(inputFilePath, outputFilePath)
+
+    return not upToDate
+
+def fileUpToDate(inputRelativeName, inputDirectory,
+                 outputRelativeName, outputDirectory):
+    inputFilePath = os.path.join(inputDirectory, inputRelativeName)
+    outputFilePath = os.path.join(outputDirectory, outputRelativeName)
+
     if not os.path.exists(inputFilePath):
-        print 'Error: CopyIfNecessary: the file ' + inputRelativeName + ' does not exist. Ignoring it.'
+        print 'Error: fileUpToDate: the input file ' + inputRelativeName + ' does not exist.'
         return False
 
     # The output file is up-to-date if it exists and has a 
     # modification time-stamp not later than with the input file.
-    fileUpToDate = \
-        (os.path.exists(outputFilePath) and 
+    return (os.path.exists(outputFilePath) and 
         os.path.getmtime(inputFilePath) <= os.path.getmtime(outputFilePath))
-
-    if not fileUpToDate:
-        shutil.copy(inputFilePath, outputFilePath)
-
-    return not fileUpToDate
 
 def outputDocumentName(name):
     '''

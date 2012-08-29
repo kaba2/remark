@@ -39,6 +39,8 @@ than with their descriptions.
 
 * Added an option for verbose mode, and moved successful output
 from the normal mode to the verbose mode. This makes it easier
+* Added an option for incremental mode, which may give incorrect
+results, but is fast for previewing changes.
 to spot warnings and errors.
 * Added an option for setting the maximum file size to load.
 * Added timing for the generation process.

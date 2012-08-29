@@ -4,8 +4,7 @@
 
 import re
 
-from Common import escapeMarkdown
-from Common import copyIfNecessary
+from Common import escapeMarkdown, fileUpToDate, copyIfNecessary
 from TagParsers.Dictionary_TagParser import Dictionary_TagParser 
 
 class Copy_DocumentType(object):
@@ -26,6 +25,10 @@ class Copy_DocumentType(object):
         copyIfNecessary(document.relativeName, documentTree.rootDirectory, 
                         outputRelativeName, outputRootDirectory)
         
+    def upToDate(self, document, documentTree, outputRootDirectory):
+        return fileUpToDate(document.relativeName, documentTree.rootDirectory, 
+                            self.outputName(document.relativeName), outputRootDirectory)
+
     def mathEnabled(self):
         return False
 
