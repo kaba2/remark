@@ -885,6 +885,11 @@ def convertAll(documentTree, outputRootDirectory, prologue):
         # Find out the document-type.
         type = documentType(document.extension)
 
+        # Possibly skip the document if in incremental mode.
+        if (globalOptions().incremental and 
+            type.upToDate(document, documentTree, outputRootDirectory)):
+            continue
+
         if globalOptions().verbose:
             print 'Generating', document.relativeName, '...'
 

@@ -26,6 +26,9 @@ class DirectoryView_DocumentType(object):
         saveRemarkToHtml(remarkText, document, documentTree, 
                          outputRootDirectory)
 
+    def upToDate(self, document, documentTree, outputRootDirectory):
+        return False
+
     def mathEnabled(self):
         return False
 

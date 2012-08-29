@@ -2,7 +2,7 @@
 
 # Description: CppCodeView document-type
 
-from Common import escapeMarkdown, globalOptions
+from Common import escapeMarkdown, globalOptions, fileUpToDate
 from Convert import saveRemarkToHtml
 from TagParsers.Dictionary_TagParser import Dictionary_TagParser 
 
@@ -40,6 +40,11 @@ class CppCodeView_DocumentType(object):
 
         saveRemarkToHtml(remarkText, document, documentTree, 
                          outputRootDirectory)
+        
+    def upToDate(self, document, documentTree, outputRootDirectory):
+        return fileUpToDate(document.relativeName, documentTree.rootDirectory, 
+                            self.outputName(document.relativeName), outputRootDirectory)
+                
          
     def mathEnabled(self):
         return False

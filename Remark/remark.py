@@ -64,6 +64,13 @@ use wildcards (e.g. *.png).""")
         action="store_true", dest="verbose", default=False,
         help = """whether to print additional progress information""")
 
+    optionParser.add_option('-i', '--incremental',
+        action="store_true", dest="incremental", default=False,
+        help = """whether to generate only those files which have changed. 
+Note: the unchanged files which refer to a changed file will not be updated.
+This may result in dead links and/or wrong descriptions. Use only for quick
+previews.""")
+
     optionParser.add_option('-m', '--max-file-size',
         dest = 'maxFileSize',
         type = 'int',
