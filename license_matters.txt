@@ -3,19 +3,19 @@ License matters
 
 [[Parent]]: remark.txt
 
-Remark is licensed under the [GNU Lesser GPL][LGPL], which makes 
-using it quite free. However, Remark uses some third-party libraries
-whose licenses also have to be taken into account. 
+Remark is licensed under the [MIT license][MIT]. However, Remark 
+uses some third-party libraries whose licenses also have to be 
+taken into account. 
 
-[LGPL]: http://www.gnu.org/licenses/lgpl.html
+[MIT]: http://en.wikipedia.org/wiki/MIT_License
 
 Third-party libraries
 ---------------------
 
 The Python Markdown and Pygments libraries are licensed under
-the BSD license, which is very allowing. These libraries are
-firmly integrated, and have an essential role, in Remark. The 
-other libraries are optional as follows.
+the BSD license. These libraries are firmly integrated, and 
+have an essential role, in Remark. The other libraries are 
+optional as follows.
 
  * The AsciiMathML javascript-library is referred to in an html-page 
  if and only if one uses the math-mode in the Remark-source
