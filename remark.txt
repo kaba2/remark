@@ -29,21 +29,6 @@ For previous versions, see the [release history][History].
 
 [History]: [[Ref]]: release_history.txt
 
-Acknowledgements
-----------------
-
-Remark 1.0, 1.1, and 1.2 were programmed under funding from 
-the [Finnish Foundation for Technology Promotion][TES].
-
-Remark was preceded by a similar implementation called _LightMark_ 
-programmed by [Juho Hämäläinen][Juho]. The ideas gathered and tested 
-in that implementation was the basis on which Remark was built. He 
-should be attributed the idea of using Markdown for writing the 
-documentation.
- 
-[TES]: http://www.kolumbus.fi/tes/ 
-[Juho]: http://jusa.hilvi.org
-
 [[Comment]]:
 	The following is a javascript for Google Analytics by which we can
 	monitor the visitor statistics of the Remark homepage.
