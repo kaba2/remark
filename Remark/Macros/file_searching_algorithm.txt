@@ -13,7 +13,7 @@ here.
 Algorithm
 --------- 
 
-Given a file path, which may either be a filename, or a 
+Given a file-path, which may either be a filename, or a 
 relative-path, the algorithm searches the corresponding document as 
 follows:
 
@@ -31,12 +31,13 @@ follows:
 Notes
 -----
 
-The amount of location information that can be passed varies between a 
-filename (minimum) and a full relative-path relative to the document 
-root-directory (maximum). Specifying only the necessary information needed
-to make the search unambiguous makes the documentation more robust to 
-directory changes. With this in mind, Remark emits a warning whenever 
-a shorter path-suffix would suffice for the given search.
+The filename is the minimum amount of information, and the full 
+relative-path is the maximum amount of information that can be used
+to locate a given document. The relative-path-suffixes are somewhere
+between these extremes. Specifying the minimal amount of information
+to disambiguate a given search makes the documentation more robust 
+to directory changes. With this in mind, Remark emits a warning 
+whenever a shorter path-suffix would suffice for the given search.
 
 
 
