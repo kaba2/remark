@@ -218,7 +218,7 @@ class DocumentTree(object):
         # Document file was not found.
         return None                           
 
-    def findDocument(self, filePath, searchDirectory):
+    def findDocument(self, filePath, searchDirectory, checkShorter = True):
         '''
         Searches for a document corresponding to the given file path
         first from the given search-directory upwards, and if not 
@@ -278,28 +278,29 @@ class DocumentTree(object):
             document = documentSet[0]
             unique = True
 
-            # Check whether this search could have been equivalently
-            # done with a shorter path-suffix.
-            shortestSuffix = ''
-            n = len(filePath)
-            i = 0
-            while i < n:
-                if filePath[i] == '/':
-                    suffix = filePath[i + 1 : ]
-                    (checkDocument, checkUnique) = \
-                        self.findDocument(suffix, searchDirectory)
-                    if checkDocument == document and checkUnique:
-                        shortestSuffix = suffix
-                    else:
-                        break
-                i += 1
+            if checkShorter:
+                # Check whether this search could have been equivalently
+                # done with a shorter path-suffix.
+                shortestSuffix = ''
+                n = len(filePath)
+                i = 0
+                while i < n:
+                    if filePath[i] == '/':
+                        suffix = filePath[i + 1 : ]
+                        (checkDocument, checkUnique) = \
+                            self.findDocument(suffix, searchDirectory, False)
+                        if checkDocument == document and checkUnique:
+                            shortestSuffix = suffix
+                        else:
+                            break
+                    i += 1
             
-            if shortestSuffix != '':
-                # A shorter path-suffix would have sufficed.
-                print
-                print ('Warning: Used path ' + filePath + 
-                       ' where a shorter path ' + shortestSuffix + 
-                       ' would have been unambiguous.')
+                if shortestSuffix != '':
+                    # A shorter path-suffix would have sufficed.
+                    print
+                    print ('Warning: Used path ' + filePath + 
+                           ' where a shorter path ' + shortestSuffix + 
+                           ' would have been unambiguous.')
         else:
             # There are multiple files whose suffix of the
             # relative-name matches the file-path.
