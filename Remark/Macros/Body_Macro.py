@@ -6,8 +6,6 @@
 from Common import readFile
 from MacroRegistry import registerMacro
 
-import os.path 
-
 class Body_Macro(object):
     def name(self):
         return 'Body'

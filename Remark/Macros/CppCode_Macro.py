@@ -3,7 +3,6 @@
 # Description: CppCode macro
 # Detail: Generates colored html from C++ source code. 
 
-import os.path
 import string
 import re
 

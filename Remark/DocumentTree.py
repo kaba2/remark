@@ -5,125 +5,9 @@
 
 import os.path
 import string
-import re
+from Document import Document
 from Common import documentType, unixDirectoryName, unixRelativePath, fileExtension
 from Common import globalOptions, withoutFileExtension, strictDocumentType
-
-class Document(object):
-    def __init__(self, relativeName):
-        '''
-        Constructs a document-object for the given file.
-
-        relativeName:
-        The path to the file, relative to the document-tree's
-        root-directory.
-        '''
-
-        # The relative-path to the document, with respect to
-        # the document-tree's root-directory.
-        self.relativeName = unixDirectoryName(relativeName)
-
-        # The relative-directory and the filename of the document.
-        self.relativeDirectory, self.fileName = os.path.split(relativeName)
-
-        # The file-name extension of this document, in lower-case
-        # to enable case-insensitivity.
-        self.extension = fileExtension(self.fileName).lower()
-
-        # The document-type of this document.
-        self.documentType = documentType(self.extension)
-
-        # The parent-document of this document.
-        self.parent = None
-
-        # A map from document's relative-name (string) to a 
-        # document-object (Document).
-        self.childSet = {}
-
-        # A set of directories (strings). This will contain
-        # all the directories in which the documents reside,
-        # and also all their parent-directories up to the
-        # document-tree's root-directory.
-        self.directorySet = set()
-
-        # A map from a tag-name (string) to a text 
-        # (list of strings).
-        self.tagSet = {}
-
-        # The predefined document-tags.
-        self.setTag('description')
-        self.setTag('detail')
-        self.setTag('author')
-        self.setTag('file_name', [self.fileName])
-        self.setTag('relative_name', [self.relativeName])
-        self.setTag('relative_directory', [self.relativeDirectory])
-        self.setTag('extension', [self.extension])
-        self.setTag('html_head')
-        self.setTag('document_type', [self.documentType.name()])
-        # This will be filled in later, after the
-        # description-tags have been parsed.
-        self.setTag('link_description')
-        
-    def insertChild(self, child):
-        '''
-        Inserts a new child-document for this document.
-        A document can be only be linked to at most one 
-        parent-document.
-        '''
-        assert child.parent == None
-        self.childSet[child.relativeName] = child
-        child.parent = self
-    
-    def setTag(self, tagName, text = ['']):
-        '''
-        Associates text with a given tag-name.
-
-        tagName (string):
-        The name of the tag. It will be stripped 
-        of surrounding whitespace.
-
-        text (list of strings):
-        The text to associate to the tag-name.
-        '''
-        assert isinstance(text, list)
-        assert isinstance(tagName, basestring)
-        self.tagSet[tagName.strip()] = text
-        
-    def tag(self, tagName, defaultText = ['']):
-        '''
-        Returns the text associated with the given
-        tag-name. If the tag-name is not found, returns
-        the given default-value instead.
-        
-        tagName (string):
-        The tag-name to find. It will be stripped of
-        surrounding whitespace.
-        '''
-        assert isinstance(tagName, basestring)
-        return self.tagSet.get(tagName.strip(), defaultText)
-
-    def tagString(self, tagName, default = ''):
-        '''
-        Returns the tag-text associated with the given
-        tag-name, such that the lines of the tag-text are
-        joined together into a single string.
-        '''
-        return ''.join(self.tag(tagName, [default]))
-
-    def linkDescription(self):
-        '''
-        Returns the link-description of the document.
-
-        returns:
-        The link-description given by the document-type,
-        if the document has a document-type. Otherwise
-        the empty string.
-        '''
-        type = self.documentType
-        if type == None:
-            return ''
-        
-        return self.documentType.linkDescription(self)
 
 class DocumentTree(object):
     def __init__(self, rootDirectory):
@@ -156,6 +40,18 @@ class DocumentTree(object):
         # A map from a filename (string) to documents
         # with that filename (list of Document's).
         self.fileNameMap = {}
+
+        # A map from a directory (string) to a use-count (integer). 
+        # The keys will contain all the directories in which the documents 
+        # reside, and also all their parent-directories up to the
+        # document-tree's root-directory. The value will contain the number
+        # of documents that have generated the directory in the key.
+        # The use-count allows us to dynamically track the directories
+        # as documents are inserted and removed.
+        self.directorySet = {}
+
+    def __iter__(self):
+        return self.documentMap.itervalues()
         
     def insertDocument(self, relativeName):
         '''
@@ -167,56 +63,39 @@ class DocumentTree(object):
         '''
         document = Document(relativeName)
         self.documentMap[document.relativeName] = document
+
+        # Add the document into the filename-map.
+        if document.fileName in self.fileNameMap:
+            self.fileNameMap[document.fileName].append(document)
+        else:
+            self.fileNameMap[document.fileName] = [document]
+
+        # Gather the directory of the file, and the
+        # parent directories of that directory.
+        directory = document.relativeDirectory
+        while True:
+            if not directory in self.directorySet:
+                self.directorySet[directory] = 1
+            else:
+                self.directorySet[directory] += 1
+
+            newDirectory = os.path.normpath(os.path.split(directory)[0])
+            if newDirectory == directory:
+                break
+            directory = newDirectory
+
         return document
 
-    def compute(self):
+    def resolveParentLinks(self):
         '''
-        Computes the document-tree starting from the root-directory
-        The documents have to be already inserted into it for this
-        to do anything.
+        Resolves explicit, implicit, and reference parent links.
+        Those documents which remain without a parent are linked to 
+        the orphan document.
 
         See also:
         insertDocument()
         '''
 
-        # Gather directories
-
-        if globalOptions().verbose:
-            print  
-            print 'Gathering directories...',
-        self._gatherDirectories();
-        if globalOptions().verbose:
-            print 'Done.'
-
-        # Insert virtual documents.
-
-        if globalOptions().verbose:
-            print
-            print 'Inserting virtual documents...',
-        self._insertVirtualDocuments();
-        if globalOptions().verbose:
-            print 'Done.'
-
-        # Construct file-name map.
-
-        if globalOptions().verbose:
-            print
-            print 'Constructing file-name map...',
-        self._constructFileNameMap()
-        if globalOptions().verbose:
-            print 'Done.'
-
-        # Parse the tags.
-
-        if globalOptions().verbose:
-            print
-            print 'Parsing tags'
-            print '------------'
-        self._parseTags()
-        if globalOptions().verbose:
-            print
-            print 'Done.'
-        
         # Resolve explicit links
 
         if globalOptions().verbose:
@@ -436,65 +315,6 @@ class DocumentTree(object):
 
     # Private stuff
     
-    def _gatherDirectories(self):
-        '''
-        Gathers the set of directories in which the files reside at
-        (and their parent directories).
-        '''
-        directorySet = set()
-        for document in self.documentMap.itervalues():
-            directory = document.relativeDirectory
-            while True:
-                directorySet.add(directory)
-                newDirectory = os.path.normpath(os.path.split(directory)[0])
-                if newDirectory == directory:
-                    break
-                directory = newDirectory
-        
-        self.directorySet = directorySet
-
-    def _insertVirtualDocuments(self):
-        ''' 
-        Generates a directory.remark-index virtual document to each
-        directory. This provides the directory listings.
-        '''
-        for directory in self.directorySet:
-            # Form the relative name of the document.
-            relativeName = os.path.join(directory, 'directory.remark-index')
-            
-            # Insert a document with that relative name.
-            document = self.insertDocument(relativeName)
-            
-            # Give the document the description from the unix-style
-            # directory name combined with a '/' to differentiate 
-            # visually that it is a directory.
-            description = unixDirectoryName(document.relativeDirectory) + '/'
-
-            # Add the description to the document.
-            document.setTag('description', [description])
-
-    def _parseTags(self):
-        '''
-        For each document in 'self.documentMap', runs its
-        associated tag-parser.
-        '''        
-        for document in self.documentMap.itervalues():
-            try:
-                key = fileExtension(document.relativeName)
-                type = documentType(key)
-                tagSet = type.parseTags(self.fullName(document))
-                document.tagSet.update(tagSet)
-                document.setTag('link_description', [type.linkDescription(document)])
-                
-                #print
-                #print document.relativeName + ':'
-                #for tagName, tagText in tagSet.iteritems():
-                #    print tagName, ':', tagText
-
-            except UnicodeDecodeError:
-                print 'Warning:', document.relativeName,
-                print ': Tag parsing failed because of a unicode decode error.'
-            
     def _resolveExplicitLinks(self):
         '''
         Resolves the parent-child relationships between
@@ -744,16 +564,4 @@ class DocumentTree(object):
             if document.parent == None:
                 self.orphan.insertChild(document)
                 
-    def _constructFileNameMap(self):
-        '''
-        Construct a map from filenames to documents.
-        There can be multiple documents for a single
-        filename and thus the documents are stored
-        in a list for each filename.
-        '''
-        for document in self.documentMap.itervalues():
-            if document.fileName in self.fileNameMap:
-                self.fileNameMap[document.fileName].append(document)
-            else:
-                self.fileNameMap[document.fileName] = [document]
             

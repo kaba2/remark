@@ -12,6 +12,31 @@ import re
 
 globalOptions_ = None
 
+def splitPath(p):
+    """Split a pathname.
+
+    This is a bug-fixed version of os.path.split() from
+    Python 2.7.3. It used os.path.splitdrive() which does not correctly
+    handle long-UNC paths. This is fixed by using os.path.splitunc()
+    instead.
+
+    returns: 
+    tuple (head, tail) where tail is everything after the final slash.
+    Either part may be empty."""
+
+    d, p = os.path.splitunc(p)
+    # set i to index beyond p's last slash
+    i = len(p)
+    while i and p[i-1] not in '/\\':
+        i = i - 1
+    head, tail = p[:i], p[i:]  # now tail has no slashes
+    # remove trailing slashes from head, unless it's all slashes
+    head2 = head
+    while head2 and head2[-1] in '/\\':
+        head2 = head2[:-1]
+    head = head2 or head
+    return d + head, tail
+
 def setGlobalOptions(options):
     '''
     Sets the global options object. The global options 
@@ -120,29 +145,35 @@ def openFileUtfOrLatin(fileName):
     as latin-1 decoded (then every character is legal).
     '''
     try:
-        file = codecs.open(fileName, mode = 'rU', encoding = 'utf-8-sig')
+        file = codecs.open(longPath(fileName), mode = 'rU', encoding = 'utf-8-sig')
     except UnicodeDecodeError:
         print
         print 'Warning:', fileName, 
         print 'is not UTF-8 encoded. Assuming Latin-1 encoding.'
-        file = codecs.open(fileName, mode = 'rU', encoding = 'latin-1')
+        file = codecs.open(longPath(fileName), mode = 'rU', encoding = 'latin-1')
 
     return file    
 
-def readFile(fileName):
+def fileSize(fileName):
+    '''
+    Calls os.path.getsize(longPath(fileName)).
+    '''
+    return os.path.getsize(longPath(fileName))
+
+def readFile(fileName, ignoreLargeFiles = True):
     '''
     Opens a file using openFileUtfOrLatin, and reads the contents 
     into a list of strings corresponding to the rows of the file.
     '''
-    fileSize = os.path.getsize(fileName)
+    size = fileSize(fileName)
     maxSize = globalOptions().maxFileSize
-    if fileSize >= maxSize:
+    if size >= maxSize and ignoreLargeFiles:
         # If the file is very large, then it probably is not
         # part of the Remark documentation. Refuse to read
         # such files.
         print
         print 'Warning:', fileName, 
-        print 'is larger than', maxSize, 'bytes (it is', fileSize, 'bytes).',
+        print 'is larger than', maxSize, 'bytes (it is', size, 'bytes).',
         print 'Ignoring it.'
         return []
         
@@ -166,13 +197,22 @@ def readFile(fileName):
     return text
 
 def writeFile(text, outputFullName):
+    '''
+    Writes text into a file using utf-8 encoding.
+
+    text (a list of strings):
+    The text to write into the file.
+
+    outputFullName (string):
+    The name of the file to write to.
+    '''
     # If the directories do not exist, create them.
     outputDirectory = os.path.split(outputFullName)[0]
-    if not os.path.exists(outputDirectory):
-        os.makedirs(outputDirectory)
+    if not pathExists(outputDirectory):
+        createDirectories(outputDirectory)
 
     # Save the text to a file.
-    with codecs.open(outputFullName, mode = 'w', encoding = 'utf-8') as outputFile:
+    with codecs.open(longPath(outputFullName), mode = 'w', encoding = 'utf-8') as outputFile:
         for line in text:
             outputFile.write(line)
             outputFile.write('\n')
@@ -218,13 +258,76 @@ def documentType(inputExtension):
     '''
     return _documentTypeMap.get(inputExtension.lower(), _defaultDocumentType)
 
+def createDirectories(name):
+    '''
+    Calls os.makedirs(longPath(name)).
+    '''
+    os.makedirs(longPath(name))
+
+def pathExists(path):
+    '''
+    Calls os.path.exists(longPath(path))
+    '''
+    return os.path.exists(longPath(path))
+
+def copyTree(inputDirectory, outputDirectory):
+    '''
+    Calls shutil.copytree(longPath(inputDirectory), longPath(outputDirectory)).
+    '''
+    shutil.copytree(longPath(inputDirectory), longPath(outputDirectory))
+    
+def copyFile(inputRelativeName, inputDirectory, 
+             outputRelativeName, outputDirectory):
+    '''
+    Copies an input-file to the output-file. Creates
+    the needed input directories if they do not exist.
+    If the input-file does not exist, nothing is done.
+
+    inputRelativeName (string):
+    The name of the input-file, relative to the input-directory.
+
+    inputDirectory (string):
+    The input-directory.
+
+    outputRelativeName (string):
+    The name of the output-file, relative to the output-directory.
+
+    inputDirectory (string):
+    The output-directory.
+    '''
+    inputFilePath = os.path.join(inputDirectory, inputRelativeName)
+    outputFilePath = os.path.join(outputDirectory, outputRelativeName)
+
+    # If the output directory does not exist, create it.
+    finalOutputDirectory = os.path.split(outputFilePath)[0];
+    if not pathExists(finalOutputDirectory):
+        createDirectories(finalOutputDirectory)
+
+    # Copy the file.
+    shutil.copy(longPath(inputFilePath), longPath(outputFilePath))
+
+def longPath(path):
+    '''
+    Returns the input path with a possible long-UNC-prefix //?/.
+    
+    returns:
+    The input path prefixed with //?/, if under Windows, or the
+    input path unchanged under other operating systems.
+    '''
+    # Windows has a limit of 260 characters for standard paths.
+    # Longer paths need to use a special long-UNC notation which is 
+    # denoted by a prefix //?/. 
+    if os.name == 'nt':
+        return '//?/' + path
+
+    return path
+
 def copyIfNecessary(inputRelativeName, inputDirectory, 
                     outputRelativeName, outputDirectory):
     '''
-    Copies an input-file only if the output-file does not exist,
-    or the input-file has a modification time-stamp later than 
-    with the output-file. If the input-file does not exist,
-    nothing is done.
+    Copies an input-file to an output file if and only if
+    the output file is not up-to-date as determined by
+    fileUpToDate().
 
     inputRelativeName (string):
     The name of the input-file, relative to the input-directory.
@@ -241,35 +344,53 @@ def copyIfNecessary(inputRelativeName, inputDirectory,
     returns:
     A boolean stating if the file was actually copied.
     '''
-    inputFilePath = os.path.join(inputDirectory, inputRelativeName)
-    outputFilePath = os.path.join(outputDirectory, outputRelativeName)
-
-    # If the output directory does not exist, create it.
-    finalOutputDirectory = os.path.split(outputFilePath)[0];
-    if not os.path.exists(finalOutputDirectory):
-        os.makedirs(finalOutputDirectory)
-
-    upToDate = fileUpToDate(inputDirectory, inputRelativeName,
-                        outputDirectory, outputRelativeName)
+    upToDate = fileUpToDate(inputRelativeName, inputDirectory, 
+                            outputRelativeName, outputDirectory)
 
     if not upToDate:
-        shutil.copy(inputFilePath, outputFilePath)
+        copyFile(inputRelativeName, inputDirectory,
+                 outputRelativeName, outputDirectory)
 
     return not upToDate
 
+def listDirectory(path):
+    '''
+    Returns os.listdir(longPath(path)).
+    '''
+    return os.listdir(longPath(path))
+
+def fileModificationTime(filePath):
+    '''
+    Returns os.path.getmtime(longPath(filePath)).
+    '''
+    return os.path.getmtime(longPath(filePath))
+
+def fileExists(inputRelativeName, inputDirectory):
+    '''
+    Returns pathExists(os.path.join(inputDirectory, inputRelativeName)).
+    '''
+    return pathExists(os.path.join(inputDirectory, inputRelativeName))
+
 def fileUpToDate(inputRelativeName, inputDirectory,
                  outputRelativeName, outputDirectory):
+    '''
+    Returns whether the output-file is up-to-date.
+
+    returns:
+    Whether the output file exists and has a modification 
+    time-stamp not later than with the input file.
+    '''
     inputFilePath = os.path.join(inputDirectory, inputRelativeName)
     outputFilePath = os.path.join(outputDirectory, outputRelativeName)
 
-    if not os.path.exists(inputFilePath):
+    if not pathExists(inputFilePath):
         print 'Error: fileUpToDate: the input file ' + inputRelativeName + ' does not exist.'
         return False
 
     # The output file is up-to-date if it exists and has a 
     # modification time-stamp not later than with the input file.
-    return (os.path.exists(outputFilePath) and 
-        os.path.getmtime(inputFilePath) <= os.path.getmtime(outputFilePath))
+    return (pathExists(outputFilePath) and 
+        fileModificationTime(inputFilePath) <= fileModificationTime(outputFilePath))
 
 def outputDocumentName(name):
     '''

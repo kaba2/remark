@@ -24,8 +24,9 @@ import os
 import shutil
 import fnmatch
 
-from DocumentTree import Document
+from Document import Document
 from DocumentTree import DocumentTree
+from Cache import readCache, createCache
 
 from DocumentTypes.CppCodeView_DocumentType import CppCodeView_DocumentType
 from DocumentTypes.CodeView_DocumentType import CodeView_DocumentType
@@ -34,19 +35,28 @@ from DocumentTypes.DirectoryView_DocumentType import DirectoryView_DocumentType
 from DocumentTypes.Orphan_DocumentType import Orphan_DocumentType
 from DocumentTypes.Copy_DocumentType import Copy_DocumentType
 
+from TransitiveClosure import transitiveClosure
+
 from Convert import convertAll
-from Common import unixDirectoryName, unixRelativePath, readFile
-from Common import documentType, associateDocumentType, remarkVersion
+from Common import unixDirectoryName, unixRelativePath, readFile, writeFile
+from Common import documentType, associateDocumentType, remarkVersion, fileExtension
 from Common import asciiMathMlName, copyIfNecessary, setGlobalOptions, globalOptions
-from Common import setDefaultDocumentType, strictDocumentType
+from Common import setDefaultDocumentType, strictDocumentType, splitPath, pathExists
 from optparse import OptionParser
 
 from time import clock
 
 from Macros import *
 
+from TransitiveClosure import testTransitiveClosure
+
+if os.name == 'nt':
+    # Apply the bug-fix for the os.path.split() to
+    # support UNC-paths (bug present in Python 2.7.3).
+    os.path.split = splitPath
+
 if __name__ == '__main__':
-    
+
     optionParser = OptionParser(usage = """\
 %prog [options] inputDirectory outputDirectory [filesToCopy...]
 
@@ -64,12 +74,10 @@ use wildcards (e.g. *.png).""")
         action="store_true", dest="verbose", default=False,
         help = """whether to print additional progress information""")
 
-    optionParser.add_option('-i', '--incremental',
-        action="store_true", dest="incremental", default=False,
-        help = """whether to generate only those files which have changed. 
-Note: the unchanged files which refer to a changed file will not be updated.
-This may result in dead links and/or wrong descriptions. Use only for quick
-previews.""")
+    optionParser.add_option('-r', '--regenerate',
+        action="store_true", dest="regenerate", default=False,
+        help = """whether to regenerate all files, irrespective of whether
+the cache says they need not be changed.""")
 
     optionParser.add_option('-m', '--max-file-size',
         dest = 'maxFileSize',
@@ -125,7 +133,7 @@ previews.""")
     inputDirectory = os.path.normpath(os.path.join(os.getcwd(), inputDirectory))
     outputDirectory = os.path.normpath(os.path.join(os.getcwd(), outputDirectory))
     
-    if not os.path.exists(inputDirectory):
+    if not pathExists(inputDirectory):
         print 'Error: Input directory \'' + inputDirectory + '\' does not exist.'
         sys.exit(1)
 
@@ -169,7 +177,7 @@ previews.""")
     copyIfNecessary('./remark_files/' + asciiMathMlName(), scriptDirectory, 
                     './remark_files/' + asciiMathMlName(), outputDirectory)
 
-    # Construct a document tree from the input directory.
+    # Construct an empty document-tree from the input directory.
     documentTree = DocumentTree(inputDirectory)
 
     # Recursively gather files starting from the input directory.
@@ -182,8 +190,7 @@ previews.""")
             fullName = os.path.normpath(os.path.join(pathName, fileName))
             relativeName = unixRelativePath(inputDirectory, fullName)
             if strictDocumentType(os.path.splitext(fileName)[1]) != None:
-                # The file has an associated document type,
-                # take it in.            
+                # The file has an associated document type, take it in.            
                 documentTree.insertDocument(relativeName)
             else: 
                 for filenamePattern in filesToCopySet:
@@ -196,7 +203,150 @@ previews.""")
     if globalOptions().verbose:
         print 'Done.'
 
-    documentTree.compute()
+    # Insert virtual documents.
+
+    if globalOptions().verbose:
+        print
+        print 'Inserting virtual documents...',
+
+    # Generates a directory.remark-index virtual document to each
+    # directory. This provides the directory listings.
+    for directory in documentTree.directorySet:
+        # Form the relative name of the document.
+        relativeName = os.path.join(directory, 'directory.remark-index')
+            
+        # Insert a document with that relative name.
+        document = documentTree.insertDocument(relativeName)
+            
+        # Give the document the description from the unix-style
+        # directory name combined with a '/' to differentiate 
+        # visually that it is a directory.
+        description = unixDirectoryName(document.relativeDirectory) + '/'
+
+        # Add the description to the document.
+        document.setTag('description', [description])
+
+    if globalOptions().verbose:
+        print 'Done.'
+
+    if globalOptions().verbose:
+        print
+        print 'Reading document-tree cache'
+        print '---------------------------'
+        print
+
+    cacheRelativeName = './remark_files/document-tree.xml'
+    cacheFullName = os.path.join(outputDirectory, cacheRelativeName)
+    cacheDocumentTree = readCache(cacheFullName, documentTree)
+
+    if globalOptions().verbose:
+        print 'Done.'
+
+    # Parse the tags.
+    if globalOptions().verbose:
+        print
+        print 'Parsing tags'
+        print '------------'
+        print
+
+    for document in documentTree:
+        try:
+            type = document.documentType
+
+            # If the document is up-to-date, and it can be found from
+            # the cache, then use the cached tags instead.
+            if (type.upToDate(document, documentTree, outputDirectory) and
+                document in cacheDocumentTree):
+                cacheDocument = cacheDocumentTree.cacheDocument(document)
+                #print cacheDocument.tagSet
+                document.tagSet.update(cacheDocument.tagSet)
+                continue
+
+            # Otherwise parse the tags.
+            if globalOptions().verbose:
+                print 'Parsing tags for', document.relativeName, '...'
+            tagSet = type.parseTags(documentTree.fullName(document))
+            document.tagSet.update(tagSet)
+            document.setTag('link_description', [type.linkDescription(document)])
+                
+            #print
+            #print document.relativeName + ':'
+            #for tagName, tagText in tagSet.iteritems():
+            #    print tagName, ':', tagText
+
+        except UnicodeDecodeError:
+            print 'Warning:', document.relativeName,
+            print ': Tag parsing failed because of a unicode decode error.'
+
+    if globalOptions().verbose:
+        print
+        print 'Done.'
+
+    # Resolve parent links.
+    documentTree.resolveParentLinks()
+
+    def forEachDomain(visit):
+        for document in documentTree:
+            visit(document)
+
+    def forEachRelated(document, visit):
+        cacheDocument = cacheDocumentTree.cacheDocument(document)
+        if cacheDocument == None:
+            return
+        
+        for linkDocument in cacheDocument.outgoingSet:
+            if linkDocument.extension == '.remark-orphan':
+                print 'Links to orphan:', document.relativeName
+            visit(linkDocument)
+
+    def codomainOperator(left, right):
+        #left.update(right)
+        #return left
+        return left or right
+
+    def function(document):
+        #return set([document])
+
+        regenerate = not (document.documentType.upToDate(document, documentTree, outputDirectory) and
+                    document in cacheDocumentTree)
+
+        #if regenerate:
+        #    print 'Regenerate:', document.relativeName
+
+        return regenerate
+
+    def report(document, regenerate):
+        #if document.relativeName == 'remark.txt':
+        #    print
+        #    print document.relativeName
+        #    for toDocument in documentSet:
+        #        print toDocument.relativeName
+        document.setRegenerate(regenerate)
+
+    identity = False
+    #identity = set()
+    transitiveClosure(identity, forEachDomain, forEachRelated, function,
+                      codomainOperator, report, True)
+
+    #sys.exit(1)
+
+    #for document in documentTree:
+    #    #print document.regenerate(), 
+    #    print document.documentType.upToDate(document, documentTree, outputDirectory),
+    #    print document in cacheDocumentTree, 
+    #    print document.regenerate(),
+    #    print document.relativeName
+
+    #sys.exit(1)
+
+    for document in documentTree:
+        regenerate = globalOptions().regenerate or document.regenerate()
+        if not regenerate:
+            cacheDocument = cacheDocumentTree.cacheDocument(document)
+            if cacheDocument != None:
+                #print cacheDocument.incomingSet
+                document.incomingSet.update(cacheDocument.incomingSet)
+                document.outgoingSet.update(cacheDocument.outgoingSet)
 
     if globalOptions().verbose:
         print
@@ -208,6 +358,9 @@ previews.""")
 
     if globalOptions().verbose:
         print 'Done.'
+
+    # Save the document-tree as xml.
+    writeFile(createCache(documentTree), cacheFullName)
 
     # Output the time taken to produce the documentation.
     endTime = time.clock()

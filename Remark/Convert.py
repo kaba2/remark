@@ -194,7 +194,7 @@ class Remark(object):
         # It is something which start with [[, ends with ]],
         # has expansion-signs either none, +, -, ++, +-, -+, or --,
         # has a macro identifier, and then an optional inline
-        # parameter. Finally, ther is an optional one-line paramater
+        # parameter. Finally, there is an optional one-line paramater
         # after the ]].
         self.macroRegex = re.compile(r'\[\[' + 
                                      self.optionalOutputExpansion +
@@ -224,7 +224,11 @@ class Remark(object):
         self.linkIndex += 1
         return result
 
-    def remarkLink(self, description, fromDocument, toDocument):
+    def remarkLink(self, description, 
+                   fromDocument, toDocument):
+        # Add an internal dependency.
+        fromDocument.addDependency(toDocument)
+
         fromDirectory = fromDocument.relativeDirectory
         toFile = outputDocumentName(toDocument.relativeName)
         linkTarget = unixRelativePath(fromDirectory, toFile)
@@ -885,9 +889,12 @@ def convertAll(documentTree, outputRootDirectory, prologue):
         # Find out the document-type.
         type = documentType(document.extension)
 
-        # Possibly skip the document if in incremental mode.
-        if (globalOptions().incremental and 
-            type.upToDate(document, documentTree, outputRootDirectory)):
+        # Only generate documentation if needed; force
+        # generation if that was specified at command-line.
+        regenerate = globalOptions().regenerate or document.regenerate()
+        if not regenerate:
+            if globalOptions().verbose:
+                print 'Skipping', document.relativeName, '...'
             continue
 
         if globalOptions().verbose:
