@@ -8,6 +8,7 @@ import string
 from Document import Document
 from Common import documentType, unixDirectoryName, unixRelativePath, fileExtension
 from Common import globalOptions, withoutFileExtension, strictDocumentType
+from Common import pathSuffixSet
 
 class DocumentTree(object):
     def __init__(self, rootDirectory):
@@ -39,7 +40,7 @@ class DocumentTree(object):
 
         # A map from a filename (string) to documents
         # with that filename (list of Document's).
-        self.fileNameMap = {}
+        self.suffixMap = {}
 
         # A map from a directory (string) to a use-count (integer). 
         # The keys will contain all the directories in which the documents 
@@ -64,11 +65,13 @@ class DocumentTree(object):
         document = Document(relativeName)
         self.documentMap[document.relativeName] = document
 
-        # Add the document into the filename-map.
-        if document.fileName in self.fileNameMap:
-            self.fileNameMap[document.fileName].append(document)
-        else:
-            self.fileNameMap[document.fileName] = [document]
+        # Add the suffixes of the relative-name into the suffix-map.
+        suffixSet = pathSuffixSet(relativeName)
+        for suffix in suffixSet:
+            if suffix in self.suffixMap:
+                self.suffixMap[suffix].append(document)
+            else:
+                self.suffixMap[suffix] = [document]
 
         # Gather the directory of the file, and the
         # parent directories of that directory.
@@ -139,21 +142,28 @@ class DocumentTree(object):
             print
             print 'Done.'
         
-    def findDocumentLocal(self, fileName, relativeDirectory):
+    def findDocumentLocal(self, filePath, searchDirectory):
         '''
-        Finds a document corresponding to the given filename.
-        If the document is not found, returns None.
-        The document is only searched in the given relative 
-        directory.
-        
-        Example:
-        documentTree.findDocumentLocal('spam.txt', 'eggs/bar/') 
+        Searches for a document corresponding to the given 
+        file path in the given search directory.
 
+        filePath:
+        A relative-path to the file, relative to
+        the given search-directory.
+
+        searchDirectory:
+        A relative-path to the search-directory, relative to
+        the document-tree root directory.
+
+        returns:
+        If the document is found, the document object.
+        Otherwise None.
+        
         See also: 
         findDocumentUpwards().
         '''
         relativeName = unixDirectoryName(
-            os.path.join(relativeDirectory, fileName))
+            os.path.join(searchDirectory, filePath))
 
         return self.findDocumentByRelativeName(relativeName)
 
@@ -169,73 +179,57 @@ class DocumentTree(object):
         returns:
         The document-object if found, None otherwise.
 
-        Example:
-        documentTree.findDocumentByRelativeName('eggs/bar/spam.txt') 
-       
         See also: 
         findDocumentUpwards().
         '''
         return self.documentMap.get(relativeName)
 
-    def findDocumentUpwards(self, documentName, relativeDirectory):
+    def findDocumentUpwards(self, filePath, searchDirectory):
         '''
-        Searches for a document corresponding to the given document-name
-        starting from the given relative-directory and progressing 
+        Searches for a document corresponding to the given file path
+        starting from the given search-directory and progressing 
         to the parent-directories on unsuccessful searches. The search
-        terminates on the document-tree's root directory. If the 
-        document-name is a relative-path, no parent-directories will
-        be searched.
+        terminates on the document-tree's root directory. 
 
-        documentName:
-        The name of the file to search for. It can be either be a 
-        file-name, or a relative-path.
+        filePath:
+        A relative-path to the file to search for, relative to the
+        current search-directory (which changes during the algorithm).
 
-        relativeDirectory:
-        The directory from which to start searching, relative to 
-        the document-tree root-directory.        
+        searchDirectory:
+        A relative-path to the directory from which to start searching,
+        relative to the document-tree root-directory.        
 
         returns:
         The document-object if successful, None otherwise.
-        
-        Example:
-        documentTree.findDocumentUpwards('spam.txt', 'eggs/bar/')         
         '''
 
-        fileName = os.path.split(documentName)[1]
-        if fileName != documentName:
-            # This is a relative path: don't
-            # search from anywhere else.
-            document = self.findDocumentLocal(documentName, relativeDirectory) 
-            return document
-
         while True:
-            document = self.findDocumentLocal(documentName, relativeDirectory)
+            document = self.findDocumentLocal(filePath, searchDirectory)
             if document != None:
                 return document
             
             # Document file was not found, try the parent directory.
-            parentDirectory = os.path.normpath(os.path.split(relativeDirectory)[0])
-            if parentDirectory == relativeDirectory:
+            parentDirectory = os.path.normpath(os.path.split(searchDirectory)[0])
+            if parentDirectory == searchDirectory:
                 # We are at the root, stop here.
                 break
-            relativeDirectory = parentDirectory
+            searchDirectory = parentDirectory
         
         # Document file was not found.
         return None                           
 
-    def findDocument(self, documentName, relativeDirectory):
+    def findDocument(self, filePath, searchDirectory):
         '''
-        Searches for a document corresponding to the given document-name
-        first from the given relative-directory upwards, and if not 
+        Searches for a document corresponding to the given file path
+        first from the given search-directory upwards, and if not 
         successful, then from all of the document-tree (then the
-        document can be ambiguous). If the document-name is a 
-        relative-path, no other directories will be searched.
+        document can be ambiguous). 
 
-        documentName:
-        The name of the file to search for. It can be either a 
-        file-name, or a path relative to the document-tree root-directory.
+        filePath:
+        A relative-path to the file to search for, relative to the
+        current search-directory (which changes during the algorithm). 
 
-        relativeDirectory:
+        searchDirectory:
         The directory from which to start searching, relative to 
         the document-tree root-directory.        
 
@@ -247,64 +241,73 @@ class DocumentTree(object):
         over the choices.
         '''
         
-        documentName = unixDirectoryName(documentName)
-                
-        # Handle the relative-path case first.
-        fileName = os.path.split(documentName)[1]
-        if fileName != documentName:
-            # This is a relative path: don't
-            # search from anywhere else.
-            document = self.findDocumentLocal(documentName, relativeDirectory)
-            if document != None:
-                # Check whether this search could have been equivalently
-                # been done with a pure filename.
-                (checkDocument, checkUnique) = \
-                    self.findDocument(fileName, relativeDirectory)
-                if checkDocument == document and checkUnique:
-                    print
-                    print ('Warning: Used relative form ' + documentName + 
-                           ' where pure form ' + fileName + 
-                           ' would have been unambiguous.')
-            return (document, True)
+        document = None
+        unique = True
+        documentSet = []
 
-        # Since the document-name is not a relative-path,
-        # it is a filename.        
-               
-        # Search the filename over all of the document-tree.         
-        # Doing the search here is a different order compared to
-        # the function description. However, we only return a
-        # found document here if it is unique, or there is no
-        # such filename at all. This improves performance, since 
-        # it is just a dictionary lookup. Moreover, having unique
-        # filenames over the document tree is the normal case,
-        # so this is a relevant optimization.
-        documentSet = self.fileNameMap.get(fileName)
-        
-        if documentSet == None:
-            # There is no such filename in the document-tree.
-            return (None, True)
+        filePath = unixDirectoryName(filePath)
 
-        if len(documentSet) == 1:
-            # There is a unique document with this
-            # filename. Return it.
-            return (documentSet[0], True)
-        
-        # There are multiple files with this filename.
-
-        # See if the document can be found by following
-        # parent-directories.
-        document = self.findDocumentUpwards(documentName, relativeDirectory)
+        # Search the document by following parent-directories.
+        document = self.findDocumentUpwards(filePath, searchDirectory)
         if document != None:
-            # The document was found by following
-            # parent-directories.
-            return (document, True)
-            
-        # The document is somewhere on the document-tree,
-        # is ambiguous, and can not be found by
-        # following parent-directories.
+            # The document was found by following parent-directories.
+            # Add the document to the found-set.
+            documentSet.append(document)
+        else:
+            # The document could be found at any directory
+            # of the document-tree. Find out if the file-path
+            # is a path-suffix of any document's relative-name.
+            documentSet = self.suffixMap.get(filePath, [])
 
-        # Return an arbitrary file.
-        return (documentSet[0], False)
+        if len(documentSet) == 0:
+            # There is no such matching path-suffix of a relative-name 
+            # in the document-tree. It may still be that the file-path is 
+            # a relative path which contains .. parent-references. 
+            # Consider that a parent-reference .. has a directory A 
+            # on its left-hand side; then the A and .. can be removed
+            # without affecting the path (unixDirectoryName does
+            # this). Therefore what we would have is a kind of 
+            # relative-path which has n parent-references at the 
+            # start, and then normal directories. At this point
+            # we don't find it useful to search such relative-paths
+            # over all document-tree directories.
+            unique = True
+        elif len(documentSet) == 1:
+            # There is a unique document whose suffix of the
+            # relative-name matches the file-path.
+            document = documentSet[0]
+            unique = True
+
+            # Check whether this search could have been equivalently
+            # done with a shorter path-suffix.
+            shortestSuffix = ''
+            n = len(filePath)
+            i = 0
+            while i < n:
+                if filePath[i] == '/':
+                    suffix = filePath[i + 1 : ]
+                    (checkDocument, checkUnique) = \
+                        self.findDocument(suffix, searchDirectory)
+                    if checkDocument == document and checkUnique:
+                        shortestSuffix = suffix
+                    else:
+                        break
+                i += 1
+            
+            if shortestSuffix != '':
+                # A shorter path-suffix would have sufficed.
+                print
+                print ('Warning: Used path ' + filePath + 
+                       ' where a shorter path ' + shortestSuffix + 
+                       ' would have been unambiguous.')
+        else:
+            # There are multiple files whose suffix of the
+            # relative-name matches the file-path.
+            # Return an arbitrary file.
+            document = documentSet[0]
+            unique = False
+
+        return (document, unique)
 
     def fullName(self, document):
         '''

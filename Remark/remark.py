@@ -295,8 +295,8 @@ the cache says they need not be changed.""")
             return
         
         for linkDocument in cacheDocument.outgoingSet:
-            if linkDocument.extension == '.remark-orphan':
-                print 'Links to orphan:', document.relativeName
+            #if linkDocument.extension == '.remark-orphan':
+                #print 'Links to orphan:', document.relativeName
             visit(linkDocument)
 
     def codomainOperator(left, right):

@@ -13,51 +13,30 @@ here.
 Algorithm
 --------- 
 
-A file can be specified either by a pure filename or a relative path.
+Given a file path, which may either be a filename, or a 
+relative-path, the algorithm searches the corresponding document as 
+follows:
 
-### Pure filenames
-
-A _pure filename_ is a path with no directory-related information. 
-It is searched as follows:
-
- 1. The file is searched from the current directory.
+ 1. The document is searched from the current directory by appending
+ the file-path at the end of the current directory.
  
- 2. If the file can not be found, the file is searched from the 
- parent directories up until to the documentation root.
+ 2. If the document can not be found, the document is searched similarly 
+ from the parent-directories up until to the documentation root-directory.
  
- 3. If the file still can not be found, the file is searched across
- all documents in the document tree. In case there are multiple 
- documents with the given filename, Remark picks one arbitrarily and
- emits a warning about the ambiguity.
-
-For example, the parameters in the following macro invocations 
-are pure filenames:
-
-	[[Link]]: remark.txt
-
-	[[Link]]: tag_parsers.txt
-	
-### Relative paths
-
-A _relative path_ is a path which locates a file relative to the 
-directory of the currently handled document. In this case the file
-is searched only at this directory. For example, the parameters in 
-the following macro invocations are relative paths:
-
-	[[Link]]: ../../remark.txt
-	
-	[[Link]]: ../TagParsers/tag_parsers.txt
-
+ 3. If the document still can not be found, the file-path is searched 
+ across all the path-suffixes of the relative-paths of the documents in
+ the document-tree. In case there are multiple matching documents, Remark 
+ picks one arbitrarily and emits a warning about the ambiguity.
+ 
 Notes
 -----
 
-The pure filenames should be used whenever possible. This is because
-the relative paths are sensitive to changes in the directory structure.
-For example, if this document was moved to a new sub-directory in the 
-current directory, the link above would be broken. The relative paths 
-are provided only to resolve the cases where a pure filename would be 
-ambiguous. To enforce this, Remark emits a warning whenever a file is 
-searched using a relative path where a pure filename would suffice.
+The amount of location information that can be passed varies between a 
+filename (minimum) and a full relative-path relative to the document 
+root-directory (maximum). Specifying only the necessary information needed
+to make the search unambiguous makes the documentation more robust to 
+directory changes. With this in mind, Remark emits a warning whenever 
+a shorter path-suffix would suffice for the given search.
 
 
 

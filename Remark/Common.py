@@ -124,6 +124,18 @@ def escapeMarkdown(text):
         escapedText += c
     return escapedText
 
+def pathSuffixSet(relativePath):
+    path = unixDirectoryName(relativePath)
+    n = len(path)
+    index = n
+    lastStart = index
+    suffixSet = []
+    while index > 0:
+        index -= 1
+        if (relativePath[index] == '/' and index < n):
+            suffixSet.append(relativePath[index + 1 : ])
+    return suffixSet
+
 def unixRelativePath(fromRelativeDirectory, toRelativePath):
     '''
     Forms a unix-style relative-path from the given relative

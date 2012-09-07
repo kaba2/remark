@@ -177,10 +177,7 @@ to be unique). */
 #remark table
 {
     border-collapse: collapse;
-    /* We would like to indent tables a bit. 
-    Note the amount of indentation matches with the amount
-    for the verbatim content.*/
-    margin-left: 40px;
+    margin-left: 0;
 }
 
 /* Tables and cells*/
