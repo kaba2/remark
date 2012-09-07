@@ -74,10 +74,10 @@ use wildcards (e.g. *.png).""")
         action="store_true", dest="verbose", default=False,
         help = """whether to print additional progress information""")
 
-    optionParser.add_option('-r', '--regenerate',
-        action="store_true", dest="regenerate", default=False,
-        help = """whether to regenerate all files, irrespective of whether
-the cache says they need not be changed.""")
+    optionParser.add_option('-i', '--incremental',
+        action="store_false", dest="regenerate", default=True,
+        help = """whether to skip generating files if the cache
+shows they have not been changed.""")
 
     optionParser.add_option('-m', '--max-file-size',
         dest = 'maxFileSize',
