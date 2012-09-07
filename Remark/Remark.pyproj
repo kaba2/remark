@@ -87,6 +87,9 @@
     <Content Include="..\installation.txt">
       <Link>installation.txt</Link>
     </Content>
+    <Content Include="..\license.txt">
+      <Link>license.txt</Link>
+    </Content>
     <Content Include="..\license_matters.txt">
       <Link>license_matters.txt</Link>
     </Content>
