@@ -2,7 +2,7 @@
 
 # Description: DirectoryView document-type
 
-from Common import changeExtension 
+from Common import changeExtension, fileExists
 from Convert import saveRemarkToHtml
 
 class DirectoryView_DocumentType(object):
@@ -27,7 +27,8 @@ class DirectoryView_DocumentType(object):
                          outputRootDirectory)
 
     def upToDate(self, document, documentTree, outputRootDirectory):
-        return False
+        return True
+        #return fileExists(document.documentType.outputName(document.relativeName), outputRootDirectory)
 
     def mathEnabled(self):
         return False

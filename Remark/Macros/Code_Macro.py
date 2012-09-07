@@ -3,7 +3,6 @@
 # Description: Code macro
 # Detail: Generates colored html from many kinds of source code.
 
-import os.path
 import string
 
 from MacroRegistry import registerMacro

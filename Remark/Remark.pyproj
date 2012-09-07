@@ -21,8 +21,10 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Cache.py" />
     <Compile Include="Common.py" />
     <Compile Include="Convert.py" />
+    <Compile Include="Document.py" />
     <Compile Include="DocumentTree.py" />
     <Compile Include="DocumentTypes\Copy_DocumentType.py" />
     <Compile Include="DocumentTypes\CppCodeView_DocumentType.py" />
@@ -56,6 +58,7 @@
     <Compile Include="TagParsers\Dictionary_TagParser.py" />
     <Compile Include="TagParsers\Remark_TagParser.py" />
     <Compile Include="TagParsers\__init__.py" />
+    <Compile Include="TransitiveClosure.py" />
     <Compile Include="__init__.py" />
   </ItemGroup>
   <ItemGroup>

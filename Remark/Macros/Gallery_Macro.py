@@ -5,12 +5,13 @@
 
 from MacroRegistry import registerMacro
 from Common import unixRelativePath, unixDirectoryName, changeExtension
-from Common import fileExtension, copyIfNecessary
+from Common import fileExtension, copyIfNecessary, createDirectories, copyTree
+from Common import pathExists, fileModificationTime
 
 import sys
 import os.path
-import shutil
 import math
+import hashlib
 
 try: 
     from PIL import Image
@@ -123,7 +124,10 @@ class Gallery_Macro(object):
             inputLinkName = unixRelativePath(document.relativeDirectory, input.relativeName)
 
             # Find out thumbnail names.
-            thumbRelativeName = 'remark_files/thumbnails/' + changeExtension(input.fileName, '-thumb.png')
+            # The used hash does not matter, but it must always give the same
+            # hash for the same relative-name.
+            hashString = hashlib.md5(input.relativeName).hexdigest()[0 : 16]
+            thumbRelativeName = 'remark_files/thumbnails/' + changeExtension(input.fileName, '-' + hashString + '.png')
             thumbLinkName = unixRelativePath(document.relativeDirectory, thumbRelativeName)
             if pixelDocument == None:
                 # If we could not find a pixel-based image, we will use
@@ -166,8 +170,8 @@ class Gallery_Macro(object):
             
             # Create the directory for the thumbnail, if necessary.
             thumbDirectory = os.path.join(outputRootDirectory, 'remark_files/thumbnails');
-            if not os.path.exists(thumbDirectory):
-                os.makedirs(thumbDirectory)
+            if not pathExists(thumbDirectory):
+                createDirectories(thumbDirectory)
                 
             # Find out full paths.
             inputFullName = os.path.join(inputRootDirectory, input.relativeName)
@@ -175,8 +179,8 @@ class Gallery_Macro(object):
 
             # Compute the thumbnail only if the thumbnail does not exist
             # or it is not up-to-date.
-            thumbnailUpToDate = (os.path.exists(thumbFullName) and
-                                 os.path.getmtime(inputFullName) <= os.path.getmtime(thumbFullName))
+            thumbnailUpToDate = (pathExists(thumbFullName) and
+                                 fileModificationTime(inputFullName) <= fileModificationTime(thumbFullName))
             if not thumbnailUpToDate:
                 try:
                     if pixelDocument != None:
@@ -232,7 +236,7 @@ class Gallery_Macro(object):
 
         highslideSource = os.path.join(scriptDirectory, './remark_files/highslide/graphics')
         highslideTarget = os.path.join(outputDirectory, './remark_files/highslide/graphics')
-        if not os.path.exists(highslideTarget):
-            shutil.copytree(highslideSource, highslideTarget)
+        if not pathExists(highslideTarget):
+            copyTree(highslideSource, highslideTarget)
         
 registerMacro('Gallery', Gallery_Macro())

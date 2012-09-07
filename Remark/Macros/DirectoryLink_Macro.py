@@ -3,8 +3,6 @@
 # Description: DirectoryLink macro
 # Detail: Generates a relative link to the containing directory.
 
-import os.path
-
 from MacroRegistry import registerMacro
 from Common import unixRelativePath, outputDocumentName, escapeMarkdown
 

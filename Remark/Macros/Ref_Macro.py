@@ -3,8 +3,6 @@
 # Description: Ref macro
 # Detail: Finds the relative output name of a file in document tree.
 
-import os.path
-
 from MacroRegistry import registerMacro
 from Common import unixRelativePath, outputDocumentName
 

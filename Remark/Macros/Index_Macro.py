@@ -7,7 +7,7 @@ import string
 import os.path
 
 from Common import unixRelativePath, htmlDiv, escapeMarkdown
-from Common import outputDocumentName, unixDirectoryName
+from Common import outputDocumentName, unixDirectoryName, listDirectory
 from MacroRegistry import registerMacro
 
 class Index_Macro(object):
@@ -23,7 +23,7 @@ class Index_Macro(object):
         className = scope.getString('Index.class_name', 'Index')
         
         fullPath = os.path.join(documentTree.rootDirectory, document.relativeDirectory)
-        entrySet = ['..'] + os.listdir(fullPath)
+        entrySet = ['..'] + listDirectory(fullPath)
      
         # Gather the files and directories in the
         # document's directory.

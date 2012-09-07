@@ -3,8 +3,6 @@
 # Description: Link macro
 # Detail: Generates a link to a document in the document tree.
 
-import os.path
-
 from MacroRegistry import registerMacro
 from Common import unixRelativePath, outputDocumentName
 
