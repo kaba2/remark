@@ -13,7 +13,8 @@ import re
 globalOptions_ = None
 
 def splitPath(p):
-    """Split a pathname.
+    '''
+    Splits a pathname.
 
     This is a bug-fixed version of os.path.split() from
     Python 2.7.3. It used os.path.splitdrive() which does not correctly
@@ -22,7 +23,8 @@ def splitPath(p):
 
     returns: 
     tuple (head, tail) where tail is everything after the final slash.
-    Either part may be empty."""
+    Either part may be empty.
+    '''
 
     d, p = os.path.splitunc(p)
     # set i to index beyond p's last slash
@@ -39,7 +41,7 @@ def splitPath(p):
 
 def setGlobalOptions(options):
     '''
-    Sets the global options object. The global options 
+    Sets the global-options object. The global options 
     can then be accessed by globalOptions().
     '''
     global globalOptions_
@@ -47,7 +49,7 @@ def setGlobalOptions(options):
 
 def globalOptions():
     '''
-    Returns the global options object.
+    Returns the global-options object.
     '''
     return globalOptions_;
 
@@ -68,6 +70,9 @@ def htmlDiv(enclosedText, className = ''):
     '''
     Encloses the given text in a <div> block and gives it a
     html-class, so that it can be styled with CSS.
+
+    enclosedText (list of strings):
+    The text to enclose.
 
     className:
     The name of the html-class to give to the div block.
@@ -93,6 +98,18 @@ def htmlDiv(enclosedText, className = ''):
     return text
 
 def globToRegex(glob):
+    '''
+    Converts a glob or a set of globs to a regular expression.
+
+    If glob is a string, then it is simply converted to a 
+    regular expression. Otherwise glob is assumed to be iterable,
+    and each string in glob is converted to a regular expression, 
+    which are then combined as alternatives into a single regular 
+    expression.
+
+    glob (string or an iterable of strings):
+    A glob or a set of globs to convert to a regular expression.
+    '''
     if not isinstance(glob, basestring):
         regexSet = []
         for line in glob:
@@ -102,9 +119,25 @@ def globToRegex(glob):
     return fnmatch.translate(glob.strip())
 
 def combineRegex(regex):
+    '''
+    Combines a regular expression or a set of regular expression 
+    as alternatives into a single regular expression.
+
+    If the regular expression is a string, it is returned as it is.
+    Otherwise each regular expression is grouped into a non-capturing
+    parenthesis and these groups are combined as alternatives.
+
+    regex (string or an iterable of strings):
+    The regular expression or a set of regular expression to 
+    combine. Whitespace will be removed from both sides of
+    each regular expression.
+
+    returns (string):
+    The combined regular expression.
+    '''
     regexString = ''
     if isinstance(regex, basestring):
-        regexString = regex
+        regexString = regex.strip()
     else:
         regexSet = []
         for line in regex:
@@ -116,6 +149,15 @@ def combineRegex(regex):
     return regexString
 
 def escapeMarkdown(text):
+    '''
+    Escapes the * and _ Markdown meta-characters by \* and \_.
+
+    text (string):
+    The text to escape.
+
+    returns (string):
+    The text with * and _ replaced with \* and \_, respectively.
+    '''
     escapedText = ''
     escapeSet = set(['*', '_'])
     for c in text:
@@ -125,6 +167,15 @@ def escapeMarkdown(text):
     return escapedText
 
 def pathSuffixSet(relativePath):
+    '''
+    Returns the set of path-suffixes of a given relative-path.
+
+    relativePath (string):
+    The relative-path to compute the path-suffixes for.
+
+    returns (list of strings):
+    The set of path-suffixes for the relative-path.
+    '''
     path = unixDirectoryName(relativePath)
     n = len(path)
     index = n
@@ -154,16 +205,22 @@ def openFileUtf8(fileName):
     '''
     Opens a file for reading as utf-8 decoded.
     Decoding errors are treated by 'replace'.
+
+    fileName (string):
+    The file to open.
+
+    returns:
+    A handle to the opened file.
     '''
     file = codecs.open(longPath(fileName),
-                        mode = 'rU', encoding = 'utf-8-sig', 
-                        errors = 'replace')
+                       mode = 'rU', encoding = 'utf-8-sig', 
+                       errors = 'replace')
 
     return file    
 
 def fileSize(fileName):
     '''
-    Calls os.path.getsize(longPath(fileName)).
+    Returns os.path.getsize(longPath(fileName)).
     '''
     return os.path.getsize(longPath(fileName))
 
@@ -171,6 +228,19 @@ def readFile(fileName, ignoreLargeFiles = True):
     '''
     Opens a file using openFileUtf8, and reads the contents 
     into a list of strings corresponding to the rows of the file.
+    The form-feeds and newlines are stripped off from the end of
+    each line.
+
+    fileName (string):
+    The file to read.
+
+    ignoreLargeFiles (boolean):
+    Whether to skip reading files that are larger than
+    globalOptions().maxFileSize. 
+    
+    returns (list of strings):
+    The rows of the file, if the file is not skipped. Otherwise
+    the empty list [].
     '''
     size = fileSize(fileName)
     maxSize = globalOptions().maxFileSize
@@ -223,6 +293,8 @@ def writeFile(text, outputFullName):
 
     # Save the text to a file.
     with codecs.open(longPath(outputFullName), mode = 'w', encoding = 'utf-8') as outputFile:
+        # Note that we can't use outputFile.writelines() because it would
+        # concatenate the lines without the new-line at the end.
         for line in text:
             outputFile.write(line)
             outputFile.write('\n')
@@ -231,17 +303,33 @@ _documentTypeMap = dict()
 _defaultDocumentType = None
 
 def setDefaultDocumentType(documentType):
+    '''
+    Sets the default document-type.
+
+    This document-type will be returned by documentType()
+    in case an associated document-type can not be found.
+
+    documentType (DocumentType):
+    The document-type object to use as a default 
+    document-type.
+
+    See also:
+    documentType()
+    '''
     global _defaultDocumentType
     _defaultDocumentType = documentType
 
 def associateDocumentType(inputExtension, documentType):
     '''
-    Associates the given filename-extension to the given document-type
-    object. The filename-extension-key is always stored lower-case,
-    so that we can be case-insensitive for it.
+    Associates the given filename-extension, or a set of filename-extensions, 
+    to the given document-type object. The filename-extension-key is always 
+    stored lower-case, so that we can be case-insensitive for it.
 
     inputExtension (string or list-of-strings):
     The file-extensions to associate to the given document-type.
+
+    documentType (DocumentType):
+    The document-type object to associate to the file-extensions.
     '''
     global _documentTypeMap
     if isinstance(inputExtension, basestring):
@@ -253,18 +341,32 @@ def associateDocumentType(inputExtension, documentType):
 def strictDocumentType(inputExtension):
     '''
     Returns the document-type object associated to a given
-    filename-extension. If there is no such, None is
-    returned instead. The filename-extension comparison is 
-    case-insensitive.
+    filename-extension. 
+    
+    The filename-extension comparison is case-insensitive.
+
+    inputExtension (string):
+    The file-extension for which to retrieve the document-type.
+
+    returns (DocumentType):
+    The associated document-type object, if such can be
+    found. Otherwise None.
     '''
     return _documentTypeMap.get(inputExtension.lower())
 
 def documentType(inputExtension):
     '''
     Returns the document-type object associated to a given
-    filename-extension. If there is no such, the default
-    document-type object is returned instead. The 
-    filename-extension comparison is case-insensitive.
+    filename-extension. 
+    
+    The filename-extension comparison is case-insensitive.
+
+    inputExtension (string):
+    The file-extension for which to retrieve the document-type.
+
+    returns (DocumentType):
+    The associated document-type object, if such can be
+    found. Otherwise the default document-type object.
     '''
     return _documentTypeMap.get(inputExtension.lower(), _defaultDocumentType)
 
@@ -276,7 +378,7 @@ def createDirectories(name):
 
 def pathExists(path):
     '''
-    Calls os.path.exists(longPath(path))
+    Returns os.path.exists(longPath(path))
     '''
     return os.path.exists(longPath(path))
 
@@ -425,7 +527,7 @@ def unixDirectoryName(name):
 
 def fileExtension(fileName):
     '''
-    Returns the filename-extensions of the the filename.
+    Returns the filename-extension of the the filename.
     '''
     return os.path.splitext(fileName)[1]
 
