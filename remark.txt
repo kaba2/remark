@@ -1,4 +1,4 @@
-﻿Remark
+Remark
 ======
 
 [Back to Homepage of Kalle Rutanen][Back]
@@ -7,7 +7,7 @@
 
 _Remark_ is a Python library to generate html documentation for software libraries.
 Remark is documented with Remark, the results of which you are inspecting
-right now. 
+right now.
 
 Usage
 -----
