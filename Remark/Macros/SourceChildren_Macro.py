@@ -7,7 +7,7 @@ import os.path
 import string
 
 from MacroRegistry import registerMacro
-from Common import unixRelativePath, outputDocumentName, escapeMarkdown
+from FileSystem import unixRelativePath, outputDocumentName, escapeMarkdown
 
 class SourceChildren_Macro(object):
     def name(self):

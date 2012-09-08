@@ -3,7 +3,7 @@
 # Description: Body macro
 # Detail: Reads a document from file.
 
-from Common import readFile
+from FileSystem import readFile
 from MacroRegistry import registerMacro
 
 class Body_Macro(object):

@@ -4,7 +4,7 @@
 # Detail: Generates a link to a document in the document tree.
 
 from MacroRegistry import registerMacro
-from Common import unixRelativePath, outputDocumentName
+from FileSystem import unixRelativePath, outputDocumentName
 
 class Link_Macro(object):
     def name(self):

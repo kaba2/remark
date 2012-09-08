@@ -22,8 +22,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Cache.py" />
-    <Compile Include="Common.py" />
-    <Compile Include="Convert.py" />
+    <Compile Include="FileSystem.py" />
+    <Compile Include="Conversion.py" />
     <Compile Include="Document.py" />
     <Compile Include="DocumentTree.py" />
     <Compile Include="DocumentTypes\Copy_DocumentType.py" />

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Description: Common stuff used in Remark
+# Description: File-system abstractions
 # Documentation: core_stuff.txt
 
 import os.path

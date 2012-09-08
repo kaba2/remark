@@ -4,7 +4,7 @@
 # Documentation: core_stuff.txt
 
 import os
-from Common import readFile, pathExists
+from FileSystem import readFile, pathExists
 from xml.etree import ElementTree
 from xml.dom import minidom
 

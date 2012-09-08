@@ -6,9 +6,9 @@
 import os.path
 import string
 from Document import Document
-from Common import documentType, unixDirectoryName, unixRelativePath, fileExtension
-from Common import globalOptions, withoutFileExtension, strictDocumentType
-from Common import pathSuffixSet
+from FileSystem import documentType, unixDirectoryName, unixRelativePath, fileExtension
+from FileSystem import globalOptions, withoutFileExtension, strictDocumentType
+from FileSystem import pathSuffixSet
 
 class DocumentTree(object):
     def __init__(self, rootDirectory):

@@ -4,7 +4,7 @@
 # Detail: Generates a link to the parent documentation.
 
 from MacroRegistry import registerMacro
-from Common import unixRelativePath, outputDocumentName
+from FileSystem import unixRelativePath, outputDocumentName
 
 class Parent_Macro(object):
     def name(self):

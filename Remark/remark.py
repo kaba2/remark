@@ -37,11 +37,11 @@ from DocumentTypes.Copy_DocumentType import Copy_DocumentType
 
 from TransitiveClosure import transitiveClosure
 
-from Convert import convertAll
-from Common import unixDirectoryName, unixRelativePath, readFile, writeFile
-from Common import documentType, associateDocumentType, remarkVersion, fileExtension
-from Common import asciiMathMlName, copyIfNecessary, setGlobalOptions, globalOptions
-from Common import setDefaultDocumentType, strictDocumentType, splitPath, pathExists
+from Conversion import convertAll
+from FileSystem import unixDirectoryName, unixRelativePath, readFile, writeFile
+from FileSystem import documentType, associateDocumentType, remarkVersion, fileExtension
+from FileSystem import asciiMathMlName, copyIfNecessary, setGlobalOptions, globalOptions
+from FileSystem import setDefaultDocumentType, strictDocumentType, splitPath, pathExists
 from optparse import OptionParser
 
 from time import clock
