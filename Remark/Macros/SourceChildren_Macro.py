@@ -8,6 +8,7 @@ import string
 
 from MacroRegistry import registerMacro
 from FileSystem import unixRelativePath, outputDocumentName, escapeMarkdown
+from FileSystem import withoutFileExtension
 
 class SourceChildren_Macro(object):
     def name(self):
@@ -17,10 +18,11 @@ class SourceChildren_Macro(object):
         document = remark.document
                 
         def prefixOf(left, right):
-            return string.find(os.path.splitext(right)[0], os.path.splitext(left)[0]) == 0
+            return string.find(withoutFileExtension(right), 
+                               withoutFileExtension(left)) == 0
         
         def same(left, right):
-            return os.path.splitext(left)[0] == os.path.splitext(right)[0]
+            return withoutFileExtension(left) == withoutFileExtension(right)
 
         # Gather the list of source files.
         
