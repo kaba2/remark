@@ -189,7 +189,7 @@ shows they have not been changed.""")
         for fileName in fileNameSet:
             fullName = os.path.normpath(os.path.join(pathName, fileName))
             relativeName = unixRelativePath(inputDirectory, fullName)
-            if strictDocumentType(os.path.splitext(fileName)[1]) != None:
+            if strictDocumentType(fileExtension(fileName)) != None:
                 # The file has an associated document type, take it in.            
                 documentTree.insertDocument(relativeName)
             else: 

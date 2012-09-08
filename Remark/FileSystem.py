@@ -504,19 +504,24 @@ def fileUpToDate(inputRelativeName, inputDirectory,
     return (pathExists(outputFilePath) and 
         fileModificationTime(inputFilePath) <= fileModificationTime(outputFilePath))
 
-def outputDocumentName(name):
+def outputDocumentName(inputPath):
     '''
-    Returns the name of the output-document given the input-document
-    filename. This is given by the document-type associated to the 
-    filename-extension of the given filename. If the file does not
-    have a document-type, then the name is returned as it is.
+    Returns the name of the output-document filename given the 
+    input-document filename. 
+    
+    The output-document filename is decided by the document-type
+    associated to the file-extension of the input-document filename.
+
+    name (string):
+    The path to the input-document.
+
+    returns (string):
+    The path to the output-document.
     '''
-    inputExtension = os.path.splitext(name)[1]
+    inputExtension = fileExtension(inputPath)
     type = documentType(inputExtension)
-    outputName = name
-    if type != None:
-        outputName = type.outputName(name)
-    return unixDirectoryName(outputName) 
+    outputPath = type.outputName(inputPath)
+    return unixDirectoryName(outputPath) 
 
 def unixDirectoryName(name):
     '''
