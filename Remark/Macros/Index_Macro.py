@@ -6,8 +6,8 @@
 import string
 import os.path
 
-from Common import unixRelativePath, htmlDiv, escapeMarkdown
-from Common import outputDocumentName, unixDirectoryName, listDirectory
+from FileSystem import unixRelativePath, htmlDiv, escapeMarkdown
+from FileSystem import outputDocumentName, unixDirectoryName, listDirectory
 from MacroRegistry import registerMacro
 
 class Index_Macro(object):

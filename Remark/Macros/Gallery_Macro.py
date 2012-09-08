@@ -4,9 +4,9 @@
 # Detail: Generates an image gallery with thumbnails.
 
 from MacroRegistry import registerMacro
-from Common import unixRelativePath, unixDirectoryName, changeExtension
-from Common import fileExtension, copyIfNecessary, createDirectories, copyTree
-from Common import pathExists, fileModificationTime
+from FileSystem import unixRelativePath, unixDirectoryName, changeExtension
+from FileSystem import fileExtension, copyIfNecessary, createDirectories, copyTree
+from FileSystem import pathExists, fileModificationTime
 
 import sys
 import os.path

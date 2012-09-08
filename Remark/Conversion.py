@@ -12,8 +12,8 @@ import codecs
 import copy
 
 from MacroRegistry import findMacro
-from Common import changeExtension, outputDocumentName, documentType, unixDirectoryName, copyIfNecessary
-from Common import asciiMathMlName, remarkVersion, globalOptions, unixRelativePath, writeFile
+from FileSystem import changeExtension, outputDocumentName, documentType, unixDirectoryName, copyIfNecessary
+from FileSystem import asciiMathMlName, remarkVersion, globalOptions, unixRelativePath, writeFile
 
 class Scope(object):
     def __init__(self, parent, name):

@@ -4,7 +4,7 @@
 
 import re
 
-from Common import escapeMarkdown, fileUpToDate, copyIfNecessary
+from FileSystem import escapeMarkdown, fileUpToDate, copyIfNecessary
 from TagParsers.Dictionary_TagParser import Dictionary_TagParser 
 
 class Copy_DocumentType(object):

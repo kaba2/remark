@@ -4,7 +4,7 @@
 # Detail: Generates a list of parent documents up to the root.
 
 from MacroRegistry import registerMacro
-from Common import htmlDiv
+from FileSystem import htmlDiv
 
 class ParentList_Macro(object):
     def name(self):

@@ -4,7 +4,7 @@
 # Detail: Generates links to documentation children.
 
 from MacroRegistry import registerMacro
-from Common import unixRelativePath, outputDocumentName, htmlDiv
+from FileSystem import unixRelativePath, outputDocumentName, htmlDiv
 
 class DocChildren_Macro(object):
     def name(self):

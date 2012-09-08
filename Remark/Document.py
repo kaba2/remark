@@ -5,7 +5,7 @@
 
 import os.path
 import string
-from Common import documentType, unixDirectoryName, unixRelativePath, fileExtension
+from FileSystem import documentType, unixDirectoryName, unixRelativePath, fileExtension
 
 class Document(object):
     def __init__(self, relativeName):

@@ -4,7 +4,7 @@
 # Detail: Finds the relative output name of a file in document tree.
 
 from MacroRegistry import registerMacro
-from Common import unixRelativePath, outputDocumentName
+from FileSystem import unixRelativePath, outputDocumentName
 
 class Ref_Macro(object):
     def name(self):

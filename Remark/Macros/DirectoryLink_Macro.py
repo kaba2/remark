@@ -4,7 +4,7 @@
 # Detail: Generates a relative link to the containing directory.
 
 from MacroRegistry import registerMacro
-from Common import unixRelativePath, outputDocumentName, escapeMarkdown
+from FileSystem import unixRelativePath, outputDocumentName, escapeMarkdown
 
 class DirectoryLink_Macro(object):
     def name(self):

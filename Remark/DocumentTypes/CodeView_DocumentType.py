@@ -2,8 +2,8 @@
 
 # Description: CodeView document-type
 
-from Common import escapeMarkdown, globalOptions, fileUpToDate
-from Convert import saveRemarkToHtml
+from FileSystem import escapeMarkdown, globalOptions, fileUpToDate
+from Conversion import saveRemarkToHtml
 from TagParsers.Dictionary_TagParser import Dictionary_TagParser 
 
 class CodeView_DocumentType(object):

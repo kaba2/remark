@@ -5,7 +5,7 @@
 # Documentation: tag_parsers.txt
 
 from Dictionary_TagParser import Dictionary_TagParser
-from Common import openFileUtf8, globalOptions
+from FileSystem import openFileUtf8, globalOptions
 
 import string
 import re

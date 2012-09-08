@@ -8,7 +8,7 @@ import re
 
 from MacroRegistry import registerMacro
 
-from Common import unixRelativePath, unixDirectoryName
+from FileSystem import unixRelativePath, unixDirectoryName
 
 from pygments import highlight
 from pygments.lexers import CppLexer

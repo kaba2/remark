@@ -7,7 +7,7 @@ import fnmatch
 import re
 
 from MacroRegistry import registerMacro
-from Common import htmlDiv, globToRegex, combineRegex
+from FileSystem import htmlDiv, globToRegex, combineRegex
 
 class DocumentTree_Macro(object):
     def name(self):
