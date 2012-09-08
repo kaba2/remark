@@ -70,6 +70,23 @@ properties of the `.highslide img` selector in `highslide.css`.
 The defaults for these are 45% and 20% (of the containing element), 
 respectively.
 
+### Thumbnail naming
+
+The thumbnails will be stored at the `remark_files/thumbnails` 
+directory of the output root-directory. A thumbnail is named
+such that it starts with the image filename without the extension,
+and is then followed by (a dash - and) a hash of the relative-path 
+in hex-form which disambiguates images with equal filenames. 
+
+Using hashing for disambiguation means that images with _equal_ filenames 
+may sometimes collide (they will then have the same thumbnail image). 
+The probability of this happening is governed by the 
+[birthday paradox][Birthday]. Given the current implementation, which
+uses a 64-bit hash, over 6 million files with equal filenames need
+to be generated to get a collision with a one-in-a-million probability.
+
+[Birthday]: http://en.wikipedia.org/wiki/Birthday_paradox
+
 Example
 -------
 
