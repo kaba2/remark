@@ -54,6 +54,7 @@ to spot warnings.
 * Added a warning about using a long relative-path where a shorter
 suffix-path would have sufficed.
 * Added timing for the generation process.
+* Removed the option for a prologue file.
 
 ### Document types
 

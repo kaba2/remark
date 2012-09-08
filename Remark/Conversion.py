@@ -876,7 +876,7 @@ def saveRemarkToHtml(remarkText, document, documentTree,
     # Write the resulting html.
     writeFile(htmlText, outputFullName)
 
-def convertAll(documentTree, outputRootDirectory, prologue):
+def convertAll(documentTree, outputRootDirectory):
     
     outputRootDirectory = os.path.normpath(outputRootDirectory)
 
