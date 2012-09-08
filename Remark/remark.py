@@ -85,12 +85,6 @@ shows they have not been changed.""")
         default = 2**18,
         help = """maximum file size to load (default 262144 bytes)""")
 
-    optionParser.add_option('-p', '--prologue',
-        dest = 'prologueFileName',
-        type = 'string',
-        default = '',
-        help = """file written in Remark syntax which should be merged to the beginning of each document template""")
-
     options, args = optionParser.parse_args()
     
     if len(args) < 2:
@@ -103,17 +97,6 @@ shows they have not been changed.""")
 
     setGlobalOptions(options)
     
-    # Possibly load the prologue file.
-
-    prologueFileName = options.prologueFileName
-    prologue = []
-    if prologueFileName != '':
-        try:
-            prologue = readFile(prologueFileName)
-        except IOError:
-            print 'Error: The prologue file', prologueFileName, 'could not be read.'
-            sys.exit(1)
-
     if globalOptions().verbose:
         title = 'Remark ' + remarkVersion()
 
@@ -354,7 +337,7 @@ shows they have not been changed.""")
         print '--------------------'
         print
     
-    convertAll(documentTree, outputDirectory, prologue)
+    convertAll(documentTree, outputDirectory)
 
     if globalOptions().verbose:
         print 'Done.'
