@@ -150,19 +150,14 @@ def unixRelativePath(fromRelativeDirectory, toRelativePath):
     relativePath = os.path.relpath(toRelativePath, fromRelativeDirectory)
     return unixDirectoryName(relativePath)
 
-def openFileUtfOrLatin(fileName):
+def openFileUtf8(fileName):
     '''
     Opens a file for reading as utf-8 decoded.
-    If the decoding fails, opens the file for reading 
-    as latin-1 decoded (then every character is legal).
+    Decoding errors are treated by 'replace'.
     '''
-    try:
-        file = codecs.open(longPath(fileName), mode = 'rU', encoding = 'utf-8-sig')
-    except UnicodeDecodeError:
-        print
-        print 'Warning:', fileName, 
-        print 'is not UTF-8 encoded. Assuming Latin-1 encoding.'
-        file = codecs.open(longPath(fileName), mode = 'rU', encoding = 'latin-1')
+    file = codecs.open(longPath(fileName),
+                        mode = 'rU', encoding = 'utf-8-sig', 
+                        errors = 'replace')
 
     return file    
 
@@ -174,7 +169,7 @@ def fileSize(fileName):
 
 def readFile(fileName, ignoreLargeFiles = True):
     '''
-    Opens a file using openFileUtfOrLatin, and reads the contents 
+    Opens a file using openFileUtf8, and reads the contents 
     into a list of strings corresponding to the rows of the file.
     '''
     size = fileSize(fileName)
@@ -192,17 +187,20 @@ def readFile(fileName, ignoreLargeFiles = True):
     # Read the file into memory
     text = []
     try:
-        with openFileUtfOrLatin(fileName) as file:
+        with openFileUtf8(fileName) as file:
             text = file.readlines()
-    except UnicodeDecodeError:
+    except:
         print
         print 'Warning:', fileName,
-        print 'could not be read because of a unicode decode error.',
-        print 'Ignoring it.'
+        print ' could not be read for some reason.',
+        print ' Ignoring it.'
         return []
 
     # Remove possible newlines from the ends of the lines.
     # The lines are encoded by the list-structure instead.
+    # Note that this should have been done by 
+    # file.readlines(keepends = False). However, it is a bug 
+    # in Python 2.7.3 that the keepends argument is missing. 
     for i in range(0, len(text)):
         text[i] = text[i].rstrip('\r\n')
             

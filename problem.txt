@@ -24,10 +24,8 @@ while the latter is its MIME-type.
 Files that are not UTF-8 encoded
 --------------------------------
 
-If you pass Remark a file that is not a valid UTF-8 encoding, Remark 
-emits a warning and assumes that the file has been encoded in Latin-1. 
-This process is a bit inefficient since in this case the file has to be 
-read twice.  
+If you pass Remark a file that is not a valid UTF-8 encoding, Remark
+replaces each erroneous symbol with the U+FFFD REPLACEMENT CHARACTER.
 
 Mathematical expressions in wrong places
 ----------------------------------------

@@ -4,7 +4,7 @@
 # Detail: Searches for tags based on tag-key : tag-text patterns.
 # Documentation: tag_parsers.txt
 
-from Common import openFileUtfOrLatin
+from Common import openFileUtf8
 
 import re
 import string
@@ -68,7 +68,7 @@ class Dictionary_TagParser(object):
                 
     def parse(self, fileName, maxLines):
         tagSet = {}
-        with openFileUtfOrLatin(fileName) as file:
+        with openFileUtf8(fileName) as file:
             lineNumber = 0
             for fileLine in file:
                 match = self.tagRegex.match(fileLine)

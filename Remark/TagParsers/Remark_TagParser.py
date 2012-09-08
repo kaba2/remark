@@ -5,7 +5,7 @@
 # Documentation: tag_parsers.txt
 
 from Dictionary_TagParser import Dictionary_TagParser
-from Common import openFileUtfOrLatin, globalOptions
+from Common import openFileUtf8, globalOptions
 
 import string
 import re
@@ -27,7 +27,7 @@ class Remark_TagParser(object):
         lineRegex = re.compile(r'[ \t]*((==+=)|(--+-))')
         previousLine = ''
         
-        with openFileUtfOrLatin(fileName) as file:
+        with openFileUtf8(fileName) as file:
             lineNumber = 0
             for fileLine in file:
                 # Search for a description
