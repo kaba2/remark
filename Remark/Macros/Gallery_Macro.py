@@ -141,13 +141,12 @@ class Gallery_Macro(object):
             # These are the zoom-in and zoom-out time, 
             # respectively, of the Highslide library.
             expandTime = 250
-            restoreTime = 0
-            if input.extension in vectorBasedSet:
-                # The expansion time in the Highslide library
-                # needs to be set to zero to avoid the overhead
-                # of recomputing the vector-based image all
-                # over again.
-                expandTime = 0
+            restoreTime = expandTime
+
+            #expandTime = 250
+            #restoreTime = 0
+            #if input.extension in vectorBasedSet:
+            #    expandTime = 0
 
             # Generate the actual html-entry.
             title = caption
