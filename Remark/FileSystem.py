@@ -420,17 +420,53 @@ def copyFile(inputRelativeName, inputDirectory,
 
 def longPath(path):
     '''
-    Returns the input path with a possible long-UNC-prefix //?/.
+    Returns the input path with a possible long-UNC-prefix \\?\.
     
     returns:
-    The input path prefixed with //?/, if under Windows, or the
-    input path unchanged under other operating systems.
+    The input path prefixed with \\?\, if under Windows and
+    the path is longer than 259 characters. Otherwise the input
+    path unchanged.
     '''
-    # Windows has a limit of 260 characters for standard paths.
+    # Windows has a limit of 260 characters for the length of 
+    # standard paths, including the null-character at the end.
     # Longer paths need to use a special long-UNC notation which is 
-    # denoted by a prefix //?/. 
-    if os.name == 'nt':
-        return '//?/' + path
+    # denoted by a prefix \\?\. 
+    
+    # You would hope that this fixed the long-path problems with 
+    # Windows, but this unfortunately is not the case. For example, 
+    # the CreateDirectoryW function of the Windows API does not 
+    # support long-paths even by the \\?\-prefix, contrary to its 
+    # documentation. So why we bother here? The reason is that oddly 
+    # this trick works to support slightly longer paths with network-
+    # mapped drives, which use some kind of path-compression to 
+    # artifically produce longer path-names (but the compressed path 
+    # also needs to be <= 259 characters). In particular, this 
+    # situation comes by when the mapped-drive is a Linux file 
+    # system, and contains paths longer than 259 characteers.
+
+    # It is essential that the \\?\ is only prefixed
+    # for paths longer than 259 characters. The reason is related to
+    # Python's handling of directories, e.g. in listdir implemented
+    # in posixmodule.c, which uses a / as a separator to append a
+    # /*.* path-suffix. The \\?\ has the effect, in Windows API, of
+    # disabling any string-processing for the path, including the
+    # replacement of / with \. Therefore using the \\?\-prefix for
+    # shorter paths leads to invalid path-names. But why then
+    # is the \\?\-prefix ok with paths longer than 259 characters?
+    # I have no idea, but in our tests, the / suddenly becomes 
+    # acceptable as a separator after this breakpoint.
+
+    # To be consistent with Python, you might be thinking of using
+    # the //?/-prefix instead. This has the effect of not disabling
+    # the string-processing in Windows API, and the result is that
+    # / are converted to \, leading to the \\?\-prefix, and also
+    # avoiding the invalid path-names. However, for some unimaginable 
+    # reasons, this is not equivalent to the \\?\-prefix, and does 
+    # not work to support those long path-names in network-mapped 
+    # drives.
+
+    if os.name == 'nt' and len(path) > 259:
+        return '\\\\?\\' + path
 
     return path
 

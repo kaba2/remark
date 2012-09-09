@@ -14,6 +14,7 @@ import copy
 from MacroRegistry import findMacro
 from FileSystem import changeExtension, outputDocumentName, documentType, unixDirectoryName, copyIfNecessary
 from FileSystem import asciiMathMlName, remarkVersion, globalOptions, unixRelativePath, writeFile
+from Reporting import Reporter
 
 class Scope(object):
     def __init__(self, parent, name):
@@ -147,8 +148,9 @@ class MacroInvocation(object):
         self.endColumn = endColumn
         
 class Remark(object):
-    def __init__(self, document, template, documentTree, 
-                 inputRootDirectory, outputRootDirectory):
+    def __init__(self, document, documentTree, 
+                 inputRootDirectory, outputRootDirectory,
+                 reporter = Reporter()):
         self.scopeStack = ScopeStack()
         self.scopeStack.open('global')
         self.document = document
@@ -156,9 +158,9 @@ class Remark(object):
         self.linkIndex = 0
         self.linkSet = []
         self.usedMacroSet = []
-        self.template = template
         self.inputRootDirectory = inputRootDirectory
         self.outputRootDirectory = outputRootDirectory
+        self.reporter = reporter
 
         # Here we form regular expressions to identify
         # Remark macro invocations in the text.
@@ -214,10 +216,6 @@ class Remark(object):
         self.externalGroupId = 5
         self.recursionDepth = 0
         self.used = False
-        
-        self.currentMacro = None
-        self.lastReportFrom = None
-        self.lastReportMacro = None
 
     def linkId(self):
         result = self.linkIndex
@@ -252,36 +250,14 @@ class Remark(object):
         
         return text
     
-    def reportWarning(self, text):
-        self.report(text, False, True)
+    def reportWarning(self, text, type):
+        self.reporter.reportWarning(text, type)
         
-    def report(self, text, verbose = False, warning = False):
-        if verbose and (not globalOptions().verbose):
-            return
+    def reportError(self, text, type):
+        self.reporter.reportError(text, type)
 
-        print
-        if (self.lastReportFrom == None or 
-            self.lastReportFrom != self.document):
-            self.lastReportFrom = self.document
-            print self.document.relativeName
-            print '-' * len(self.document.relativeName)
-            print
-
-        if (self.lastReportMacro == None or
-            self.lastReportMacro != self.currentMacro):
-            self.lastReportMacro = self.currentMacro
-            if self.currentMacro != None:
-                print '### ' + self.currentMacro.name()
-                print
-
-        if warning:
-            print 'Warning:',
-
-        if isinstance(text, basestring):
-            print text
-        else:
-            for line in text:
-                print line
+    def report(self, text, type):
+        self.reporter.report(text, type)
         
     def extractMacro(self, row, match, text): 
         # This function extracts the information from
@@ -423,7 +399,8 @@ class Remark(object):
             # Sets a scope variable, e.g.
             # [[set variable]]: some input
             if len(macroNameSet) < 2:
-                self.reportWarning('set command is missing the variable name. Ignoring it.')
+                self.reportWarning('set command is missing the variable name. Ignoring it.',
+                                   'invalid-input')
             else:
                 variableName = macroNameSet[1]
                 if parameterSet != []:                 
@@ -436,7 +413,8 @@ class Remark(object):
             # Sets a document tag, e.g.
             # [[set_tag some-tag]]: some input
             if len(macroNameSet) < 2:
-                self.reportWarning('set-tag command is missing the tag-name. Ignoring it.')
+                self.reportWarning('set-tag command is missing the tag-name. Ignoring it.',
+                                   'invalid-input')
             else:
                 tagName = macroNameSet[1]
                 document.setTag(tagName, parameterSet)
@@ -446,25 +424,29 @@ class Remark(object):
             # Retrieves a tag, e.g.
             # [[tag some-tag]]
             if len(macroNameSet) < 2:
-                self.reportWarning('tag command is missing the tag-name. Ignoring it.')
+                self.reportWarning('tag command is missing the tag-name. Ignoring it.',
+                                   'invalid-input')
             else:
                 tagName = macroNameSet[1]
                 if tagName in document.tagSet:
                     macroText = document.tag(tagName)
                 else:
                     self.reportWarning('Tag ' + tagName + 
-                                       ' has not been defined. Ignoring it.')
+                                       ' has not been defined. Ignoring it.',
+                                       'undefined-tag')
             macroHandled = True
 
         if not macroHandled and macroName == 'set_outer':
             # Setting a variable at outer scope, e.g.
             # [[set_outer variable]]: some input
             if len(macroNameSet) < 2:
-                self.reportWarning('set_outer command is missing the variable name. Ignoring it.')
+                self.reportWarning('set_outer command is missing the variable name. Ignoring it.',
+                                   'invalid-input')
             else:
                 variableName = macroNameSet[1]
                 if scope.outer() == scope:
-                    self.reportWarning('set_outer: already at global scope.')
+                    self.reportWarning('set_outer: already at global scope.',
+                                       'suggestion')
                 outerScope = scope.outer().searchScope(variableName)
                 if parameterSet != []:
                     outerScope.insert(variableName, parameterSet)
@@ -494,7 +476,8 @@ class Remark(object):
             # Appending to a scope variable, e.g.
             # [[add variable]]: some new input
             if len(macroNameSet) < 2:
-                self.reportWarning('add command is missing the variable name. Ignoring it.')
+                self.reportWarning('add command is missing the variable name. Ignoring it.',
+                                   'invalid-input')
             else:
                 variableName = macroNameSet[1]
                 scope.append(variableName, parameterSet)
@@ -504,7 +487,8 @@ class Remark(object):
             # Adding a new line to a variable at outer scope, e.g.
             # [[add_outer variable]]: some new input
             if len(macroNameSet) < 2:
-                self.reportWarning('add_outer command is missing the variable name. Ignoring it.')
+                self.reportWarning('add_outer command is missing the variable name. Ignoring it.',
+                                   'invalid-input')
             else:
                 variableName = macroNameSet[1]
                 outerScope = scope.outer().searchScope(variableName)
@@ -518,7 +502,8 @@ class Remark(object):
             # Getting a global variable, e.g.
             # [[outer variable]]
             if len(macroNameSet) < 2:
-                self.reportWarning(macroName + ' command is missing the variable name. Ignoring it.')
+                self.reportWarning(macroName + ' command is missing the variable name. Ignoring it.',
+                                   'invalid-input')
             else:
                 getCommand = True
                 getName = macroNameSet[1]
@@ -545,7 +530,8 @@ class Remark(object):
                 macroText = result
             else:
                 self.reportWarning('get: variable ' + getName + 
-                                   ' has not been defined. Ignoring it.')
+                                   ' has not been defined. Ignoring it.', 
+                                   'undefined-variable')
 
         return macroText, macroHandled
 
@@ -585,9 +571,9 @@ class Remark(object):
                 # in suppress list.
                 if not macroName in suppressList:
                     # Run the actual macro.
-                    self.currentMacro = macro
+                    self.reporter.openScope(macro.name())
                     macroText = macro.expand(parameterSet, self)
-                    self.currentMacro = None
+                    self.reporter.closeScope(macro.name())
                     if macroText == []:
                         macroText = ['']
                     
@@ -619,7 +605,8 @@ class Remark(object):
         # If no macro was recognized, report a warning and continue.
         if not macroHandled:
             self.reportWarning('Don\'t know how to handle macro "' + 
-                               macroInvocation.name + '". Ignoring it.')
+                               macroInvocation.name + '". Ignoring it.',
+                               'invalid-input')
 
         # The invocation can override the decision 
         # whether to expand the output.
@@ -809,7 +796,8 @@ def addHtmlBoilerPlate(text, document, htmlHead):
     return htmlText
 
 def convertRemarkToMarkdown(remarkText, document, documentTree, 
-                            inputRootDirectory, outputRootDirectory):
+                            inputRootDirectory, outputRootDirectory,
+                            reporter = Reporter()):
     '''
     Converts Remark text to Markdown text. 
 
@@ -819,8 +807,10 @@ def convertRemarkToMarkdown(remarkText, document, documentTree,
     returns (list of strings):
     The converted Markdown text.
     '''
-    remark = Remark(document, remarkText, documentTree, 
-                                      inputRootDirectory, outputRootDirectory)
+
+    remark = Remark(document, documentTree, 
+                    inputRootDirectory, outputRootDirectory,
+                    reporter)
 
     # Convert Remark to Markdown.
     markdownText = remark.convert(remarkText)
@@ -830,7 +820,8 @@ def convertRemarkToMarkdown(remarkText, document, documentTree,
     return markdownText
 
 def convertRemarkToHtml(remarkText, document, documentTree, 
-                        outputRootDirectory):
+                        outputRootDirectory,
+                        reporter = Reporter()):
     '''
     Converts Remark text to html.
 
@@ -841,9 +832,10 @@ def convertRemarkToHtml(remarkText, document, documentTree,
     The converted html text.
     '''
      
-    remark = Remark(document, remarkText, documentTree, 
-                                      documentTree.rootDirectory, 
-                                      outputRootDirectory)
+    remark = Remark(document, documentTree, 
+                    documentTree.rootDirectory, 
+                    outputRootDirectory,
+                    reporter)
 
     # Convert Remark to Markdown
     markdownText = remark.convert(remarkText)
@@ -863,11 +855,12 @@ def convertRemarkToHtml(remarkText, document, documentTree,
     return htmlText
 
 def saveRemarkToHtml(remarkText, document, documentTree, 
-                     outputRootDirectory):
+                     outputRootDirectory,
+                     reporter = Reporter()):
     # Convert Remark to html.
     htmlText = convertRemarkToHtml(
             remarkText, document, documentTree, 
-            outputRootDirectory)
+            outputRootDirectory, reporter)
 
     # Find out some names.
     outputRelativeName = outputDocumentName(document.relativeName)
@@ -876,7 +869,7 @@ def saveRemarkToHtml(remarkText, document, documentTree,
     # Write the resulting html.
     writeFile(htmlText, outputFullName)
 
-def convertAll(documentTree, outputRootDirectory):
+def convertAll(documentTree, outputRootDirectory, reporter = Reporter()):
     
     outputRootDirectory = os.path.normpath(outputRootDirectory)
 
@@ -893,15 +886,20 @@ def convertAll(documentTree, outputRootDirectory):
         # generation if that was specified at command-line.
         regenerate = globalOptions().regenerate or document.regenerate()
         if not regenerate:
-            if globalOptions().verbose:
-                print 'Skipping', document.relativeName, '...'
+            reporter.report('Skipping ' + document.relativeName + '...',
+                            'verbose')
             continue
 
-        if globalOptions().verbose:
-            print 'Generating', document.relativeName, '...'
+        reporter.report('Generating ' + document.relativeName + '...',
+                        'verbose')
 
+        reporter.openScope(document.relativeName)
+        
         # Let the document-type convert the document.
-        type.convert(document, documentTree, outputRootDirectory)
+        type.convert(document, documentTree, outputRootDirectory,
+                     reporter)
+        
+        reporter.closeScope(document.relativeName)
     
 def _leadingTabs(text):
     tabs = 0

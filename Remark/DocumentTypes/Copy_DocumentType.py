@@ -17,7 +17,7 @@ class Copy_DocumentType(object):
     def parseTags(self, fileName):
         return {}
 
-    def convert(self, document, documentTree, outputRootDirectory):
+    def convert(self, document, documentTree, outputRootDirectory, reporter):
         # Find out the output-name.
         outputRelativeName = self.outputName(document.relativeName)
 

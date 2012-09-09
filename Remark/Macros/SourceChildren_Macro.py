@@ -60,7 +60,7 @@ class SourceChildren_Macro(object):
                     message = ['Multiple descriptions for a document-group.',
                               'Current: ' + description,
                               'New: ' + desc]
-                    remark.reportWarning(message)
+                    remark.reportWarning(message, 'ambiguous-input')
                 description = desc
 
             det = sourceDocument.tagString('detail')
@@ -71,7 +71,7 @@ class SourceChildren_Macro(object):
                     message = ['Multiple details for a document-group. ',
                               'Current: ' + detail,
                               'New: ' + det]
-                    remark.reportWarning(message)
+                    remark.reportWarning(message, 'ambiguous-input')
                 detail = det
 
             if i == len(sortedMap) - 1 or not same(sortedMap[i + 1].relativeName, reference.relativeName):
@@ -100,10 +100,11 @@ class SourceChildren_Macro(object):
         for group in groupSet:
             if group[0] == '':
                 group[0] = '-'
-                message = 'Description missing for the document-group'
+                message = ['Description missing for the document-group']
                 for child in group[2]:
-                    message += '\n' + child.fileName
-                remark.reportWarning(message)
+                    message.append(child.fileName)
+                message.append('')
+                remark.reportWarning(message, 'missing-input')
         
         # Order the groups in alphabetical order w.r.t.
         # their descriptions. 

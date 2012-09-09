@@ -21,7 +21,7 @@ class RemarkPage_DocumentType(object):
     def parseTags(self, fileName):
         return self.tagParser.parse(fileName, globalOptions().maxTagLines)
         
-    def convert(self, document, documentTree, outputRootDirectory):
+    def convert(self, document, documentTree, outputRootDirectory, reporter):
         remarkText = ['[[set RemarkPage.mid_text]]',
                  '[[set RemarkPage.end_text]]',
                  '[[ParentList]]',
@@ -32,7 +32,7 @@ class RemarkPage_DocumentType(object):
                  '[[RemarkPage.end_text]]',]
 
         saveRemarkToHtml(remarkText, document, documentTree, 
-                         outputRootDirectory)
+                         outputRootDirectory, reporter)
          
     def upToDate(self, document, documentTree, outputRootDirectory):
         return fileUpToDate(document.relativeName, documentTree.rootDirectory, 

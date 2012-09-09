@@ -41,7 +41,8 @@ class Gallery_Macro(object):
                 continue
             if neatLine[0] == '-':
                 if len(entrySet) == 0:
-                    remark.reportWarning('Caption was defined before any image was given. Ignoring it.')
+                    remark.reportWarning('Caption was defined before any image was given. Ignoring it.',
+                                         'invalid-input')
                     continue
                 
                 # Caption follows.
@@ -86,22 +87,21 @@ class Gallery_Macro(object):
             if input == None:
                 # The image-file was not found. Report a warning and skip
                 # the file.
-                remark.reportWarning('Image file ' + entryName + 
-                                     ' was not found. Ignoring it.')
+                remark.reporter.reportMissingDocument(entryName)
                 continue
 
             if not unique:
                 # There are many matching image files with the given name.
                 # Report a warning, pick one arbitrarily, and continue.
-                remark.reportWarning('Image file ' + entryName + 
-                                     ' is ambiguous. Picking arbitrarily.')
+                remark.reporter.reportAmbiguousDocument(entryName)
             
             # See if we support the file-extension.
             if not input.extension in supportedSet:
                 # This file-extension is not supported. Report a warning
                 # and skip the file.
                 remark.reportWarning('Image file ' + input.relativeName + 
-                                     ' has an unsupported file-extension. Ignoring it.')
+                                     ' has an unsupported file-extension. Ignoring it.',
+                                     'invalid-input')
                 continue
            
             # If the image can not be generated a thumbnail directly,
@@ -135,7 +135,8 @@ class Gallery_Macro(object):
                 thumbRelativeName = input.relativeName
                 thumbLinkName = inputLinkName
                 remark.reportWarning('Using ' + input.relativeName + ' as its own thumbnail. ' +
-                                     'Provide a pixel-based alternative image to generate a thumbnail.')
+                                     'Provide a pixel-based alternative image to generate a thumbnail.',
+                                     'suggestion')
 
             # These are the zoom-in and zoom-out time, 
             # respectively, of the Highslide library.
@@ -198,8 +199,8 @@ class Gallery_Macro(object):
                         message += '.'
                         remark.report(message, True)
                 except IOError as err: 
-                    remark.reportWarning('Cannot create a thumbnail for ' + 
-                                                  input.relativeName + '. ')
+                    remark.reportWarning('Cannot create a thumbnail for ' + input.relativeName + '. ',
+                                         'macro-failed')
                     continue
         
         text.append('</div>')
