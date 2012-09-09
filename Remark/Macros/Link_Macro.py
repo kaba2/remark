@@ -22,16 +22,16 @@ class Link_Macro(object):
         for linkFileName in parameter:
             linkDocument, unique = documentTree.findDocument(linkFileName, document.relativeDirectory)
             if not unique:
-                remark.reportWarning('Document ' + linkFileName + ' is ambiguous. Picking arbitrarily.')
+                remark.reporter.reportAmbiguousDocument(linkFileName)
             
             if linkDocument != None:
                 text.append(remark.remarkLink(linkDocument.linkDescription(),
-                                                       document, linkDocument))
+                                              document, linkDocument))
 
                 if len(parameter) > 1:                
                     text.append('')
             else:
-                remark.reportWarning('Document ' + linkFileName + ' not found. Ignoring it.')
+                remark.reporter.reportMissingDocument(linkFileName)
             
         return text
 

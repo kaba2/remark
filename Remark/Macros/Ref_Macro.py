@@ -19,7 +19,7 @@ class Ref_Macro(object):
         for linkFileName in parameter:
             linkDocument, unique = documentTree.findDocument(linkFileName, document.relativeDirectory)
             if not unique:
-                remark.reportWarning('Document ' + linkFileName + ' is ambiguous. Picking arbitrarily.')
+                remark.reporter.reportAmbiguousDocument(linkFileName)
             
             if linkDocument != None:
                 linkTarget = unixRelativePath(document.relativeDirectory, linkDocument.relativeName)
@@ -27,7 +27,7 @@ class Ref_Macro(object):
                 if len(parameter) > 1:                
                     text += ['']
             else:
-                remark.reportWarning('Document ' + linkFileName + ' not found. Ignoring it.')
+                remark.reporter.reportMissingDocument(linkFileName)
             
         return text
     

@@ -37,7 +37,8 @@ def _linkConverter(regexMatch, remark):
         if not unique:
             # We don't accept ambiguous links.
             remark.reportWarning('Include filename ' + searchName + 
-                                          ' is ambiguous. Skipping linking.')
+                                 ' is ambiguous. Skipping linking.', 
+                                 'missing-document')
             linkDocument = None
         
     if linkDocument == None:

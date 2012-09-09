@@ -50,8 +50,7 @@ class DocumentTree_Macro(object):
         rootDocument = self.documentTree.findDocument(self.rootName, 
                                                       self.document.relativeDirectory)
         if rootDocument == None:
-            self.remark.reportWarning(
-                'Document ' + self.rootName + ' was not found. Aborting.')
+            self.remark.reporter.reportMissingDocument(self.rootName)
             return []
 
         # Start reporting the document-tree using the
@@ -85,11 +84,13 @@ class DocumentTree_Macro(object):
             if len(pairSet) == 1:
                 self.remark.reportWarning(
                      line + 
-                     ' missing either tag-name or tag-value. Ignoring it.')
+                     ' missing either tag-name or tag-value. Ignoring it.',
+                     'invalid-input')
                 continue;
             if len(pairSet) > 2:
                 self.remark.reportWarning(
-                     line + ' has too many parameters. Ignoring it.')
+                     line + ' has too many parameters. Ignoring it.',
+                     'invalid-input')
                 continue
             tagName = pairSet[0].strip()
             tagValue = pairSet[1].strip()

@@ -55,6 +55,7 @@
     <Compile Include="Macros\Verbatim_Macro.py" />
     <Compile Include="Macros\__init__.py" />
     <Compile Include="Remark.py" />
+    <Compile Include="Reporting.py" />
     <Compile Include="TagParsers\Dictionary_TagParser.py" />
     <Compile Include="TagParsers\Remark_TagParser.py" />
     <Compile Include="TagParsers\__init__.py" />

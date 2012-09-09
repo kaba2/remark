@@ -44,6 +44,8 @@ from FileSystem import asciiMathMlName, copyIfNecessary, setGlobalOptions, globa
 from FileSystem import setDefaultDocumentType, strictDocumentType, splitPath, pathExists
 from optparse import OptionParser
 
+from Reporting import Reporter
+
 from time import clock
 
 from Macros import *
@@ -72,7 +74,11 @@ use wildcards (e.g. *.png).""")
 
     optionParser.add_option('-v', '--verbose',
         action="store_true", dest="verbose", default=False,
-        help = """whether to print additional progress information""")
+        help = """whether to print additional progress information.""")
+
+    optionParser.add_option('-s', '--strict',
+        action="store_true", dest="strict", default=False,
+        help = """whether to treat warnings as errors (returns a non-zero error-code).""")
 
     optionParser.add_option('-i', '--incremental',
         action="store_false", dest="regenerate", default=True,
@@ -91,22 +97,17 @@ shows they have not been changed.""")
         optionParser.print_help()
         sys.exit(1)
         
+    reporter = Reporter()
+
     if options.maxTagLines <= 0:
-        print 'Error: The maximum number of lines to scan for tags must be at least 1.'
+        reporter.reportError('The maximum number of lines to scan for tags must be at least 1.',
+                             'invalid-input')
         sys.exit(1)
 
     setGlobalOptions(options)
     
-    if globalOptions().verbose:
-        title = 'Remark ' + remarkVersion()
-
-        print
-        print title
-        for i in range(0, len(title)):
-            sys.stdout.write('=')
-        print
-        print
-
+    reporter.openScope('Remark')
+    
     startTime = time.clock()
     
     inputDirectory = args[0]
@@ -117,12 +118,13 @@ shows they have not been changed.""")
     outputDirectory = os.path.normpath(os.path.join(os.getcwd(), outputDirectory))
     
     if not pathExists(inputDirectory):
-        print 'Error: Input directory \'' + inputDirectory + '\' does not exist.'
+        reporter.reportError('Input directory ' + inputDirectory + ' does not exist.',
+                             'invalid-input')
         sys.exit(1)
 
-    if globalOptions().verbose:
-        print 'Input directory:', inputDirectory
-        print 'Output directory:', outputDirectory
+    reporter.report(['Input directory: ' + inputDirectory,
+                     'Output directory: ' + outputDirectory], 
+                    'verbose')
 
     # Associate document types with filename extensions.
     
@@ -164,9 +166,7 @@ shows they have not been changed.""")
     documentTree = DocumentTree(inputDirectory)
 
     # Recursively gather files starting from the input directory.
-    if globalOptions().verbose:
-        print
-        print 'Gathering files...',
+    reporter.openScope('Gathering files')
 
     for pathName, directorySet, fileNameSet in os.walk(inputDirectory):
         for fileName in fileNameSet:
@@ -183,14 +183,13 @@ shows they have not been changed.""")
                         documentTree.insertDocument(relativeName)
                         break
 
-    if globalOptions().verbose:
-        print 'Done.'
+    reporter.report(['', 'Done.'], 'verbose')
+    reporter.closeScope('Gathering files')
+
 
     # Insert virtual documents.
 
-    if globalOptions().verbose:
-        print
-        print 'Inserting virtual documents...',
+    reporter.openScope('Inserting virtual documents')
 
     # Generates a directory.remark-index virtual document to each
     # directory. This provides the directory listings.
@@ -209,28 +208,20 @@ shows they have not been changed.""")
         # Add the description to the document.
         document.setTag('description', [description])
 
-    if globalOptions().verbose:
-        print 'Done.'
+    reporter.report(['', 'Done.'], 'verbose')
+    reporter.closeScope('Inserting virtual documents')
 
-    if globalOptions().verbose:
-        print
-        print 'Reading document-tree cache'
-        print '---------------------------'
-        print
+    reporter.openScope('Reading document-tree cache')
 
     cacheRelativeName = './remark_files/document-tree.xml'
     cacheFullName = os.path.join(outputDirectory, cacheRelativeName)
     cacheDocumentTree = readCache(cacheFullName, documentTree)
 
-    if globalOptions().verbose:
-        print 'Done.'
+    reporter.report(['', 'Done.'], 'verbose')
+    reporter.closeScope('Reading document-tree cache')
 
     # Parse the tags.
-    if globalOptions().verbose:
-        print
-        print 'Parsing tags'
-        print '------------'
-        print
+    reporter.openScope('Parsing tags')
 
     for document in documentTree:
         try:
@@ -258,12 +249,11 @@ shows they have not been changed.""")
             #    print tagName, ':', tagText
 
         except UnicodeDecodeError:
-            print 'Warning:', document.relativeName,
-            print ': Tag parsing failed because of a unicode decode error.'
+            reporter.reportWarning(document.relativeName + 
+                                   ': Tag parsing failed because of a unicode decode error.')
 
-    if globalOptions().verbose:
-        print
-        print 'Done.'
+    reporter.report(['', 'Done'], 'verbose')
+    reporter.closeScope('Parsing tags')
 
     # Resolve parent links.
     documentTree.resolveParentLinks()
@@ -331,27 +321,22 @@ shows they have not been changed.""")
                 document.incomingSet.update(cacheDocument.incomingSet)
                 document.outgoingSet.update(cacheDocument.outgoingSet)
 
-    if globalOptions().verbose:
-        print
-        print 'Generating documents'
-        print '--------------------'
-        print
+    reporter.openScope('Generating documents')
     
-    convertAll(documentTree, outputDirectory)
+    convertAll(documentTree, outputDirectory, reporter)
 
-    if globalOptions().verbose:
-        print 'Done.'
+    reporter.report(['', 'Done'], 'verbose')
+    reporter.closeScope('Generating documents')
 
     # Save the document-tree as xml.
     writeFile(createCache(documentTree), cacheFullName)
 
     # Output the time taken to produce the documentation.
     endTime = time.clock()
-    if globalOptions().verbose:
-        print
-        print str(round(endTime, 2)) + ' seconds.'
-    
-    if globalOptions().verbose:
-        print
-        print "That's all!"
+
+    reporter.report(str(round(endTime, 2)) + ' seconds.', 'verbose')
+    reporter.report(str(reporter.errors()) + ' errors.', 'verbose')
+    reporter.report(str(reporter.warnings()) + ' warnings.', 'verbose')
+    reporter.report(['', "That's all!"], 'verbose')
+    reporter.closeScope('Remark')
 
