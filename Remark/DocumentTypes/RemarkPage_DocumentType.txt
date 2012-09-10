@@ -57,7 +57,7 @@ Specification of tags
 
 The parent document is specified by writing somewhere in the file 
 
-	[[Parent]]: name_of_parent.txt 
+[[Verbatim]]: [[Parent]]: name_of_parent.txt 
 
 You might notice that this is also a macro invocation.
 This is indeed the case: the Parent macro has been given
