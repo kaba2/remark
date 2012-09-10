@@ -88,7 +88,7 @@ class Dictionary_TagParser(object):
                         # Ignore the later definition.
                         reporter.reportWarning(["Multiple definitions for the tag '" + tagName + "'.",
                                                 'Current: ' + tagSet[tagName][0],
-                                                'New:', tagText],
+                                                'New: ' + tagText],
                                                'ambiguous-input')
                     else:
                         tagSet[tagName] = [tagText]

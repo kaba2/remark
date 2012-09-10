@@ -236,14 +236,15 @@ globs are allowed (e.g. *.png).""")
         try:
             type = document.documentType
 
-            # If the document is up-to-date, and it can be found from
-            # the cache, then use the cached tags instead.
-            if (type.upToDate(document, documentTree, outputDirectory) and
-                document in cacheDocumentTree):
-                cacheDocument = cacheDocumentTree.cacheDocument(document)
-                #print cacheDocument.tagSet
-                document.tagSet.update(cacheDocument.tagSet)
-                continue
+            if not globalOptions().regenerate:
+                # If the document is up-to-date, and it can be found from
+                # the cache, then use the cached tags instead.
+                if (type.upToDate(document, documentTree, outputDirectory) and
+                    document in cacheDocumentTree):
+                    cacheDocument = cacheDocumentTree.cacheDocument(document)
+                    #print cacheDocument.tagSet
+                    document.tagSet.update(cacheDocument.tagSet)
+                    continue
 
             # Otherwise parse the tags.
             reporter.openScope(document.relativeName)
