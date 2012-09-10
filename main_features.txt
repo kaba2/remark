@@ -5,7 +5,8 @@ Main features
 
 This section summarizes the main features of Remark.
 
-### Unicode source files 
+Unicode source files 
+--------------------
 
 In Remark, the documentation is written in plain UTF-8 text files. UTF-8 is a (Unicode) 
 text encoding scheme which is compatible with ASCII encoding in the sense that ASCII 
@@ -15,7 +16,8 @@ the more exotic characters if needed. A UTF-8 text file consist of nothing else 
 a sequence of Unicode characters, which you can edit using the text editor 
 of your choice.
 
-### Human-readable, non-redundant content description 
+Human-readable content description 
+----------------------------------
 
 The Remark syntax is just a slightly extended version of the 
 [Markdown][Markdown] syntax. This syntax fulfills the following goals:
@@ -52,7 +54,8 @@ to html using the [Python Markdown][PyMarkdown] library.
 [Markdown]: http://daringfireball.net/projects/markdown/
 [PyMarkdown]: http://www.freewisdom.org/projects/python-markdown/
 
-### Human-readable typesetting of mathematics
+Human-readable mathematics
+--------------------------
 
 In its original form, Markdown syntax lacks the ability to typeset mathematics. 
 To remedy this, Remark extends the Markdown syntax with the [AsciiMath][AsciiMath] 
@@ -76,7 +79,8 @@ to MathML is handled on the fly via the [AsciiMathML][AsciiMath] java-script lib
 
 [AsciiMath]: http://www1.chapman.edu/~jipsen/asciimath.html
 
-### Color-encoding of source code
+Color-encoding of source code
+-----------------------------
 
 Remark integrates the browsing of source code into the documentation.
 When viewing source code, it is color-encoded using the [Pygments][Pygments]
@@ -99,7 +103,8 @@ And here's how it looks like:
 
 [Pygments]: http://pygments.org/
 
-### Automatic generation of links
+Automatic generation of links
+-----------------------------
 
 Usually each document in documentation can be given a title or some 
 kind of a description. When building documentation manually, one
