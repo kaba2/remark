@@ -18,8 +18,10 @@ class RemarkPage_DocumentType(object):
     def linkDescription(self, document):
         return document.tagString('description')
 
-    def parseTags(self, fileName):
-        return self.tagParser.parse(fileName, globalOptions().maxTagLines)
+    def parseTags(self, fileName, reporter):
+        return self.tagParser.parse(fileName, 
+                                    globalOptions().maxTagLines, 
+                                    reporter)
         
     def convert(self, document, documentTree, outputRootDirectory, reporter):
         remarkText = ['[[set RemarkPage.mid_text]]',
@@ -37,6 +39,9 @@ class RemarkPage_DocumentType(object):
     def upToDate(self, document, documentTree, outputRootDirectory):
         return fileUpToDate(document.relativeName, documentTree.rootDirectory, 
                             self.outputName(document.relativeName), outputRootDirectory)
+
+    def updateDependent(self):
+        return True
 
     def mathEnabled(self):
         return True

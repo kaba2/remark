@@ -103,7 +103,6 @@ class SourceChildren_Macro(object):
                 message = ['Description missing for the document-group']
                 for child in group[2]:
                     message.append(child.fileName)
-                message.append('')
                 remark.reportWarning(message, 'missing-input')
         
         # Order the groups in alphabetical order w.r.t.

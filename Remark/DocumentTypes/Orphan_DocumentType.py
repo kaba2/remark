@@ -12,7 +12,7 @@ class Orphan_DocumentType(object):
     def linkDescription(self, document):
         return document.tagString('description')
 
-    def parseTags(self, fileName, lines = 100):
+    def parseTags(self, fileName, reporter):
         return {}
         
     def convert(self, document, documentTree, outputRootDirectory, reporter):
@@ -28,6 +28,9 @@ class Orphan_DocumentType(object):
                          outputRootDirectory, reporter)
         
     def upToDate(self, document, documentTree, outputRootDirectory):
+        return False
+
+    def updateDependent(self):
         return False
 
     def mathEnabled(self):

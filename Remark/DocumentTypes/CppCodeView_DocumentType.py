@@ -22,9 +22,10 @@ class CppCodeView_DocumentType(object):
     def linkDescription(self, document):
         return escapeMarkdown(document.fileName)
 
-    def parseTags(self, fileName):
+    def parseTags(self, fileName, reporter):
         return self.tagParser.parse(fileName, 
-                                    globalOptions().maxTagLines)
+                                    globalOptions().maxTagLines,
+                                    reporter)
         
     def convert(self, document, documentTree, outputRootDirectory, reporter):
         remarkText = ['[[ParentList]]',
@@ -45,6 +46,10 @@ class CppCodeView_DocumentType(object):
         return fileUpToDate(document.relativeName, documentTree.rootDirectory, 
                             self.outputName(document.relativeName), outputRootDirectory)
                 
+    def updateDependent(self):
+        # If the change is in the description or detail, 
+        # then the dependents need to be updated.
+        return True
          
     def mathEnabled(self):
         return False

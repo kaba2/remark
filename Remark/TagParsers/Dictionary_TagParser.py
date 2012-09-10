@@ -66,7 +66,7 @@ class Dictionary_TagParser(object):
         for tagName, tagKey in tagMap.items():
             self.tagKeyMap[tagKey] = tagName
                 
-    def parse(self, fileName, maxLines):
+    def parse(self, fileName, maxLines, reporter):
         tagSet = {}
         with openFileUtf8(fileName) as file:
             lineNumber = 0
@@ -86,11 +86,9 @@ class Dictionary_TagParser(object):
                     if tagSet.get(tagName, [''])[0] != '':
                         # The tag has already been defined.
                         # Ignore the later definition.
-                        print
-                        print 'Warning:', fileName, 
-                        print ": Multiple definitions for the tag '" + tagName + "'"
-                        print 'Current:', tagSet[tagName][0]
-                        print 'New:', tagText
+                        reporter.reportWarning(["Multiple definitions for the tag '" + tagName + "'.",
+                                                'Current: ' + tagSet[tagName][0],
+                                                'New:', tagText])
                     else:
                         tagSet[tagName] = [tagText]
 
