@@ -121,7 +121,7 @@ to be unique). */
 {
     clear: left;
     margin: 1.5em 0em 1em 0em;
-    font-size: 1.2em;
+    font-size: 1.3em;
     font-weight: normal;
     color: #356535;
 }
@@ -210,32 +210,11 @@ to be unique). */
 {
 }
 
-/* The learn-more links are arranged into a table. */
-#remark table.learn-more
-{
-    /* The borders of neighbouring cells are joined together. */
-    border-collapse: collapse;
-    /* The table spans the whole width. */
-    width: 100%;
-    /* The table has no indentation. */
-    margin-left: 0px;
-    /* The table has no border. */
-    border-style: none;
-}
-
-/* Border-styling for the learn-more table. */
-#remark table.learn-more *
-{
-    /* Hide the cell-borders in the learn-more table. */
-    border-style: none;
-}
-
 /* Definition lists: The thing to define. */
 #remark dt
 {
-    /*font-weight: bold;*/
-    /*font-size: 1em;*/
-    color: Maroon;
+    font-size: 1.1em;
+    color: rgb(0, 71, 201);
     padding-bottom: 0em;
 }
 
