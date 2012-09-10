@@ -65,7 +65,8 @@ globs are allowed (e.g. *.png).""")
         dest = 'maxTagLines',
         type = 'int',
         default = 100,
-        help = """set maximum number of lines for a tag-parser to scan a file for tags (default 100)""")
+        help = """set maximum number of lines for a tag-parser to scan a file for tags (default 100)""",
+        metavar = 'LINES')
 
     optionParser.add_option('-v', '--verbose',
         action="store_true", dest="verbose", default=False,
@@ -84,14 +85,15 @@ globs are allowed (e.g. *.png).""")
         type = 'string',
         action = 'append',
         default = [],
-        help = """disable a specific warning""",
-        metavar = 'type')
+        help = """disable a specific warning (e.g. -dinvalid-input)""",
+        metavar = 'WARNING')
 
     optionParser.add_option('-m', '--max-file-size',
         dest = 'maxFileSize',
         type = 'int',
         default = 2**18,
-        help = """set maximum file size to load (default 262144 bytes)""")
+        help = """set maximum file-size to load (in bytes, default 262144)""",
+        metavar = 'SIZE')
 
     options, args = optionParser.parse_args()
     

@@ -136,7 +136,7 @@ class Gallery_Macro(object):
                 thumbLinkName = inputLinkName
                 remark.reportWarning('Using ' + input.relativeName + ' as its own thumbnail. ' +
                                      'Provide a pixel-based alternative image to generate a thumbnail.',
-                                     'suggestion')
+                                     'vector-thumbnail')
 
             # These are the zoom-in and zoom-out time, 
             # respectively, of the Highslide library.
@@ -200,7 +200,7 @@ class Gallery_Macro(object):
                                      'verbose')
                 except IOError as err: 
                     remark.reportWarning('Cannot create a thumbnail for ' + input.relativeName + '. ',
-                                         'macro-failed')
+                                         'thumbnail-failed')
                     continue
         
         text.append('</div>')

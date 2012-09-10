@@ -87,6 +87,22 @@ to be generated to get a collision with a one-in-a-million probability.
 
 [Birthday]: http://en.wikipedia.org/wiki/Birthday_paradox
 
+Warnings
+--------
+
+vector-thumbnail
+:	This warning is generated when an SVG file is used as its
+	own thumbnail.  Depending on the complexity of the SVG file
+	this might cut out unnecessary amount of performance from
+	the browsing of the webpage. To fix this, provide a	pixel-based 
+	alternative image to create the thumbnail from.
+
+thumbnail-failed
+:	This warning is generated when the creation of a thumbnail
+	fails for a reason or another.
+
+
+
 Example
 -------
 
