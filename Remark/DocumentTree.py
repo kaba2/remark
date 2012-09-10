@@ -549,7 +549,8 @@ class DocumentTree(object):
                 else:
                     self.reporter.reportWarning(referenceName + ', referenced by ' +
                                            document.relativeName + 
-                                           ', does not have an associated parent file.')
+                                           ', does not have an associated parent file.',
+                                           'unspecified-parent')
                     
 
     def _linkOrphans(self):

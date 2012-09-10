@@ -26,6 +26,14 @@ The C++ source code to highlight.
 
 None.
 
+Warnings
+--------
+
+ambiguous-include
+:	This warning is generated when an include-file in a C++
+	source code file is ambiguous for Remark. In this case
+	the include-file is left unlinked.
+	
 Example
 -------
 

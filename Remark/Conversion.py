@@ -446,7 +446,7 @@ class Remark(object):
                 variableName = macroNameSet[1]
                 if scope.outer() == scope:
                     self.reportWarning('set_outer: already at global scope.',
-                                       'suggestion')
+                                       'invalid-input')
                 outerScope = scope.outer().searchScope(variableName)
                 if parameterSet != []:
                     outerScope.insert(variableName, parameterSet)

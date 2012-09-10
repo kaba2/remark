@@ -127,6 +127,7 @@
       <Link>variables_as_transforms.txt</Link>
     </Content>
     <Content Include="algorithm.txt" />
+    <Content Include="command_line.txt" />
     <Content Include="core_stuff.txt" />
     <Content Include="DocumentTypes\Copy_DocumentType.txt" />
     <Content Include="DocumentTypes\CppCodeView_DocumentType.txt" />
