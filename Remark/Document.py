@@ -67,7 +67,7 @@ class Document(object):
         self.outgoingSet = set()
 
         # Whether the document should be converted, or skipped.
-        self.regenerate_ = True
+        self.regenerate_ = False
 
     def setRegenerate(self, regenerate):
         self.regenerate_ = regenerate

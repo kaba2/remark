@@ -270,12 +270,15 @@ globs are allowed (e.g. *.png).""")
 
     # Find out which documents to regenerate.
     for document in documentTree:
+        # The default is that a document will not be regenerated.
+
         cacheDocument = cacheDocumentTree.cacheDocument(document)
         if cacheDocument == None:
             # If the cache-document does not exist, that
             # means this document has been created after
             # the cache was created. In this case the
             # document will be regenerated.
+            document.setRegenerate(True)
             continue
         
         # A document is said to be _cached_ if it is up-to-date,
@@ -287,13 +290,22 @@ globs are allowed (e.g. *.png).""")
         #   which requires to update linking documents.
         regenerate = not (document.documentType.upToDate(document, documentTree, outputDirectory) and
                     document in cacheDocumentTree)
+        
+        if regenerate:
+            # Regenerate the previous parent-document.
+            if cacheDocument.parent != None:
+                cacheDocument.parent.setRegenerate(True)
+            # Regenerate the upcoming parent-document.
+            if document.parent != None:
+                document.parent.setRegenerate(True)
+
         for linkDocument in cacheDocument.outgoingSet:
             regenerateLink = ((not (linkDocument.documentType.upToDate(linkDocument, documentTree, outputDirectory) and
                     linkDocument in cacheDocumentTree)) and
                     linkDocument.documentType.updateDependent())
             regenerate = regenerate or regenerateLink
-
-        document.setRegenerate(regenerate)
+    
+        document.setRegenerate(document.regenerate() or regenerate)
 
     # Update the non-regenerated documents from the cache.        
     for document in documentTree:

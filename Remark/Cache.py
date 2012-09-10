@@ -11,6 +11,7 @@ from xml.dom import minidom
 class Cache_Document(object):
     def __init__(self, document):
         self.document = document
+        self.parent = None
         self.tagSet = {}
         self.incomingSet = set()
         self.outgoingSet = set()
@@ -121,6 +122,10 @@ def readCache(filePath, documentTree):
                 # Add the tag to the cache if it has some text.
                 if tagText != None:
                     cacheDocument.tagSet[tagName] = tagText.split('\n')
+
+        # Find the cached parent document.
+        if 'parent' in cacheDocument.tagSet:
+            cacheDocument.parent = documentTree.findDocumentByRelativeName(''.join(cacheDocument.tagSet['parent']))
 
     for documentElement in remarkElement.getchildren():
 
