@@ -49,11 +49,14 @@ invalid parts with the U+FFFD REPLACEMENT CHARACTER symbol.
 * Added an option for verbose mode, and moved successful output
 from the normal mode to the verbose mode. This makes it easier
 to spot warnings.
-* Added an option for setting the maximum file size to load.
+* Added an option for disabling specific warnings.
+* Added an option for treating warnings as errors.
+* Added the generation of a non-zero error-code when errors are present.
+* Added an option for setting the maximum file-size to load.
+* Added timing for the generation process.
 * Added a warning about a description missing for a document-group.
 * Added a warning about using a long relative-path where a shorter
 suffix-path would have sufficed.
-* Added timing for the generation process.
 * Removed the option for a prologue file.
 
 ### Document types

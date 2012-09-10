@@ -9,9 +9,10 @@ from Document import Document
 from FileSystem import documentType, unixDirectoryName, unixRelativePath, fileExtension
 from FileSystem import globalOptions, withoutFileExtension, strictDocumentType
 from FileSystem import pathSuffixSet
+from Reporting import Reporter
 
 class DocumentTree(object):
-    def __init__(self, rootDirectory):
+    def __init__(self, rootDirectory, reporter = Reporter()):
         '''
         Constructs an empty document-tree using the 
         given directory as a root-directory.
@@ -50,6 +51,9 @@ class DocumentTree(object):
         # The use-count allows us to dynamically track the directories
         # as documents are inserted and removed.
         self.directorySet = {}
+
+        # A reporter object (Reporter).
+        self.reporter = reporter
 
     def __iter__(self):
         return self.documentMap.itervalues()
@@ -101,46 +105,31 @@ class DocumentTree(object):
 
         # Resolve explicit links
 
-        if globalOptions().verbose:
-            print
-            print 'Resolving explicit links'
-            print '------------------------'
+        self.reporter.openScope('Resolving explicit links')
         self._resolveExplicitLinks()
-        if globalOptions().verbose:
-            print
-            print 'Done.'
+        self.reporter.report(['', 'Done.'], 'verbose')
+        self.reporter.closeScope('Resolving explicit links')
 
         # Resolve implicit links
         
-        if globalOptions().verbose:
-            print
-            print 'Resolving implicit links'
-            print '------------------------'
+        self.reporter.openScope('Resolving implicit links')
         self._resolveImplicitLinks()
-        if globalOptions().verbose:
-            print
-            print 'Done.'
+        self.reporter.report(['', 'Done.'], 'verbose')
+        self.reporter.closeScope('Resolving implicit links')
 
         # Resolve reference links
         
-        if globalOptions().verbose:
-            print
-            print 'Resolving reference links'
-            print '-------------------------'
+        self.reporter.openScope('Resolving reference links')
         self._resolveReferenceLinks()
-        if globalOptions().verbose:
-            print
-            print 'Done.'
+        self.reporter.report(['', 'Done.'], 'verbose')
+        self.reporter.closeScope('Resolving reference links')
 
         # Link orphans
 
-        if globalOptions().verbose:
-            print
-            print 'Linking orphans...',
+        #self.reporter.openScope('Linking orphans')
         self._linkOrphans()
-        if globalOptions().verbose:
-            print
-            print 'Done.'
+        #self.reporter.report(['', 'Done.'], 'verbose')
+        #self.reporter.closeScope('Linking orphans')
         
     def findDocumentLocal(self, filePath, searchDirectory):
         '''
@@ -297,10 +286,10 @@ class DocumentTree(object):
             
                 if shortestSuffix != '':
                     # A shorter path-suffix would have sufficed.
-                    print
-                    print ('Warning: Used path ' + filePath + 
+                    self.reporter.reportWarning('Used path ' + filePath + 
                            ' where a shorter path ' + shortestSuffix + 
-                           ' would have been unambiguous.')
+                           ' would have been unambiguous.',
+                           'redundant-path')
         else:
             # There are multiple files whose suffix of the
             # relative-name matches the file-path.
@@ -341,17 +330,19 @@ class DocumentTree(object):
                 parent, unique = self.findDocument(parentName, 
                                                    document.relativeDirectory)
                 if not unique:
-                    print
-                    print 'Warning: parent is ambiguous for', 
-                    print document.relativeName, '. The search was for:', parentName                                     
+                    self.reporter.reportWarning('Parent is ambiguous for ' + 
+                                            document.relativeName + '. The search was for: ' + 
+                                            parentName,
+                                            'ambiguous-parent')
 
                 if parent == None:
                     # If a parent file can't be found, it can be
                     # because of a typo in the tag or a missing file. 
                     # In any case we warn the user.
-                    print
-                    print 'Warning: parent was not found for',
-                    print document.relativeName, '. The search was for:', parentName
+                    self.reporter.reportWarning('Parent was not found for ' + 
+                                           document.relativeName + '. The search was for: ' + 
+                                           parentName,
+                                           'missing-parent')
                 else:
                     # Parent file was found. Update parent-child pointers.
                     parent.insertChild(document)
@@ -362,8 +353,9 @@ class DocumentTree(object):
             elif document.documentType.name() == 'RemarkPage':
                 # This file is a documentation file and it is
                 # missing a parent tag. Warn about that.
-                print
-                print 'Warning:', document.relativeName, 'does not specify a parent file.'
+                self.reporter.reportWarning(document.relativeName + 
+                                       ' does not specify a parent file.',
+                                       'unspecified-parent')
     
     def _resolveImplicitLinks(self):
         '''
@@ -508,11 +500,13 @@ class DocumentTree(object):
                 elif len(sourceMatches) >= 1:
                     # There is a match from a source file.
                     if len(sourceMatches) > 1:
-                        print 'Warning: ambiguous parent for',
-                        print document.relativeName,
-                        print '. Picking arbitrarily from:'
+                        message = ['Ambiguous parent for ' + 
+                                   document.relativeName + 
+                                   '. Picking arbitrarily from:']
                         for match in sourceMatches:
-                            print match.relativeName
+                            message.append(match.relativeName)
+
+                        self.reporter.reportWarning(message, 'ambiguous-parent')
                     newParent = sourceMatches.pop()
                     newParent.insertChild(document)                              
                 
@@ -543,18 +537,19 @@ class DocumentTree(object):
                 # If a reference file can't be found, it can be
                 # because of a typo in the tag or a missing file. 
                 # In any case we warn the user.
-                print
-                print 'Warning: reference parent file was not found for',
-                print document.relativeName, '. The search was for:', referenceName
+                self.reporter.reportWarning('Reference parent file was not found for' + 
+                                       document.relativeName + '. The search was for: ' + 
+                                       referenceName,
+                                       'missing-parent')
             else:
                 # Reference file was found. Use
                 # its parent as the parent of this document.
                 if reference.parent != None:
                     reference.parent.insertChild(document)
                 else:
-                    print
-                    print 'Warning: ', referenceName, ', referenced by ',
-                    print document.relativeName, ', does not have an associated parent file.'
+                    self.reporter.reportWarning(referenceName + ', referenced by ' +
+                                           document.relativeName + 
+                                           ', does not have an associated parent file.')
                     
 
     def _linkOrphans(self):

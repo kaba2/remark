@@ -886,8 +886,8 @@ def convertAll(documentTree, outputRootDirectory, reporter = Reporter()):
         # generation if that was specified at command-line.
         regenerate = globalOptions().regenerate or document.regenerate()
         if not regenerate:
-            reporter.report('Skipping ' + document.relativeName + '...',
-                            'verbose')
+            #reporter.report('Skipping ' + document.relativeName + '...',
+            #                'verbose')
             continue
 
         reporter.report('Generating ' + document.relativeName + '...',

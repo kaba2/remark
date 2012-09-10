@@ -15,11 +15,10 @@ class Remark_TagParser(object):
     def __init__(self, tagMap):
         self.dictionaryParser = Dictionary_TagParser(tagMap)
         
-    def parse(self, fileName, maxLines):
+    def parse(self, fileName, maxLines, reporter):
         # Let the generic parser handle those tags
         # which can be found via regular expressions.
-        tagSet = self.dictionaryParser.parse(fileName,
-                                             globalOptions().maxTagLines)
+        tagSet = self.dictionaryParser.parse(fileName, maxLines, reporter)
         
         # This way we only have to handle the description.
         # The description is a file line which precedes

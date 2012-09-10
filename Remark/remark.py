@@ -62,34 +62,40 @@ if __name__ == '__main__':
     optionParser = OptionParser(usage = """\
 %prog [options] inputDirectory outputDirectory [filesToCopy...]
 
-The filesToCopy-list contains a list of those files which
-should be copied if they are not converted. This list can 
-use wildcards (e.g. *.png).""")
+The filesToCopy is a list of those files which should be copied;
+globs are allowed (e.g. *.png).""")
     
     optionParser.add_option('-l', '--lines',
         dest = 'maxTagLines',
         type = 'int',
         default = 100,
-        help = """maximum number of lines for a tag-parser to scan a file for tags (default 100)""")
+        help = """set maximum number of lines for a tag-parser to scan a file for tags (default 100)""")
 
     optionParser.add_option('-v', '--verbose',
         action="store_true", dest="verbose", default=False,
-        help = """whether to print additional progress information.""")
+        help = """print additional progress information""")
 
     optionParser.add_option('-s', '--strict',
         action="store_true", dest="strict", default=False,
-        help = """whether to treat warnings as errors (returns a non-zero error-code).""")
+        help = """treat warnings as errors""")
 
-    optionParser.add_option('-i', '--incremental',
-        action="store_false", dest="regenerate", default=True,
-        help = """whether to skip generating files if the cache
-shows they have not been changed.""")
+    optionParser.add_option('-r', '--regenerate',
+        action="store_true", dest="regenerate", default=False,
+        help = """regenerate all files""")
+
+    optionParser.add_option('-d', '--disable',
+        dest = 'disableSet',
+        type = 'string',
+        action = 'append',
+        default = [],
+        help = """disable a specific warning""",
+        metavar = 'type')
 
     optionParser.add_option('-m', '--max-file-size',
         dest = 'maxFileSize',
         type = 'int',
         default = 2**18,
-        help = """maximum file size to load (default 262144 bytes)""")
+        help = """set maximum file size to load (default 262144 bytes)""")
 
     options, args = optionParser.parse_args()
     
@@ -97,17 +103,22 @@ shows they have not been changed.""")
         optionParser.print_help()
         sys.exit(1)
         
+    setGlobalOptions(options)
+
     reporter = Reporter()
+    reporter.openScope('Remark ' + remarkVersion())
+
+    if not globalOptions().verbose:
+        reporter.disable('verbose')
+
+    for reportType in globalOptions().disableSet:
+        reporter.disable(reportType)
 
     if options.maxTagLines <= 0:
         reporter.reportError('The maximum number of lines to scan for tags must be at least 1.',
                              'invalid-input')
         sys.exit(1)
-
-    setGlobalOptions(options)
-    
-    reporter.openScope('Remark')
-    
+   
     startTime = time.clock()
     
     inputDirectory = args[0]
@@ -122,7 +133,8 @@ shows they have not been changed.""")
                              'invalid-input')
         sys.exit(1)
 
-    reporter.report(['Input directory: ' + inputDirectory,
+    reporter.report(['',
+                     'Input directory: ' + inputDirectory,
                      'Output directory: ' + outputDirectory], 
                     'verbose')
 
@@ -163,10 +175,10 @@ shows they have not been changed.""")
                     './remark_files/' + asciiMathMlName(), outputDirectory)
 
     # Construct an empty document-tree from the input directory.
-    documentTree = DocumentTree(inputDirectory)
+    documentTree = DocumentTree(inputDirectory, reporter)
 
     # Recursively gather files starting from the input directory.
-    reporter.openScope('Gathering files')
+    #reporter.openScope('Gathering files')
 
     for pathName, directorySet, fileNameSet in os.walk(inputDirectory):
         for fileName in fileNameSet:
@@ -183,13 +195,12 @@ shows they have not been changed.""")
                         documentTree.insertDocument(relativeName)
                         break
 
-    reporter.report(['', 'Done.'], 'verbose')
-    reporter.closeScope('Gathering files')
-
+    #reporter.report(['', 'Done.'], 'verbose')
+    #reporter.closeScope('Gathering files')
 
     # Insert virtual documents.
 
-    reporter.openScope('Inserting virtual documents')
+    #reporter.openScope('Inserting virtual documents')
 
     # Generates a directory.remark-index virtual document to each
     # directory. This provides the directory listings.
@@ -208,17 +219,17 @@ shows they have not been changed.""")
         # Add the description to the document.
         document.setTag('description', [description])
 
-    reporter.report(['', 'Done.'], 'verbose')
-    reporter.closeScope('Inserting virtual documents')
+    #reporter.report(['', 'Done.'], 'verbose')
+    #reporter.closeScope('Inserting virtual documents')
 
-    reporter.openScope('Reading document-tree cache')
+    #reporter.openScope('Reading document-tree cache')
 
     cacheRelativeName = './remark_files/document-tree.xml'
     cacheFullName = os.path.join(outputDirectory, cacheRelativeName)
     cacheDocumentTree = readCache(cacheFullName, documentTree)
 
-    reporter.report(['', 'Done.'], 'verbose')
-    reporter.closeScope('Reading document-tree cache')
+    #reporter.report(['', 'Done.'], 'verbose')
+    #reporter.closeScope('Reading document-tree cache')
 
     # Parse the tags.
     reporter.openScope('Parsing tags')
@@ -237,9 +248,10 @@ shows they have not been changed.""")
                 continue
 
             # Otherwise parse the tags.
-            if globalOptions().verbose:
-                print 'Parsing tags for', document.relativeName, '...'
-            tagSet = type.parseTags(documentTree.fullName(document))
+            reporter.openScope(document.relativeName)
+            tagSet = type.parseTags(documentTree.fullName(document), reporter)
+            reporter.closeScope(document.relativeName)
+
             document.tagSet.update(tagSet)
             document.setTag('link_description', [type.linkDescription(document)])
                 
@@ -252,66 +264,40 @@ shows they have not been changed.""")
             reporter.reportWarning(document.relativeName + 
                                    ': Tag parsing failed because of a unicode decode error.')
 
-    reporter.report(['', 'Done'], 'verbose')
+    reporter.report(['', 'Done.'], 'verbose')
     reporter.closeScope('Parsing tags')
 
     # Resolve parent links.
     documentTree.resolveParentLinks()
 
-    def forEachDomain(visit):
-        for document in documentTree:
-            visit(document)
-
-    def forEachRelated(document, visit):
+    # Find out which documents to regenerate.
+    for document in documentTree:
         cacheDocument = cacheDocumentTree.cacheDocument(document)
         if cacheDocument == None:
-            return
+            # If the cache-document does not exist, that
+            # means this document has been created after
+            # the cache was created. In this case the
+            # document will be regenerated.
+            continue
         
-        for linkDocument in cacheDocument.outgoingSet:
-            #if linkDocument.extension == '.remark-orphan':
-                #print 'Links to orphan:', document.relativeName
-            visit(linkDocument)
-
-    def codomainOperator(left, right):
-        #left.update(right)
-        #return left
-        return left or right
-
-    def function(document):
-        #return set([document])
-
+        # A document is said to be _cached_ if it is up-to-date,
+        # and is found from the document-tree cache.
+        
+        # A document will be regenerated if and only if
+        # * it is not cached, or
+        # * it links to a document which is not cached, and
+        #   which requires to update linking documents.
         regenerate = not (document.documentType.upToDate(document, documentTree, outputDirectory) and
                     document in cacheDocumentTree)
+        for linkDocument in cacheDocument.outgoingSet:
+            regenerateLink = ((not (linkDocument.documentType.upToDate(linkDocument, documentTree, outputDirectory) and
+                    linkDocument in cacheDocumentTree)) and
+                    linkDocument.documentType.updateDependent())
+            regenerate = regenerate or regenerateLink
 
-        #if regenerate:
-        #    print 'Regenerate:', document.relativeName
-
-        return regenerate
-
-    def report(document, regenerate):
-        #if document.relativeName == 'remark.txt':
-        #    print
-        #    print document.relativeName
-        #    for toDocument in documentSet:
-        #        print toDocument.relativeName
         document.setRegenerate(regenerate)
 
-    identity = False
-    #identity = set()
-    transitiveClosure(identity, forEachDomain, forEachRelated, function,
-                      codomainOperator, report, True)
-
-    #sys.exit(1)
-
-    #for document in documentTree:
-    #    #print document.regenerate(), 
-    #    print document.documentType.upToDate(document, documentTree, outputDirectory),
-    #    print document in cacheDocumentTree, 
-    #    print document.regenerate(),
-    #    print document.relativeName
-
-    #sys.exit(1)
-
+    # Update the non-regenerated documents from the cache.        
     for document in documentTree:
         regenerate = globalOptions().regenerate or document.regenerate()
         if not regenerate:
@@ -321,22 +307,34 @@ shows they have not been changed.""")
                 document.incomingSet.update(cacheDocument.incomingSet)
                 document.outgoingSet.update(cacheDocument.outgoingSet)
 
+    # Generate documents.
     reporter.openScope('Generating documents')
-    
     convertAll(documentTree, outputDirectory, reporter)
-
-    reporter.report(['', 'Done'], 'verbose')
+    reporter.report(['', 'Done.'], 'verbose')
     reporter.closeScope('Generating documents')
 
     # Save the document-tree as xml.
     writeFile(createCache(documentTree), cacheFullName)
 
-    # Output the time taken to produce the documentation.
-    endTime = time.clock()
+    # Find out statistics.
+    seconds = round(time.clock() - startTime, 2)
+    errors = reporter.errors()
+    warnings = reporter.warnings()
 
-    reporter.report(str(round(endTime, 2)) + ' seconds.', 'verbose')
-    reporter.report(str(reporter.errors()) + ' errors.', 'verbose')
-    reporter.report(str(reporter.warnings()) + ' warnings.', 'verbose')
+    # Report the statistics.
+    reporter.openScope('Summary')
+    reporter.report(['',
+                     str(seconds) + ' seconds,',
+                     str(errors) + ' errors,',
+                     str(warnings) + ' warnings.'], 
+                    'summary')
+    reporter.closeScope('Summary')
+
+    # Wrap things up.
     reporter.report(['', "That's all!"], 'verbose')
-    reporter.closeScope('Remark')
+    reporter.closeScope('Remark ' + remarkVersion())
 
+    if errors > 0 or (warnings > 0 and globalOptions().strict):
+        # Indicate the presence of errors by
+        # a non-zero error-code.
+        sys.exit(1)

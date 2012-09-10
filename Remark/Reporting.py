@@ -31,7 +31,7 @@ class Reporter(object):
         
         text = ['']
         text += self.heading(name, len(self.scopeSet) - 1)
-        text.append('')
+        #text.append('')
         self.report(text, 'heading', True)
 
     def closeScope(self, name):
@@ -58,9 +58,8 @@ class Reporter(object):
 
         if self.enabled(type):
             self.scope().insert(text, type)
-
-        if not lazy:
-            self.updatePrint()
+            if not lazy:
+                self.updatePrint()
 
     def reportWarning(self, text, type):
         if isinstance(text, basestring):
@@ -68,9 +67,10 @@ class Reporter(object):
             return 
 
         if len(text) > 0:
-            text[0] = 'Warning: ' + text[0]
+            text = [''] + ['[' + type + ']'] + text;
             self.report(text, type, False)
-            self.warnings_ += 1
+            if self.enabled(type):
+               self.warnings_ += 1
 
     def reportError(self, text, type):
         if isinstance(text, basestring):
@@ -78,7 +78,7 @@ class Reporter(object):
             return 
 
         if len(text) > 0:
-            text[0] = 'Error: ' + text[0]
+            text = ['', '[' + type + ']!'] + text
             self.report(text, type, False)
             self.errors_ += 1
 

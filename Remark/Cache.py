@@ -49,12 +49,12 @@ def createCache(documentTree):
             xml.end('name')
         xml.end('links_to')
 
-        xml.start('linked_by', {})
-        for linkedBy in document.incomingSet:
-            xml.start('name', {})
-            xml.data(linkedBy.relativeName)
-            xml.end('name')
-        xml.end('linked_by')
+        #xml.start('linked_by', {})
+        #for linkedBy in document.incomingSet:
+        #    xml.start('name', {})
+        #    xml.data(linkedBy.relativeName)
+        #    xml.end('name')
+        #xml.end('linked_by')
 
         xml.start('tags', {})
         for tagName, tagText in document.tagSet.iteritems():

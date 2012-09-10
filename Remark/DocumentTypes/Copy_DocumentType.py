@@ -14,7 +14,7 @@ class Copy_DocumentType(object):
     def linkDescription(self, document):
         return escapeMarkdown(document.fileName)
 
-    def parseTags(self, fileName):
+    def parseTags(self, fileName, reporter):
         return {}
 
     def convert(self, document, documentTree, outputRootDirectory, reporter):
@@ -28,6 +28,11 @@ class Copy_DocumentType(object):
     def upToDate(self, document, documentTree, outputRootDirectory):
         return fileUpToDate(document.relativeName, documentTree.rootDirectory, 
                             self.outputName(document.relativeName), outputRootDirectory)
+
+    def updateDependent(self):
+        # No information is gathered from copied files.
+        # Therefore there is no need to update dependent documents.
+        return False
 
     def mathEnabled(self):
         return False
