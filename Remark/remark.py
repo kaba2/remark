@@ -35,8 +35,6 @@ from DocumentTypes.DirectoryView_DocumentType import DirectoryView_DocumentType
 from DocumentTypes.Orphan_DocumentType import Orphan_DocumentType
 from DocumentTypes.Copy_DocumentType import Copy_DocumentType
 
-from TransitiveClosure import transitiveClosure
-
 from Conversion import convertAll
 from FileSystem import unixDirectoryName, unixRelativePath, readFile, writeFile
 from FileSystem import documentType, associateDocumentType, remarkVersion, fileExtension
@@ -49,8 +47,6 @@ from Reporting import Reporter
 from time import clock
 
 from Macros import *
-
-from TransitiveClosure import testTransitiveClosure
 
 if os.name == 'nt':
     # Apply the bug-fix for the os.path.split() to

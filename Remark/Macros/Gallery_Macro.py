@@ -192,11 +192,12 @@ class Gallery_Macro(object):
                         image.save(thumbFullName, 'PNG')
                         
                         # Report the generation of a thumbnail.
-                        message = 'Gallery: Created a thumbnail for ' + input.relativeName
+                        message = 'Created a thumbnail for ' + input.relativeName
                         if pixelDocument != input:
                             message += ' from ' + pixelDocument.relativeName
                         message += '.'
-                        remark.report(message, True)
+                        remark.report(['', message],
+                                     'verbose')
                 except IOError as err: 
                     remark.reportWarning('Cannot create a thumbnail for ' + input.relativeName + '. ',
                                          'macro-failed')
