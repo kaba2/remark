@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 # Description: DocumentTree macro
-# Detail: Generates a Remark file to traverse the document-tree directly. 
+# Detail: Generates a hierarchical link-tree of the document-tree. 
 
 import fnmatch
 import re

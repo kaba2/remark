@@ -1,7 +1,7 @@
 Document types
 ==============
 
-[[Parent]]: remark_syntax.txt
+[[Parent]]: user_documentation.txt
 
 A _document type_ encapsulates the conversion of a document to another.
 Every document has a document type. If a document type is not given
