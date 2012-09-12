@@ -12,7 +12,7 @@ class Comment_Macro(object):
     def expand(self, parameter, remark):
         # This macro simply eats its parameter. This allows
         # for commenting.
-        return []
+        return [], set()
 
     def outputType(self):
         return 'remark'

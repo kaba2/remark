@@ -33,6 +33,9 @@ class Gallery_Macro(object):
         thumbnailMaxWidth = scope.getInteger('Gallery.thumbnail_max_width', 400)
         thumbnailMaxHeight = scope.getInteger('Gallery.thumbnail_max_height', 400)
 
+        dependencySet = set()
+        text = ['<div class="highslide-gallery">']
+
         # Gather a list of images and their captions.
         entrySet = []
         for line in parameter:
@@ -61,9 +64,6 @@ class Gallery_Macro(object):
                 imageFile = neatLine
                 # Give it an empty caption for now.
                 entrySet.append([imageFile, ''])
-
-        # Generate html entries and thumbnails.
-        text = ['<div class="highslide-gallery">']
 
         # The supported pixel-based image file-extensions are 
         # listed in the order of priority to be used for 
@@ -119,7 +119,11 @@ class Gallery_Macro(object):
                     if pixelDocument != None:
                         # We found a pixel-based alternative image.
                         break
-                        
+            
+            # Add dependencies.            
+            dependencySet.add(input)
+            dependencySet.add(pixelDocument)
+
             # Find out input names.
             inputLinkName = unixRelativePath(document.relativeDirectory, input.relativeName)
 
@@ -205,7 +209,7 @@ class Gallery_Macro(object):
         
         text.append('</div>')
         
-        return text
+        return text, dependencySet
 
     def outputType(self):
         return 'html'

@@ -96,3 +96,8 @@ ambiguous-document
 :	This warning is generated when a given path matches multiple documents
 	in the document-tree. To fix this, introduce more context to the path to 
 	disambiguate the correct document in the document-tree.
+
+unknown-macro
+:	This warning is generated when invoking an unrecognized macro. To fix
+	this, define the macro, rename the invoked macro to a recognized one, 
+	or remove the macro invocation.

@@ -22,7 +22,7 @@ class Example_Macro(object):
         text += parameter
         text.append('')
 
-        return text
+        return text, set()
 
     def outputType(self):
         return 'remark'

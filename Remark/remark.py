@@ -165,13 +165,6 @@ globs are allowed (e.g. *.png).""")
     # This is the directory which contains 'remark.py'.
     scriptDirectory = sys.path[0]
     
-    copyIfNecessary('./remark_files/remark.css', scriptDirectory, 
-                    './remark_files/remark.css', outputDirectory)
-    copyIfNecessary('./remark_files/pygments.css', scriptDirectory, 
-                    './remark_files/pygments.css', outputDirectory)
-    copyIfNecessary('./remark_files/' + asciiMathMlName(), scriptDirectory, 
-                    './remark_files/' + asciiMathMlName(), outputDirectory)
-
     # Construct an empty document-tree from the input directory.
     documentTree = DocumentTree(inputDirectory, reporter)
 
@@ -219,6 +212,19 @@ globs are allowed (e.g. *.png).""")
 
     #reporter.report(['', 'Done.'], 'verbose')
     #reporter.closeScope('Inserting virtual documents')
+
+    # Note that these files are copied _after_ gathering the files
+    # and directories. This is to avoid gathering these files
+    # in case the input directory is the same as the output directory.
+    # It is also important that these files are copied as early as
+    # possible, since we want to see the changes in the .css files
+    # as early as possible.
+    copyIfNecessary('./remark_files/remark.css', scriptDirectory, 
+                    './remark_files/remark.css', outputDirectory)
+    copyIfNecessary('./remark_files/pygments.css', scriptDirectory, 
+                    './remark_files/pygments.css', outputDirectory)
+    copyIfNecessary('./remark_files/' + asciiMathMlName(), scriptDirectory, 
+                    './remark_files/' + asciiMathMlName(), outputDirectory)
 
     #reporter.openScope('Reading document-tree cache')
 
