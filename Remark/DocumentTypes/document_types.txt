@@ -1,10 +1,10 @@
 Document types
 ==============
 
-[[Parent]]: user_documentation.txt
+[[Parent]]: understanding.txt
 
 A _document type_ encapsulates the conversion of a document to another.
 Every document has a document type. If a document type is not given
 explicitly, the default document type is the Copy document type.
-This page lists the currently available document types.
+This section lists the currently available document types.
 

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 # Description: File-system abstractions
-# Documentation: core_stuff.txt
+# Documentation: algorithms.txt
 
 import os.path
 import string

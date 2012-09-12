@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 # Description: Converts Remark to Markdown and html
-# Documentation: core_stuff.txt
+# Documentation: algorithms.txt
 
 import re
 import string

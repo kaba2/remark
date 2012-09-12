@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 # Description: Macro registry
-# Documentation: core_stuff.txt
+# Documentation: data_structures.txt
 
 _macroMap = dict()
 

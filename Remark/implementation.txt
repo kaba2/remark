@@ -1,9 +1,9 @@
 Implementation
 ==============
 
-[[Parent]]: remark.txt
+[[Parent]]: understanding.txt
 
-This section describes the implementation of Remark, which is of interest 
+This section describes the implementation of Remark. It is of interest 
 mainly to developers. 
 
 

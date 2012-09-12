@@ -3,11 +3,8 @@ Algorithm
 
 [[Parent]]: implementation.txt
 
-This page describes the algorithm Remark uses to generate the
-resulting web-pages. Before reading this page you should be
-familiar with [concepts][Concepts].
-
-[Concepts]: concepts.htm
+This section describes the algorithm Remark uses to generate the
+resulting web-pages. 
 
 Constructing the document tree
 ------------------------------
@@ -26,91 +23,57 @@ directory (unless the directory is the input directory).
 This set of directories is useful when one wants to generate
 a directory view.
 
-### Parsing files
+### Parsing for tags
 
-Each file in the set of input files is parsed for tags using its 
-own associated tag parser. The purpose of this phase is to
-find out for a file its parent document, description, and a
-detailed description.
+Each document is parsed for tags by using its [document-type][DocumentType].
+The purpose of this phase is to find out for a file its parent 
+document, description, and a detailed description.
 
-### Resolving explicit links
+[DocumentType]: [[Ref]]: document_types.txt
 
-If a file specifies a parent document, then it is used to
-construct a part of the document tree. The parent document
-is allowed to be given as a simple filename only. If the
-file is not found in the current directory, then parent directories
-are searched repeatedly until a match is found or one reaches
-the input directory. If the parent file is not found in this way, 
-the file is searched from all documentation directories. If there 
-is a unique match, then that is used as the parent file. If there 
-are multiple matches, one is picked arbitrarily, and a warning is
-emitted (since the parent file is ambiguous). If there are no 
-matches, a warning is emitted (the filename might be mis-spelled 
-or the file really missing). 
+### Resolving explicit parent links
 
-If a documentation file (.txt) does not specify a parent document, 
-a warning is emitted. If some other type of document does not specify 
-a parent document, it may still be decuded a parent implicitly.
+If a document specifies a parent document, then it is used to
+construct a part of the document tree. The parent is specified
+with a path which is given to the 
+[file-searching algorithm][Searching].
 
-### Resolving implicit links
+[Searching]: [[Ref]]: file_searching_algorithm.txt
+
+### Resolving implicit parent links
 
 If a file does not have a parent document at this point, it
-is attempted to give an implicit parent. This procedure is described
-in [concepts][Concepts].
+is attempted to give an [implicit parent][Implicit].
 
 ### Linking orphans
 
-If a file does not have parent document even after implicit linking,
-it is linked to a special orphan document. This guarantees that each
-file has a parent document. By generating a web-page that contains all 
-the orphans, the user has a useful list of those files
-which are not linked to the documentation. This is what the .remark-orphan
-document type is used for.
+If a document does not have parent document even after implicit linking,
+it is linked to a special [orphan][Orphan] document. This guarantees that each
+document has a parent document. By generating a web-page that contains all 
+the orphans, the user has a useful list of those document which are not 
+linked to the documentation.
+
+[Implicit]: [[Ref]]: implicit_rules.txt
+[Orphan]: [[Ref]]: Orphan_DocumentType.txt
 
 Adding virtual documents
 ------------------------
 
-Using the list of involved directories, a `directory.remark-index` document is
-generated to each sub-directory of the document tree. In addition,
-an `orphan.remark-orphan` document is generated to the root directory of the
-document tree.
+Using the list of involved directories, a [`directory.remark-index`][Index] 
+document is generated to each sub-directory of the document tree. In addition,
+an [`orphan.remark-orphan`][Orphan] document is generated to the root directory 
+of the document tree.
+
+[Index]: [[Ref]]: Index_Macro.txt
 
 Generating output
 -----------------
 
-For each file in the document tree:
-
-1. Recursively expand the Remark macros in its document template (given by the document type).  
-
-2. Convert the resulting Markdown source to html.
- 
-3. Add html boilerplate code around the generated html 
- (such as defining the .css files to use).
- 
-4. Create the directories leading to the output file if they 
- don't exist.
- 
-5. Save the generated html to the output file 
- (with the input extension replaced with the output extension). 
+Each document in the document-tree is converted by its document-type.
 
 Copying files
 -------------
 
-A file which has no associated document type is directly copied to 
-the corresponding output directory, unless the output file already
-exists and does not have an earlier modification time-stamp.
-
-At the end, the following files are copied, as above, to the 
-`remark_files` directory of the output directory:
-
-remark.css 
-: To control the styling of the generated web-pages in general.
- 
-pygments.css 
-: To control the styling of the source-code bits.
- 
-ASCIIMathMLwFallback.js 
-: To convert AsciiMath to MathML on the fly.
-
-
-
+At the end, Remark copies some files to the `remark_files` directory 
+of the output directory. These include Javascript files for mathematics
+and image viewing, and CSS files for styling.

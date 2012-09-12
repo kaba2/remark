@@ -3,9 +3,8 @@ Variables as text storage
 
 [[Parent]]: variables.txt
 
-This page introduces the basic use of variables in Remark.
-Here we view variables as a way to store and retrieve
-text.
+This section introduces the basic use of variables in Remark.
+Here we view variables as a way to store and retrieve text.
 
 Defining variables
 ------------------

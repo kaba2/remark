@@ -1,7 +1,7 @@
 Concepts
 ========
 
-[[Parent]]: user_documentation.txt
+[[Parent]]: understanding.txt
 
 This section introduces the main concepts used in Remark.
 

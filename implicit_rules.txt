@@ -1,7 +1,7 @@
 Implicit rules
 ==============
 
-[[Parent]]: user_documentation.txt
+[[Parent]]: understanding.txt
 
 This section describes the rules that are used to deduce descriptions 
 and parents for documents for which they have not been explicitly
@@ -26,8 +26,8 @@ without an explicitly specified description.
 * If no description can be found, a warning is emitted to inform
 about the missing description.
 
-Implicit parents
-----------------
+Unspecified parents
+-------------------
 
 Remark uses the following rules to deduce a parent for
 a document without an explicitly specified parent. 

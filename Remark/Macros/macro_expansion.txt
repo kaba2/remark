@@ -4,13 +4,15 @@ Macro expansion
 [[Parent]]: macros.txt
 
 Macro expansion refers to the process of taking a
-macro invocation and replacing it with the output
-of the macro. In Remark, this process can be carried
-out in different ways depending on the need. 
+[macro invocation][Invocation] and replacing it with 
+the output of the macro. In Remark, this process can be 
+carried out in different ways depending on the need. 
 Nevertheless, the following rule always holds:
 
 _No macro expansions are done for verbatim content
 (i.e. indented text)._
+
+[Invocation]: [[Ref]]: macro_invocation.txt
 
 Controlling expansion
 ---------------------
