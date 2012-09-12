@@ -692,15 +692,25 @@ class Remark(object):
         return macroText, dependencySet
 
     def postConversion(self):
-        text = []
+        '''
+        Runs through the post-conversions of used macros and
+        returns a text containing all link-definitions in
+        Markdown syntax.
+
+        returns (list of strings):
+        The link-definitions in Markdown syntax.
+        '''
         
-        # Add link definitions
-        for link in self.linkSet:
-            text.append('[' + link[0] + ']: ' + link[1])
-            
+        # Run through the post-conversions of all used macros.    
         for macro in self.usedMacroSet:
             macro.postConversion(self.inputRootDirectory, 
                                  self.outputRootDirectory)
+
+        # Generate the link definitions.
+        text = []
+        for link in self.linkSet:
+            text.append('[' + link[0] + ']: ' + link[1])
+
         return text
 
     def convert(self, text):
@@ -823,6 +833,18 @@ class Remark(object):
         return newText, dependencySet
     
     def macro(self, macroName, macroParameter = ''):
+        '''
+        Expands a macro with the given parameter.
+
+        macroName (string):
+        The name of the macro.
+
+        macroParameter (list of strings):
+        The parameter of the macro.
+
+        returns (list of strings):
+        The output of the macro.
+        '''
         text = ['[[' + macroName + ']]']
         if isinstance(macroParameter, basestring):
             if macroParameter.strip() != '':
@@ -834,6 +856,12 @@ class Remark(object):
         return self.convert(text)
 
     def htmlHeader(self):
+        '''
+        Returns the join of all htmlHead()'s of used macros.
+
+        returns (list of strings):
+        The join of all htmlHead()'s of used macros.
+        '''
         htmlText = []
         for macro in self.usedMacroSet:
             htmlText += macro.htmlHead(self)
