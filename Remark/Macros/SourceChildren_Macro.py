@@ -146,7 +146,7 @@ class SourceChildren_Macro(object):
     def outputType(self):
         return 'remark'
 
-    def pureOutput(self):
+    def expandOutput(self):
         return True
 
     def htmlHead(self, remark):

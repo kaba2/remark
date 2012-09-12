@@ -15,8 +15,8 @@ class Copy_Macro(object):
     def outputType(self):
         return 'remark'
 
-    def pureOutput(self):
-        return False
+    def expandOutput(self):
+        return True
 
     def htmlHead(self, remark):
         return []                

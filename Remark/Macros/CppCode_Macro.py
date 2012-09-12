@@ -72,8 +72,8 @@ class CppCode_Macro(object):
     def outputType(self):
         return 'html'
 
-    def pureOutput(self):
-        return True
+    def expandOutput(self):
+        return False
 
     def htmlHead(self, remark):
         return []                
