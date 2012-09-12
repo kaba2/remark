@@ -47,22 +47,26 @@ class DocumentTree_Macro(object):
         for tagName, regex in self.excludeMap.iteritems():
             self.excludeFilter[tagName] = re.compile(combineRegex(regex))
 
-        rootDocument = self.documentTree.findDocument(self.rootName, 
+        rootDocument, unique = self.documentTree.findDocument(self.rootName, 
                                                       self.document.relativeDirectory)
         if rootDocument == None:
             self.remark.reporter.reportMissingDocument(self.rootName)
-            return []
-
+            return [], set()
+        
+        if not unique:
+            self.remark.reporter.reportAmbiguousDocument(self.rootName)
+            
         # Start reporting the document-tree using the
-        # current document as the root document.
+        # given root document.
         self.visitedSet = set()
         text = ['']
-        self._workDocument(self.document, text, 0)
+        dependencySet = set()
+        self._workDocument(rootDocument, text, 0, dependencySet)
 
         if text == ['']:
-            return []
+            return [], set()
 
-        return htmlDiv(text, self.className)
+        return htmlDiv(text, self.className), dependencySet
 
     def outputType(self):
         return 'remark'
@@ -100,7 +104,7 @@ class DocumentTree_Macro(object):
             else:
                 map[tagName].append(regex)
 
-    def _workDocument(self, document, text, depth):
+    def _workDocument(self, document, text, depth, dependencySet):
         # Limit the reporting to given maximum depth.
         if depth > self.maxDepth:
             return False, False
@@ -121,7 +125,7 @@ class DocumentTree_Macro(object):
         usefulBranches = 0
         if not selfRecursive:
             for child in childSet:
-                match, useful = self._workDocument(child, localText, depth + 1)
+                match, useful = self._workDocument(child, localText, depth + 1, dependencySet)
                 if match:
                     childMatches += 1
                 if useful:
@@ -177,6 +181,7 @@ class DocumentTree_Macro(object):
                     document.linkDescription(), 
                     self.document, document)
             text.append(' 1. ' + linkText)
+            dependencySet.add(document)
             #text.append('')
             for line in localText:
                 text.append('\t' + line)

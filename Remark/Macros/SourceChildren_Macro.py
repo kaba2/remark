@@ -17,6 +17,10 @@ class SourceChildren_Macro(object):
     def expand(self, parameter, remark):
         document = remark.document
                 
+        scope = remark.scopeStack.top()
+        text = []
+        dependencySet = set()
+
         def prefixOf(left, right):
             return string.find(withoutFileExtension(right), 
                                withoutFileExtension(left)) == 0
@@ -31,7 +35,7 @@ class SourceChildren_Macro(object):
                         x.tagString('document_type') == 'CodeView')]
 
         if len(sortedMap) == 0:
-            return []
+            return text, dependencySet
 
         # Sort the list alphabetically w.r.t. the relative file names.
         
@@ -96,7 +100,6 @@ class SourceChildren_Macro(object):
         
         # Set default descriptions for those
         # groups that do not have a description.
-        
         for group in groupSet:
             if group[0] == '':
                 group[0] = '-'
@@ -111,14 +114,10 @@ class SourceChildren_Macro(object):
         
         # Output the links in the groups together
         # with a description for the group.
-        
-        scope = remark.scopeStack.top()
-        text = []
         text.append('')
         text.append(scope.getString('SourceChildren.title', 'Files'))
         text.append('---')
         text.append('')
-
         for group in groupSet:
             # Output description for the group.
             description = group[0]
@@ -137,11 +136,11 @@ class SourceChildren_Macro(object):
             # Output the links in the group.
             for child in group[2]:
                 text.append(remark.remarkLink(escapeMarkdown(child.fileName),
-                                                       document,
-                                                       child))
+                                              document, child))
+                dependencySet.add(child)
                 text.append('')
             
-        return text
+        return text, dependencySet
 
     def outputType(self):
         return 'remark'

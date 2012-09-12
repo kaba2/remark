@@ -46,7 +46,7 @@ class DocChildren_Macro(object):
         remark.macro('set DocumentTree.exclude_regex',
                      self.excludeRegex)
       
-        treeText = remark.macro('DocumentTree')
+        treeText, dependencySet = remark.macro('DocumentTree')
 
         text = []
         # Only create the title if at least 
@@ -63,7 +63,7 @@ class DocChildren_Macro(object):
             # Append the links.
             text += treeText
 
-        return text
+        return text, dependencySet
 
     def outputType(self):
         return 'remark'

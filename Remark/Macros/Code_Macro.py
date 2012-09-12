@@ -31,7 +31,7 @@ class Code_Macro(object):
         # Prepare for Remark output.
         hilightedText = string.split(hilightedText, '\n')
         
-        return hilightedText
+        return hilightedText, set()
 
     def outputType(self):
         return 'html'

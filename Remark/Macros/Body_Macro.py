@@ -13,7 +13,7 @@ class Body_Macro(object):
     def expand(self, parameter, remark):
         document = remark.document
         fileName = remark.documentTree.fullName(document);
-        return readFile(fileName)
+        return readFile(fileName), set()
     
     def outputType(self):
         return 'remark'

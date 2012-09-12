@@ -10,7 +10,7 @@ class Html_Macro(object):
         return 'Html'
 
     def expand(self, parameter, remark):
-        return parameter
+        return parameter, set()
 
     def outputType(self):
         return 'html'

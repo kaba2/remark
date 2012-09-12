@@ -14,25 +14,24 @@ class FileLink_Macro(object):
         document = remark.document
         documentTree = remark.documentTree
         
-        if parameter == []:
-            return []
-        
         text = []
-        
+        dependencySet = set()
         for linkFileName in parameter:
             linkDocument, unique = documentTree.findDocument(linkFileName, document.relativeDirectory)
             if not unique:
                 remark.reporter.reportAmbiguousDocument(linkFileName)
             
             if linkDocument != None:
-                text.append(remark.remarkLink(escapeMarkdown(linkDocument.fileName),
-                                                       document, linkDocument))
+                linkDescription = escapeMarkdown(linkDocument.fileName)
+                text.append(remark.remarkLink(linkDescription,
+                                              document, linkDocument))
+                dependencySet.add(linkDocument)
                 if len(parameter) > 1:                
                     text.append('')
             else:
                 remark.reporter.reportMissingDocument(linkFileName)
             
-        return text
+        return text, dependencySet
     
     def outputType(self):
         return 'remark'

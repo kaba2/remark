@@ -41,21 +41,24 @@ class Index_Macro(object):
         
         # Create links for the directories.
         text = []
+        dependencySet = set()
         for directory in directorySet:
             linkDirectory = os.path.join(document.relativeDirectory, directory)
             directoryDocument = documentTree.findDocumentLocal('directory.remark-index', linkDirectory)
             text.append(' 1. ' + remark.remarkLink(escapeMarkdown(directory + '/'),
                                                    document, directoryDocument))
+            dependencySet.add(directoryDocument)
         
         # Create links for the files.
         for fileName in fileSet:
             fileDocument = documentTree.findDocumentLocal(fileName, document.relativeDirectory)
             text.append(' 1. ' + remark.remarkLink(escapeMarkdown(fileName),
                                                    document, fileDocument))
+            dependencySet.add(fileDocument)
                     
         text.append('')
 
-        return htmlDiv(text, className)
+        return htmlDiv(text, className), dependencySet
 
     def outputType(self):
         return 'remark'

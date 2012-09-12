@@ -25,10 +25,12 @@ class ParentList_Macro(object):
         # (the root document first).
         level = 1
         text = []
+        dependencySet = set()
         for document in reversed(parentSet):
             linkText = remark.remarkLink(
                 document.linkDescription(), 
                 remark.document, document)
+            dependencySet.add(document)
 
             # Strictly speaking, Markdown does not
             # use the actual numbers, so we could
@@ -38,7 +40,7 @@ class ParentList_Macro(object):
             text.append(repr(level) + '. ' + linkText)
             level += 1
 
-        return htmlDiv(text, className)
+        return htmlDiv(text, className), dependencySet
 
     def outputType(self):
         return 'remark'

@@ -218,21 +218,57 @@ class Remark(object):
         self.used = False
 
     def linkId(self):
+        '''
+        Generates a unique integer for a new link.
+
+        This integer is used to make the generated Markdown links unique.
+        
+        returns (integer):
+        A unique integer.        
+        '''
         result = self.linkIndex
         self.linkIndex += 1
         return result
 
     def remarkLink(self, description, 
                    fromDocument, toDocument):
-        # Add an internal dependency.
-        fromDocument.addDependency(toDocument)
+        '''
+        Generates a Markdown-link from a document to another.
 
+        description (string):
+        The description for the link.
+        
+        fromDocument (Document):
+        The document to generate the link from.
+
+        toDocument (Document):
+        The document to generate the link to.
+
+        returns (string):
+        The generated link in Markdown. As a side-effect 
+        the actual link-address is stored for listing the
+        link-definition later at the end of the document.
+        '''
         fromDirectory = fromDocument.relativeDirectory
         toFile = outputDocumentName(toDocument.relativeName)
         linkTarget = unixRelativePath(fromDirectory, toFile)
         return self.markdownLink(description, linkTarget)
 
     def markdownLink(self, description, htmlLink):
+        '''
+        Generates a Markdown-link to the given URL.
+
+        description (string):
+        The description for the link.
+        
+        htmlLink (string):
+        The URL of the link.
+
+        returns (string):
+        The generated link in Markdown. As a side-effect 
+        the actual link-address is stored for listing the
+        link-definition later at the end of the document.
+        '''
         # The automatically generated Markdown
         # links are named as 'RemarkLink_x' where
         # x is an integer that runs from 0 upwards
@@ -259,9 +295,10 @@ class Remark(object):
     def report(self, text, type):
         self.reporter.report(text, type)
         
-    def extractMacro(self, row, match, text): 
-        # This function extracts the information from
-        # a macro invocation.
+    def extractMacro(self, row, match, text):
+        '''
+        Extracts the information from a macro invocation.
+        '''
 
         # There are four possibilities for the
         # macro invocation:
@@ -388,6 +425,18 @@ class Remark(object):
                 htmlText[j] = '<span class="p"></span>'
 
     def expandBuiltInMacro(self, macroNameSet, parameterSet, scope):
+        '''
+        Expands a built-in macro.
+
+        macroNameSet (list of strings):
+        The macro-name split into whitespace-separated words.
+
+        parameterSet (list of strings):
+        The parameter of the macro.
+
+        scope (Scope):
+        The current variable-scope.
+        '''
         macroName = macroNameSet[0]
         document = self.document
         
@@ -536,10 +585,21 @@ class Remark(object):
         return macroText, macroHandled
 
     def expandMacro(self, macroInvocation):
+        '''
+        Expands the given macro invocation.
+
+        macroInvocation (MacroInvocation):
+        The information about the macro invocation.
+
+        returns (list of strings, set of document-objects):
+        The text the macro expands to, and the set of 
+        documents the expanded text is dependent on.
+        '''
         # This is where we will gather the expanded
         # contents of the macro.
         macroText = ['']
         macroHandled = False
+        dependencySet = set()
 
         self.recursionDepth += 1
 
@@ -550,13 +610,14 @@ class Remark(object):
         # By default, the output will be expanded. 
         # If a proper macro is invoked, then its
         # decision overrides this default.
-        expandMore = True
+        expandOutput = True
 
         # Retrieve the macro names and parameters.
         macroNameSet = string.split(macroInvocation.name)
         macroName = macroNameSet[0]
         parameterSet = macroInvocation.parameterSet
         
+        # Handle external macros.
         if len(macroNameSet) == 1:
             # Search for the macro.
             macro = findMacro(macroName)
@@ -572,7 +633,12 @@ class Remark(object):
                 if not macroName in suppressList:
                     # Run the actual macro.
                     self.reporter.openScope(macro.name())
-                    macroText = macro.expand(parameterSet, self)
+                    try:
+                        macroText, newDependencySet = macro.expand(parameterSet, self)
+                    except ValueError:
+                        print macroName
+                        raise ValueError()
+                    dependencySet.update(newDependencySet)
                     self.reporter.closeScope(macro.name())
                     if macroText == []:
                         macroText = ['']
@@ -590,7 +656,7 @@ class Remark(object):
                     # recursively expanded or not.
                     # The macro suggests a default for this
                     # behavior.
-                    expandMore = macro.expandOutput()
+                    expandOutput = macro.expandOutput()
                     
                 macroHandled = True
 
@@ -604,25 +670,26 @@ class Remark(object):
 
         # If no macro was recognized, report a warning and continue.
         if not macroHandled:
-            self.reportWarning('Don\'t know how to handle macro "' + 
-                               macroInvocation.name + '". Ignoring it.',
-                               'invalid-input')
+            self.reportWarning('Don\'t know how to handle macro ' + 
+                               macroInvocation.name + '. Ignoring it.',
+                               'unknown-macro')
 
         # The invocation can override the decision 
         # whether to expand the output.
         if macroInvocation.outputExpansion != None:
-            expandMore = macroInvocation.outputExpansion
+            expandOutput = macroInvocation.outputExpansion
 
-        if macroHandled and expandMore:
+        if macroHandled and expandOutput:
             # Expand recursively.
             self.scopeStack.open(macroInvocation.name)
             self.scopeStack.top().insert('parameter', macroInvocation.parameterSet)
-            macroText = self.convert(macroText)
+            macroText, newDependencySet = self.convert(macroText)
+            dependencySet.update(newDependencySet)
             self.scopeStack.close()
        
         self.recursionDepth -= 1
 
-        return macroText            
+        return macroText, dependencySet
 
     def postConversion(self):
         text = []
@@ -637,12 +704,25 @@ class Remark(object):
         return text
 
     def convert(self, text):
-        # Our strategy is to trace the 'text' line
-        # by line while expanding the macros to 'newText'.
+        '''
+        Converts Remark text to Markdown text.
+        
+        text (list of strings):
+        The Remark text to convert.
+        
+        returns (list of strings, set of documents):
+        The converted Markdown text and the set of 
+        document-objects from which the converted text 
+        is dependent on.
+        '''
 
-        newText = ['']
+        # The strategy in this function is to trace the 'text' 
+        # line by line while expanding the macros to 'newText'.
+
         row = 0
         column = 0
+        newText = ['']
+        dependencySet = set()
         while row < len(text):
             # Replace the first characters with spaces
             # so that the previous macros won't interfere
@@ -679,6 +759,7 @@ class Remark(object):
             
             # Find out the whole macro invocation.
             macroInvocation = self.extractMacro(row, match, text)
+            
             #print 'Macro invocation:'
             #print macroInvocation.name
             #print macroInvocation.beginRow, macroInvocation.beginColumn
@@ -686,25 +767,49 @@ class Remark(object):
             #for parameterLine in macroInvocation.parameterSet:
             #    print parameterLine
 
-            # The parameter of the macro will be expanded 
-            # before invocation only if the user explicitly 
-            # requests so.
+            # See if the user requests the macro parameter to be 
+            # expanded before the macro.
             if macroInvocation.parameterExpansion:
+                # The parameter should be expanded before the macro.
                 self.scopeStack.open(macroInvocation.name)
-                macroInvocation.parameterSet = self.convert(macroInvocation.parameterSet)
+                
+                # It is important to update the dependency-set here too.
+                # Expanding the parameter of a macro before the macro 
+                # makes the macro dependent on whatever the parameter is 
+                # dependent on.
+
+                # Example 1. Consider the Verbatim macro, which does not,
+                # by default, expand its output. If the expanded parameter contained
+                # a link, then that link would cause a dependency from this document
+                # to the linked document. That dependency would go undetected by
+                # the macro expansion because the output of the Verbatim macro is 
+                # not expanded further.
+
+                # Example 2. Consider the Comment macro which does not,
+                # by default, expand its parameter. Since we are here,
+                # the user has overridden that default. We will add the possible
+                # links used in the comment as dependencies, even though the Comment 
+                # macro never outputs anything. 
+                
+                macroInvocation.parameterSet, newDependencySet = self.convert(macroInvocation.parameterSet)
+                dependencySet.update(newDependencySet)
                 self.scopeStack.close()
 
             # Recursively expand the macro.
-            macroText = self.expandMacro(macroInvocation)
+            macroText, newDependencySet = self.expandMacro(macroInvocation)
+
+            # Add the dependencies brought in by the macro expansion.
+            dependencySet.update(newDependencySet)
             
             #print 'I write:'
             #for line in macroText:
             #    print line
            
-            # Append the first line to the end of the
-            # latest line.
+            # Append the first line of the macro expansion to 
+            # the end of the latest line.
             newText[-1] += macroText[0]
-            # Append the other lines on the following lines.
+            # Append the other lines of the macro expansion to
+            # the following lines.
             newText += macroText[1 :]
             
             # Move on.
@@ -713,9 +818,9 @@ class Remark(object):
         
         # The last '' is extraneous.
         if newText[-1] == '':
-            return newText[0 : -1]
+            newText[-1 :] = []
         
-        return newText
+        return newText, dependencySet
     
     def macro(self, macroName, macroParameter = ''):
         text = ['[[' + macroName + ']]']
@@ -739,6 +844,15 @@ import markdown
 markdownConverter = markdown.Markdown(extensions = ['tables', 'abbr', 'def_list',])
 
 def convertMarkdownToHtml(text):
+    '''
+    Converts Markdown to html.
+
+    text (list of strings):
+    The Markdown text to convert.
+
+    returns (list of strings):
+    The converted html text.
+    '''
     global markdownConverter
     
     htmlString = markdownConverter.convert(string.join(text, '\n'))
@@ -804,8 +918,9 @@ def convertRemarkToMarkdown(remarkText, document, documentTree,
     remarkText (list of strings):
     The Remark text to convert, string per row.
 
-    returns (list of strings):
-    The converted Markdown text.
+    returns (list of strings, set of Document's):
+    The converted html text, and the set of documents
+    on which the converted text is dependent on.
     '''
 
     remark = Remark(document, documentTree, 
@@ -813,11 +928,11 @@ def convertRemarkToMarkdown(remarkText, document, documentTree,
                     reporter)
 
     # Convert Remark to Markdown.
-    markdownText = remark.convert(remarkText)
+    markdownText, dependencySet = remark.convert(remarkText)
     markdownText += remark.postConversion()
 
     # Return the resulting Markdown text.
-    return markdownText
+    return markdownText, dependencySet
 
 def convertRemarkToHtml(remarkText, document, documentTree, 
                         outputRootDirectory,
@@ -828,8 +943,9 @@ def convertRemarkToHtml(remarkText, document, documentTree,
     remarkText (list of strings):
     The Remark text to convert, string per row.
 
-    returns (list of strings):
-    The converted html text.
+    returns (list of strings, set of Document's):
+    The converted html text, and the set of documents
+    on which the converted text is dependent on.
     '''
      
     remark = Remark(document, documentTree, 
@@ -837,8 +953,8 @@ def convertRemarkToHtml(remarkText, document, documentTree,
                     outputRootDirectory,
                     reporter)
 
-    # Convert Remark to Markdown
-    markdownText = remark.convert(remarkText)
+    # Convert Remark to Markdown.
+    markdownText, dependencySet = remark.convert(remarkText)
     markdownText += remark.postConversion()
     
     # Convert Markdown to html.
@@ -851,16 +967,35 @@ def convertRemarkToHtml(remarkText, document, documentTree,
     # Add html boilerplate.
     htmlText = addHtmlBoilerPlate(htmlText, document, headText)
 
-    # Return the resulting html-text.      
-    return htmlText
+    # Return the resulting html-text and the set of dependencies.      
+    return htmlText, dependencySet
 
 def saveRemarkToHtml(remarkText, document, documentTree, 
                      outputRootDirectory,
                      reporter = Reporter()):
+    '''
+    Converts Remark text to html text and saves it to a file.
+
+    remarkText (list of strings):
+    The Remark text to convert.
+
+    documentTree (DocumentTree):
+    The document-tree to use.
+
+    outputRootDirectory (string):
+    The output directory to save the file in.
+
+    reporter (Reporter):
+    The reporter to use for reporting.
+    '''
     # Convert Remark to html.
-    htmlText = convertRemarkToHtml(
+    htmlText, dependencySet = convertRemarkToHtml(
             remarkText, document, documentTree, 
             outputRootDirectory, reporter)
+
+    # Add the dependencies for the documents.
+    for dependency in dependencySet:
+        document.addDependency(dependency)
 
     # Find out some names.
     outputRelativeName = outputDocumentName(document.relativeName)
@@ -870,6 +1005,18 @@ def saveRemarkToHtml(remarkText, document, documentTree,
     writeFile(htmlText, outputFullName)
 
 def convertAll(documentTree, outputRootDirectory, reporter = Reporter()):
+    '''
+    Converts all documents in the document-tree.
+
+    documentTree (DocumentTree):
+    The document-tree to use for conversion.
+
+    outputRootDirectory (string):
+    The output directory to place the files in.
+
+    reporter (Reporter):
+    The reporter to use for reporting.
+    '''
     
     outputRootDirectory = os.path.normpath(outputRootDirectory)
 
@@ -879,9 +1026,6 @@ def convertAll(documentTree, outputRootDirectory, reporter = Reporter()):
     sortedDocumentSet.sort(lambda x, y: cmp(x.relativeName, y.relativeName))
    
     for document in sortedDocumentSet:
-        # Find out the document-type.
-        type = documentType(document.extension)
-
         # Only generate documentation if needed; force
         # generation if that was specified at command-line.
         regenerate = globalOptions().regenerate or document.regenerate()
@@ -890,16 +1034,22 @@ def convertAll(documentTree, outputRootDirectory, reporter = Reporter()):
 
         reporter.report('Generating ' + document.relativeName + '...',
                         'verbose')
-
         reporter.openScope(document.relativeName)
-        
+
         # Let the document-type convert the document.
+        type = documentType(document.extension)
         type.convert(document, documentTree, outputRootDirectory,
-                     reporter)
-        
+                    reporter)
+
         reporter.closeScope(document.relativeName)
     
 def _leadingTabs(text):
+    '''
+    Returns the number of leading tabs.
+
+    text (string):
+    The text from which to count the leading tabs from.
+    '''
     tabs = 0
     for c in text:
         if c == '\t':
@@ -909,6 +1059,18 @@ def _leadingTabs(text):
     return tabs
 
 def _removeLeadingTabs(text, tabs):
+    '''
+    Removes at most a given number of leading tabs from the text.
+
+    If there are less leading tabs than the given number, then all 
+    the leading tabs are removed.
+
+    text (string):
+    The text from which to remove the leading tabs from.
+
+    tabs (integer):
+    The number of leading tabs to remove at most.
+    '''
     i = 0
     while i < len(text) and text[i] == '\t' and i < tabs:
         i += 1

@@ -15,7 +15,7 @@ class Ref_Macro(object):
         documentTree = remark.documentTree
         
         text = []
-        
+        dependencySet = set()        
         for linkFileName in parameter:
             linkDocument, unique = documentTree.findDocument(linkFileName, document.relativeDirectory)
             if not unique:
@@ -24,12 +24,13 @@ class Ref_Macro(object):
             if linkDocument != None:
                 linkTarget = unixRelativePath(document.relativeDirectory, linkDocument.relativeName)
                 text.append(outputDocumentName(linkTarget))
+                dependencySet.add(linkDocument)
                 if len(parameter) > 1:                
                     text += ['']
             else:
                 remark.reporter.reportMissingDocument(linkFileName)
             
-        return text
+        return text, dependencySet
     
     def outputType(self):
         return 'remark'
