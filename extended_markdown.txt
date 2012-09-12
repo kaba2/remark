@@ -9,7 +9,7 @@ syntax, it also supports useful syntactic extensions.
 We have decided to enable some, but not all, of them.
 Specifically, the extensions we have enabled are:
 tables, abbreviations, and definition lists.
-This page summarizes their use. A link to more information 
+This section summarizes their use. A link to more information 
 is given below. Some of the following examples have been copied 
 from the Python-Markdown homepages.
 

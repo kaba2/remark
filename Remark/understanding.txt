@@ -1,0 +1,6 @@
+Understanding Remark
+====================
+
+[[Parent]]: user_documentation.txt
+
+This section contains information that aids in using Remark efficiently.

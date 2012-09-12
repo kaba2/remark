@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 # Description: Document tree
-# Documentation: core_stuff.txt
+# Documentation: data_structures.txt
 
 import os.path
 import string

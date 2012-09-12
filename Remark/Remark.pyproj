@@ -127,8 +127,9 @@
       <Link>variables_as_transforms.txt</Link>
     </Content>
     <Content Include="algorithm.txt" />
+    <Content Include="algorithms.txt" />
     <Content Include="command_line.txt" />
-    <Content Include="core_stuff.txt" />
+    <Content Include="data_structures.txt" />
     <Content Include="DocumentTypes\Copy_DocumentType.txt" />
     <Content Include="DocumentTypes\CppCodeView_DocumentType.txt" />
     <Content Include="DocumentTypes\DirectoryView_DocumentType.txt" />
@@ -136,6 +137,7 @@
     <Content Include="DocumentTypes\CodeView_DocumentType.txt" />
     <Content Include="DocumentTypes\Orphan_DocumentType.txt" />
     <Content Include="DocumentTypes\RemarkPage_DocumentType.txt" />
+    <Content Include="file_searching_algorithm.txt" />
     <Content Include="implementation.txt" />
     <Content Include="Macros\Body_Macro.txt" />
     <Content Include="Macros\Code_Macro.txt" />
@@ -147,7 +149,6 @@
     <Content Include="Macros\DocumentTree_Macro.txt" />
     <Content Include="Macros\Example_Macro.txt" />
     <Content Include="Macros\FileLink_Macro.txt" />
-    <Content Include="Macros\file_searching_algorithm.txt" />
     <Content Include="Macros\Gallery_Macro.txt" />
     <Content Include="Macros\GenericCode_Macro.txt" />
     <Content Include="Macros\Html_Macro.txt" />
@@ -159,17 +160,18 @@
     <Content Include="Macros\macro_invocation.txt" />
     <Content Include="Macros\ParentList_Macro.txt" />
     <Content Include="Macros\Parent_Macro.txt" />
-    <Content Include="Macros\pattern_matching.txt" />
     <Content Include="Macros\Ref_Macro.txt" />
     <Content Include="Macros\SourceChildren_Macro.txt" />
-    <Content Include="Macros\tags.txt" />
     <Content Include="Macros\Verbatim_Macro.txt" />
+    <Content Include="pattern_matching.txt" />
     <Content Include="remark_files\ASCIIMathMLwFallback.js" />
     <Content Include="remark_files\highslide\highslide-full.js" />
     <Content Include="remark_files\highslide\highslide.css" />
     <Content Include="remark_files\pygments.css" />
     <Content Include="remark_files\remark.css" />
     <Content Include="TagParsers\tag_parsers.txt" />
+    <Content Include="tags.txt" />
+    <Content Include="understanding.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.Common.targets" />
 </Project>

@@ -1,7 +1,7 @@
-Document-tags
-=============
+Tags
+====
 
-[[Parent]]: macros.txt
+[[Parent]]: remark_syntax.txt
 
 A _document-tag_, or a tag, is a document-specific key-text pair, where 
 the text can be queried and modified by its key. In contrast to 

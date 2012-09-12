@@ -1,5 +1,0 @@
-Core stuff
-==========
-
-[[Parent]]: implementation.txt
-

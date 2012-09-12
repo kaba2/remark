@@ -1,5 +1,5 @@
 # Description: Reporting
-# Documentation: core_stuff.txt
+# Documentation: algorithms.txt
 
 class Scope(object):
     def __init__(self, name):

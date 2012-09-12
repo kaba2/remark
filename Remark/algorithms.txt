@@ -1,0 +1,6 @@
+Algorithms
+==========
+
+[[Parent]]: implementation.txt
+
+This section contains the algorithms used in Remark.

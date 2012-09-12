@@ -1,7 +1,7 @@
 Pattern matching
 ================
 
-[[Parent]]: macros.txt
+[[Parent]]: understanding.txt
 
 _Pattern matching_ is the process of testing whether a given string
 belongs to a given set of strings, called a _pattern_. Remark uses

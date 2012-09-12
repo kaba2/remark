@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 # Description: Caching for the document-tree
-# Documentation: core_stuff.txt
+# Documentation: data_structures.txt
 
 import os
 from FileSystem import readFile, pathExists

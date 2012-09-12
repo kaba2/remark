@@ -3,4 +3,4 @@ Available macros
 
 [[Parent]]: macros.txt
 
-This page lists all the currently available macros.
+This section lists all the currently available macros.
