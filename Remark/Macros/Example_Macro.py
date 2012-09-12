@@ -9,8 +9,9 @@ class Example_Macro(object):
         return 'Example'
 
     def expand(self, parameter, remark):
-        
         text = []
+        dependencySet = set()
+        
         text.append('')
         text.append('This')
         text.append('')
@@ -22,7 +23,7 @@ class Example_Macro(object):
         text += parameter
         text.append('')
 
-        return text, set()
+        return text, dependencySet
 
     def outputType(self):
         return 'remark'

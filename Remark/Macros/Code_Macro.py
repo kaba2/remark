@@ -18,6 +18,7 @@ class Code_Macro(object):
 
     def expand(self, parameter, remark):
         document = remark.document
+        dependencySet = set()
         
         # Prepare for Pygments input.
         inputText = '\n'.join(parameter)
@@ -30,8 +31,8 @@ class Code_Macro(object):
 
         # Prepare for Remark output.
         hilightedText = string.split(hilightedText, '\n')
-        
-        return hilightedText, set()
+       
+        return hilightedText, dependencySet
 
     def outputType(self):
         return 'html'

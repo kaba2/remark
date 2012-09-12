@@ -10,7 +10,9 @@ class Copy_Macro(object):
         return 'Copy'
 
     def expand(self, parameter, remark):
-        return parameter, set()
+        text = parameter
+        dependencySet = set()
+        return text, dependencySet
 
     def outputType(self):
         return 'remark'
