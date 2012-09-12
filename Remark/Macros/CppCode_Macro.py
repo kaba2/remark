@@ -19,16 +19,14 @@ class CppCode_Macro(object):
         return 'CppCode'
 
     def expand(self, parameter, remark):
+        dependencySet = set()
+        
         # Hilight the text.
         hilightedText = highlight(string.join(parameter, '\n'), CppLexer(), HtmlFormatter())
 
         # Prepare for Remark output.
         hilightedText = string.split(hilightedText, '\n')
 
-        # The set of depencies from this document
-        # to other documents.
-        dependencySet = set()
-        
         # Copy the source and replace the includes with links.
         includeRegex = re.compile(r'(#include[ \t]+(?:(?:&quot)|(?:&lt));)(.*)((?:(?:&quot)|(?:&gt));)')
         replacer = lambda match: self._linkConverter(match, remark, dependencySet)

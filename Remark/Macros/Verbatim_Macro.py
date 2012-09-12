@@ -11,11 +11,13 @@ class Verbatim_Macro(object):
 
     def expand(self, parameter, remark):
         text = []
+        dependencySet = set()
+
         for line in parameter:
             # Add a tab to each line.
             text.append('\t' + line)
         
-        return text, set()
+        return text, dependencySet
 
     def outputType(self):
         return 'remark'
