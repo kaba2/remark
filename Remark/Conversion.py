@@ -590,7 +590,7 @@ class Remark(object):
                     # recursively expanded or not.
                     # The macro suggests a default for this
                     # behavior.
-                    expandMore = not macro.pureOutput()
+                    expandMore = macro.expandOutput()
                     
                 macroHandled = True
 

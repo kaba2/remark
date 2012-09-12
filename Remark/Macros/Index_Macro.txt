@@ -17,7 +17,7 @@ Remark
 
 ### Output expansion default
 
-Disabled.
+Enabled.
 
 ### Parameters
 

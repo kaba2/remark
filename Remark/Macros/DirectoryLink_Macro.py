@@ -41,8 +41,8 @@ class DirectoryLink_Macro(object):
     def outputType(self):
         return 'remark'
 
-    def pureOutput(self):
-        return True
+    def expandOutput(self):
+        return False
 
     def htmlHead(self, remark):
         return []                
