@@ -1,5 +1,5 @@
-Markdown extensions
-===================
+Extended Markdown syntax
+========================
 
 [[Parent]]: remark_syntax.txt
 
