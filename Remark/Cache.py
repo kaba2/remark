@@ -162,7 +162,7 @@ def readCache(filePath, documentTree):
                 # Find the corresponding document.
                 toDocument = None
                 if searchType == 'search':
-                    toDocument = documentTree.findDocument(searchPath, searchDirectory)
+                    toDocument = documentTree.findDocument(searchPath, searchDirectory, False)
                 elif searchType == 'exact':
                     toDocument = documentTree.findDocumentLocal(searchPath, searchDirectory)
                 
@@ -173,10 +173,6 @@ def readCache(filePath, documentTree):
                 # Find the corresponding cache-document.
                 toCacheDocument = cacheDocumentTree.cacheDocument(toDocument)
                 
-                # The cache-document must exist, since it is mentioned by the
-                # cache.
-                assert toCacheDocument != None
-
                 # Add the dependencies.
                 if toCacheDocument != None:
                     #print document.relativeName, '-->', toDocument.relativeName
