@@ -9,7 +9,7 @@ from Document import Document
 from FileSystem import documentType, unixDirectoryName, unixRelativePath, fileExtension
 from FileSystem import globalOptions, withoutFileExtension, strictDocumentType
 from FileSystem import pathSuffixSet
-from Reporting import Reporter
+from Reporting import Reporter, ScopeGuard
 
 class DocumentTree(object):
     def __init__(self, rootDirectory, reporter = Reporter()):
@@ -105,31 +105,27 @@ class DocumentTree(object):
 
         # Resolve explicit links
 
-        self.reporter.openScope('Resolving explicit links')
-        self._resolveExplicitLinks()
-        self.reporter.report(['', 'Done.'], 'verbose')
-        self.reporter.closeScope('Resolving explicit links')
+        with ScopeGuard(self.reporter, 'Resolving explicit links'):
+            self._resolveExplicitLinks()
+            self.reporter.report(['', 'Done.'], 'verbose')
 
         # Resolve implicit links
         
-        self.reporter.openScope('Resolving implicit links')
-        self._resolveImplicitLinks()
-        self.reporter.report(['', 'Done.'], 'verbose')
-        self.reporter.closeScope('Resolving implicit links')
+        with ScopeGuard(self.reporter, 'Resolving implicit links'):
+            self._resolveImplicitLinks()
+            self.reporter.report(['', 'Done.'], 'verbose')
 
         # Resolve reference links
         
-        self.reporter.openScope('Resolving reference links')
-        self._resolveReferenceLinks()
-        self.reporter.report(['', 'Done.'], 'verbose')
-        self.reporter.closeScope('Resolving reference links')
+        with ScopeGuard(self.reporter, 'Resolving reference links'):
+            self._resolveReferenceLinks()
+            self.reporter.report(['', 'Done.'], 'verbose')
 
         # Link orphans
 
-        #self.reporter.openScope('Linking orphans')
+        #with ScopeGuard(self.reporter, 'Linking orphans'):
         self._linkOrphans()
         #self.reporter.report(['', 'Done.'], 'verbose')
-        #self.reporter.closeScope('Linking orphans')
         
     def findDocumentLocal(self, filePath, searchDirectory):
         '''
@@ -324,7 +320,7 @@ class DocumentTree(object):
             if 'parent' in document.tagSet:
                 # The parent file path in the tag is given relative to 
                 # the directory containing the document file.
-                parentName = document.tagString('parent')
+                parentName = document.tagString('parent').strip()
                 
                 # See if we can find the parent document.
                 parent, unique = self.findDocument(parentName, 
@@ -336,13 +332,14 @@ class DocumentTree(object):
                                             'ambiguous-parent')
 
                 if parent == None:
-                    # If a parent file can't be found, it can be
-                    # because of a typo in the tag or a missing file. 
-                    # In any case we warn the user.
-                    self.reporter.reportWarning('Parent was not found for ' + 
-                                           document.relativeName + '. The search was for: ' + 
-                                           parentName,
-                                           'missing-parent')
+                    if parentName != '':
+                        # If a parent file can't be found, it can be
+                        # because of a typo in the tag or a missing file. 
+                        # In any case we warn the user.
+                        self.reporter.reportWarning('Parent was not found for ' + 
+                                               document.relativeName + '. The search was for: ' + 
+                                               parentName,
+                                               'missing-parent')
                 else:
                     # Parent file was found. Update parent-child pointers.
                     parent.insertChild(document)

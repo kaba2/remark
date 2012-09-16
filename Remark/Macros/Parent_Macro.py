@@ -11,12 +11,15 @@ class Parent_Macro(object):
         return 'Parent'
 
     def expand(self, parameter, remark):
+        text = []
+        dependencySet = set()
+
         document = remark.document
         parent = document.parent
 
         text = [remark.remarkLink('Back to ' + parent.linkDescription(),
                                   document, parent)]
-        dependencySet = set([parent])
+        dependencySet.add((document.tagString('parent'), document.relativeDirectory, 'global'))
 
         return text, dependencySet
 

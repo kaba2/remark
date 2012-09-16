@@ -18,6 +18,8 @@ class FileLink_Macro(object):
         dependencySet = set()
         for linkFileName in parameter:
             linkDocument, unique = documentTree.findDocument(linkFileName, document.relativeDirectory)
+            dependencySet.add((linkFileName, document.relativeDirectory, 'search'))
+
             if not unique:
                 remark.reporter.reportAmbiguousDocument(linkFileName)
             
@@ -25,7 +27,7 @@ class FileLink_Macro(object):
                 linkDescription = escapeMarkdown(linkDocument.fileName)
                 text.append(remark.remarkLink(linkDescription,
                                               document, linkDocument))
-                dependencySet.add(linkDocument)
+
                 if len(parameter) > 1:                
                     text.append('')
             else:

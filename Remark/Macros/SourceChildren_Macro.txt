@@ -28,6 +28,14 @@ SourceChildren.title
 :	The header name to use.
 	Default `Files`.
 
+Warnings
+--------
+
+missing-description
+:	This warning is generated when a document-group does not have
+	a description. To fix this, add a description for some document
+	in the document-group.
+
 Example
 -------
 

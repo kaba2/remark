@@ -60,11 +60,7 @@ class Document(object):
         # description-tags have been parsed.
         self.setTag('link_description')
 
-        # The set of documents that link to this document.
-        self.incomingSet = set()
-
-        # The set of documents that are linked to by this document.
-        self.outgoingSet = set()
+        self.dependencySet = set()
 
         # Whether the document should be converted, or skipped.
         self.regenerate_ = False
@@ -75,25 +71,14 @@ class Document(object):
     def regenerate(self):
         return self.regenerate_
 
-    def addDependency(self, toDocument):
+    def addDependency(self, dependency):
         '''
         Adds a dependency from this document to another document.
 
         If document A is dependent on document B, then a change
         in B forces the regeneration of document A.
         '''
-        toDocument.incomingSet.add(self)
-        self.outgoingSet.add(toDocument)
-
-    def dependsOn(self, toDocument):
-        '''
-        Returns whether this document depends on the given
-        document.
-
-        See also:
-        addDependency()
-        '''
-        return toDocument in self.outgoingSet
+        self.dependencySet.add(dependency)
 
     def insertChild(self, child):
         '''

@@ -42,7 +42,7 @@ from FileSystem import asciiMathMlName, copyIfNecessary, setGlobalOptions, globa
 from FileSystem import setDefaultDocumentType, strictDocumentType, splitPath, pathExists
 from optparse import OptionParser
 
-from Reporting import Reporter
+from Reporting import Reporter, ScopeGuard
 
 from time import clock
 
@@ -169,7 +169,7 @@ globs are allowed (e.g. *.png).""")
     documentTree = DocumentTree(inputDirectory, reporter)
 
     # Recursively gather files starting from the input directory.
-    #reporter.openScope('Gathering files')
+    #with ScopeGuard(reporter, 'Gathering files'):
 
     for pathName, directorySet, fileNameSet in os.walk(inputDirectory):
         for fileName in fileNameSet:
@@ -187,11 +187,10 @@ globs are allowed (e.g. *.png).""")
                         break
 
     #reporter.report(['', 'Done.'], 'verbose')
-    #reporter.closeScope('Gathering files')
 
     # Insert virtual documents.
 
-    #reporter.openScope('Inserting virtual documents')
+    #with ScopeGuard(reporter, 'Inserting virtual documents')
 
     # Generates a directory.remark-index virtual document to each
     # directory. This provides the directory listings.
@@ -211,7 +210,6 @@ globs are allowed (e.g. *.png).""")
         document.setTag('description', [description])
 
     #reporter.report(['', 'Done.'], 'verbose')
-    #reporter.closeScope('Inserting virtual documents')
 
     # Note that these files are copied _after_ gathering the files
     # and directories. This is to avoid gathering these files
@@ -226,112 +224,121 @@ globs are allowed (e.g. *.png).""")
     copyIfNecessary('./remark_files/' + asciiMathMlName(), scriptDirectory, 
                     './remark_files/' + asciiMathMlName(), outputDirectory)
 
-    #reporter.openScope('Reading document-tree cache')
+    #with ScopeGuard(reporter, 'Reading document-tree cache')
 
-    cacheRelativeName = './remark_files/document-tree.xml'
-    cacheFullName = os.path.join(outputDirectory, cacheRelativeName)
-    cacheDocumentTree = readCache(cacheFullName, documentTree)
+    if not globalOptions().regenerate:
+        cacheRelativeName = './remark_files/document-tree.xml'
+        cacheFullName = os.path.join(outputDirectory, cacheRelativeName)
+        cacheDocumentTree = readCache(cacheFullName, documentTree)
 
     #reporter.report(['', 'Done.'], 'verbose')
-    #reporter.closeScope('Reading document-tree cache')
 
     # Parse the tags.
-    reporter.openScope('Parsing tags')
+    with ScopeGuard(reporter, 'Parsing tags'):
+        for document in documentTree:
+            try:
+                type = document.documentType
 
-    for document in documentTree:
-        try:
-            type = document.documentType
+                if not globalOptions().regenerate:
+                    # If the document is up-to-date, and it can be found from
+                    # the cache, then use the cached tags instead.
+                    if (type.upToDate(document, documentTree, outputDirectory) and
+                        document in cacheDocumentTree):
+                        cacheDocument = cacheDocumentTree.cacheDocument(document)
+                        #print cacheDocument.tagSet
+                        document.tagSet.update(cacheDocument.tagSet)
+                        continue
 
-            if not globalOptions().regenerate:
-                # If the document is up-to-date, and it can be found from
-                # the cache, then use the cached tags instead.
-                if (type.upToDate(document, documentTree, outputDirectory) and
-                    document in cacheDocumentTree):
-                    cacheDocument = cacheDocumentTree.cacheDocument(document)
-                    #print cacheDocument.tagSet
-                    document.tagSet.update(cacheDocument.tagSet)
-                    continue
+                # Otherwise parse the tags.
+                with ScopeGuard(reporter, document.relativeName):
+                    tagSet = type.parseTags(documentTree.fullName(document), reporter)
 
-            # Otherwise parse the tags.
-            reporter.openScope(document.relativeName)
-            tagSet = type.parseTags(documentTree.fullName(document), reporter)
-            reporter.closeScope(document.relativeName)
-
-            document.tagSet.update(tagSet)
-            document.setTag('link_description', [type.linkDescription(document)])
+                document.tagSet.update(tagSet)
+                document.setTag('link_description', [type.linkDescription(document)])
                 
-            #print
-            #print document.relativeName + ':'
-            #for tagName, tagText in tagSet.iteritems():
-            #    print tagName, ':', tagText
+                #print
+                #print document.relativeName + ':'
+                #for tagName, tagText in tagSet.iteritems():
+                #    print tagName, ':', tagText
 
-        except UnicodeDecodeError:
-            reporter.reportWarning(document.relativeName + 
-                                   ': Tag parsing failed because of a unicode decode error.')
+            except UnicodeDecodeError:
+                reporter.reportWarning(document.relativeName + 
+                                       ': Tag parsing failed because of a unicode decode error.')
 
-    reporter.report(['', 'Done.'], 'verbose')
-    reporter.closeScope('Parsing tags')
+        reporter.report(['', 'Done.'], 'verbose')
 
     # Resolve parent links.
     documentTree.resolveParentLinks()
 
-    # Find out which documents to regenerate.
-    for document in documentTree:
-        # The default is that a document will not be regenerated.
+    if not globalOptions().regenerate:
+        # Find out which documents have been deleted.
+        for cacheDocument in cacheDocumentTree:
+            if cacheDocument.document != None:
+                continue
+        
+            # The document can be found from the cache, 
+            # but not from the current document-tree.
+            # Therefore the document has been deleted.
 
-        cacheDocument = cacheDocumentTree.cacheDocument(document)
-        if cacheDocument == None:
-            # If the cache-document does not exist, that
-            # means this document has been created after
-            # the cache was created. In this case the
-            # document will be regenerated.
-            document.setRegenerate(True)
-            continue
-        
-        # A document is said to be _cached_ if it is up-to-date,
-        # and is found from the document-tree cache.
-        
-        # A document will be regenerated if and only if
-        # * it is not cached, or
-        # * it links to a document which is not cached, and
-        #   which requires to update linking documents.
-        regenerate = not (document.documentType.upToDate(document, documentTree, outputDirectory) and
-                    document in cacheDocumentTree)
-        
-        if regenerate:
-            # Regenerate the previous parent-document.
-            if cacheDocument.parent != None:
-                cacheDocument.parent.setRegenerate(True)
-            # Regenerate the upcoming parent-document.
-            if document.parent != None:
+            # Update all those documents which used to refer
+            # to this document.
+            for document in cacheDocument.incomingSet:
+                document.setRegenerate(True)
+
+        # Find out which documents to regenerate.
+        for document in documentTree:
+            # Retrieve the corresponding cached document.
+            cacheDocument = cacheDocumentTree.cacheDocument(document)
+            if cacheDocument == None:
+                # If the document can be found from the current
+                # document tree, but can not be found from the
+                # cache, then it was just created.
+
+                # Update the new parent.
                 document.parent.setRegenerate(True)
 
-        for linkDocument in cacheDocument.outgoingSet:
-            regenerateLink = ((not (linkDocument.documentType.upToDate(linkDocument, documentTree, outputDirectory) and
-                    linkDocument in cacheDocumentTree)) and
-                    linkDocument.documentType.updateDependent())
-            regenerate = regenerate or regenerateLink
-    
-        document.setRegenerate(document.regenerate() or regenerate)
+                # There can also be document which have had
+                # links to this document, but when the cache
+                # was generated, they had no corresponding
+                # document. In principle, these documents should
+                # now be generated. 
+           
+            # The default is that a document will not be regenerated.
 
-    # Update the non-regenerated documents from the cache.        
-    for document in documentTree:
-        regenerate = globalOptions().regenerate or document.regenerate()
-        if not regenerate:
-            cacheDocument = cacheDocumentTree.cacheDocument(document)
+            # A document is said to be _cached_ if it is up-to-date,
+            # and is found from the document-tree cache.
+        
+            # A document will be regenerated if and only if
+            # * it is not cached, or
+            # * it links to a document which is not cached, and
+            #   which requires to update linking documents.
+            regenerate = not (document.documentType.upToDate(document, documentTree, outputDirectory) and
+                        document in cacheDocumentTree)
+
             if cacheDocument != None:
-                #print cacheDocument.incomingSet
-                document.incomingSet.update(cacheDocument.incomingSet)
-                document.outgoingSet.update(cacheDocument.outgoingSet)
+                for linkDocument in cacheDocument.outgoingSet:
+                    regenerate |= ((not (linkDocument.documentType.upToDate(linkDocument, documentTree, outputDirectory) and
+                            linkDocument in cacheDocumentTree)) and
+                            linkDocument.documentType.updateDependent())
+    
+            document.setRegenerate(document.regenerate() or regenerate)
+
+        # Update the non-regenerated documents from the cache.        
+        for document in documentTree:
+            regenerate = globalOptions().regenerate or document.regenerate()
+            if not regenerate:
+                cacheDocument = cacheDocumentTree.cacheDocument(document)
+                if cacheDocument != None:
+                    document.dependencySet.update(cacheDocument.dependencySet)
 
     # Generate documents.
-    reporter.openScope('Generating documents')
-    convertAll(documentTree, outputDirectory, reporter)
-    reporter.report(['', 'Done.'], 'verbose')
-    reporter.closeScope('Generating documents')
+    with ScopeGuard(reporter, 'Generating documents'):
+        convertAll(documentTree, outputDirectory, reporter)
+        reporter.report(['', 'Done.'], 'verbose')
 
-    # Save the document-tree as xml.
-    writeFile(createCache(documentTree), cacheFullName)
+    if not globalOptions().regenerate:
+        # Save the document-tree as xml.
+        writeFile(createCache(documentTree), cacheFullName)
 
     # Find out statistics.
     seconds = round(time.clock() - startTime, 2)
@@ -339,13 +346,12 @@ globs are allowed (e.g. *.png).""")
     warnings = reporter.warnings()
 
     # Report the statistics.
-    reporter.openScope('Summary')
-    reporter.report(['',
-                     str(seconds) + ' seconds,',
-                     str(errors) + ' errors,',
-                     str(warnings) + ' warnings.'], 
-                    'summary')
-    reporter.closeScope('Summary')
+    with ScopeGuard(reporter, 'Summary'):
+        reporter.report(['',
+                         str(seconds) + ' seconds,',
+                         str(errors) + ' errors,',
+                         str(warnings) + ' warnings.'], 
+                        'summary')
 
     # Wrap things up.
     reporter.report(['', "That's all!"], 'verbose')

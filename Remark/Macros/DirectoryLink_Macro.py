@@ -20,13 +20,17 @@ class DirectoryLink_Macro(object):
         for linkFileName in parameter:
             # Find out the document given on the link-row.
             linkDocument, unique = documentTree.findDocument(linkFileName, document.relativeDirectory)
+            dependencySet.add((linkFileName, document.relativeDirectory, 'search'))
+
             if not unique:
                 remark.reporter.reportAmbiguousDocument(linkFileName)
             
             if linkDocument != None:
                 # Find out the directory-index of the given document.
-                linkTarget = documentTree.findDocumentLocal('directory.remark-index', 
+                directoryIndexName = 'directory.remark-index'
+                linkTarget = documentTree.findDocument(directoryIndexName, 
                                                        linkDocument.relativeDirectory)
+                dependencySet.add((directoryIndexName, linkDocument.relativeDirectory, 'search'))
                 assert linkTarget != None
 
                 # Name it in the form directory/, to emphasize it is a directory.
@@ -40,10 +44,6 @@ class DirectoryLink_Macro(object):
                 # If there are multiple links, we want them on their own rows.
                 if len(parameter) > 1:
                     text.append('')
-
-                # Add the dependencies.
-                dependencySet.add(linkDocument)
-                dependencySet.add(linkTarget)
             else:
                 remark.reporter.reportMissingDocument(linkFileName)
             

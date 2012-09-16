@@ -181,7 +181,10 @@ class DocumentTree_Macro(object):
                     document.linkDescription(), 
                     self.document, document)
             text.append(' 1. ' + linkText)
-            dependencySet.add(document)
+
+            # Add a dependency from the generated document to this document.
+            dependencySet.add((document.fileName, document.relativeDirectory, 'exact'))
+
             #text.append('')
             for line in localText:
                 text.append('\t' + line)
