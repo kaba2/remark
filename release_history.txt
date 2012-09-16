@@ -33,6 +33,8 @@ and support for long-UNC paths under Windows.
 * Added incremental generation of documentation.
 * Added support for long-UNC-paths under Windows.
 * Added document-tags.
+* Added a reporting system for more accurate error messages
+and the ability to disable specific messages.
 * Made Remark to copy a file only when the target file does not
 exist _or_ the source file has been modified after the target file.
 * Made Remark name links to code-files with their filenames, rather
