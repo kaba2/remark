@@ -106,7 +106,7 @@ class SourceChildren_Macro(object):
                 message = ['Description missing for the document-group']
                 for child in group[2]:
                     message.append(child.fileName)
-                remark.reportWarning(message, 'missing-input')
+                remark.reportWarning(message, 'missing-description')
         
         # Order the groups in alphabetical order w.r.t.
         # their descriptions. 
@@ -137,7 +137,7 @@ class SourceChildren_Macro(object):
             for child in group[2]:
                 text.append(remark.remarkLink(escapeMarkdown(child.fileName),
                                               document, child))
-                dependencySet.add(child)
+                dependencySet.add((child.fileName, child.relativeDirectory, 'exact'))
                 text.append('')
             
         return text, dependencySet

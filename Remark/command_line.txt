@@ -43,16 +43,49 @@ by the -d option. Warnings which are specific to a given macro
 are listed in the documentation of that macro. The general purpose
 warnings are:
 
-invalid-input
-:	This warning is generated when facing input that is ill-formed, 
-	for example, when a macro gets too many or too few parameters.
-	To fix this, replace the ill-formed input with well-formed input.
+ambiguous-document
+:	This warning is generated when a given path matches multiple documents
+	in the document-tree. To fix this, introduce more context to the path to 
+	disambiguate the correct document in the document-tree.
 
 ambiguous-input
 :	This warning is generated when facing input that is well-formed,
 	but ambiguous, for example, when giving multiple descriptions
 	for a given document. To fix this, remove some input to	make 
 	the choice unambiguous.
+
+ambiguous-parent
+:	This warning is generated when there are multiple documents matching
+	a given parent-specification in the document-tree. To fix this, introduce 
+	more context into the parent path to disambiguate the correct document 
+	in the document-tree.
+
+invalid-input
+:	This warning is generated when facing input that is ill-formed, 
+	for example, when a macro gets too many or too few parameters.
+	To fix this, replace the ill-formed input with well-formed input.
+
+missing-document
+:	This warning is generated when a document can not be found from the
+	document-tree based on the given path, for example, when specifying 
+	images on an image gallery. To fix this, change the path to refer to 
+	an existing document in the document-tree.
+
+missing-parent
+:	This warning is generated when the specified parent document can not 
+	be found from the document-tree. To fix this, change the parent-
+	specification to refer to an existing document in the document-tree.
+
+redundant-path
+:	This warning is generated when specifying a path in a longer form 
+	than is necessary for the file-searching algorithm to unambiguously
+	find the document. To fix this, remove the extraneous context from 
+	the given path.
+
+unspecified-parent
+:	This warning is generated when the parent document has not been
+	specified for a RemarkPage document. To fix this, specify the 
+	parent document.
 
 undefined-tag
 :	This warning is generated when trying to refer to a tag which
@@ -63,39 +96,6 @@ undefined-variable
 :	This warning is generated when trying to refer to a variable which
 	has not yet been defined. To fix this, either remove the reference 
 	or add a definition for the variable.
-
-redundant-path
-:	This warning is generated when specifying a path in a longer form 
-	than is necessary for the file-searching algorithm to unambiguously
-	find the document. To fix this, remove the extraneous context from 
-	the given path.
-
-ambiguous-parent
-:	This warning is generated when there are multiple documents matching
-	a given parent-specification in the document-tree. To fix this, introduce 
-	more context into the parent path to disambiguate the correct document 
-	in the document-tree.
-
-missing-parent
-:	This warning is generated when the specified parent document can not 
-	be found from the document-tree. To fix this, change the parent-
-	specification to refer to an existing document in the document-tree.
-
-unspecified-parent
-:	This warning is generated when the parent document has not been
-	specified for a RemarkPage document. To fix this, specify the 
-	parent document.
-
-missing-document
-:	This warning is generated when a document can not be found from the
-	document-tree based on the given path, for example, when specifying 
-	images on an image gallery. To fix this, change the path to refer to 
-	an existing document in the document-tree.
-
-ambiguous-document
-:	This warning is generated when a given path matches multiple documents
-	in the document-tree. To fix this, introduce more context to the path to 
-	disambiguate the correct document in the document-tree.
 
 unknown-macro
 :	This warning is generated when invoking an unrecognized macro. To fix

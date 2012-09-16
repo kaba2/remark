@@ -26,11 +26,13 @@ class ParentList_Macro(object):
         level = 1
         text = []
         dependencySet = set()
-        for document in reversed(parentSet):
+        for i in reversed(range(0, len(parentSet))):
+            document = parentSet[i]
             linkText = remark.remarkLink(
                 document.linkDescription(), 
                 remark.document, document)
-            dependencySet.add(document)
+            if i > 0:
+                dependencySet.add((document.fileName, document.relativeDirectory, 'exact'))
 
             # Strictly speaking, Markdown does not
             # use the actual numbers, so we could

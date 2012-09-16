@@ -24,7 +24,8 @@ class RemarkPage_DocumentType(object):
                                     reporter)
         
     def convert(self, document, documentTree, outputRootDirectory, reporter):
-        remarkText = ['[[set RemarkPage.mid_text]]',
+        remarkText = [
+                 '[[set RemarkPage.mid_text]]',
                  '[[set RemarkPage.end_text]]',
                  '[[ParentList]]',
                  '[[Body]]',

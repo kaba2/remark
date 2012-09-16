@@ -9,7 +9,35 @@ class Scope(object):
 
     def insert(self, text, type):
         self.textSet.append((text, type))
-        
+
+class ScopeGuard(object):
+    def __init__(self, reporter, name):
+        self.name_ = name
+        self.reporter_ = reporter
+        self.open_ = False
+
+    def __enter__(self):
+        self.open()
+
+    def __exit__(self, type, value, traceback):
+        self.close()
+
+    def name(self):
+        return self.name_
+
+    def isOpen(self):
+        return self.open_
+
+    def open(self):
+        if not self.open_:
+            self.reporter_.openScope(self.name_)
+            self.open_ = True
+
+    def close(self):
+        if self.open_:
+            self.reporter_.closeScope(self.name_)
+            self.open_ = False
+
 class Reporter(object):
     def __init__(self):
         # A set of reporting scopes.

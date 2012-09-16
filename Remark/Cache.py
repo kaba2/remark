@@ -15,6 +15,7 @@ class Cache_Document(object):
         self.tagSet = {}
         self.incomingSet = set()
         self.outgoingSet = set()
+        self.dependencySet = set()
 
 class Cache_DocumentTree(object):
     def __init__(self):
@@ -22,6 +23,9 @@ class Cache_DocumentTree(object):
 
     def __contains__(self, document):
         return document in self.documentMap
+
+    def __iter__(self):
+        return self.documentMap.itervalues()
 
     def add(self, document):
         self.documentMap[document] = Cache_Document(document)
@@ -44,18 +48,16 @@ def createCache(documentTree):
         xml.start('document', {'name' : document.relativeName})
             
         xml.start('links_to', {})
-        for linksTo in document.outgoingSet:
-            xml.start('name', {})
-            xml.data(linksTo.relativeName)
+        for dependency in document.dependencySet:
+            propertyMap = {}
+            if dependency[1] != document.relativeName:
+                propertyMap['directory'] = dependency[1]
+            if dependency[2] != 'search':
+                propertyMap['type'] = dependency[2]
+            xml.start('name', propertyMap)
+            xml.data(dependency[0])
             xml.end('name')
         xml.end('links_to')
-
-        #xml.start('linked_by', {})
-        #for linkedBy in document.incomingSet:
-        #    xml.start('name', {})
-        #    xml.data(linkedBy.relativeName)
-        #    xml.end('name')
-        #xml.end('linked_by')
 
         xml.start('tags', {})
         for tagName, tagText in document.tagSet.iteritems():
@@ -146,11 +148,23 @@ def readCache(filePath, documentTree):
             # For each name element...
             for name in linksToElement.iter('name'):
                 
-                # Get the name of the target document.
-                toRelativeName = name.text
+                # Get the search path.
+                searchPath = name.text
+
+                # Get the search directory.
+                searchDirectory = name.get('directory', document.relativeDirectory)
+
+                # Get the search type.
+                searchType = name.get('type', 'search')
                 
+                cacheDocument.dependencySet.add((searchPath, searchDirectory, searchType))
+
                 # Find the corresponding document.
-                toDocument = documentTree.findDocumentByRelativeName(toRelativeName)
+                toDocument = None
+                if searchType == 'search':
+                    toDocument = documentTree.findDocument(searchPath, searchDirectory)
+                elif searchType == 'exact':
+                    toDocument = documentTree.findDocumentLocal(searchPath, searchDirectory)
                 
                 if toDocument == None:
                     # The target document does not exist anymore.

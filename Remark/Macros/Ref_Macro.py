@@ -18,13 +18,14 @@ class Ref_Macro(object):
         dependencySet = set()        
         for linkFileName in parameter:
             linkDocument, unique = documentTree.findDocument(linkFileName, document.relativeDirectory)
+            dependencySet.add((linkFileName, document.relativeDirectory, 'search'))
+
             if not unique:
                 remark.reporter.reportAmbiguousDocument(linkFileName)
             
             if linkDocument != None:
                 linkTarget = unixRelativePath(document.relativeDirectory, linkDocument.relativeName)
                 text.append(outputDocumentName(linkTarget))
-                dependencySet.add(linkDocument)
                 if len(parameter) > 1:                
                     text += ['']
             else:

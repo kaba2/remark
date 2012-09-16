@@ -84,6 +84,8 @@ class Gallery_Macro(object):
 
             # Find the image using the file-searching algorithm.
             input, unique = documentTree.findDocument(entryName, document.relativeDirectory)
+            dependencySet.add((entryName, document.relativeDirectory, 'search'))
+
             if input == None:
                 # The image-file was not found. Report a warning and skip
                 # the file.
@@ -114,16 +116,13 @@ class Gallery_Macro(object):
                     # not in the directory of the document.
                     pixelFileName = changeExtension(input.fileName, extension)
                     #print 'Searching for', pixelFileName
-                    pixelDocument = documentTree.findDocumentLocal(pixelFileName,
-                                                              input.relativeDirectory)
-                    if pixelDocument != None:
-                        # We found a pixel-based alternative image.
-                        break
+                    if pixelDocument == input:
+                        # After we find an alternative, we still want to continue
+                        # to add the dependencies to all formats.
+                        pixelDocument = documentTree.findDocumentLocal(pixelFileName,
+                                                                       input.relativeDirectory)
+                    dependencySet.add((pixelFileName, input.relativeDirectory, 'exact'))
             
-            # Add dependencies.            
-            dependencySet.add(input)
-            dependencySet.add(pixelDocument)
-
             # Find out input names.
             inputLinkName = unixRelativePath(document.relativeDirectory, input.relativeName)
 

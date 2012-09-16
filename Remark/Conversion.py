@@ -10,11 +10,12 @@ import os.path
 import datetime
 import codecs
 import copy
+import traceback
 
 from MacroRegistry import findMacro
 from FileSystem import changeExtension, outputDocumentName, documentType, unixDirectoryName, copyIfNecessary
 from FileSystem import asciiMathMlName, remarkVersion, globalOptions, unixRelativePath, writeFile
-from Reporting import Reporter
+from Reporting import Reporter, ScopeGuard
 
 class Scope(object):
     def __init__(self, parent, name):
@@ -632,14 +633,10 @@ class Remark(object):
                 # in suppress list.
                 if not macroName in suppressList:
                     # Run the actual macro.
-                    self.reporter.openScope(macro.name())
-                    try:
+                    with ScopeGuard(self.reporter, macro.name()):
                         macroText, newDependencySet = macro.expand(parameterSet, self)
-                    except ValueError:
-                        print macroName
-                        raise ValueError()
+
                     dependencySet.update(newDependencySet)
-                    self.reporter.closeScope(macro.name())
                     if macroText == []:
                         macroText = ['']
                     
@@ -1022,8 +1019,7 @@ def saveRemarkToHtml(remarkText, document, documentTree,
             outputRootDirectory, reporter)
 
     # Add the dependencies for the documents.
-    for dependency in dependencySet:
-        document.addDependency(dependency)
+    document.dependencySet.update(dependencySet)
 
     # Find out some names.
     outputRelativeName = outputDocumentName(document.relativeName)
@@ -1062,14 +1058,20 @@ def convertAll(documentTree, outputRootDirectory, reporter = Reporter()):
 
         reporter.report('Generating ' + document.relativeName + '...',
                         'verbose')
-        reporter.openScope(document.relativeName)
-
-        # Let the document-type convert the document.
-        type = documentType(document.extension)
-        type.convert(document, documentTree, outputRootDirectory,
-                    reporter)
-
-        reporter.closeScope(document.relativeName)
+        
+        try:
+            # Let the document-type convert the document.
+            type = documentType(document.extension)
+            with ScopeGuard(reporter, document.relativeName):
+                type.convert(document, documentTree, outputRootDirectory,
+                            reporter)
+        except IOError:
+            # If an exception is thrown, for example because a document
+            # is deleted while Remark is running, then that exception
+            # is acknowledged here, and a stack-trace is printed, but
+            # the generation still continues for other documents.
+            reporter.reportError(traceback.format_exc(), 
+                                 'exception')
     
 def _leadingTabs(text):
     '''
