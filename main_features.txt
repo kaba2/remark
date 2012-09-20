@@ -71,8 +71,9 @@ An example of the AsciiMath syntax is given by:
 	x = (-b +- sqrt(b^2 - 4ac)) / (2a) 
 	
 which generates:
-	
-''x = (-b +- sqrt(b^2 - 4ac)) / (2a)''
+
+[[Equation]]: 
+	x = (-b +- sqrt(b^2 - 4ac)) / (2a)
 
 Contrast this to e.g. Latex syntax. The conversion of the AsciiMath syntax 
 to MathML is handled on the fly via the [AsciiMathML][AsciiMath] java-script library.

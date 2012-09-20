@@ -7,7 +7,7 @@ from MacroRegistry import registerMacro
 
 class Equation_Macro(object):
     def __init__(self):
-        self.equationNumber = 0
+        self.equationNumber = 1
 
     def name(self):
         return 'Equation'
