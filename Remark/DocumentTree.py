@@ -272,7 +272,7 @@ class DocumentTree(object):
                 while i < n:
                     if filePath[i] == '/':
                         suffix = filePath[i + 1 : ]
-                        (checkDocument, checkUnique) = \
+                        checkDocument, checkUnique = \
                             self.findDocument(suffix, searchDirectory, False)
                         if checkDocument == document and checkUnique:
                             shortestSuffix = suffix
@@ -528,8 +528,8 @@ class DocumentTree(object):
             # the directory containing the document file.
             referenceName = document.tagString('parentOf')
             
-            reference = self.findDocument(referenceName, 
-                                          document.relativeDirectory)[0]
+            reference, unique = self.findDocument(referenceName, 
+                                                  document.relativeDirectory)[0]
             if reference == None:
                 # If a reference file can't be found, it can be
                 # because of a typo in the tag or a missing file. 
