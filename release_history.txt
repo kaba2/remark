@@ -52,6 +52,9 @@ invalid parts with the U+FFFD REPLACEMENT CHARACTER symbol.
 
 * Changed it so that all converted files need to be listed, rather
 than just those which are to be copied.
+* Added an option for listing all the file-extensions in the input
+directory along with example files. This makes it easier to check
+that one has remembered to include all necessary files.
 * Added an option for verbose mode, and moved successful output
 from the normal mode to the verbose mode. This makes it easier
 to spot warnings.
