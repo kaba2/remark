@@ -105,15 +105,22 @@ def globToRegex(glob):
     regular expression. Otherwise glob is assumed to be iterable,
     and each string in glob is converted to a regular expression, 
     which are then combined as alternatives into a single regular 
-    expression.
+    expression. If the iterable is empty, then a regex is generated
+    which matches nothing.
 
     glob (string or an iterable of strings):
     A glob or a set of globs to convert to a regular expression.
+
+    returns (string):
+    The converted regular expression.
     '''
     if not isinstance(glob, basestring):
         regexSet = []
         for line in glob:
             regexSet.append(globToRegex(line))
+        if len(regexSet) == 0:
+            # Match nothing.
+            regexSet.append(r'(?!)')
         return combineRegex(regexSet)
 
     return fnmatch.translate(glob.strip())
@@ -143,9 +150,13 @@ def combineRegex(regex):
         for line in regex:
             regexSet.append(line.strip())
         if regexSet != []:
-            # Join together as alternatives, grouped
-            # in non-capturing parentheses.
-            regexString = r'(?:' + r')|('.join(regexSet) + r')'
+            if len(regexSet) > 1:
+                # Join together as alternatives, grouped
+                # in non-capturing parentheses.
+                regexString = r'(?:' + r')|('.join(regexSet) + r')'
+            else:
+                # Use the regex as it is.
+                regexString = regexSet[0]
     return regexString
 
 def escapeMarkdown(text):

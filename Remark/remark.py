@@ -22,7 +22,6 @@ except ImportError, e:
 import re
 import os
 import shutil
-import fnmatch
 
 from Document import Document
 from DocumentTree import DocumentTree
@@ -40,6 +39,7 @@ from FileSystem import unixDirectoryName, unixRelativePath, readFile, writeFile
 from FileSystem import documentType, associateDocumentType, remarkVersion, fileExtension
 from FileSystem import asciiMathMlName, copyIfNecessary, setGlobalOptions, globalOptions
 from FileSystem import setDefaultDocumentType, strictDocumentType, splitPath, pathExists
+from FileSystem import globToRegex
 from optparse import OptionParser
 
 from Reporting import Reporter, ScopeGuard
@@ -56,10 +56,10 @@ if os.name == 'nt':
 if __name__ == '__main__':
 
     optionParser = OptionParser(usage = """\
-%prog [options] inputDirectory outputDirectory [filesToCopy...]
+%prog [options] inputDirectory outputDirectory [files...]
 
-The filesToCopy is a list of those files which should be copied;
-globs are allowed (e.g. *.png).""")
+The 'files' is a list of those files which should be converted;
+globs are allowed (e.g. *.txt *.py).""")
     
     optionParser.add_option('-l', '--lines',
         dest = 'maxTagLines',
@@ -171,20 +171,16 @@ globs are allowed (e.g. *.png).""")
     # Recursively gather files starting from the input directory.
     #with ScopeGuard(reporter, 'Gathering files'):
 
+    filenameRegexString = globToRegex(filesToCopySet)
+    filenameRegex = re.compile(filenameRegexString)
+            
     for pathName, directorySet, fileNameSet in os.walk(inputDirectory):
-        for fileName in fileNameSet:
-            fullName = os.path.normpath(os.path.join(pathName, fileName))
+        for filename in fileNameSet:
+            fullName = os.path.normpath(os.path.join(pathName, filename))
             relativeName = unixRelativePath(inputDirectory, fullName)
-            if strictDocumentType(fileExtension(fileName)) != None:
-                # The file has an associated document type, take it in.            
+            if re.match(filenameRegex, filename) != None:
+                # The file matches a pattern, take it in.
                 documentTree.insertDocument(relativeName)
-            else: 
-                for filenamePattern in filesToCopySet:
-                    if fnmatch.fnmatch(fileName, filenamePattern):
-                        # The file matches a pattern for copying,
-                        # take it in.
-                        documentTree.insertDocument(relativeName)
-                        break
 
     #reporter.report(['', 'Done.'], 'verbose')
 

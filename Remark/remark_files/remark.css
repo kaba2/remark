@@ -418,5 +418,6 @@ in the 'remark-footer' div. */
     padding: 0;
     margin: 0;
     font-size: 1.5em;
+    color: rgb(190, 190, 0);
     float: right;
 }
