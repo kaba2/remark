@@ -19,7 +19,6 @@ html, body
     padding-bottom: 1em;
 }
 
-
 /* All of Remark-generated content is located at
 at div-block whose id is 'remark' (id's are supposed
 to be unique). */
@@ -390,4 +389,34 @@ in the 'remark-footer' div. */
     clear: left;
     padding: 0;
     border: 0;
+}
+
+/* Equations */
+
+#remark .equation
+{
+    display: block;
+}
+
+#remark .equation-body
+{
+    padding-left: 4em;
+}
+
+#remark span.equation-number:after
+{
+    content: ")";
+}
+
+#remark span.equation-number:before
+{
+    content: "(";
+}
+
+#remark .equation-number
+{
+    padding: 0;
+    margin: 0;
+    font-size: 1.5em;
+    float: right;
 }

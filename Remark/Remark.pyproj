@@ -42,6 +42,8 @@
     <Compile Include="Macros\DirectoryLink_Macro.py" />
     <Compile Include="Macros\DocChildren_Macro.py" />
     <Compile Include="Macros\DocumentTree_Macro.py" />
+    <Compile Include="Macros\EquationSet_Macro.py" />
+    <Compile Include="Macros\Equation_Macro.py" />
     <Compile Include="Macros\Example_Macro.py" />
     <Compile Include="Macros\FileLink_Macro.py" />
     <Compile Include="Macros\Gallery_Macro.py" />
