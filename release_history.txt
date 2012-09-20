@@ -35,6 +35,8 @@ and support for long-UNC paths under Windows.
 * Added document-tags.
 * Added a reporting system for more accurate error messages
 and the ability to disable specific messages.
+* Generalized indentation as a specific way to invoke a macro,
+and made this macro selectable at runtime by the `indent` variable.
 * Made Remark to copy a file only when the target file does not
 exist _or_ the source file has been modified after the target file.
 * Made Remark name links to code-files with their filenames, rather
@@ -48,6 +50,8 @@ invalid parts with the U+FFFD REPLACEMENT CHARACTER symbol.
 
 ### Interface
 
+* Changed it so that all converted files need to be listed, rather
+than just those which are to be copied.
 * Added an option for verbose mode, and moved successful output
 from the normal mode to the verbose mode. This makes it easier
 to spot warnings.
@@ -75,6 +79,8 @@ to the output file. This is the default document type.
 * Added the ParentList macro to generate a list of parent documents.
 * Added the DocumentTree macro to generate parts or all of the document tree.
 * Added the Example macro to easily generate examples in Remark.
+* Added the Equation macro to generate equations.
+* Added the EquationSet macro to generate multiple equations.
 * Gallery: Increased the default number of pixels in thumbnails.
 * Gallery: Made the macro work also with vector-based images, such
 as .svg.
