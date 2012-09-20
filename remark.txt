@@ -14,7 +14,7 @@ Usage
 
 From the console (Windows, Linux, Unix, ...): 
 
-	remark.py [options] inputDirectory outputDirectory [filesToCopy...]
+	remark.py [options] inputDirectory outputDirectory [files...]
 
 See the installation instructions below.
 
