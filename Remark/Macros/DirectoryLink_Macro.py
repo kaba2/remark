@@ -28,9 +28,10 @@ class DirectoryLink_Macro(object):
             if linkDocument != None:
                 # Find out the directory-index of the given document.
                 directoryIndexName = 'directory.remark-index'
-                linkTarget = documentTree.findDocument(directoryIndexName, 
-                                                       linkDocument.relativeDirectory)
-                dependencySet.add((directoryIndexName, linkDocument.relativeDirectory, 'search'))
+                linkTarget = documentTree.findDocumentLocal(directoryIndexName, 
+                                                            linkDocument.relativeDirectory)
+
+                dependencySet.add((directoryIndexName, linkDocument.relativeDirectory, 'exact'))
                 assert linkTarget != None
 
                 # Name it in the form directory/, to emphasize it is a directory.

@@ -162,7 +162,7 @@ def readCache(filePath, documentTree):
                 # Find the corresponding document.
                 toDocument = None
                 if searchType == 'search':
-                    toDocument = documentTree.findDocument(searchPath, searchDirectory, False)
+                    toDocument, unique = documentTree.findDocument(searchPath, searchDirectory, False)
                 elif searchType == 'exact':
                     toDocument = documentTree.findDocumentLocal(searchPath, searchDirectory)
                 
