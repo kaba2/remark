@@ -7,3 +7,14 @@ Variables can be used to store text temporarily and this way parametrize
 the behavior of macros and Remark. However, at the same time variables 
 have a dual role as user-defined text transformations. 
 
+Predefined variables
+--------------------
+
+These predefined variables have a special meaning in Remark:
+
+parameter
+:	The parameter of a macro invocation.
+
+indent
+:	The name of the macro to use for indented content.
+	Default: `Verbatim`.

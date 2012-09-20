@@ -217,6 +217,7 @@ class Remark(object):
         self.externalGroupId = 5
         self.recursionDepth = 0
         self.used = False
+        self.scopeStack.top().insert('indent', ['Verbatim'])
 
     def linkId(self):
         '''
@@ -383,9 +384,20 @@ class Remark(object):
                                    row, matchBegin,
                                    row, matchEnd)
         
-        # The parameter is multi-line.
-        # Find out the extent of the parameter.
-        endRow = row + 1
+        # The parameter is multi-line. Extract that parameter,
+        # and find out its extent.
+        parameterSet = self.extractMultilineParameter(text, row + 1)
+        nonEmptyLines = len(parameterSet)
+            
+        return MacroInvocation(macroName,
+                               parameterSet,
+                               outputExpansion,
+                               parameterExpansion,                                   
+                               row, matchBegin,
+                               row + nonEmptyLines, len(text[row + nonEmptyLines]))        
+
+    def extractMultilineParameter(self, text, startRow):
+        endRow = startRow
         while endRow < len(text):
             # The end of a multi-line parameter
             # is marked by a line which is not all whitespace
@@ -395,7 +407,7 @@ class Remark(object):
             endRow += 1
             
         # Copy the parameter and remove the indentation from it.
-        parameterSet = [_removeLeadingTabs(line, 1) for line in text[row + 1 : endRow]]
+        parameterSet = [_removeLeadingTabs(line, 1) for line in text[startRow : endRow]]
     
         # Remove the possible empty trailing parameter lines.
         nonEmptyLines = len(parameterSet)
@@ -406,13 +418,8 @@ class Remark(object):
                 break
             
         parameterSet[nonEmptyLines :] = []
-            
-        return MacroInvocation(macroName,
-                               parameterSet,
-                               outputExpansion,
-                               parameterExpansion,                                   
-                               row, matchBegin,
-                               row + nonEmptyLines, len(text[row + nonEmptyLines]))        
+
+        return parameterSet
 
     def addDummyHtmlNewLines(self, htmlText):
         for j in range(0, len(htmlText)):
@@ -736,36 +743,71 @@ class Remark(object):
             # with the rest of the processing.
             line = ' ' * column + text[row][column :]
             
-            # Indented stuff is copied verbatim.
-            if len(line) > 0 and line[0] == '\t':
-                newText[-1] += line
-                newText.append('')
-                row += 1
-                column = 0              
-                continue
-            
-            # See if there is a macro somewhere on the line.
-            match = re.search(self.macroRegex, line)
-            if match == None:
-                # There is no macro on the line: 
-                # copy the line verbatim.
-                newText[-1] += line[column :]
-                newText.append('')
-                row += 1
-                column = 0              
-                continue
-    
-            #print 'I read:'
-            #print match.group(0)
+            indentationMacro = len(line) > 0 and line[0] == '\t' and line.strip() != ''
+            if indentationMacro:
+                # There is an indentation-macro invocation here.
 
-            # Yes, there is a macro on the line.
-            # First copy the possible verbatim content.
-            matchBegin = match.start(0)
-            newText[-1] += line[column : matchBegin]
-            column = matchBegin
+                # Add an empty line.
+                newText.append('')
+
+                # Gather the multiline parameter.
+                parameterSet = self.extractMultilineParameter(text, row)
+
+                # Get the name of the indentation macro.
+                macroName= self.scopeStack.top().getString('indent').strip()
+
+                switches = 0;
+                
+                outputExpansion = False
+                parameterExpansion = False
+                if len(macroName) >= 1:
+                   if macroName[0] == '+':
+                       outputExpansion = True
+                       parameterExpansion = True
+                       switches += 1
+                   elif macroName[0] == '-':
+                       outputExpansion = True
+                       parameterExpansion = True
+                       switches += 1
+                
+                if len(macroName) >= 2 and switches == 1:
+                    if macroName[1] == '+':
+                        parameterExpansion = True
+                        switches += 1
+                    elif macroName[1] == '-':
+                        parameterExpansion = False
+                        switches += 1
+                
+                macroInvocation = MacroInvocation(
+                     macroName[switches : ],
+                     parameterSet,
+                     outputExpansion,
+                     parameterExpansion,
+                     row, 0,
+                     row + len(parameterSet), 0)
+            else:
+                # See if there is a macro somewhere on the line.
+                match = re.search(self.macroRegex, line)
+                if match == None:
+                    # There is no macro on the line: 
+                    # copy the line verbatim.
+                    newText[-1] += line[column :]
+                    newText.append('')
+                    row += 1
+                    column = 0              
+                    continue
+    
+                #print 'I read:'
+                #print match.group(0)
+
+                # Yes, there is a macro on the line.
+                # First copy the possible verbatim content.
+                matchBegin = match.start(0)
+                newText[-1] += line[column : matchBegin]
+                column = matchBegin
             
-            # Find out the whole macro invocation.
-            macroInvocation = self.extractMacro(row, match, text)
+                # Find out the whole macro invocation.
+                macroInvocation = self.extractMacro(row, match, text)
             
             #print 'Macro invocation:'
             #print macroInvocation.name
