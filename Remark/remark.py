@@ -72,6 +72,10 @@ globs are allowed (e.g. *.txt *.py).""")
         action="store_true", dest="verbose", default=False,
         help = """print additional progress information""")
 
+    optionParser.add_option('-e', '--extensions',
+        action="store_true", dest="extensions", default=False,
+        help = """lists all file-extensions in the input-directory along with example files""")
+
     optionParser.add_option('-s', '--strict',
         action="store_true", dest="strict", default=False,
         help = """treat warnings as errors""")
@@ -135,6 +139,25 @@ globs are allowed (e.g. *.txt *.py).""")
                      'Input directory: ' + inputDirectory,
                      'Output directory: ' + outputDirectory], 
                     'verbose')
+
+    if globalOptions().extensions:
+        extensionSet = {}
+        for pathName, directorySet, filenameSet in os.walk(inputDirectory):
+            for filename in filenameSet:
+                extension = fileExtension(filename)
+                if not extension in extensionSet:
+                    extensionSet[extension] = filename
+
+        # Sort to an alphabetical order by extension.
+        sortedSet = extensionSet.keys()
+        sortedSet.sort()
+
+        # Print the extensions and their example files.
+        print
+        for extension in sortedSet:
+            print extension, extensionSet[extension]
+
+        sys.exit(0)
 
     # Associate document types with filename extensions.
     
