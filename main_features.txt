@@ -68,7 +68,8 @@ typesetting mathematics. AsciiMath fulfills the following goal:
 
 An example of the AsciiMath syntax is given by:
 	
-	x = (-b +- sqrt(b^2 - 4ac)) / (2a) 
+	[[Equation]]:
+		x = (-b +- sqrt(b^2 - 4ac)) / (2a) 
 	
 which generates:
 
