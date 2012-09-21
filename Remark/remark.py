@@ -5,7 +5,6 @@
 # Documentation: implementation.txt 
 
 import sys
-import time
 
 try:
     import markdown
@@ -22,6 +21,7 @@ except ImportError, e:
 import re
 import os
 import shutil
+import time
 
 from Document import Document
 from DocumentTree import DocumentTree
@@ -33,7 +33,6 @@ from FileSystem import documentType, associateDocumentType, remarkVersion, fileE
 from FileSystem import asciiMathMlName, copyIfNecessary, setGlobalOptions, globalOptions
 from FileSystem import setDefaultDocumentType, strictDocumentType, splitPath, pathExists
 from FileSystem import globToRegex
-from optparse import OptionParser
 
 from Reporting import Reporter, ScopeGuard
 
@@ -46,18 +45,18 @@ if os.name == 'nt':
     # support UNC-paths (bug present in Python 2.7.3).
     os.path.split = splitPath
 
-from DocumentTypes.CppCodeView_DocumentType import CppCodeView_DocumentType
-from DocumentTypes.CodeView_DocumentType import CodeView_DocumentType
-from DocumentTypes.RemarkPage_DocumentType import RemarkPage_DocumentType
-from DocumentTypes.DirectoryView_DocumentType import DirectoryView_DocumentType
-from DocumentTypes.Orphan_DocumentType import Orphan_DocumentType
-from DocumentTypes.Copy_DocumentType import Copy_DocumentType
-
 def initializeRemark():
     '''
     Associates filename extensions with document types.
     '''
     
+    from DocumentTypes.CppCodeView_DocumentType import CppCodeView_DocumentType
+    from DocumentTypes.CodeView_DocumentType import CodeView_DocumentType
+    from DocumentTypes.RemarkPage_DocumentType import RemarkPage_DocumentType
+    from DocumentTypes.DirectoryView_DocumentType import DirectoryView_DocumentType
+    from DocumentTypes.Orphan_DocumentType import Orphan_DocumentType
+    from DocumentTypes.Copy_DocumentType import Copy_DocumentType
+
     remarkPageType = RemarkPage_DocumentType()
     cppCodeViewType = CppCodeView_DocumentType()
     directoryViewType = DirectoryView_DocumentType()
@@ -129,6 +128,8 @@ def parseArguments(reporter):
     '''
     Parses the command-line arguments given to Remark.
     '''
+    from optparse import OptionParser
+
     optionParser = OptionParser(usage = """\
 %prog [options] inputDirectory outputDirectory [files...]
 
