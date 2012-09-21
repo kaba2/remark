@@ -27,13 +27,6 @@ from Document import Document
 from DocumentTree import DocumentTree
 from Cache import readCache, createCache
 
-from DocumentTypes.CppCodeView_DocumentType import CppCodeView_DocumentType
-from DocumentTypes.CodeView_DocumentType import CodeView_DocumentType
-from DocumentTypes.RemarkPage_DocumentType import RemarkPage_DocumentType
-from DocumentTypes.DirectoryView_DocumentType import DirectoryView_DocumentType
-from DocumentTypes.Orphan_DocumentType import Orphan_DocumentType
-from DocumentTypes.Copy_DocumentType import Copy_DocumentType
-
 from Conversion import convertAll
 from FileSystem import unixDirectoryName, unixRelativePath, readFile, writeFile
 from FileSystem import documentType, associateDocumentType, remarkVersion, fileExtension
@@ -53,8 +46,89 @@ if os.name == 'nt':
     # support UNC-paths (bug present in Python 2.7.3).
     os.path.split = splitPath
 
-if __name__ == '__main__':
+from DocumentTypes.CppCodeView_DocumentType import CppCodeView_DocumentType
+from DocumentTypes.CodeView_DocumentType import CodeView_DocumentType
+from DocumentTypes.RemarkPage_DocumentType import RemarkPage_DocumentType
+from DocumentTypes.DirectoryView_DocumentType import DirectoryView_DocumentType
+from DocumentTypes.Orphan_DocumentType import Orphan_DocumentType
+from DocumentTypes.Copy_DocumentType import Copy_DocumentType
 
+def initializeRemark():
+    '''
+    Associates filename extensions with document types.
+    '''
+    
+    remarkPageType = RemarkPage_DocumentType()
+    cppCodeViewType = CppCodeView_DocumentType()
+    directoryViewType = DirectoryView_DocumentType()
+    codeViewType= CodeView_DocumentType()
+    orphanType = Orphan_DocumentType()
+    copyType = Copy_DocumentType()
+
+    remarkPageSet = ['.txt']
+    cppCodeViewSet = ['.cpp', '.cc', '.h', '.hh', '.hpp']
+    codeViewSet = ['.py', '.m', '.pm', '.pl', '.css', '.js', '.lua']
+       
+    setDefaultDocumentType(copyType)
+    associateDocumentType(remarkPageSet, remarkPageType)
+    associateDocumentType(cppCodeViewSet, cppCodeViewType)
+    associateDocumentType(codeViewSet, codeViewType)
+    associateDocumentType('.remark-index', directoryViewType)
+    associateDocumentType('.remark-orphan', orphanType)
+
+def createDocumentTree(inputDirectory, filesToCopySet, reporter):
+    '''
+    Inserts all matching files in the document tree root
+    directory into the document tree.
+    
+    documentTree (DocumentTree):
+    The document tree to insert the matching files into.
+
+    filesToCopySet (iterable of glob strings):
+    A set of glob strings each defining a set of acceptable 
+    filenames.
+
+    returns (DocumentTree):
+    The document tree.
+    '''
+
+    # Construct an empty document-tree for the input directory.
+    documentTree = DocumentTree(inputDirectory, reporter)
+
+    filenameRegexString = globToRegex(filesToCopySet)
+    filenameRegex = re.compile(filenameRegexString)
+            
+    for pathName, directorySet, fileNameSet in os.walk(documentTree.rootDirectory):
+        for filename in fileNameSet:
+            fullName = os.path.normpath(os.path.join(pathName, filename))
+            relativeName = unixRelativePath(inputDirectory, fullName)
+            if re.match(filenameRegex, filename) != None:
+                # The file matches a pattern, take it in.
+                documentTree.insertDocument(relativeName)
+
+    # Generate a directory.remark-index virtual document to each
+    # directory. This provides the directory listings.
+    for directory in documentTree.directorySet:
+        # Form the relative name of the document.
+        relativeName = os.path.join(directory, 'directory.remark-index')
+            
+        # Insert a document with that relative name.
+        document = documentTree.insertDocument(relativeName)
+            
+        # Give the document the description from the unix-style
+        # directory name combined with a '/' to differentiate 
+        # visually that it is a directory.
+        description = unixDirectoryName(document.relativeDirectory) + '/'
+
+        # Add the description to the document.
+        document.setTag('description', [description])
+
+    return documentTree
+
+def parseArguments(reporter):
+    '''
+    Parses the command-line arguments given to Remark.
+    '''
     optionParser = OptionParser(usage = """\
 %prog [options] inputDirectory outputDirectory [files...]
 
@@ -105,42 +179,29 @@ globs are allowed (e.g. *.txt *.py).""")
         optionParser.print_help()
         sys.exit(1)
         
-    setGlobalOptions(options)
-
-    reporter = Reporter()
-    reporter.openScope('Remark ' + remarkVersion())
-
-    if not globalOptions().verbose:
-        reporter.disable('verbose')
-
-    for reportType in globalOptions().disableSet:
-        reporter.disable(reportType)
-
     if options.maxTagLines <= 0:
         reporter.reportError('The maximum number of lines to scan for tags must be at least 1.',
                              'invalid-input')
         sys.exit(1)
-   
-    startTime = time.clock()
-    
-    inputDirectory = args[0]
-    outputDirectory = args[1]
+
+    if not options.verbose:
+        # Disable the verbose reports.
+        reporter.disable('verbose')
+
+    # Disable the report-types given by the -d switch.
+    for reportType in options.disableSet:
+        reporter.disable(reportType)
+
+    # Get the input directory.
+    inputDirectory = os.path.normpath(os.path.join(os.getcwd(), args[0]))
+
+    # Get the output directory.
+    outputDirectory = os.path.normpath(os.path.join(os.getcwd(), args[1]))
+
+    # Get the files.
     filesToCopySet = args[2:]
-    
-    inputDirectory = os.path.normpath(os.path.join(os.getcwd(), inputDirectory))
-    outputDirectory = os.path.normpath(os.path.join(os.getcwd(), outputDirectory))
-    
-    if not pathExists(inputDirectory):
-        reporter.reportError('Input directory ' + inputDirectory + ' does not exist.',
-                             'invalid-input')
-        sys.exit(1)
 
-    reporter.report(['',
-                     'Input directory: ' + inputDirectory,
-                     'Output directory: ' + outputDirectory], 
-                    'verbose')
-
-    if globalOptions().extensions:
+    if options.extensions:
         extensionSet = {}
         for pathName, directorySet, filenameSet in os.walk(inputDirectory):
             for filename in filenameSet:
@@ -159,76 +220,38 @@ globs are allowed (e.g. *.txt *.py).""")
 
         sys.exit(0)
 
-    # Associate document types with filename extensions.
-    
-    remarkPageType = RemarkPage_DocumentType()
-    cppCodeViewType = CppCodeView_DocumentType()
-    directoryViewType = DirectoryView_DocumentType()
-    codeViewType= CodeView_DocumentType()
-    orphanType = Orphan_DocumentType()
-    copyType = Copy_DocumentType()
+    if not pathExists(inputDirectory):
+        reporter.reportError('Input directory ' + inputDirectory + ' does not exist.',
+                             'invalid-input')
+        sys.exit(1)
 
-    remarkPageSet = ['.txt']
-    cppCodeViewSet = ['.cpp', '.cc', '.h', '.hh', '.hpp']
-    codeViewSet = ['.py', '.m', '.pm', '.pl', '.css', '.js', '.lua']
-       
-    setDefaultDocumentType(copyType)
-    associateDocumentType(remarkPageSet, remarkPageType)
-    associateDocumentType(cppCodeViewSet, cppCodeViewType)
-    associateDocumentType(codeViewSet, codeViewType)
-    associateDocumentType('.remark-index', directoryViewType)
-    associateDocumentType('.remark-orphan', orphanType)
-    
-    # If there are no .css files already in the target directory,
-    # copy the default ones there. Note that it is important that
-    # these files are moved before generating the documents.
-    # This is because one wants to see changes in a style file
-    # as early as possible.
+    setGlobalOptions(options)
 
+    return inputDirectory, outputDirectory, filesToCopySet
+
+if __name__ == '__main__':
+
+    startTime = time.clock()
+
+    reporter = Reporter()
+    reporter.openScope('Remark ' + remarkVersion())
+
+    # Parse the command-line options.
+    inputDirectory, outputDirectory, filesToCopySet = parseArguments(reporter)
+
+    # Create associations to document types.
+    initializeRemark()
+    
     # This is the directory which contains 'remark.py'.
     scriptDirectory = sys.path[0]
-    
-    # Construct an empty document-tree from the input directory.
-    documentTree = DocumentTree(inputDirectory, reporter)
 
-    # Recursively gather files starting from the input directory.
-    #with ScopeGuard(reporter, 'Gathering files'):
+    reporter.report(['',
+                     'Input directory: ' + inputDirectory,
+                     'Output directory: ' + outputDirectory], 
+                    'verbose')
 
-    filenameRegexString = globToRegex(filesToCopySet)
-    filenameRegex = re.compile(filenameRegexString)
-            
-    for pathName, directorySet, fileNameSet in os.walk(inputDirectory):
-        for filename in fileNameSet:
-            fullName = os.path.normpath(os.path.join(pathName, filename))
-            relativeName = unixRelativePath(inputDirectory, fullName)
-            if re.match(filenameRegex, filename) != None:
-                # The file matches a pattern, take it in.
-                documentTree.insertDocument(relativeName)
-
-    #reporter.report(['', 'Done.'], 'verbose')
-
-    # Insert virtual documents.
-
-    #with ScopeGuard(reporter, 'Inserting virtual documents')
-
-    # Generates a directory.remark-index virtual document to each
-    # directory. This provides the directory listings.
-    for directory in documentTree.directorySet:
-        # Form the relative name of the document.
-        relativeName = os.path.join(directory, 'directory.remark-index')
-            
-        # Insert a document with that relative name.
-        document = documentTree.insertDocument(relativeName)
-            
-        # Give the document the description from the unix-style
-        # directory name combined with a '/' to differentiate 
-        # visually that it is a directory.
-        description = unixDirectoryName(document.relativeDirectory) + '/'
-
-        # Add the description to the document.
-        document.setTag('description', [description])
-
-    #reporter.report(['', 'Done.'], 'verbose')
+    # Create the document tree.
+    documentTree = createDocumentTree(inputDirectory, filesToCopySet, reporter)
 
     # Note that these files are copied _after_ gathering the files
     # and directories. This is to avoid gathering these files
@@ -377,6 +400,6 @@ globs are allowed (e.g. *.txt *.py).""")
     reporter.closeScope('Remark ' + remarkVersion())
 
     if errors > 0 or (warnings > 0 and globalOptions().strict):
-        # Indicate the presence of errors by
-        # a non-zero error-code.
+        # Indicate the presence of errors by a non-zero error-code.
         sys.exit(1)
+
