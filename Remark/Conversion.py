@@ -918,7 +918,7 @@ class Remark(object):
 
 import markdown
 
-markdownConverter = markdown.Markdown(extensions = ['tables', 'abbr', 'def_list',])
+markdownConverter = markdown.Markdown(extensions = ['tables', 'abbr', 'def_list'])
 
 def convertMarkdownToHtml(text):
     '''
