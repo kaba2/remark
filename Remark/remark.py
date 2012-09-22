@@ -136,43 +136,43 @@ def parseArguments(reporter):
 The 'files' is a list of those files which should be converted;
 globs are allowed (e.g. *.txt *.py).""")
     
-    optionParser.add_option('-l', '--lines',
-        dest = 'maxTagLines',
-        type = 'int',
-        default = 100,
-        help = """set maximum number of lines for a tag-parser to scan a file for tags (default 100)""",
-        metavar = 'LINES')
-
-    optionParser.add_option('-v', '--verbose',
-        action="store_true", dest="verbose", default=False,
-        help = """print additional progress information""")
-
-    optionParser.add_option('-e', '--extensions',
-        action="store_true", dest="extensions", default=False,
-        help = """lists all file-extensions in the input-directory along with example files""")
-
-    optionParser.add_option('-s', '--strict',
-        action="store_true", dest="strict", default=False,
-        help = """treat warnings as errors""")
-
-    optionParser.add_option('-r', '--regenerate',
-        action="store_true", dest="regenerate", default=False,
-        help = """regenerate all files""")
-
     optionParser.add_option('-d', '--disable',
         dest = 'disableSet',
         type = 'string',
         action = 'append',
         default = [],
-        help = """disable a specific warning (e.g. -dinvalid-input)""",
+        help = """disables a specific warning (e.g. -dinvalid-input)""",
         metavar = 'WARNING')
+
+    optionParser.add_option('-e', '--extensions',
+        action="store_true", dest="extensions", default=False,
+        help = """lists all file-extensions in the input-directory along with example files""")
+
+    optionParser.add_option('-l', '--lines',
+        dest = 'maxTagLines',
+        type = 'int',
+        default = 100,
+        help = """sets maximum number of lines for a tag-parser to scan a file for tags (default 100)""",
+        metavar = 'LINES')
 
     optionParser.add_option('-m', '--max-file-size',
         dest = 'maxFileSize',
         type = 'int',
         default = 2**18,
-        help = """set maximum file-size to load (in bytes, default 262144)""",
+        help = """sets maximum file-size to load (in bytes, default 262144)""",
         metavar = 'SIZE')
+
+    optionParser.add_option('-r', '--regenerate',
+        action="store_true", dest="regenerate", default=False,
+        help = """regenerates all files""")
+
+    optionParser.add_option('-s', '--strict',
+        action="store_true", dest="strict", default=False,
+        help = """treats warnings as errors""")
+
+    optionParser.add_option('-v', '--verbose',
+        action="store_true", dest="verbose", default=False,
+        help = """prints additional progress information""")
 
     options, args = optionParser.parse_args()
     
