@@ -5,6 +5,8 @@
 
 from MacroRegistry import registerMacro
 
+from FileSystem import htmlDiv
+
 class Verbatim_Macro(object):
     def name(self):
         return 'Verbatim'
@@ -14,9 +16,10 @@ class Verbatim_Macro(object):
         dependencySet = set()
 
         for line in parameter:
-            # Add a tab to each line.
             text.append('\t' + line)
-        
+
+        text.append('')
+
         return text, dependencySet
 
     def outputType(self):

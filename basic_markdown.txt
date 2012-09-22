@@ -1,5 +1,5 @@
-Basic Markdown syntax
-=====================
+Markdown syntax
+===============
 
 [[Parent]]: remark_syntax.txt
 
@@ -78,6 +78,60 @@ produces this:
 The verbatim content is what we are using on this
 page to demonstrate the syntax such that it isn't
 interpreted as Remark code.   
+
+### Tables
+
+This
+
+	First Header  | Second Header
+	------------- | -------------
+	Content Cell  | Content Cell
+	Content Cell  | Content Cell
+
+produces this:
+
+First Header  | Second Header
+------------- | -------------
+Content Cell  | Content Cell
+Content Cell  | Content Cell
+
+### Definition lists
+
+This
+
+	Apple
+	:   Pomaceous fruit of plants of the genus Malus in 
+	    the family Rosaceae.
+	
+	Orange
+	:   The fruit of an evergreen tree of the genus Citrus.
+
+produces this:
+
+Apple
+:   Pomaceous fruit of plants of the genus Malus in 
+    the family Rosaceae.
+
+Orange
+:   The fruit of an evergreen tree of the genus Citrus.
+
+### Abbreviations
+
+This
+
+	The HTML specification 
+	is maintained by the W3C.
+	
+	*[HTML]: Hyper Text Markup Language
+	*[W3C]:  World Wide Web Consortium
+
+produces this:
+
+The HTML specification 
+is maintained by the W3C.
+
+*[HTML]: Hyper Text Markup Language
+*[W3C]:  World Wide Web Consortium
 
 ### Links in Markdown
 

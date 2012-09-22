@@ -126,6 +126,16 @@ class Document(object):
         '''
         return ''.join(self.tag(tagName, [default]))
 
+    def tagInteger(self, tagName, default = 0):
+        '''
+        Returns the integer associated with the given tag-name.
+        The tag-text is first interpreted as a single string,
+        which is then converted to an integer.
+        '''
+        if not tagName in self.tagSet:
+            return default
+        return int(self.tagString(tagName))
+
     def linkDescription(self):
         '''
         Returns the link-description of the document.

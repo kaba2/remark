@@ -36,7 +36,7 @@ AsciiMath interpretation
 :	Disabled
 
 Generating Remark text
-: 
+:	
 
 		Orphans
 		=======

@@ -1,9 +1,11 @@
 # -*- coding: utf-8 -*-
 
 # Description: EquationSet macro
-# Detail: Embeds each line into '' and a div-block.
+# Detail: Presents multiple equations.
 
 from MacroRegistry import registerMacro
+
+from FileSystem import htmlDiv
 
 class EquationSet_Macro(object):
     def name(self):
@@ -13,11 +15,21 @@ class EquationSet_Macro(object):
         text = []
         dependencySet = set()
 
+        # Variables
+        scope = remark.scopeStack.top()
+        className = scope.getString('EquationSet.class_name', 'EquationSet')
+
         for line in parameter:
             cleanLine = line.strip()
             if cleanLine != '':
-                newText, ignore = remark.macro('Equation', [cleanLine]);
-                text += newText
+                # An ordered list of equations.
+                text.append(' 1. [[Equation]]: ' + cleanLine);
+
+        text = htmlDiv(text, className)
+
+        text.append('')
+        text.append('<div class = "remark-end-list"></div>')
+        text.append('')
 
         return text, dependencySet
 

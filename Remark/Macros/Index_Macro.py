@@ -63,7 +63,13 @@ class Index_Macro(object):
                     
         text.append('')
 
-        return htmlDiv(text, className), dependencySet
+        text = htmlDiv(text, className)
+
+        text.append('')
+        text.append('<div class = "remark-end-list"></div>')
+        text.append('')
+
+        return text, dependencySet
 
     def outputType(self):
         return 'remark'

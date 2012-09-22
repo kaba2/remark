@@ -28,10 +28,10 @@ AsciiMath interpretation
 :	Disabled
 
 Generating Remark text
-:	
-		
+:		
+
 		[[ParentList]]
-		
+	
 		[[tag link_description]]
 		===
 	

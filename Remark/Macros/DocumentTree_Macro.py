@@ -66,7 +66,13 @@ class DocumentTree_Macro(object):
         if text == ['']:
             return [], set()
 
-        return htmlDiv(text, self.className), dependencySet
+        text = htmlDiv(text, self.className)
+
+        text.append('')
+        text.append('<div class = "remark-end-list"></div>')
+        text.append('')
+
+        return text, dependencySet
 
     def outputType(self):
         return 'remark'

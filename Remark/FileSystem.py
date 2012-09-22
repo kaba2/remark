@@ -66,7 +66,7 @@ def asciiMathMlName():
     '''
     return 'ASCIIMathMLwFallback.js'
 
-def htmlDiv(enclosedText, className = ''):
+def htmlDiv(enclosedText, className = '', elementName = 'div', addWhitespace = True):
     '''
     Encloses the given text in a <div> block and gives it a
     html-class, so that it can be styled with CSS.
@@ -79,20 +79,23 @@ def htmlDiv(enclosedText, className = ''):
     '''
     text = []
     text.append('')
-    
+
     if className != '':
-        text.append('<div class = "' + className + '">')
+        text.append('<' + elementName + ' class = "' + className + '">')
     else:
-        text.append('<div>')
+        text.append('<' + elementName + '>')
     
-    # Note that this empty line is essential for Markdown
-    # not to interpret the following stuff as html.
-    text.append('')
+    if addWhitespace:
+        # Note that this empty line is essential for Markdown
+        # not to interpret the following stuff as html.
+        text.append('')
+    
     text += enclosedText
-    text.append('')
-    text.append('</div>')
-    text.append('')
-    text.append('<div class = "remark-end-list"></div>')
+    
+    if addWhitespace:
+        text.append('')
+
+    text.append('</' + elementName + '>')
     text.append('')
 
     return text

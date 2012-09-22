@@ -80,9 +80,6 @@
     <Content Include="..\concepts.txt">
       <Link>concepts.txt</Link>
     </Content>
-    <Content Include="..\extended_markdown.txt">
-      <Link>extended_markdown.txt</Link>
-    </Content>
     <Content Include="..\implicit_rules.txt">
       <Link>implicit_rules.txt</Link>
     </Content>
@@ -149,6 +146,8 @@
     <Content Include="Macros\DirectoryLink_Macro.txt" />
     <Content Include="Macros\DocChildren_Macro.txt" />
     <Content Include="Macros\DocumentTree_Macro.txt" />
+    <Content Include="Macros\EquationSet_Macro.txt" />
+    <Content Include="Macros\Equation_Macro.txt" />
     <Content Include="Macros\Example_Macro.txt" />
     <Content Include="Macros\FileLink_Macro.txt" />
     <Content Include="Macros\Gallery_Macro.txt" />

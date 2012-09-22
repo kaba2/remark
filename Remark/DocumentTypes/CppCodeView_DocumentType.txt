@@ -28,9 +28,10 @@ AsciiMath interpretation
 : Disabled
 
 Generating Remark text
-:	[[Verbatim]]:
+:	
+
 		[[ParentList]]
-				
+	
 		[[tag link_description]]
 		===
 	

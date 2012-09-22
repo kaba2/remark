@@ -1,0 +1,55 @@
+Equation macro
+==============
+
+[[Parent]]: available_macros.txt
+
+The Equation macro presents mathematics given in the AsciiMathML syntax,
+together with a running number. The equation is wrapped into an html-span, 
+which is then followed by an equation-number html-span. Finally, these 
+two span elements are wrapped into an equation html-div.
+
+Properties
+----------
+
+### Output type
+
+Remark
+
+### Output expansion default
+
+Disabled.
+
+### Parameters
+
+An expression in AsciiMathML.
+
+### Variables
+
+Equation.class_name
+:	The class-name to give to the equation html-div.
+	Default: `Equation`.
+
+Equation.body_class_name
+:	The class-name to give to the equation-body html-span.
+	Default: `Equation-Body`.
+
+Equation.number_class_name
+:	The class-name to give to the equation-number html-span.
+	Default: `Equation-Number`.
+
+### Tags
+
+Equation.number
+:	An integer specifying which number to give to the next equation.
+	It is is incremented after each Equation-macro invocation. If the
+	tag does not exist when invoking Equation, it is created with the
+	value of 1.
+
+Examples
+--------
+
+[[Example]]:
+	[[Equation]]: ax^2 + bx + c = 0
+	[[Equation]]: sin(x) = pi
+
+
