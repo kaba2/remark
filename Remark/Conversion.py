@@ -766,8 +766,8 @@ class Remark(object):
 
                 switches = 0;
                 
-                outputExpansion = False
-                parameterExpansion = False
+                outputExpansion = None
+                parameterExpansion = None
                 if len(macroName) >= 1:
                    if macroName[0] == '+':
                        outputExpansion = True
