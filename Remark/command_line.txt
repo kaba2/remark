@@ -13,24 +13,27 @@ Options
 The command-line options control the way Remark operates. They are
 as follows:
 
--l or --lines
-:	set maximum number of lines for a tag-parser to scan a file 
-	for tags (default 100)
-
--v or --verbose
-:	print additional progress information
-
--s or --strict
-:	treat warnings as errors
-
--r or --regenerate
-:	regenerate all files
-
 -d or --disable
-:	disable a specific warning (e.g. -dinvalid-input)
+:	Disables a specific warning (e.g. -dinvalid-input).
+
+-e or --extensions
+:	Lists all file-extensions in the input-directory along with example files.
+
+-l or --lines
+:	Sets maximum number of lines for a tag-parser to scan a file
+	for tags (default 100).
 
 -m or --max-file-size
-:	set maximum file size to load (default 262144 bytes)
+:	Sets maximum file-size to load (in bytes, default 262144).
+
+-r or --regenerate
+:	Regenerates all files.
+
+-s or --strict
+:	Treats warnings as errors.
+
+-v or --verbose
+:	Prints additional progress information.
 
 Warnings
 --------

@@ -41,7 +41,7 @@ Equation.number_class_name
 
 Equation.number
 :	An integer specifying which number to give to the next equation.
-	It is is incremented after each Equation-macro invocation. If the
+	It is incremented after each Equation-macro invocation. If the
 	tag does not exist when invoking Equation, it is created with the
 	value of 1.
 
