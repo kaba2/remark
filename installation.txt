@@ -12,7 +12,7 @@ Python dependencies
 
 The dependencies to other Python libraries are as follows:
  
-### [Python Markdown 2.0][PythonMarkdown]
+### [Python Markdown 2.0][PythonMarkdown20]
 
 This library is used to convert Markdown to Html.
  
@@ -24,7 +24,8 @@ This library is used to highlight source code.
 
 This library is used to create thumbnails for image galleries.
 
-[PythonMarkdown]: http://www.freewisdom.org/projects/python-markdown/
+[PythonMarkdown20]: http://freewisdom.org/projects/python-markdown/
+[PythonMarkdown22]: http://packages.python.org/Markdown
 [Pygments]: http://pygments.org/
 [PIL]: http://www.pythonware.com/products/pil/
  
@@ -66,21 +67,32 @@ Otherwise, for example, the Python Markdown installer complains of not
 being able to add keys into the registry.
 
 * Download and install Python from [here][Python_Installer].
-* Download and install Python Markdown from [here][Markdown_Installer].
-* Download and install Python Imaging Library from [here][PIL_Installer].
 * Download and install SetupTools from [here][SetupTools_Installer].
-This installs the `easy_install` tool used to install Pygments.
+  This installs the `easy_install` tool used to install Pygments.
+* Download and install Python Imaging Library from [here][PIL_Installer].
 
 [Python_Installer]: http://www.python.org/download/
-[Markdown_Installer]: http://freewisdom.org/projects/python-markdown/Installation
 [PIL_Installer]: http://www.pythonware.com/products/pil/
 [SetupTools_Installer]: http://pypi.python.org/pypi/setuptools
 
-Open up the command-line, and type in:
+Open the command-line, and type in:
+
+	easy_install pip
+
+This installs the newer [Python package installer][PIP]. Then type:
 
 	easy_install Pygments
 
-This installs the Pygments library.
+This installs the [Pygments][Pygments] library. Finally, type:
+
+	pip install markdown==2.0.0
+
+This installs the [Python Markdown 2.0][PythonMarkdown20] library.
+Note that the newer [Python Markdown 2.2][PythonMarkdown22] does not
+work with Remark, because it does not support Markdown inside
+html blocks.
+
+[PIP]: http://www.pip-installer.org/en/latest/index.html
 
 Windows and 64-bit Python
 -------------------------
@@ -121,7 +133,7 @@ Summary
 -------
 
 After installing Python, Python Markdown, Python Imaging Library, 
-SetupTools, and Pygments, you should be ready to use Remark. 
+and Pygments, you should be ready to use Remark. 
 
 See also
 --------
