@@ -391,29 +391,27 @@ in the 'remark-footer' div. */
     border: 0;
 }
 
-/* Equations */
 
-#remark .equation
+/* EquationSet */
+
+#remark .EquationSet li
+{
+    list-style-type: none;
+}
+
+/* Equation */
+
+#remark div.Equation
 {
     display: block;
 }
 
-#remark .equation-body
+#remark .Equation-Body
 {
     padding-left: 4em;
 }
 
-#remark span.equation-number:after
-{
-    content: ")";
-}
-
-#remark span.equation-number:before
-{
-    content: "(";
-}
-
-#remark .equation-number
+#remark .Equation-Number
 {
     padding: 0;
     margin: 0;
@@ -421,3 +419,14 @@ in the 'remark-footer' div. */
     color: rgb(190, 190, 0);
     float: right;
 }
+
+#remark span.Equation-Number:after
+{
+    content: ")";
+}
+
+#remark span.Equation-Number:before
+{
+    content: "(";
+}
+

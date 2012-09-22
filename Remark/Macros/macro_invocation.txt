@@ -3,22 +3,19 @@ Macro invocation
 
 [[Parent]]: macros.txt
 
-A macro can be invoked in four ways:
+This section introduces macro invocation.
+
+Explicit macro-invocation 
+-------------------------
+
+A macro can be invoked explicitly in four ways:
  
  * with no parameters,
- 
  * with an inline parameter,
- 
- * with a one-line parameter,
- 
- * or with a multi-line parameter.
+ * with a one-line parameter, or
+ * with a multi-line parameter.
  
 To introduce invocation, we shall take the Comment macro as an example. 
-This macro takes in arbitrary input but does not output anything. 
-It can be used to comment the Remark source. 
-
-Styles of macro invocation 
---------------------------
 
 ### Invoking with no parameters
 
@@ -46,11 +43,31 @@ And with a multi-line parameter you would write like this:
 		This is a multi-line parameter
 		which can use as many rows as needed.
 		
-The parameter is multi-line whenever:
+The parameter is multi-line if and only if
 
- * There is the ':' mark after the macro invocation.
+ * there is the ':' mark after the macro invocation, and
+ * there is only white-space after the ':' on the same row.
 
- * There is only white-space after the ':' on the same row.
+Implicit macro-invocation
+-------------------------
+
+A macro is invoked implicitly if and only if
+ 
+ * the row starts with a tab,
+ * the preceding row contains only whitespace, and
+ * the row is not part of any other macro-invocation.
+
+The invoked macro, called the _indentation macro_, is 
+specified by the `indent` variable. This variable may also 
+contain expansion specifiers. By default, `indent` is set
+to `Verbatim`, to invoke the [Verbatim][VerbatimMacro] macro.
+However, depending on the field of study, it may be more
+useful to set the indentation macro to the [CodeView][CodeMacro] 
+macro or the [EquationSet][EquationSetMacro] macro.
+
+[VerbatimMacro]: [[Ref]]: Verbatim_Macro.txt
+[CodeMacro]: [[Ref]]: Code_Macro.txt
+[EquationSetMacro]: [[Ref]]: EquationSet_Macro.txt
 
 Range of a multi-line parameter
 -------------------------------
@@ -60,7 +77,7 @@ until there is a line which contains non-white-space
 characters _and_ which has indentation (counted in _tabs_) 
 equal to or less than the indentation of the macro invocation. 
 For example:
-    
+
 	[[Comment]]:
 		This is a multi-line parameter
 		which can use as many rows as needed.
@@ -76,14 +93,12 @@ All styles of invocation are equivalent by the
 following rules:
 
  * A multi-line parameter with a single row works equivalently
-to a one-line parameter. 
-
+ to a one-line parameter. 
  * A multi-line parameter with no rows works equivalently to as 
  if no parameters were given.
- 
  * A one-line parameter works equivalently to an inline parameter.
- 
  * If both an inline parameter and an external parameter is given, 
  then the latter follows the former and they work equivalently
  to a corresponding multi-line parameter. 
+
 

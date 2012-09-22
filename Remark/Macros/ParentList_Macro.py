@@ -41,8 +41,15 @@ class ParentList_Macro(object):
             # the intermediate output later on.
             text.append(repr(level) + '. ' + linkText)
             level += 1
+            
+            
+        text = htmlDiv(text, className)
 
-        return htmlDiv(text, className), dependencySet
+        text.append('')
+        text.append('<div class = "remark-end-list"></div>')
+        text.append('')
+
+        return text, dependencySet
 
     def outputType(self):
         return 'remark'

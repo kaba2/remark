@@ -194,7 +194,7 @@ class Remark(object):
         self.optionalParameterExpansion = r'(\+|\-)?'
 
         # Piece together the whole regex for macro-invocation.
-        # It is something which start with [[, ends with ]],
+        # It is something which starts with [[, ends with ]],
         # has expansion-signs either none, +, -, ++, +-, -+, or --,
         # has a macro identifier, and then an optional inline
         # parameter. Finally, there is an optional one-line paramater
@@ -743,7 +743,15 @@ class Remark(object):
             # with the rest of the processing.
             line = ' ' * column + text[row][column :]
             
-            indentationMacro = len(line) > 0 and line[0] == '\t' and line.strip() != ''
+            # The indentation macro is invoked if and only if
+            # * a non-empty line starts with a tab, and
+            # * the line in 1 is preceded by a row of whitespace.
+            indentationMacro = (len(line) > 0 and 
+                                line[0] == '\t' and 
+                                line.strip() != '' and
+                                row > 0 and
+                                text[row - 1].strip() == '')
+
             if indentationMacro:
                 # There is an indentation-macro invocation here.
 
@@ -766,8 +774,8 @@ class Remark(object):
                        parameterExpansion = True
                        switches += 1
                    elif macroName[0] == '-':
-                       outputExpansion = True
-                       parameterExpansion = True
+                       outputExpansion = False
+                       parameterExpansion = False
                        switches += 1
                 
                 if len(macroName) >= 2 and switches == 1:
@@ -778,8 +786,10 @@ class Remark(object):
                         parameterExpansion = False
                         switches += 1
                 
+                macroName = macroName[switches : ]
+
                 macroInvocation = MacroInvocation(
-                     macroName[switches : ],
+                     macroName,
                      parameterSet,
                      outputExpansion,
                      parameterExpansion,
@@ -1023,6 +1033,9 @@ def convertRemarkToHtml(remarkText, document, documentTree,
     # Convert Remark to Markdown.
     markdownText, dependencySet = remark.convert(remarkText)
     markdownText += remark.postConversion()
+
+    #for line in markdownText:
+    #    print line
     
     # Convert Markdown to html.
     htmlText = convertMarkdownToHtml(markdownText)

@@ -1,14 +1,11 @@
 # -*- coding: utf-8 -*-
 
 # Description: Equation macro
-# Detail: Embeds the parameter into '' and a div-block.
+# Detail: Presents mathematics.
 
 from MacroRegistry import registerMacro
 
 class Equation_Macro(object):
-    def __init__(self):
-        self.equationNumber = 1
-
     def name(self):
         return 'Equation'
 
@@ -16,15 +13,32 @@ class Equation_Macro(object):
         text = []
         dependencySet = set()
 
-        text.append('<div class = "equation">')
-        text.append('<span class = "equation-body">' + "''")
-        text += parameter
-        text.append("''" + '</span>')
-        text.append('<span class = "equation-number">' + 
-                    str(self.equationNumber) + 
+        document = remark.document
+
+        # Tags
+        equationNumber = document.tagInteger('Equation.number', None)
+        if equationNumber == None:
+            document.setTag('Equation.number', ['1'])
+            equationNumber = 1
+        document.setTag('Equation.number', [repr(equationNumber + 1)])
+
+        # Variables
+        scope = remark.scopeStack.top()
+        className = scope.getString('Equation.class_name', 'Equation')
+        bodyClassName = scope.getString('Equation.body_class_name', 'Equation-Body')
+        numberClassName = scope.getString('Equation.number_class_name', 'Equation-Number')
+
+        text.append('<div class = "' + className + '">')
+        text.append('<span class = "' + bodyClassName + '">' + "''")
+        if len(parameter) == 1:
+            text[-1] += parameter[0]
+        else:
+            text += parameter
+        text[-1] += "''" + '</span>'
+        text.append('<span class = "' + numberClassName + '">' + 
+                    str(equationNumber) + 
                     '</span>')
         text.append('</div>')
-        self.equationNumber += 1
 
         return text, dependencySet
 
@@ -32,7 +46,7 @@ class Equation_Macro(object):
         return 'remark'
 
     def expandOutput(self):
-        return True
+        return False
 
     def htmlHead(self, remark):
         return []                

@@ -35,7 +35,7 @@ AsciiMath interpretation
 :	Disabled
 
 Generating Remark text
-: 
+:	
 
 		[[tag link_description]]
 		===

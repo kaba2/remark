@@ -1,5 +1,5 @@
-Basic AsciiMath syntax
-======================
+AsciiMath syntax
+================
 
 [[Parent]]: remark_syntax.txt
 
@@ -17,32 +17,27 @@ the MathML output.
 
 [1]: [[Ref: problem.txt]]
 
+[[set MathExample]]:
+	[[-+Verbatim]]: 
+		[[outer parameter]]
+
+	''[[parameter]]''
+
 Some basic examples
 -------------------
 
 ### Quadratic equation
 
-This
-
+[[MathExample]]:
 	x = (-b +- sqrt(b^2 - 4ac)) / (2a)
-
-produces this:
-
-''x = (-b +- sqrt(b^2 - 4ac)) / (2a)''
 
 ### Relations
 
-This
+[[MathExample]]:
+	R " is reflexive" <=> forall x: x R x
 
-	R " is reflexive" harr AA x: x R x
-	
-	R " is transitive" harr AA x, y, z: xRy quad ^^ quad yRz => xRz
-
-produces this: 	
-
-''R " is reflexive" harr AA x: xRx''
-
-''R " is transitive" harr AA x, y, z: xRy quad ^^ quad yRz => xRz''
+[[MathExample]]:	
+	R " is transitive" <=> forall x, y, z: xRy quad ^^ quad yRz => xRz
 
 In this example I had to add the quad's to make the spacing
 look natural. Unfortunately AsciiMathML does not always make
@@ -50,13 +45,8 @@ a perfect work in the conversion...
 
 ### Continuity
 
-This
-
-	AA epsilon > 0 in RR: EE delta > 0 in RR: AA y: d_1(x, y) < delta => d_2(f(x), f(y)) < epsilon
-	
-produces this:
-
-''AA epsilon > 0 in RR: EE delta > 0 in RR: AA y: d_1(x, y) < delta => d_2(f(x), f(y)) < epsilon''
+[[MathExample]]:
+	forall epsilon > 0 in RR: exists delta > 0 in RR: AA y: d_1(x, y) < delta => d_2(f(x), f(y)) < epsilon
 
 A more comprehensive demo
 -------------------------
@@ -67,163 +57,92 @@ with some additions.
 
 ### Basic constructs
 
-This
-
+[[MathExample]]:
 	(x+1)/(x-1) x^(i+j) x_(ij) sqrt(x) root(n)(x) stackrel(+)(->) text(any) "any"
-
-produces this:
-
-''(x+1)/(x-1) x^(i+j) x_(ij) sqrt(x) root(n)(x) stackrel(+)(->) text(any) "any"''
 
 ### Operation symbols
 
-This
-
-	+ - * ** // \\ xx -: @ o+ ox sum prod ^^ ^^^ vv vvv nn nnn uu uuu
-
-produces this:
-
-''+ - * \** // \\\\ xx -: @ o+ ox sum prod ^^ ^^^ vv vvv nn nnn uu uuu''
+[[MathExample]]:
+	+ - * // \\ xx -: @ o+ ox sum prod ^^ ^^^ vv vvv nn nnn uu uuu
 
 ### Relation symbols
 
-This
-
+[[MathExample]]:
 	= != < <= > >= -< >- in !in sub sup sube supe -= ~= ~~ prop
-
-produces this:
-
-''= != < <= > >= -< >- in !in sub sup sube supe -= ~= ~~ prop''
 
 ### Logical symbols
 
-This
-
-	\and \or \not => if iff AA EE _|_ TT |-- |==
-
-produces this:
-
-''\and \or \not => if iff AA EE _|_ TT |-- |==''
+[[MathExample]]:
+	and or not => if iff forall exists TT |--
 
 ### Miscellaneous symbols
 
-This
-
+[[MathExample]]:
 	int oint del grad +- O/ oo aleph ... cdots \ quad qquad diamond square |~ ~| CC NN QQ RR ZZ
-
-produces this:
-
-''int oint del grad +- O/ oo aleph ... cdots \ quad qquad diamond square |~ ~| CC NN QQ RR ZZ''
 
 ### Standard functions
 
-This
-
+[[MathExample]]:
 	sin cos tan csc sec cot sinh cosh tanh log ln det dim lim mod gcd lcm
-
-produces this:
-
-''sin cos tan csc sec cot sinh cosh tanh log ln det dim lim mod gcd lcm''
 
 ### Grouping brackets
 
-This
-
-	( ) [ ] { } (: :) {: :}
-	
-produces this:
-
-''( ) [ ] { } (: :) {: :}''
+[[MathExample]]:
+	(x) [x] {x} (:x:) {:x:}
 
 ### Arrows
 
-This
-
-	uarr darr rarr -> larr harr rArr lArr hArr
-
-produces this:
-
-''uarr darr rarr -> larr harr rArr lArr hArr''
+[[MathExample]]:
+	uarr darr -> larr harr => lArr <=>
 
 ### Accents
 
-This
-
+[[MathExample]]:
 	hat x bar x ul x vec x dot x ddot x
 
+[[MathExample]]:
 	hat(2 + 3 * 4)
 
+[[MathExample]]:
 	bar(2 + 3 * 4)
 
+[[MathExample]]:
 	ul(2 + 3 * 4)
 	
+[[MathExample]]:
 	vec(2 + 3 * 4)
-
-produces this:
-
-''hat x bar x ul x vec x dot x ddot x''
-
-''hat(2 + 3 * 4)''
-
-''bar(2 + 3 * 4)''
-
-''ul(2 + 3 * 4)''
-
-''vec(2 + 3 * 4)''
 
 ### Font commands
 
-This
-
+[[MathExample]]:
 	bb("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
 	
+[[MathExample]]:
 	bbb("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
 	
+[[MathExample]]:
 	cc("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
 	
+[[MathExample]]:
 	tt("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
 	
+[[MathExample]]:
 	fr("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
 	
+[[MathExample]]:
 	sf("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
-
-produces this:
-
-''bb("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")''
-	
-''bbb("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")''
-	
-''cc("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")''
-	
-''tt("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")''
-	
-''fr("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")''
-	
-''sf("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")''
 
 ### Matrices
 
-This
-
+[[MathExample]]:
 	[[a,b],[c,d]] ((1,0),(0,1))
-
-produces this:
-
-''[[a,b],[c,d]] ((1,0),(0,1))''
 
 ### Greek letters
 
-This
-
+[[MathExample]]:
 	alpha beta chi delta Delta epsi eta gamma Gamma iota kappa lambda 
 	Lambda mu nu omega Omega phi Phi pi Pi psi rho sigma Sigma tau theta 
 	Theta upsilon xi Xi zeta
-
-produces this:
-
-''alpha beta chi delta Delta epsi eta gamma Gamma iota kappa lambda 
-Lambda mu nu omega Omega phi Phi pi Pi psi rho sigma Sigma tau theta 
-Theta upsilon xi Xi zeta''
 
 Links
 -----

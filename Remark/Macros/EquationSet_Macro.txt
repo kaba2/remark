@@ -1,0 +1,41 @@
+EquationSet macro
+==============
+
+[[Parent]]: available_macros.txt
+
+The EquationSet macro presents mathematics given in the AsciiMathML syntax.
+It passes each line of the parameter to the [Equation][EquationMacro] macro
+and groups the resulting items into an ordered list. The list is then wrapped
+into an equation-set html-div.
+
+[EquationMacro]: [[Ref]]: Equation_Macro.txt
+
+Properties
+----------
+
+### Output type
+
+Remark
+
+### Output expansion default
+
+Enabled.
+
+### Parameters
+
+An expression in AsciiMathML.
+
+### Variables
+
+EquationSet.class_name
+:	The class-name to give to the equation-set html-div.
+	Default: `EquationSet`.
+
+Examples
+--------
+
+[[Example]]:
+	[[EquationSet]]: 
+		ax^2 + bx + c = 0
+		sin(x) = pi
+
