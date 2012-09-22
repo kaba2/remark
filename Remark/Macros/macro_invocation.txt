@@ -63,7 +63,22 @@ contain expansion specifiers. By default, `indent` is set
 to `Verbatim`, to invoke the [Verbatim][VerbatimMacro] macro.
 However, depending on the field of study, it may be more
 useful to set the indentation macro to the [CodeView][CodeMacro] 
-macro or the [EquationSet][EquationSetMacro] macro.
+macro or the [EquationSet][EquationSetMacro] macro. 
+
+### Example
+
+[[Example]]:
+	[[set indent]]: EquationSet
+	
+	The solution of the quadratic equation
+		
+		ax^2 + bx + c = 0
+
+	is given by
+
+		x = (-b +- sqrt(b^2 - 4ac)) / (2a)
+
+[[set indent]]: Verbatim
 
 [VerbatimMacro]: [[Ref]]: Verbatim_Macro.txt
 [CodeMacro]: [[Ref]]: Code_Macro.txt
