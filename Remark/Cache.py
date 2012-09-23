@@ -4,7 +4,10 @@
 # Documentation: data_structures.txt
 
 import os
+
 from FileSystem import readFile, pathExists
+from MacroRegistry import findMacro
+
 from xml.etree import ElementTree
 from xml.dom import minidom
 
@@ -50,12 +53,13 @@ def createCache(documentTree):
         xml.start('links_to', {})
         for dependency in document.dependencySet:
             propertyMap = {}
-            if dependency[1] != document.relativeName:
-                propertyMap['directory'] = dependency[1]
-            if dependency[2] != 'search':
-                propertyMap['type'] = dependency[2]
+            # Store the search-name.
+            propertyMap['search'] = dependency[1]
+            # Store the macro name.
+            propertyMap['macro'] = dependency[2]
             xml.start('name', propertyMap)
-            xml.data(dependency[0])
+            # Store the search result.
+            xml.data(dependency[1])
             xml.end('name')
         xml.end('links_to')
 
@@ -149,26 +153,29 @@ def readCache(filePath, documentTree):
             for name in linksToElement.iter('name'):
                 
                 # Get the search path.
-                searchPath = name.text
+                searchName = name.get('search')
 
-                # Get the search directory.
-                searchDirectory = name.get('directory', document.relativeDirectory)
+                # Get the search result.
+                searchResult = name.text
 
-                # Get the search type.
-                searchType = name.get('type', 'search')
-                
-                cacheDocument.dependencySet.add((searchPath, searchDirectory, searchType))
+                # Get the search macro.
+                searchMacro = name.get('macro')
+              
+                cacheDocument.dependencySet.add((searchPath, searchResult, searchMacro))
 
                 # Find the corresponding document.
-                toDocument = None
-                if searchType == 'search':
-                    toDocument, unique = documentTree.findDocument(searchPath, searchDirectory, False)
-                elif searchType == 'exact':
-                    toDocument = documentTree.findDocumentLocal(searchPath, searchDirectory)
+                macro = findMacro(searchMacro)
+                assert macro != None
+                toDocument = macro.findDependency(searchName, document, documentTree)
                 
-                if toDocument == None:
-                    # The target document does not exist anymore.
-                    continue
+                newSearchResult == ''
+                if toDocument != None:
+                    newSearchResult = toDocument.relativeName
+
+                if newSearchResult != searchResult:
+                    # The link has changed.
+                    # Regenerate the document.
+                    document.setRegenerate(True)
 
                 # Find the corresponding cache-document.
                 toCacheDocument = cacheDocumentTree.cacheDocument(toDocument)

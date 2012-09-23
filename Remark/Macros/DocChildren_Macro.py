@@ -77,4 +77,7 @@ class DocChildren_Macro(object):
     def postConversion(self, inputDirectory, outputDirectory):
         None
 
+    def findDependency(self, searchName, document, documentTree, parameter = ''):
+        return None, True
+
 registerMacro('DocChildren', DocChildren_Macro())

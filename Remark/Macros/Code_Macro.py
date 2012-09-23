@@ -46,6 +46,9 @@ class Code_Macro(object):
     def postConversion(self, inputDirectory, outputDirectory):
         None
 
+    def findDependency(self, searchName, document, documentTree, parameter = ''):
+        return None, True
+
 registerMacro('Code', Code_Macro())
 registerMacro('GenericCode', Code_Macro())
 

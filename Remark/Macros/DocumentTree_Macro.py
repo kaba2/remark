@@ -86,6 +86,10 @@ class DocumentTree_Macro(object):
     def postConversion(self, inputDirectory, outputDirectory):
         None
 
+    def findDependency(self, searchName, document, documentTree, parameter = ''):
+        # TODO
+        return None, True
+
     def _parse(self, globSet, map, transform):
         for line in globSet:
             pairSet = line.split()
@@ -189,7 +193,7 @@ class DocumentTree_Macro(object):
             text.append(' 1. ' + linkText)
 
             # Add a dependency from the generated document to this document.
-            dependencySet.add((document.fileName, document.relativeDirectory, 'exact'))
+            dependencySet.add((document.relativeName, document.relativeName, self.name()))
 
             #text.append('')
             for line in localText:

@@ -19,6 +19,7 @@ class CppCode_Macro(object):
         return 'CppCode'
 
     def expand(self, parameter, remark):
+        text = []
         dependencySet = set()
         
         # Hilight the text.
@@ -30,12 +31,12 @@ class CppCode_Macro(object):
         # Copy the source and replace the includes with links.
         includeRegex = re.compile(r'(#include[ \t]+(?:(?:&quot)|(?:&lt));)(.*)((?:(?:&quot)|(?:&gt));)')
         replacer = lambda match: self._linkConverter(match, remark, dependencySet)
-        convertedText = []
+        
         for line in hilightedText:
             # Replace include file names with links to source files.
-            convertedText.append(re.sub(includeRegex, replacer, line))
+            text.append(re.sub(includeRegex, replacer, line))
         
-        return convertedText, dependencySet
+        return text, dependencySet
 
     def outputType(self):
         return 'html'
@@ -49,6 +50,11 @@ class CppCode_Macro(object):
     def postConversion(self, inputDirectory, outputDirectory):
         None
 
+    def findDependency(self, searchName, document, documentTree, parameter = ''):
+        linkDocument, unique = documentTree.findDocument(searchName, document.relativeDirectory, 
+                                                         checkShorter = False)
+        return linkDocument, unique
+
     def _linkConverter(self, regexMatch, remark, dependencySet):
         document = remark.document
         documentTree = remark.documentTree 
@@ -56,9 +62,8 @@ class CppCode_Macro(object):
         searchName = unixDirectoryName(regexMatch.group(2))
         includeName = regexMatch.group(2)
     
-        linkDocument, unique = documentTree.findDocument(searchName, document.relativeDirectory, 
-                                                         checkShorter = False)
-        dependencySet.add((searchName, document.relativeDirectory, 'search'))
+        linkDocument, unique = self.findDependency(searchName, document, documentTree)
+        dependencySet.add((searchName, linkDocument.relativeName, self.name()))
 
         if not unique:
             # We don't accept ambiguous links.
