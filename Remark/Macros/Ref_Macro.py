@@ -17,19 +17,20 @@ class Ref_Macro(object):
         text = []
         dependencySet = set()        
         for linkFileName in parameter:
-            linkDocument, unique = documentTree.findDocument(linkFileName, document.relativeDirectory)
-            dependencySet.add((linkFileName, document.relativeDirectory, 'search'))
+            linkDocument, unique = self.findDependency(linkFileName, document, documentTree)
+            dependencySet.add((linkFileName, linkDocument.relativeName, self.name()))
 
             if not unique:
                 remark.reporter.reportAmbiguousDocument(linkFileName)
             
-            if linkDocument != None:
-                linkTarget = unixRelativePath(document.relativeDirectory, linkDocument.relativeName)
-                text.append(outputDocumentName(linkTarget))
-                if len(parameter) > 1:                
-                    text += ['']
-            else:
+            if linkDocument == None:
                 remark.reporter.reportMissingDocument(linkFileName)
+                continue
+
+            linkTarget = unixRelativePath(document.relativeDirectory, linkDocument.relativeName)
+            text.append(outputDocumentName(linkTarget))
+            if len(parameter) > 1:                
+                text += ['']
             
         return text, dependencySet
     
@@ -44,5 +45,9 @@ class Ref_Macro(object):
 
     def postConversion(self, inputDirectory, outputDirectory):
         None
+
+    def findDependency(self, searchName, document, documentTree, parameter = ''):
+        linkDocument, unique = documentTree.findDocument(searchName, document, documentTree)
+        return linkDocument, unique
 
 registerMacro('Ref', Ref_Macro())

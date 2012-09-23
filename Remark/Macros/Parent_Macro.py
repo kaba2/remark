@@ -19,7 +19,7 @@ class Parent_Macro(object):
 
         text = [remark.remarkLink('Back to ' + parent.linkDescription(),
                                   document, parent)]
-        dependencySet.add((document.tagString('parent'), document.relativeDirectory, 'global'))
+        dependencySet.add((parent.relativeName, parent.relativeName, self.name()))
 
         return text, dependencySet
 
@@ -34,6 +34,12 @@ class Parent_Macro(object):
 
     def postConversion(self, inputDirectory, outputDirectory):
         None
+
+    def findDependency(self, searchName, document, documentTree, parameter = ''):
+        parent = document.parent
+        if searchName == parent.relativeName:
+            return parent, True
+        return None, True
 
 registerMacro('Parent', Parent_Macro())
 

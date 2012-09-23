@@ -11,42 +11,36 @@ class DirectoryLink_Macro(object):
         return 'DirectoryLink'
 
     def expand(self, parameter, remark):
+        text = []
+        dependencySet = set()
+
         document = remark.document
         documentTree = remark.documentTree
-        dependencySet = set()
-        
-        text = []
+       
         # For each link-row of the parameter...
         for linkFileName in parameter:
             # Find out the document given on the link-row.
-            linkDocument, unique = documentTree.findDocument(linkFileName, document.relativeDirectory)
-            dependencySet.add((linkFileName, document.relativeDirectory, 'search'))
-
+            linkTarget, unique = self.findDependency(linkFileName, document, documentTree)
+            dependencySet.add((linkFileName, linkTarget.relativeName, self.name()))
+            
             if not unique:
                 remark.reporter.reportAmbiguousDocument(linkFileName)
-            
-            if linkDocument != None:
-                # Find out the directory-index of the given document.
-                directoryIndexName = 'directory.remark-index'
-                linkTarget = documentTree.findDocumentLocal(directoryIndexName, 
-                                                            linkDocument.relativeDirectory)
 
-                dependencySet.add((directoryIndexName, linkDocument.relativeDirectory, 'exact'))
-                assert linkTarget != None
-
-                # Name it in the form directory/, to emphasize it is a directory.
-                # Note that we escape the possible Markdown meta-characters.
-                linkDescription = escapeMarkdown(linkDocument.relativeDirectory + '/')
-
-                # Create the directory-link.
-                text.append(remark.remarkLink(linkDescription,
-                                              document, linkTarget))
-
-                # If there are multiple links, we want them on their own rows.
-                if len(parameter) > 1:
-                    text.append('')
-            else:
+            if linkTarget == None:
                 remark.reporter.reportMissingDocument(linkFileName)
+                continue
+
+            # Name it in the form directory/, to emphasize it is a directory.
+            # Note that we escape the possible Markdown meta-characters.
+            linkDescription = escapeMarkdown(linkTarget.relativeDirectory + '/')
+
+            # Create the directory-link.
+            text.append(remark.remarkLink(linkDescription,
+                                          document, linkTarget))
+
+            # If there are multiple links, we want them on their own rows.
+            if len(parameter) > 1:
+                text.append('')
             
         return text, dependencySet
     
@@ -61,5 +55,15 @@ class DirectoryLink_Macro(object):
 
     def postConversion(self, inputDirectory, outputDirectory):
         None
+
+    def findDependency(self, searchName, document, documentTree, parameter = ''):
+        linkDocument, unique = documentTree.findDocument(searchName, document.relativeDirectory)
+        if linkDocument == None:
+            return None, True
+
+        directoryIndexName = 'directory.remark-index'
+        linkTarget = documentTree.findDocumentLocal(directoryIndexName, 
+                                                    linkDocument.relativeDirectory)
+        return linkTarget, unique
 
 registerMacro('DirectoryLink', DirectoryLink_Macro())

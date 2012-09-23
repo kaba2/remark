@@ -34,4 +34,7 @@ class Verbatim_Macro(object):
     def postConversion(self, inputDirectory, outputDirectory):
         None
 
+    def findDependency(self, searchName, document, documentTree, parameter = ''):
+        return None, True
+
 registerMacro('Verbatim', Verbatim_Macro())

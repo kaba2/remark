@@ -20,6 +20,19 @@ except ImportError, e:
     sys.exit(1)
 
 class Gallery_Macro(object):
+    def __init__(self):
+        # The supported pixel-based image file-extensions are 
+        # listed in the order of priority to be used for 
+        # thumbnail generation. The idea here is to prefer 
+        # lossless formats over lossy formats.
+        self.pixelBasedSet = ['.png', '.gif', '.jpeg', '.jpg']
+
+        # The support vector-based image file-extensions.
+        self.vectorBasedSet = ['.svg', '.svgz']
+
+        # The set of supported image file-extensions.
+        self.supportedSet = self.pixelBasedSet + self.vectorBasedSet
+
     def name(self):
         return 'Gallery'
 
@@ -65,40 +78,28 @@ class Gallery_Macro(object):
                 # Give it an empty caption for now.
                 entrySet.append([imageFile, ''])
 
-        # The supported pixel-based image file-extensions are 
-        # listed in the order of priority to be used for 
-        # thumbnail generation. The idea here is to prefer 
-        # lossless formats over lossy formats.
-        pixelBasedSet = ['.png', '.gif', '.jpeg', '.jpg']
-
-        # The support vector-based image file-extensions.
-        vectorBasedSet = ['.svg', '.svgz']
-
-        # The set of supported image file-extensions.
-        supportedSet = pixelBasedSet + vectorBasedSet
-
         for entry in entrySet:
             # Extract the entry information.
             entryName = entry[0]
             caption = entry[1]
 
             # Find the image using the file-searching algorithm.
-            input, unique = documentTree.findDocument(entryName, document.relativeDirectory)
-            dependencySet.add((entryName, document.relativeDirectory, 'search'))
+            input, unique = self.findDependency(entryName, document, documentTree)
+            dependencySet.add((entryName, input.relativeName, self.name(), ''))
+
+            if not unique:
+                # There are many matching image files with the given name.
+                # Report a warning, pick one arbitrarily, and continue.
+                remark.reporter.reportAmbiguousDocument(entryName)
 
             if input == None:
                 # The image-file was not found. Report a warning and skip
                 # the file.
                 remark.reporter.reportMissingDocument(entryName)
                 continue
-
-            if not unique:
-                # There are many matching image files with the given name.
-                # Report a warning, pick one arbitrarily, and continue.
-                remark.reporter.reportAmbiguousDocument(entryName)
-            
+           
             # See if we support the file-extension.
-            if not input.extension in supportedSet:
+            if not input.extension in self.supportedSet:
                 # This file-extension is not supported. Report a warning
                 # and skip the file.
                 remark.reportWarning('Image file ' + input.relativeName + 
@@ -108,21 +109,14 @@ class Gallery_Macro(object):
            
             # If the image can not be generated a thumbnail directly,
             # see if there is an equivalent image with a different format.
-            pixelDocument = input
-            if not input.extension in pixelBasedSet:
-                for extension in pixelBasedSet:
-                    # Note that the search for a pixel-based alternative image
-                    # is carried out in the directory of the input-image,
-                    # not in the directory of the document.
-                    pixelFileName = changeExtension(input.fileName, extension)
-                    #print 'Searching for', pixelFileName
-                    if pixelDocument == input:
-                        # After we find an alternative, we still want to continue
-                        # to add the dependencies to all formats.
-                        pixelDocument = documentTree.findDocumentLocal(pixelFileName,
-                                                                       input.relativeDirectory)
-                    dependencySet.add((pixelFileName, input.relativeDirectory, 'exact'))
+            pixelDocument, pixelUnique = self.findDependency(input.fileName, document, documentTree, input.relativeDirectory)
             
+            for extension in self.supportedSet:
+                # Add dependencies for all formats.
+                pixelFileName = changeExtension(input.fileName, extension)
+                pixelRelativeName = changeExtension(input.relativeName, extension)
+                dependencySet.add((pixelFileName, pixelRelativeName, self.name(), entryName))
+
             # Find out input names.
             inputLinkName = unixRelativePath(document.relativeDirectory, input.relativeName)
 
@@ -148,7 +142,7 @@ class Gallery_Macro(object):
 
             #expandTime = 250
             #restoreTime = 0
-            #if input.extension in vectorBasedSet:
+            #if input.extension in self.vectorBasedSet:
             #    expandTime = 0
 
             # Generate the actual html-entry.
@@ -242,5 +236,28 @@ class Gallery_Macro(object):
         highslideTarget = os.path.join(outputDirectory, './remark_files/highslide/graphics')
         if not pathExists(highslideTarget):
             copyTree(highslideSource, highslideTarget)
+
+    def findDependency(self, searchName, document, documentTree, parameter = ''):
+        linkDocument = None
+        unique = True
+
+        if parameter == '':
+            linkDocument, unique = documentTree.findDocument(searchName, document.relativeDirectory)
+        else:
+            if not fileExtension(searchName) in self.pixelBasedSet:
+                for extension in self.pixelBasedSet:
+                    pixelFileName = changeExtension(searchName, extension)
+
+                    # Note that the search for a pixel-based alternative image
+                    # is carried out in the directory of the input-image,
+                    # not in the directory of the document.
+                    inputDirectory = parameter
+                    linkDocument = documentTree.findDocumentLocal(pixelFileName, inputDirectory)
+
+                    if linkDocument != None:
+                        # We found a pixel-based alternative image.
+                        break
+
+        return linkDocument, unique
         
 registerMacro('Gallery', Gallery_Macro())

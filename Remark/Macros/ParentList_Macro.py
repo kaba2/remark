@@ -32,7 +32,7 @@ class ParentList_Macro(object):
                 document.linkDescription(), 
                 remark.document, document)
             if i > 0:
-                dependencySet.add((document.fileName, document.relativeDirectory, 'exact'))
+                dependencySet.add((document.relativeName, document.relativeName, self.name()))
 
             # Strictly speaking, Markdown does not
             # use the actual numbers, so we could
@@ -62,6 +62,13 @@ class ParentList_Macro(object):
 
     def postConversion(self, inputDirectory, outputDirectory):
         None
+
+    def findDependency(self, searchName, document, documentTree, parameter = ''):
+        linkDocument = document
+        while linkDocument.parent != linkDocument:
+            if linkDocument.relativeName == searchName:
+                return linkDocument, True
+        return None, True
 
 registerMacro('ParentList', ParentList_Macro())
 

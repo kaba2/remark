@@ -17,21 +17,22 @@ class FileLink_Macro(object):
         text = []
         dependencySet = set()
         for linkFileName in parameter:
-            linkDocument, unique = documentTree.findDocument(linkFileName, document.relativeDirectory)
-            dependencySet.add((linkFileName, document.relativeDirectory, 'search'))
+            linkDocument, unique = self.findDependency(linkFileName, document, documentTree)
+            dependencySet.add((linkFileName, linkDocument.relativeName, self.name()))
 
             if not unique:
                 remark.reporter.reportAmbiguousDocument(linkFileName)
             
-            if linkDocument != None:
-                linkDescription = escapeMarkdown(linkDocument.fileName)
-                text.append(remark.remarkLink(linkDescription,
-                                              document, linkDocument))
-
-                if len(parameter) > 1:                
-                    text.append('')
-            else:
+            if linkDocument == None:
                 remark.reporter.reportMissingDocument(linkFileName)
+                continue
+
+            linkDescription = escapeMarkdown(linkDocument.fileName)
+            text.append(remark.remarkLink(linkDescription,
+                                          document, linkDocument))
+
+            if len(parameter) > 1:                
+                text.append('')
             
         return text, dependencySet
     
@@ -46,5 +47,9 @@ class FileLink_Macro(object):
 
     def postConversion(self, inputDirectory, outputDirectory):
         None
+
+    def findDependency(self, searchName, document, documentTree, parameter = ''):
+        linkDocument, unique = documentTree.findDocument(searchName, document.relativeDirectory)
+        return linkDocument, unique
 
 registerMacro('FileLink', FileLink_Macro())
