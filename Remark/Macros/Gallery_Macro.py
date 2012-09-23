@@ -30,8 +30,8 @@ class Gallery_Macro(object):
         outputRootDirectory = remark.outputRootDirectory
         
         scope = remark.scopeStack.top()
-        thumbnailMaxWidth = scope.getInteger('Gallery.thumbnail_max_width', 400)
-        thumbnailMaxHeight = scope.getInteger('Gallery.thumbnail_max_height', 400)
+        thumbnailMaxWidth = scope.getInteger('Gallery.thumbnail_max_width', 300)
+        thumbnailMaxHeight = scope.getInteger('Gallery.thumbnail_max_height', 300)
 
         dependencySet = set()
         text = ['<div class="highslide-gallery">']

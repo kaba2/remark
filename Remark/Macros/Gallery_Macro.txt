@@ -41,11 +41,11 @@ Specification of captions is not required.
 
 Gallery.thumbnail_max_width 
 : 	A maximum for the width of a thumbnail in pixels.
-	Default 400.
+	Default 300.
 
 Gallery.thumbnail_max_height
 : 	A maximum for the height of a thumbnail in pixels.
-	Default 400.
+	Default 300.
 
 The pixel-count defines the resolution of the thumbnail image
 for the pixel-based images; if the number of pixels is too low 
@@ -100,8 +100,6 @@ vector-thumbnail
 thumbnail-failed
 :	This warning is generated when the creation of a thumbnail
 	fails for a reason or another.
-
-
 
 Example
 -------
