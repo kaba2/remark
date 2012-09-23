@@ -125,6 +125,9 @@ def createDocumentTree(inputDirectory, filesToCopySet, reporter):
     return documentTree
 
 def resolveRegeneration(documentTree, cacheDocumentTree):
+    # Link changes due to removal of a document
+    # -----------------------------------------
+
     # Find out which documents have been deleted.
     for cacheDocument in cacheDocumentTree:
         if cacheDocument.document != None:
@@ -134,9 +137,11 @@ def resolveRegeneration(documentTree, cacheDocumentTree):
         # but not from the current document-tree.
         # Therefore the document has been deleted.
 
-        # Update all those documents which used to refer
+        # Regenerate those documents which used to refer
         # to this document.
         for document in cacheDocument.incomingSet:
+            # Link changes due to removal of a document
+            # -----------------------------------------
             document.setRegenerate(True)
 
     # Find out which documents to regenerate.
@@ -144,38 +149,30 @@ def resolveRegeneration(documentTree, cacheDocumentTree):
         # Retrieve the corresponding cached document.
         cacheDocument = cacheDocumentTree.cacheDocument(document)
         if cacheDocument == None:
+            # Document has been created
+            # -------------------------
             # If the document can be found from the current
             # document tree, but can not be found from the
             # cache, then it was just created.
-
-            # Update the new parent.
-            document.parent.setRegenerate(True)
-
-            # There can also be document which have had
-            # links to this document, but when the cache
-            # was generated, they had no corresponding
-            # document. In principle, these documents should
-            # now be generated. 
+            document.setRegenerate(True)
+            continue
            
-        # The default is that a document will not be regenerated.
+        if not document.documentType.upToDate(document, documentTree, outputDirectory):
+            # Document has been modified
+            # --------------------------
+            document.setRegenerate(True)
+            continue
 
-        # A document is said to be _cached_ if it is up-to-date,
-        # and is found from the document-tree cache.
-        
-        # A document will be regenerated if and only if
-        # * it is not cached, or
-        # * it links to a document which is not cached, and
-        #   which requires to update linking documents.
-        regenerate = not (document.documentType.upToDate(document, documentTree, outputDirectory) and
-                    document in cacheDocumentTree)
-
-        if cacheDocument != None:
-            for linkDocument in cacheDocument.outgoingSet:
-                regenerate |= ((not (linkDocument.documentType.upToDate(linkDocument, documentTree, outputDirectory) and
-                        linkDocument in cacheDocumentTree)) and
-                        linkDocument.documentType.updateDependent())
-    
-        document.setRegenerate(document.regenerate() or regenerate)
+        for linkDocument in cacheDocument.outgoingSet:
+            # A document is said to be modified if it is not up-to-date,
+            # or is not found from the document-tree cache.
+            if ((not (linkDocument.documentType.upToDate(linkDocument, documentTree, outputDirectory) and
+                    linkDocument in cacheDocumentTree)) and
+                    linkDocument.documentType.updateDependent()):
+                # Linked-to document has been modified
+                # ------------------------------------
+                document.setRegenerate(True)
+                break
 
     # Update the non-regenerated documents from the cache.        
     for document in documentTree:
