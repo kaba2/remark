@@ -72,7 +72,7 @@ class Gallery_Macro(object):
         pixelBasedSet = ['.png', '.gif', '.jpeg', '.jpg']
 
         # The support vector-based image file-extensions.
-        vectorBasedSet = ['.svg']
+        vectorBasedSet = ['.svg', '.svgz']
 
         # The set of supported image file-extensions.
         supportedSet = pixelBasedSet + vectorBasedSet

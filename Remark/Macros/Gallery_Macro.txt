@@ -4,8 +4,8 @@ Gallery macro
 [[Parent]]: available_macros.txt
 
 The Gallery macro generates an image gallery. The supported image formats 
-are PNG, JPEG, GIF, and SVG. These image formats are the ones that are 
-[well-supported][ImageFormats] in browsers (as of October 2012).
+are PNG, JPEG, GIF, SVG, and SVGZ. These image formats are the ones that 
+are [well-supported][ImageFormats] in browsers (as of October 2012).
 Thumbnails are automatically generated for images with filename 
 extensions .png, .gif, .jpeg, .jpg. 
 
@@ -57,9 +57,9 @@ thumbnail image will look blurry.
 If an image file has multiple formats in the same directory,
 say `lookaheads.png` and `lookaheads.svg`, then they are assumed
 to be the same image in different formats. If there is an image 
-file for which thumbnails can be generated (not .svg), then that 
-image file is used to generate the thumbnail. In particular, this
-covers for the fact that, as of October 2012, there aren't any good
+file for which thumbnails can be generated, then that image file 
+is used to generate the thumbnail. In particular, this covers for 
+the fact that, as of October 2012, there aren't any good 
 open-source libraries for converting SVG to a pixel-based image.
 
 ### Width and height of thumbnails
@@ -104,23 +104,13 @@ thumbnail-failed
 Example
 -------
 
-This
-
+[[Example]]:
 	[[Gallery]]:
 		hsv.png
 		- A visualization of the HSV color space (with full saturation).
 		- This text is appended to the caption.
 		lookaheads.svg
 		- Lookahead-sets in LC(1)-parsing
-	
-produces this:
-
-[[Gallery]]:
-	hsv.png
-	- A visualization of the HSV color space (with full saturation). 
-	- This text is appended to the caption.
-	lookaheads.svg
-	- Lookahead-sets in LC(1)-parsing
 
 See also
 --------
