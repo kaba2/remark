@@ -20,11 +20,19 @@ In the following,
  * either a document or the abscence of a document is denoted by a 
  circled question mark.
 
-### Document is a file and has been modified
+### Document has been created
 
-When a document A is a file, and has been modified,
-its contents may have changed as well. In this case 
-document A is regenerated.
+When a document A has just been created, it is generated.
+
+[[Gallery]]:
+	incremental-add-a.svg
+	- Document has been created.
+
+### Document has been modified
+
+When a document A has been modified, its contents may 
+have changed as well. In this case document A is 
+regenerated.
 
 [[Gallery]]:
 	incremental-change-a.svg
