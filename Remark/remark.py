@@ -124,6 +124,67 @@ def createDocumentTree(inputDirectory, filesToCopySet, reporter):
 
     return documentTree
 
+def resolveRegeneration(documentTree, cacheDocumentTree):
+    # Find out which documents have been deleted.
+    for cacheDocument in cacheDocumentTree:
+        if cacheDocument.document != None:
+            continue
+        
+        # The document can be found from the cache, 
+        # but not from the current document-tree.
+        # Therefore the document has been deleted.
+
+        # Update all those documents which used to refer
+        # to this document.
+        for document in cacheDocument.incomingSet:
+            document.setRegenerate(True)
+
+    # Find out which documents to regenerate.
+    for document in documentTree:
+        # Retrieve the corresponding cached document.
+        cacheDocument = cacheDocumentTree.cacheDocument(document)
+        if cacheDocument == None:
+            # If the document can be found from the current
+            # document tree, but can not be found from the
+            # cache, then it was just created.
+
+            # Update the new parent.
+            document.parent.setRegenerate(True)
+
+            # There can also be document which have had
+            # links to this document, but when the cache
+            # was generated, they had no corresponding
+            # document. In principle, these documents should
+            # now be generated. 
+           
+        # The default is that a document will not be regenerated.
+
+        # A document is said to be _cached_ if it is up-to-date,
+        # and is found from the document-tree cache.
+        
+        # A document will be regenerated if and only if
+        # * it is not cached, or
+        # * it links to a document which is not cached, and
+        #   which requires to update linking documents.
+        regenerate = not (document.documentType.upToDate(document, documentTree, outputDirectory) and
+                    document in cacheDocumentTree)
+
+        if cacheDocument != None:
+            for linkDocument in cacheDocument.outgoingSet:
+                regenerate |= ((not (linkDocument.documentType.upToDate(linkDocument, documentTree, outputDirectory) and
+                        linkDocument in cacheDocumentTree)) and
+                        linkDocument.documentType.updateDependent())
+    
+        document.setRegenerate(document.regenerate() or regenerate)
+
+    # Update the non-regenerated documents from the cache.        
+    for document in documentTree:
+        regenerate = globalOptions().regenerate or document.regenerate()
+        if not regenerate:
+            cacheDocument = cacheDocumentTree.cacheDocument(document)
+            if cacheDocument != None:
+                document.dependencySet.update(cacheDocument.dependencySet)
+
 def parseArguments(reporter):
     '''
     Parses the command-line arguments given to Remark.
@@ -314,65 +375,7 @@ if __name__ == '__main__':
     documentTree.resolveParentLinks()
 
     if not globalOptions().regenerate:
-        # Find out which documents have been deleted.
-        for cacheDocument in cacheDocumentTree:
-            if cacheDocument.document != None:
-                continue
-        
-            # The document can be found from the cache, 
-            # but not from the current document-tree.
-            # Therefore the document has been deleted.
-
-            # Update all those documents which used to refer
-            # to this document.
-            for document in cacheDocument.incomingSet:
-                document.setRegenerate(True)
-
-        # Find out which documents to regenerate.
-        for document in documentTree:
-            # Retrieve the corresponding cached document.
-            cacheDocument = cacheDocumentTree.cacheDocument(document)
-            if cacheDocument == None:
-                # If the document can be found from the current
-                # document tree, but can not be found from the
-                # cache, then it was just created.
-
-                # Update the new parent.
-                document.parent.setRegenerate(True)
-
-                # There can also be document which have had
-                # links to this document, but when the cache
-                # was generated, they had no corresponding
-                # document. In principle, these documents should
-                # now be generated. 
-           
-            # The default is that a document will not be regenerated.
-
-            # A document is said to be _cached_ if it is up-to-date,
-            # and is found from the document-tree cache.
-        
-            # A document will be regenerated if and only if
-            # * it is not cached, or
-            # * it links to a document which is not cached, and
-            #   which requires to update linking documents.
-            regenerate = not (document.documentType.upToDate(document, documentTree, outputDirectory) and
-                        document in cacheDocumentTree)
-
-            if cacheDocument != None:
-                for linkDocument in cacheDocument.outgoingSet:
-                    regenerate |= ((not (linkDocument.documentType.upToDate(linkDocument, documentTree, outputDirectory) and
-                            linkDocument in cacheDocumentTree)) and
-                            linkDocument.documentType.updateDependent())
-    
-            document.setRegenerate(document.regenerate() or regenerate)
-
-        # Update the non-regenerated documents from the cache.        
-        for document in documentTree:
-            regenerate = globalOptions().regenerate or document.regenerate()
-            if not regenerate:
-                cacheDocument = cacheDocumentTree.cacheDocument(document)
-                if cacheDocument != None:
-                    document.dependencySet.update(cacheDocument.dependencySet)
+        resolveRegeneration(documentTree, cacheDocumentTree)
 
     # Generate documents.
     with ScopeGuard(reporter, 'Generating documents'):

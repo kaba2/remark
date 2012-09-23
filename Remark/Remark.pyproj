@@ -138,6 +138,7 @@
     <Content Include="DocumentTypes\RemarkPage_DocumentType.txt" />
     <Content Include="file_searching_algorithm.txt" />
     <Content Include="implementation.txt" />
+    <Content Include="incremental_builds.txt" />
     <Content Include="Macros\Body_Macro.txt" />
     <Content Include="Macros\Code_Macro.txt" />
     <Content Include="Macros\Comment_Macro.txt" />
