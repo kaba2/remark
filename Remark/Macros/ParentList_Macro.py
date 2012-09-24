@@ -69,8 +69,6 @@ class ParentList_Macro(object):
         while linkDocument.parent != linkDocument:
             if linkDocument.relativeName == searchName:
                 return linkDocument, True
-            if linkDocument.parent == None:
-                print linkDocument.relativeName
             linkDocument = linkDocument.parent
         return None, True
 

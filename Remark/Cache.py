@@ -7,6 +7,7 @@ import os
 
 from FileSystem import readFile, pathExists
 from MacroRegistry import findMacro
+from Document import Dependency
 
 from xml.etree import ElementTree
 from xml.dom import minidom

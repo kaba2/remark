@@ -38,7 +38,7 @@ class Parent_Macro(object):
 
     def findDependency(self, searchName, document, documentTree, parameter = ''):
         parent = document.parent
-        if searchName == parent.relativeName:
+        if parent.relativeName == searchName:
             return parent, True
         return None, True
 
