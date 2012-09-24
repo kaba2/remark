@@ -16,8 +16,6 @@ class Cache_Document(object):
         self.document = document
         self.parent = None
         self.tagSet = {}
-        self.incomingSet = set()
-        self.outgoingSet = set()
         self.dependencySet = set()
 
 class Cache_DocumentTree(object):
@@ -54,12 +52,15 @@ def createCache(documentTree):
         for dependency in document.dependencySet:
             propertyMap = {}
             # Store the search-name.
-            propertyMap['search'] = dependency[1]
+            propertyMap['search'] = dependency.searchName
             # Store the macro name.
-            propertyMap['macro'] = dependency[2]
+            propertyMap['macro'] = dependency.searchMacro
+            # Store the search-parameter.
+            if dependency.searchParameter != '':
+                propertyMap['parameter'] = dependency.searchParameter
             xml.start('name', propertyMap)
             # Store the search result.
-            xml.data(dependency[1])
+            xml.data(dependency.searchResult)
             xml.end('name')
         xml.end('links_to')
 
@@ -160,31 +161,12 @@ def readCache(filePath, documentTree):
 
                 # Get the search macro.
                 searchMacro = name.get('macro')
-              
-                cacheDocument.dependencySet.add((searchPath, searchResult, searchMacro))
 
-                # Find the corresponding document.
-                macro = findMacro(searchMacro)
-                assert macro != None
-                toDocument = macro.findDependency(searchName, document, documentTree)
+                # Get the search parameter.
+                searchParameter = name.get('parameter', '')
                 
-                newSearchResult == ''
-                if toDocument != None:
-                    newSearchResult = toDocument.relativeName
-
-                if newSearchResult != searchResult:
-                    # The link has changed.
-                    # Regenerate the document.
-                    document.setRegenerate(True)
-
-                # Find the corresponding cache-document.
-                toCacheDocument = cacheDocumentTree.cacheDocument(toDocument)
-                
-                # Add the dependencies.
-                if toCacheDocument != None:
-                    #print document.relativeName, '-->', toDocument.relativeName
-                    toCacheDocument.incomingSet.add(document)
-                    cacheDocument.outgoingSet.add(toDocument)
+                # Add the dependency.              
+                cacheDocument.dependencySet.add(Dependency(searchName, searchResult, searchMacro, searchParameter))
         
     return cacheDocumentTree
 

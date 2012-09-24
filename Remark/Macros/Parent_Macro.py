@@ -5,6 +5,7 @@
 
 from MacroRegistry import registerMacro
 from FileSystem import unixRelativePath, outputDocumentName
+from Document import documentRelativeName, Dependency
 
 class Parent_Macro(object):
     def name(self):
@@ -19,7 +20,7 @@ class Parent_Macro(object):
 
         text = [remark.remarkLink('Back to ' + parent.linkDescription(),
                                   document, parent)]
-        dependencySet.add((parent.relativeName, parent.relativeName, self.name()))
+        dependencySet.add(Dependency(parent.relativeName, documentRelativeName(parent), self.name()))
 
         return text, dependencySet
 

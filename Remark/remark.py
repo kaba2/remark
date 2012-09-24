@@ -125,26 +125,6 @@ def createDocumentTree(inputDirectory, filesToCopySet, reporter):
     return documentTree
 
 def resolveRegeneration(documentTree, cacheDocumentTree):
-    # Link changes due to removal of a document
-    # -----------------------------------------
-
-    # Find out which documents have been deleted.
-    for cacheDocument in cacheDocumentTree:
-        if cacheDocument.document != None:
-            continue
-        
-        # The document can be found from the cache, 
-        # but not from the current document-tree.
-        # Therefore the document has been deleted.
-
-        # Regenerate those documents which used to refer
-        # to this document.
-        for document in cacheDocument.incomingSet:
-            # Link changes due to removal of a document
-            # -----------------------------------------
-            document.setRegenerate(True)
-
-    # Find out which documents to regenerate.
     for document in documentTree:
         # Retrieve the corresponding cached document.
         cacheDocument = cacheDocumentTree.cacheDocument(document)
@@ -157,20 +137,44 @@ def resolveRegeneration(documentTree, cacheDocumentTree):
             document.setRegenerate(True)
             continue
            
+        # The document can be found from the cache, 
+        # and also from the document-tree.
+
         if not document.documentType.upToDate(document, documentTree, outputDirectory):
             # Document has been modified
             # --------------------------
             document.setRegenerate(True)
             continue
 
-        for linkDocument in cacheDocument.outgoingSet:
+        for dependency in cacheDocument.dependencySet:
+            # Find the macro.
+            macro = findMacro(dependency.searchMacro)
+            assert macro != None
+
+            # Find the dependency.
+            toDocument = macro.findDependency(dependency.searchName, document, 
+                                              documentTree, dependency.searchParameter)
+            newSearchResult = documentRelativeName(toDocument)
+
+            if newSearchResult != dependency.searchResult:
+                # Link has changed
+                # ----------------
+                # This may happen because of a newly-created document
+                # or the removal of a document.
+                document.setRegenerate(True)
+                break
+
+            if toDocument == None:
+                # The link was dangling and stays so.
+                continue
+
             # A document is said to be modified if it is not up-to-date,
             # or is not found from the document-tree cache.
-            if ((not (linkDocument.documentType.upToDate(linkDocument, documentTree, outputDirectory) and
-                    linkDocument in cacheDocumentTree)) and
-                    linkDocument.documentType.updateDependent()):
-                # Linked-to document has been modified
-                # ------------------------------------
+            if ((not (toDocument.documentType.upToDate(toDocument, documentTree, outputDirectory) and
+                    toDocument in cacheDocumentTree)) and
+                    toDocument.documentType.updateDependent()):
+                # Linked-to document has been modified or removed
+                # -----------------------------------------------
                 document.setRegenerate(True)
                 break
 

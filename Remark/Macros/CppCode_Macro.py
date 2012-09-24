@@ -7,8 +7,8 @@ import string
 import re
 
 from MacroRegistry import registerMacro
-
 from FileSystem import unixRelativePath, unixDirectoryName
+from Document import documentRelativeName, Dependency
 
 from pygments import highlight
 from pygments.lexers import CppLexer
@@ -63,7 +63,7 @@ class CppCode_Macro(object):
         includeName = regexMatch.group(2)
     
         linkDocument, unique = self.findDependency(searchName, document, documentTree)
-        dependencySet.add((searchName, linkDocument.relativeName, self.name()))
+        dependencySet.add(Dependency(searchName, documentRelativeName(linkDocument), self.name()))
 
         if not unique:
             # We don't accept ambiguous links.

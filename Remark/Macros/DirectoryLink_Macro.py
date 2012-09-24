@@ -5,6 +5,7 @@
 
 from MacroRegistry import registerMacro
 from FileSystem import unixRelativePath, outputDocumentName, escapeMarkdown
+from Document import documentRelativeName, Dependency
 
 class DirectoryLink_Macro(object):
     def name(self):
@@ -21,7 +22,7 @@ class DirectoryLink_Macro(object):
         for linkFileName in parameter:
             # Find out the document given on the link-row.
             linkTarget, unique = self.findDependency(linkFileName, document, documentTree)
-            dependencySet.add((linkFileName, linkTarget.relativeName, self.name()))
+            dependencySet.add(Dependency(linkFileName, documentRelativeName(linkTarget), self.name()))
             
             if not unique:
                 remark.reporter.reportAmbiguousDocument(linkFileName)

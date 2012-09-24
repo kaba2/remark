@@ -8,6 +8,7 @@ import re
 
 from MacroRegistry import registerMacro
 from FileSystem import htmlDiv, globToRegex, combineRegex
+from Document import documentRelativeName, Dependency
 
 class DocumentTree_Macro(object):
     def name(self):
@@ -193,7 +194,7 @@ class DocumentTree_Macro(object):
             text.append(' 1. ' + linkText)
 
             # Add a dependency from the generated document to this document.
-            dependencySet.add((document.relativeName, document.relativeName, self.name()))
+            dependencySet.add(Dependency(document.relativeName, documentRelativeName(document), self.name()))
 
             #text.append('')
             for line in localText:

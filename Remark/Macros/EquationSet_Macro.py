@@ -4,7 +4,6 @@
 # Detail: Presents multiple equations.
 
 from MacroRegistry import registerMacro
-
 from FileSystem import htmlDiv
 
 class EquationSet_Macro(object):

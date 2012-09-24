@@ -9,6 +9,7 @@ import os.path
 from FileSystem import unixRelativePath, htmlDiv, escapeMarkdown
 from FileSystem import outputDocumentName, unixDirectoryName, listDirectory
 from MacroRegistry import registerMacro
+from Document import documentRelativeName, Dependency
 
 class Index_Macro(object):
     def name(self):
@@ -46,7 +47,7 @@ class Index_Macro(object):
             linkDirectory = os.path.join(document.relativeDirectory, directory)
             directoryIndexName = 'directory.remark-index'
             directoryDocument = documentTree.findDocumentLocal(directoryIndexName, linkDirectory)
-            dependencySet.add((directoryDocument.relativeName, directoryDocument.relativeName, self.name()))
+            dependencySet.add(Dependency(directoryDocument.relativeName, documentRelativeName(directoryDocument), self.name()))
             assert directoryDocument != None
 
             text.append(' 1. ' + remark.remarkLink(escapeMarkdown(directory + '/'),
@@ -55,7 +56,7 @@ class Index_Macro(object):
         # Create links for the files.
         for fileName in fileSet:
             fileDocument = documentTree.findDocumentLocal(fileName, document.relativeDirectory)
-            dependencySet.add((fileDocument.relativeName, fileDocument.relativeName, self.name()))
+            dependencySet.add(Dependency(fileDocument.relativeName, documentRelativeName(fileDocument), self.name()))
             assert fileDocument != None
 
             text.append(' 1. ' + remark.remarkLink(escapeMarkdown(fileName),

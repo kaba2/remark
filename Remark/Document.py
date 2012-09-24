@@ -7,6 +7,13 @@ import os.path
 import string
 from FileSystem import documentType, unixDirectoryName, unixRelativePath, fileExtension
 
+class Dependency(object):
+    def __init__(self, searchName, searchResult, searchMacro, searchParameter = ''):
+        self.searchName = searchName
+        self.searchResult = searchResult
+        self.searchMacro = searchMacro
+        self.searchParameter = searchParameter
+
 class Document(object):
     def __init__(self, relativeName):
         '''
@@ -62,7 +69,9 @@ class Document(object):
 
         self.dependencySet = set()
 
-        # Whether the document should be converted, or skipped.
+        # Whether the document should be generated.
+        # By default the document is not generated;
+        # the regeneration rules change this later.
         self.regenerate_ = False
 
     def setRegenerate(self, regenerate):
@@ -151,4 +160,7 @@ class Document(object):
         
         return self.documentType.linkDescription(self)
 
-
+def documentRelativeName(document):
+    if document == None:
+        return ''
+    return document.relativeName
