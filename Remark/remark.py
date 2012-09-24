@@ -23,7 +23,8 @@ import os
 import shutil
 import time
 
-from Document import Document
+from MacroRegistry import findMacro
+from Document import Document, documentRelativeName
 from DocumentTree import DocumentTree
 from Cache import readCache, createCache
 
@@ -124,7 +125,7 @@ def createDocumentTree(inputDirectory, filesToCopySet, reporter):
 
     return documentTree
 
-def resolveRegeneration(documentTree, cacheDocumentTree):
+def resolveRegeneration(documentTree, cacheDocumentTree, reporter):
     for document in documentTree:
         # Retrieve the corresponding cached document.
         cacheDocument = cacheDocumentTree.cacheDocument(document)
@@ -135,6 +136,8 @@ def resolveRegeneration(documentTree, cacheDocumentTree):
             # document tree, but can not be found from the
             # cache, then it was just created.
             document.setRegenerate(True)
+            with ScopeGuard(reporter, document.relativeName):
+                reporter.report(['', 'Created.'], 'verbose')
             continue
            
         # The document can be found from the cache, 
@@ -144,6 +147,8 @@ def resolveRegeneration(documentTree, cacheDocumentTree):
             # Document has been modified
             # --------------------------
             document.setRegenerate(True)
+            with ScopeGuard(reporter, document.relativeName):
+                reporter.report(['', 'Modified.'], 'verbose')
             continue
 
         for dependency in cacheDocument.dependencySet:
@@ -152,7 +157,7 @@ def resolveRegeneration(documentTree, cacheDocumentTree):
             assert macro != None
 
             # Find the dependency.
-            toDocument = macro.findDependency(dependency.searchName, document, 
+            toDocument, unique = macro.findDependency(dependency.searchName, document, 
                                               documentTree, dependency.searchParameter)
             newSearchResult = documentRelativeName(toDocument)
 
@@ -162,6 +167,11 @@ def resolveRegeneration(documentTree, cacheDocumentTree):
                 # This may happen because of a newly-created document
                 # or the removal of a document.
                 document.setRegenerate(True)
+                with ScopeGuard(reporter, document.relativeName):
+                    reporter.report(['', 'Link changed from ' +
+                                   dependency.searchResult + ' to ' +
+                                   newSearchResult + '.'],
+                                    'verbose')
                 break
 
             if toDocument == None:
@@ -176,6 +186,10 @@ def resolveRegeneration(documentTree, cacheDocumentTree):
                 # Linked-to document has been modified or removed
                 # -----------------------------------------------
                 document.setRegenerate(True)
+                with ScopeGuard(reporter, document.relativeName):
+                    reporter.report(['', 'Linked-to document ' + 
+                                    toDocument.relativeName + ' changed.'],
+                                    'verbose')
                 break
 
     # Update the non-regenerated documents from the cache.        
@@ -331,9 +345,10 @@ if __name__ == '__main__':
 
     #with ScopeGuard(reporter, 'Reading document-tree cache')
 
+    cacheRelativeName = './remark_files/document-tree.xml'
+    cacheFullName = os.path.join(outputDirectory, cacheRelativeName)
+
     if not globalOptions().regenerate:
-        cacheRelativeName = './remark_files/document-tree.xml'
-        cacheFullName = os.path.join(outputDirectory, cacheRelativeName)
         cacheDocumentTree = readCache(cacheFullName, documentTree)
 
     #reporter.report(['', 'Done.'], 'verbose')
@@ -375,17 +390,22 @@ if __name__ == '__main__':
     # Resolve parent links.
     documentTree.resolveParentLinks()
 
+    # Resolve regeneration of documents.
     if not globalOptions().regenerate:
-        resolveRegeneration(documentTree, cacheDocumentTree)
+        with ScopeGuard(reporter, 'Resolving regeneration'):
+            resolveRegeneration(documentTree, cacheDocumentTree, reporter)
+            reporter.report(['', 'Done.'], 'verbose')
+    else:
+        for document in documentTree:
+            document.setRegenerate(True)
 
     # Generate documents.
     with ScopeGuard(reporter, 'Generating documents'):
         convertAll(documentTree, outputDirectory, reporter)
         reporter.report(['', 'Done.'], 'verbose')
 
-    if not globalOptions().regenerate:
-        # Save the document-tree as xml.
-        writeFile(createCache(documentTree), cacheFullName)
+    # Save the document-tree as xml.
+    writeFile(createCache(documentTree), cacheFullName)
 
     # Find out statistics.
     seconds = round(time.clock() - startTime, 2)
