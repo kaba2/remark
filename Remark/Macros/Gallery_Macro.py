@@ -7,6 +7,7 @@ from MacroRegistry import registerMacro
 from FileSystem import unixRelativePath, unixDirectoryName, changeExtension
 from FileSystem import fileExtension, copyIfNecessary, createDirectories, copyTree
 from FileSystem import pathExists, fileModificationTime
+from Document import documentRelativeName, Dependency
 
 import sys
 import os.path
@@ -85,7 +86,7 @@ class Gallery_Macro(object):
 
             # Find the image using the file-searching algorithm.
             input, unique = self.findDependency(entryName, document, documentTree)
-            dependencySet.add((entryName, input.relativeName, self.name(), ''))
+            dependencySet.add(Dependency(entryName, documentRelativeName(input), self.name(), ''))
 
             if not unique:
                 # There are many matching image files with the given name.
@@ -115,7 +116,7 @@ class Gallery_Macro(object):
                 # Add dependencies for all formats.
                 pixelFileName = changeExtension(input.fileName, extension)
                 pixelRelativeName = changeExtension(input.relativeName, extension)
-                dependencySet.add((pixelFileName, pixelRelativeName, self.name(), entryName))
+                dependencySet.add(Dependency(pixelFileName, pixelRelativeName, self.name(), entryName))
 
             # Find out input names.
             inputLinkName = unixRelativePath(document.relativeDirectory, input.relativeName)

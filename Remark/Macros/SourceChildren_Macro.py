@@ -9,6 +9,7 @@ import string
 from MacroRegistry import registerMacro
 from FileSystem import unixRelativePath, outputDocumentName, escapeMarkdown
 from FileSystem import withoutFileExtension
+from Document import documentRelativeName, Dependency
 
 class SourceChildren_Macro(object):
     def name(self):
@@ -137,7 +138,7 @@ class SourceChildren_Macro(object):
             for child in group[2]:
                 text.append(remark.remarkLink(escapeMarkdown(child.fileName),
                                               document, child))
-                dependencySet.add((child.relativeName, child.relativeName, self.name(), ''))
+                dependencySet.add(Dependency(child.relativeName, documentRelativeName(child), self.name(), ''))
                 text.append('')
             
         return text, dependencySet

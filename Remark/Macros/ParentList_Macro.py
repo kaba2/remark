@@ -5,6 +5,7 @@
 
 from MacroRegistry import registerMacro
 from FileSystem import htmlDiv
+from Document import documentRelativeName, Dependency
 
 class ParentList_Macro(object):
     def name(self):
@@ -32,7 +33,7 @@ class ParentList_Macro(object):
                 document.linkDescription(), 
                 remark.document, document)
             if i > 0:
-                dependencySet.add((document.relativeName, document.relativeName, self.name()))
+                dependencySet.add(Dependency(document.relativeName, documentRelativeName(document), self.name()))
 
             # Strictly speaking, Markdown does not
             # use the actual numbers, so we could
@@ -68,6 +69,9 @@ class ParentList_Macro(object):
         while linkDocument.parent != linkDocument:
             if linkDocument.relativeName == searchName:
                 return linkDocument, True
+            if linkDocument.parent == None:
+                print linkDocument.relativeName
+            linkDocument = linkDocument.parent
         return None, True
 
 registerMacro('ParentList', ParentList_Macro())

@@ -5,6 +5,7 @@
 
 from MacroRegistry import registerMacro
 from FileSystem import unixRelativePath, outputDocumentName
+from Document import documentRelativeName, Dependency
 
 class Link_Macro(object):
     def name(self):
@@ -18,7 +19,7 @@ class Link_Macro(object):
         dependencySet = set()
         for linkFileName in parameter:
             linkDocument, unique = self.findDependency(linkFileName, document, documentTree)
-            dependencySet.add((linkFileName, document.relativeName, self.name()))
+            dependencySet.add(Dependency(linkFileName, documentRelativeName(document), self.name()))
 
             if not unique:
                 remark.reporter.reportAmbiguousDocument(linkFileName)
