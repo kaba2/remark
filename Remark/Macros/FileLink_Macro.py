@@ -16,10 +16,8 @@ class FileLink_Macro(object):
         documentTree = remark.documentTree
         
         text = []
-        dependencySet = set()
         for linkFileName in parameter:
-            linkDocument, unique = self.findDependency(linkFileName, document, documentTree)
-            dependencySet.add(Dependency(linkFileName, documentRelativeName(linkDocument), self.name()))
+            linkDocument, unique = documentTree.findDocument(linkFileName, document.relativeDirectory)
 
             if not unique:
                 remark.reporter.reportAmbiguousDocument(linkFileName)
@@ -35,7 +33,7 @@ class FileLink_Macro(object):
             if len(parameter) > 1:                
                 text.append('')
             
-        return text, dependencySet
+        return text
     
     def outputType(self):
         return 'remark'
@@ -48,9 +46,5 @@ class FileLink_Macro(object):
 
     def postConversion(self, inputDirectory, outputDirectory):
         None
-
-    def findDependency(self, searchName, document, documentTree, parameter = ''):
-        linkDocument, unique = documentTree.findDocument(searchName, document.relativeDirectory)
-        return linkDocument, unique
 
 registerMacro('FileLink', FileLink_Macro())

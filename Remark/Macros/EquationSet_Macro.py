@@ -12,7 +12,6 @@ class EquationSet_Macro(object):
 
     def expand(self, parameter, remark):
         text = []
-        dependencySet = set()
 
         # Variables
         scope = remark.scopeStack.top()
@@ -30,7 +29,7 @@ class EquationSet_Macro(object):
         text.append('<div class = "remark-end-list"></div>')
         text.append('')
 
-        return text, dependencySet
+        return text
 
     def outputType(self):
         return 'remark'
@@ -43,9 +42,6 @@ class EquationSet_Macro(object):
 
     def postConversion(self, inputDirectory, outputDirectory):
         None
-
-    def findDependency(self, searchName, document, documentTree, parameter = ''):
-        return None, True
 
 registerMacro('EquationSet', EquationSet_Macro())
 

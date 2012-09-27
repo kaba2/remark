@@ -10,7 +10,6 @@ class Example_Macro(object):
 
     def expand(self, parameter, remark):
         text = []
-        dependencySet = set()
         
         text.append('')
         text.append('This')
@@ -23,7 +22,7 @@ class Example_Macro(object):
         text += parameter
         text.append('')
 
-        return text, dependencySet
+        return text
 
     def outputType(self):
         return 'remark'
@@ -36,8 +35,5 @@ class Example_Macro(object):
 
     def postConversion(self, inputDirectory, outputDirectory):
         None
-
-    def findDependency(self, searchName, document, documentTree, parameter = ''):
-        return None, True
 
 registerMacro('Example', Example_Macro())

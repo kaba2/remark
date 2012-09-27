@@ -47,7 +47,6 @@ class Gallery_Macro(object):
         thumbnailMaxWidth = scope.getInteger('Gallery.thumbnail_max_width', 300)
         thumbnailMaxHeight = scope.getInteger('Gallery.thumbnail_max_height', 300)
 
-        dependencySet = set()
         text = ['<div class="highslide-gallery">']
 
         # Gather a list of images and their captions.
@@ -85,8 +84,7 @@ class Gallery_Macro(object):
             caption = entry[1]
 
             # Find the image using the file-searching algorithm.
-            input, unique = self.findDependency(entryName, document, documentTree)
-            dependencySet.add(Dependency(entryName, documentRelativeName(input), self.name(), ''))
+            input, unique = documentTree.findDocument(entryName, document.relativeDirectory)
 
             if not unique:
                 # There are many matching image files with the given name.
@@ -110,13 +108,19 @@ class Gallery_Macro(object):
            
             # If the image can not be generated a thumbnail directly,
             # see if there is an equivalent image with a different format.
-            pixelDocument, pixelUnique = self.findDependency(input.fileName, document, documentTree, input.relativeDirectory)
-            
-            for extension in self.supportedSet:
-                # Add dependencies for all formats.
-                pixelFileName = changeExtension(input.fileName, extension)
-                pixelRelativeName = changeExtension(input.relativeName, extension)
-                dependencySet.add(Dependency(pixelFileName, pixelRelativeName, self.name(), entryName))
+            pixelDocument = None
+            if not fileExtension(input.fileName) in self.pixelBasedSet:
+                for extension in self.pixelBasedSet:
+                    pixelFileName = changeExtension(input.fileName, extension)
+
+                    # Note that the search for a pixel-based alternative image
+                    # is carried out in the directory of the input-image,
+                    # not in the directory of the document.
+                    pixelDocument = documentTree.findDocumentLocal(pixelFileName, input.relativeDirectory)
+
+                    if pixelDocument != None:
+                        # We found a pixel-based alternative image.
+                        break
 
             # Find out input names.
             inputLinkName = unixRelativePath(document.relativeDirectory, input.relativeName)
@@ -203,7 +207,7 @@ class Gallery_Macro(object):
         
         text.append('</div>')
         
-        return text, dependencySet
+        return text
 
     def outputType(self):
         return 'html'
@@ -238,27 +242,4 @@ class Gallery_Macro(object):
         if not pathExists(highslideTarget):
             copyTree(highslideSource, highslideTarget)
 
-    def findDependency(self, searchName, document, documentTree, parameter = ''):
-        linkDocument = None
-        unique = True
-
-        if parameter == '':
-            linkDocument, unique = documentTree.findDocument(searchName, document.relativeDirectory)
-        else:
-            if not fileExtension(searchName) in self.pixelBasedSet:
-                for extension in self.pixelBasedSet:
-                    pixelFileName = changeExtension(searchName, extension)
-
-                    # Note that the search for a pixel-based alternative image
-                    # is carried out in the directory of the input-image,
-                    # not in the directory of the document.
-                    inputDirectory = parameter
-                    linkDocument = documentTree.findDocumentLocal(pixelFileName, inputDirectory)
-
-                    if linkDocument != None:
-                        # We found a pixel-based alternative image.
-                        break
-
-        return linkDocument, unique
-        
 registerMacro('Gallery', Gallery_Macro())

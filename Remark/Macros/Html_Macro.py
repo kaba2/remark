@@ -11,8 +11,7 @@ class Html_Macro(object):
 
     def expand(self, parameter, remark):
         text = parameter
-        dependencySet = set()
-        return text, dependencySet
+        return text
 
     def outputType(self):
         return 'html'
@@ -25,8 +24,5 @@ class Html_Macro(object):
 
     def postConversion(self, inputDirectory, outputDirectory):
         None
-
-    def findDependency(self, searchName, document, documentTree, parameter = ''):
-        return None, True
 
 registerMacro('Html', Html_Macro())

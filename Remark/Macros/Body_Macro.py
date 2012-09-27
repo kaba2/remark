@@ -15,9 +15,8 @@ class Body_Macro(object):
         fileName = remark.documentTree.fullName(document);
 
         text = readFile(fileName)
-        dependencySet = set()
 
-        return text, dependencySet
+        return text
     
     def outputType(self):
         return 'remark'
@@ -30,8 +29,5 @@ class Body_Macro(object):
 
     def postConversion(self, inputDirectory, outputDirectory):
         None
-
-    def findDependency(self, searchName, document, documentTree, parameter = ''):
-        return None, True
 
 registerMacro('Body', Body_Macro())

@@ -13,7 +13,6 @@ class DirectoryLink_Macro(object):
 
     def expand(self, parameter, remark):
         text = []
-        dependencySet = set()
 
         document = remark.document
         documentTree = remark.documentTree
@@ -21,8 +20,13 @@ class DirectoryLink_Macro(object):
         # For each link-row of the parameter...
         for linkFileName in parameter:
             # Find out the document given on the link-row.
-            linkTarget, unique = self.findDependency(linkFileName, document, documentTree)
-            dependencySet.add(Dependency(linkFileName, documentRelativeName(linkTarget), self.name()))
+            linkDocument, unique = documentTree.findDocument(linkFileName, document.relativeDirectory)
+            if linkDocument == None:
+                return None, True
+
+            directoryIndexName = 'directory.remark-index'
+            linkTarget = documentTree.findDocumentLocal(directoryIndexName, 
+                                                        linkDocument.relativeDirectory)
             
             if not unique:
                 remark.reporter.reportAmbiguousDocument(linkFileName)
@@ -43,7 +47,7 @@ class DirectoryLink_Macro(object):
             if len(parameter) > 1:
                 text.append('')
             
-        return text, dependencySet
+        return text
     
     def outputType(self):
         return 'remark'
@@ -56,15 +60,5 @@ class DirectoryLink_Macro(object):
 
     def postConversion(self, inputDirectory, outputDirectory):
         None
-
-    def findDependency(self, searchName, document, documentTree, parameter = ''):
-        linkDocument, unique = documentTree.findDocument(searchName, document.relativeDirectory)
-        if linkDocument == None:
-            return None, True
-
-        directoryIndexName = 'directory.remark-index'
-        linkTarget = documentTree.findDocumentLocal(directoryIndexName, 
-                                                    linkDocument.relativeDirectory)
-        return linkTarget, unique
 
 registerMacro('DirectoryLink', DirectoryLink_Macro())

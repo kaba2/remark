@@ -607,7 +607,6 @@ class Remark(object):
         # contents of the macro.
         macroText = ['']
         macroHandled = False
-        dependencySet = set()
 
         self.recursionDepth += 1
 
@@ -641,9 +640,8 @@ class Remark(object):
                 if not macroName in suppressList:
                     # Run the actual macro.
                     with ScopeGuard(self.reporter, macro.name()):
-                        macroText, newDependencySet = macro.expand(parameterSet, self)
+                        macroText = macro.expand(parameterSet, self)
 
-                    dependencySet.update(newDependencySet)
                     if macroText == []:
                         macroText = ['']
                     
@@ -687,13 +685,12 @@ class Remark(object):
             # Expand recursively.
             self.scopeStack.open(macroInvocation.name)
             self.scopeStack.top().insert('parameter', macroInvocation.parameterSet)
-            macroText, newDependencySet = self.convert(macroText)
-            dependencySet.update(newDependencySet)
+            macroText = self.convert(macroText)
             self.scopeStack.close()
        
         self.recursionDepth -= 1
 
-        return macroText, dependencySet
+        return macroText
 
     def postConversion(self):
         '''
@@ -736,12 +733,15 @@ class Remark(object):
         row = 0
         column = 0
         newText = ['']
-        dependencySet = set()
         while row < len(text):
             # Replace the first characters with spaces
             # so that the previous macros won't interfere
             # with the rest of the processing.
-            line = ' ' * column + text[row][column :]
+            try:
+                line = ' ' * column + text[row][column :]
+            except TypeError:
+                print text
+                raise TypeError()
             
             # The indentation macro is invoked if and only if
             # * a non-empty line starts with a tab, and
@@ -831,35 +831,12 @@ class Remark(object):
             if macroInvocation.parameterExpansion:
                 # The parameter should be expanded before the macro.
                 self.scopeStack.open(macroInvocation.name)
-                
-                # It is important to update the dependency-set here too.
-                # Expanding the parameter of a macro before the macro 
-                # makes the macro dependent on whatever the parameter is 
-                # dependent on.
-
-                # Example 1. Consider the Verbatim macro, which does not,
-                # by default, expand its output. If the expanded parameter contained
-                # a link, then that link would cause a dependency from this document
-                # to the linked document. That dependency would go undetected by
-                # the macro expansion because the output of the Verbatim macro is 
-                # not expanded further.
-
-                # Example 2. Consider the Comment macro which does not,
-                # by default, expand its parameter. Since we are here,
-                # the user has overridden that default. We will add the possible
-                # links used in the comment as dependencies, even though the Comment 
-                # macro never outputs anything. 
-                
-                macroInvocation.parameterSet, newDependencySet = self.convert(macroInvocation.parameterSet)
-                dependencySet.update(newDependencySet)
+                macroInvocation.parameterSet = self.convert(macroInvocation.parameterSet)
                 self.scopeStack.close()
 
             # Recursively expand the macro.
-            macroText, newDependencySet = self.expandMacro(macroInvocation)
+            macroText = self.expandMacro(macroInvocation)
 
-            # Add the dependencies brought in by the macro expansion.
-            dependencySet.update(newDependencySet)
-            
             #print 'I write:'
             #for line in macroText:
             #    print line
@@ -879,7 +856,7 @@ class Remark(object):
         if newText[-1] == '':
             newText[-1 :] = []
         
-        return newText, dependencySet
+        return newText
     
     def macro(self, macroName, macroParameter = ''):
         '''
@@ -1005,11 +982,11 @@ def convertRemarkToMarkdown(remarkText, document, documentTree,
                     reporter)
 
     # Convert Remark to Markdown.
-    markdownText, dependencySet = remark.convert(remarkText)
+    markdownText = remark.convert(remarkText)
     markdownText += remark.postConversion()
 
     # Return the resulting Markdown text.
-    return markdownText, dependencySet
+    return markdownText
 
 def convertRemarkToHtml(remarkText, document, documentTree, 
                         outputRootDirectory,
@@ -1031,7 +1008,7 @@ def convertRemarkToHtml(remarkText, document, documentTree,
                     reporter)
 
     # Convert Remark to Markdown.
-    markdownText, dependencySet = remark.convert(remarkText)
+    markdownText = remark.convert(remarkText)
     markdownText += remark.postConversion()
 
     #for line in markdownText:
@@ -1048,7 +1025,7 @@ def convertRemarkToHtml(remarkText, document, documentTree,
     htmlText = addHtmlBoilerPlate(htmlText, document, headText)
 
     # Return the resulting html-text and the set of dependencies.      
-    return htmlText, dependencySet
+    return htmlText
 
 def saveRemarkToHtml(remarkText, document, documentTree, 
                      outputRootDirectory,
@@ -1069,12 +1046,9 @@ def saveRemarkToHtml(remarkText, document, documentTree,
     The reporter to use for reporting.
     '''
     # Convert Remark to html.
-    htmlText, dependencySet = convertRemarkToHtml(
+    htmlText = convertRemarkToHtml(
             remarkText, document, documentTree, 
             outputRootDirectory, reporter)
-
-    # Add the dependencies for the documents.
-    document.dependencySet.update(dependencySet)
 
     # Find out some names.
     outputRelativeName = outputDocumentName(document.relativeName)
@@ -1105,10 +1079,7 @@ def convertAll(documentTree, outputRootDirectory, reporter = Reporter()):
     sortedDocumentSet.sort(lambda x, y: cmp(x.relativeName, y.relativeName))
    
     for document in sortedDocumentSet:
-        # Only generate documentation if needed; force
-        # generation if that was specified at command-line.
-        regenerate = globalOptions().regenerate or document.regenerate()
-        if not regenerate:
+        if not document.regenerate():
             continue
 
         reporter.report('Generating ' + document.relativeName + '...',

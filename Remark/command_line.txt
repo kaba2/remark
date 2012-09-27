@@ -26,8 +26,10 @@ as follows:
 -m or --max-file-size
 :	Sets maximum file-size to load (in bytes, default 262144).
 
--r or --regenerate
-:	Regenerates all files.
+-q or --quick
+:	Regenerates only modified documents and their parents. 
+	Note: only use for quick previews of edits; this process leaves 
+	many documents out-of-date. 
 
 -s or --strict
 :	Treats warnings as errors.

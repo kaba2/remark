@@ -18,7 +18,6 @@ class Code_Macro(object):
 
     def expand(self, parameter, remark):
         document = remark.document
-        dependencySet = set()
         
         # Prepare for Pygments input.
         inputText = '\n'.join(parameter)
@@ -32,7 +31,7 @@ class Code_Macro(object):
         # Prepare for Remark output.
         hilightedText = string.split(hilightedText, '\n')
        
-        return hilightedText, dependencySet
+        return hilightedText
 
     def outputType(self):
         return 'html'
@@ -45,9 +44,6 @@ class Code_Macro(object):
 
     def postConversion(self, inputDirectory, outputDirectory):
         None
-
-    def findDependency(self, searchName, document, documentTree, parameter = ''):
-        return None, True
 
 registerMacro('Code', Code_Macro())
 registerMacro('GenericCode', Code_Macro())

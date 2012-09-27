@@ -13,8 +13,7 @@ class Comment_Macro(object):
         # This macro simply eats its parameter. This allows
         # for commenting.
         text = []
-        dependencySet = set()
-        return text, dependencySet
+        return text
 
     def outputType(self):
         return 'remark'
@@ -27,8 +26,5 @@ class Comment_Macro(object):
 
     def postConversion(self, inputDirectory, outputDirectory):
         None
-
-    def findDependency(self, searchName, document, documentTree, parameter = ''):
-        return None, True
 
 registerMacro('Comment', Comment_Macro())

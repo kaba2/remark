@@ -26,7 +26,6 @@ import time
 from MacroRegistry import findMacro
 from Document import Document, documentRelativeName
 from DocumentTree import DocumentTree
-from Cache import readCache, createCache
 
 from Conversion import convertAll
 from FileSystem import unixDirectoryName, unixRelativePath, readFile, writeFile
@@ -125,80 +124,17 @@ def createDocumentTree(inputDirectory, filesToCopySet, reporter):
 
     return documentTree
 
-def resolveRegeneration(documentTree, cacheDocumentTree, reporter):
-    for document in documentTree:
-        # Retrieve the corresponding cached document.
-        cacheDocument = cacheDocumentTree.cacheDocument(document)
-        if cacheDocument == None:
-            # Document has been created
-            # -------------------------
-            # If the document can be found from the current
-            # document tree, but can not be found from the
-            # cache, then it was just created.
-            document.setRegenerate(True)
-            with ScopeGuard(reporter, document.relativeName):
-                reporter.report(['', 'Created.'], 'verbose')
-            continue
-           
-        # The document can be found from the cache, 
-        # and also from the document-tree.
-
-        if not document.documentType.upToDate(document, documentTree, outputDirectory):
-            # Document has been modified
-            # --------------------------
-            document.setRegenerate(True)
-            with ScopeGuard(reporter, document.relativeName):
-                reporter.report(['', 'Modified.'], 'verbose')
-            continue
-
-        for dependency in cacheDocument.dependencySet:
-            # Find the macro.
-            macro = findMacro(dependency.searchMacro)
-            assert macro != None
-
-            # Find the dependency.
-            toDocument, unique = macro.findDependency(dependency.searchName, document, 
-                                              documentTree, dependency.searchParameter)
-            newSearchResult = documentRelativeName(toDocument)
-
-            if newSearchResult != dependency.searchResult:
-                # Link has changed
-                # ----------------
-                # This may happen because of a newly-created document
-                # or the removal of a document.
+def resolveRegeneration(documentTree, reporter):
+    if globalOptions().quick:
+        for document in documentTree:
+            if not document.documentType.upToDate(document, documentTree, outputDirectory):
+                # Document has been modified
                 document.setRegenerate(True)
-                with ScopeGuard(reporter, document.relativeName):
-                    reporter.report(['', 'Link changed from ' +
-                                   dependency.searchResult + ' to ' +
-                                   newSearchResult + '.'],
-                                    'verbose')
-                break
-
-            if toDocument == None:
-                # The link was dangling and stays so.
+                document.parent.setRegenerate(True)
                 continue
-
-            # A document is said to be modified if it is not up-to-date,
-            # or is not found from the document-tree cache.
-            if ((not (toDocument.documentType.upToDate(toDocument, documentTree, outputDirectory) and
-                    toDocument in cacheDocumentTree)) and
-                    toDocument.documentType.updateDependent()):
-                # Linked-to document has been modified or removed
-                # -----------------------------------------------
-                document.setRegenerate(True)
-                with ScopeGuard(reporter, document.relativeName):
-                    reporter.report(['', 'Linked-to document ' + 
-                                    toDocument.relativeName + ' changed.'],
-                                    'verbose')
-                break
-
-    # Update the non-regenerated documents from the cache.        
-    for document in documentTree:
-        regenerate = globalOptions().regenerate or document.regenerate()
-        if not regenerate:
-            cacheDocument = cacheDocumentTree.cacheDocument(document)
-            if cacheDocument != None:
-                document.dependencySet.update(cacheDocument.dependencySet)
+    else:
+        for document in documentTree:
+            document.setRegenerate(True)
 
 def parseArguments(reporter):
     '''
@@ -238,9 +174,9 @@ globs are allowed (e.g. *.txt *.py).""")
         help = """sets maximum file-size to load (in bytes, default 262144)""",
         metavar = 'SIZE')
 
-    optionParser.add_option('-r', '--regenerate',
-        action="store_true", dest="regenerate", default=False,
-        help = """regenerates all files""")
+    optionParser.add_option('-q', '--quick',
+        action="store_true", dest="quick", default=False,
+        help = """regenerates only modified documents and their parents. Note: only use for quick previews of edits; this process leaves many documents out-of-date. """)
 
     optionParser.add_option('-s', '--strict',
         action="store_true", dest="strict", default=False,
@@ -343,43 +279,17 @@ if __name__ == '__main__':
     copyIfNecessary('./remark_files/' + asciiMathMlName(), scriptDirectory, 
                     './remark_files/' + asciiMathMlName(), outputDirectory)
 
-    #with ScopeGuard(reporter, 'Reading document-tree cache')
-
-    cacheRelativeName = './remark_files/document-tree.xml'
-    cacheFullName = os.path.join(outputDirectory, cacheRelativeName)
-
-    if not globalOptions().regenerate:
-        cacheDocumentTree = readCache(cacheFullName, documentTree)
-
-    #reporter.report(['', 'Done.'], 'verbose')
-
     # Parse the tags.
     with ScopeGuard(reporter, 'Parsing tags'):
         for document in documentTree:
             try:
                 type = document.documentType
 
-                if not globalOptions().regenerate:
-                    # If the document is up-to-date, and it can be found from
-                    # the cache, then use the cached tags instead.
-                    if (type.upToDate(document, documentTree, outputDirectory) and
-                        document in cacheDocumentTree):
-                        cacheDocument = cacheDocumentTree.cacheDocument(document)
-                        #print cacheDocument.tagSet
-                        document.tagSet.update(cacheDocument.tagSet)
-                        continue
-
-                # Otherwise parse the tags.
                 with ScopeGuard(reporter, document.relativeName):
                     tagSet = type.parseTags(documentTree.fullName(document), reporter)
 
                 document.tagSet.update(tagSet)
                 document.setTag('link_description', [type.linkDescription(document)])
-                
-                #print
-                #print document.relativeName + ':'
-                #for tagName, tagText in tagSet.iteritems():
-                #    print tagName, ':', tagText
 
             except UnicodeDecodeError:
                 reporter.reportWarning(document.relativeName + 
@@ -391,21 +301,14 @@ if __name__ == '__main__':
     documentTree.resolveParentLinks()
 
     # Resolve regeneration of documents.
-    if not globalOptions().regenerate:
-        with ScopeGuard(reporter, 'Resolving regeneration'):
-            resolveRegeneration(documentTree, cacheDocumentTree, reporter)
-            reporter.report(['', 'Done.'], 'verbose')
-    else:
-        for document in documentTree:
-            document.setRegenerate(True)
+    with ScopeGuard(reporter, 'Resolving regeneration'):
+        resolveRegeneration(documentTree, reporter)
+        reporter.report(['', 'Done.'], 'verbose')
 
     # Generate documents.
     with ScopeGuard(reporter, 'Generating documents'):
         convertAll(documentTree, outputDirectory, reporter)
         reporter.report(['', 'Done.'], 'verbose')
-
-    # Save the document-tree as xml.
-    writeFile(createCache(documentTree), cacheFullName)
 
     # Find out statistics.
     seconds = round(time.clock() - startTime, 2)

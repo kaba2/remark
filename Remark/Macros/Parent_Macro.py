@@ -13,16 +13,14 @@ class Parent_Macro(object):
 
     def expand(self, parameter, remark):
         text = []
-        dependencySet = set()
 
         document = remark.document
         parent = document.parent
 
         text = [remark.remarkLink('Back to ' + parent.linkDescription(),
                                   document, parent)]
-        dependencySet.add(Dependency(parent.relativeName, documentRelativeName(parent), self.name()))
 
-        return text, dependencySet
+        return text
 
     def outputType(self):
         return 'remark'
@@ -35,12 +33,6 @@ class Parent_Macro(object):
 
     def postConversion(self, inputDirectory, outputDirectory):
         None
-
-    def findDependency(self, searchName, document, documentTree, parameter = ''):
-        parent = document.parent
-        if parent.relativeName == searchName:
-            return parent, True
-        return None, True
 
 registerMacro('Parent', Parent_Macro())
 

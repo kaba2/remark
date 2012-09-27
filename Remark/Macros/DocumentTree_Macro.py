@@ -52,7 +52,7 @@ class DocumentTree_Macro(object):
                                                       self.document.relativeDirectory)
         if rootDocument == None:
             self.remark.reporter.reportMissingDocument(self.rootName)
-            return [], set()
+            return []
         
         if not unique:
             self.remark.reporter.reportAmbiguousDocument(self.rootName)
@@ -61,11 +61,10 @@ class DocumentTree_Macro(object):
         # given root document.
         self.visitedSet = set()
         text = ['']
-        dependencySet = set()
-        self._workDocument(rootDocument, text, 0, dependencySet)
+        self._workDocument(rootDocument, text, 0)
 
         if text == ['']:
-            return [], set()
+            return []
 
         text = htmlDiv(text, self.className)
 
@@ -73,7 +72,7 @@ class DocumentTree_Macro(object):
         text.append('<div class = "remark-end-list"></div>')
         text.append('')
 
-        return text, dependencySet
+        return text
 
     def outputType(self):
         return 'remark'
@@ -86,10 +85,6 @@ class DocumentTree_Macro(object):
 
     def postConversion(self, inputDirectory, outputDirectory):
         None
-
-    def findDependency(self, searchName, document, documentTree, parameter = ''):
-        linkDocument = documentTree.findDocumentByRelativeName(searchName)
-        return linkDocument, True
 
     def _parse(self, globSet, map, transform):
         for line in globSet:
@@ -115,7 +110,7 @@ class DocumentTree_Macro(object):
             else:
                 map[tagName].append(regex)
 
-    def _workDocument(self, document, text, depth, dependencySet):
+    def _workDocument(self, document, text, depth):
         # Limit the reporting to given maximum depth.
         if depth > self.maxDepth:
             return False, False
@@ -136,7 +131,7 @@ class DocumentTree_Macro(object):
         usefulBranches = 0
         if not selfRecursive:
             for child in childSet:
-                match, useful = self._workDocument(child, localText, depth + 1, dependencySet)
+                match, useful = self._workDocument(child, localText, depth + 1)
                 if match:
                     childMatches += 1
                 if useful:
@@ -192,9 +187,6 @@ class DocumentTree_Macro(object):
                     document.linkDescription(), 
                     self.document, document)
             text.append(' 1. ' + linkText)
-
-            # Add a dependency from the generated document to this document.
-            dependencySet.add(Dependency(document.relativeName, document.relativeName, self.name()))
 
             #text.append('')
             for line in localText:

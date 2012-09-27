@@ -26,14 +26,11 @@ class ParentList_Macro(object):
         # (the root document first).
         level = 1
         text = []
-        dependencySet = set()
         for i in reversed(range(0, len(parentSet))):
             document = parentSet[i]
             linkText = remark.remarkLink(
                 document.linkDescription(), 
                 remark.document, document)
-            if i > 0:
-                dependencySet.add(Dependency(document.relativeName, documentRelativeName(document), self.name()))
 
             # Strictly speaking, Markdown does not
             # use the actual numbers, so we could
@@ -50,7 +47,7 @@ class ParentList_Macro(object):
         text.append('<div class = "remark-end-list"></div>')
         text.append('')
 
-        return text, dependencySet
+        return text
 
     def outputType(self):
         return 'remark'
@@ -63,14 +60,6 @@ class ParentList_Macro(object):
 
     def postConversion(self, inputDirectory, outputDirectory):
         None
-
-    def findDependency(self, searchName, document, documentTree, parameter = ''):
-        linkDocument = document
-        while linkDocument.parent != linkDocument:
-            if linkDocument.relativeName == searchName:
-                return linkDocument, True
-            linkDocument = linkDocument.parent
-        return None, True
 
 registerMacro('ParentList', ParentList_Macro())
 

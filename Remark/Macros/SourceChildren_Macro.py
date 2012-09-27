@@ -20,7 +20,6 @@ class SourceChildren_Macro(object):
                 
         scope = remark.scopeStack.top()
         text = []
-        dependencySet = set()
 
         def prefixOf(left, right):
             return string.find(withoutFileExtension(right), 
@@ -36,7 +35,7 @@ class SourceChildren_Macro(object):
                         x.tagString('document_type') == 'CodeView')]
 
         if len(sortedMap) == 0:
-            return text, dependencySet
+            return text
 
         # Sort the list alphabetically w.r.t. the relative file names.
         
@@ -138,10 +137,9 @@ class SourceChildren_Macro(object):
             for child in group[2]:
                 text.append(remark.remarkLink(escapeMarkdown(child.fileName),
                                               document, child))
-                dependencySet.add(Dependency(child.relativeName, documentRelativeName(child), self.name(), ''))
                 text.append('')
             
-        return text, dependencySet
+        return text
 
     def outputType(self):
         return 'remark'
@@ -154,9 +152,5 @@ class SourceChildren_Macro(object):
 
     def postConversion(self, inputDirectory, outputDirectory):
         None
-
-    def findDependency(self, searchName, document, documentTree, parameter = ''):
-        # TODO
-        return None, True
 
 registerMacro('SourceChildren', SourceChildren_Macro())

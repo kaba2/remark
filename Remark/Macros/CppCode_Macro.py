@@ -20,7 +20,6 @@ class CppCode_Macro(object):
 
     def expand(self, parameter, remark):
         text = []
-        dependencySet = set()
         
         # Hilight the text.
         hilightedText = highlight(string.join(parameter, '\n'), CppLexer(), HtmlFormatter())
@@ -30,13 +29,13 @@ class CppCode_Macro(object):
 
         # Copy the source and replace the includes with links.
         includeRegex = re.compile(r'(#include[ \t]+(?:(?:&quot)|(?:&lt));)(.*)((?:(?:&quot)|(?:&gt));)')
-        replacer = lambda match: self._linkConverter(match, remark, dependencySet)
+        replacer = lambda match: self._linkConverter(match, remark)
         
         for line in hilightedText:
             # Replace include file names with links to source files.
             text.append(re.sub(includeRegex, replacer, line))
         
-        return text, dependencySet
+        return text
 
     def outputType(self):
         return 'html'
@@ -50,20 +49,15 @@ class CppCode_Macro(object):
     def postConversion(self, inputDirectory, outputDirectory):
         None
 
-    def findDependency(self, searchName, document, documentTree, parameter = ''):
-        linkDocument, unique = documentTree.findDocument(searchName, document.relativeDirectory, 
-                                                         checkShorter = False)
-        return linkDocument, unique
-
-    def _linkConverter(self, regexMatch, remark, dependencySet):
+    def _linkConverter(self, regexMatch, remark):
         document = remark.document
         documentTree = remark.documentTree 
         
         searchName = unixDirectoryName(regexMatch.group(2))
         includeName = regexMatch.group(2)
     
-        linkDocument, unique = self.findDependency(searchName, document, documentTree)
-        dependencySet.add(Dependency(searchName, documentRelativeName(linkDocument), self.name()))
+        linkDocument, unique = documentTree.findDocument(searchName, document.relativeDirectory, 
+                                                         checkShorter = False)
 
         if not unique:
             # We don't accept ambiguous links.
