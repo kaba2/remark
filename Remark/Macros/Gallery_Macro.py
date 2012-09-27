@@ -107,7 +107,7 @@ class Gallery_Macro(object):
            
             # If the image can not be generated a thumbnail directly,
             # see if there is an equivalent image with a different format.
-            pixelDocument = None
+            pixelDocument = input
             if not fileExtension(input.fileName) in self.pixelBasedSet:
                 for extension in self.pixelBasedSet:
                     pixelFileName = changeExtension(input.fileName, extension)
@@ -115,10 +115,11 @@ class Gallery_Macro(object):
                     # Note that the search for a pixel-based alternative image
                     # is carried out in the directory of the input-image,
                     # not in the directory of the document.
-                    pixelDocument = documentTree.findDocumentLocal(pixelFileName, input.relativeDirectory)
+                    linkDocument = documentTree.findDocumentLocal(pixelFileName, input.relativeDirectory)
 
-                    if pixelDocument != None:
+                    if linkDocument != None:
                         # We found a pixel-based alternative image.
+                        pixelDocument = linkDocument
                         break
 
             # Find out input names.
