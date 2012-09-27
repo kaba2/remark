@@ -106,3 +106,8 @@ unknown-macro
 :	This warning is generated when invoking an unrecognized macro. To fix
 	this, define the macro, rename the invoked macro to a recognized one, 
 	or remove the macro invocation.
+
+quick
+:	This warning is generated when using the -q command-line option, to
+	remind that some documents may not be generated. To fix this, remove 
+	the -q option.
