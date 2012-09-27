@@ -88,8 +88,8 @@ class DocumentTree_Macro(object):
         None
 
     def findDependency(self, searchName, document, documentTree, parameter = ''):
-        # TODO
-        return None, True
+        linkDocument = documentTree.findDocumentByRelativeName(searchName)
+        return linkDocument, True
 
     def _parse(self, globSet, map, transform):
         for line in globSet:
@@ -194,7 +194,7 @@ class DocumentTree_Macro(object):
             text.append(' 1. ' + linkText)
 
             # Add a dependency from the generated document to this document.
-            dependencySet.add(Dependency(document.relativeName, documentRelativeName(document), self.name()))
+            dependencySet.add(Dependency(document.relativeName, document.relativeName, self.name()))
 
             #text.append('')
             for line in localText:

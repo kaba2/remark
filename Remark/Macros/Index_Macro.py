@@ -85,8 +85,8 @@ class Index_Macro(object):
         None
         
     def findDependency(self, searchName, document, documentTree, parameter = ''):
-        # TODO
-        return None, True
+        linkDocument = documentTree.findDocumentByRelativeName(searchName)
+        return linkDocument, True
 
 registerMacro('Index', Index_Macro())
         
