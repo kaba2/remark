@@ -8,7 +8,6 @@ import re
 
 from MacroRegistry import registerMacro
 from FileSystem import htmlDiv, globToRegex, combineRegex
-from Document import documentRelativeName, Dependency
 
 class DocumentTree_Macro(object):
     def name(self):

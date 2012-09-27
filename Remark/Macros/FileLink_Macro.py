@@ -5,7 +5,6 @@
 
 from MacroRegistry import registerMacro
 from FileSystem import unixRelativePath, outputDocumentName, escapeMarkdown
-from Document import documentRelativeName, Dependency
 
 class FileLink_Macro(object):
     def name(self):

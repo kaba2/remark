@@ -8,7 +8,6 @@ import re
 
 from MacroRegistry import registerMacro
 from FileSystem import unixRelativePath, unixDirectoryName
-from Document import documentRelativeName, Dependency
 
 from pygments import highlight
 from pygments.lexers import CppLexer

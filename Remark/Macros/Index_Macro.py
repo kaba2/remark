@@ -9,7 +9,6 @@ import os.path
 from FileSystem import unixRelativePath, htmlDiv, escapeMarkdown
 from FileSystem import outputDocumentName, unixDirectoryName, listDirectory
 from MacroRegistry import registerMacro
-from Document import documentRelativeName, Dependency
 
 class Index_Macro(object):
     def name(self):

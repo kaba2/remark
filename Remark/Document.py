@@ -7,13 +7,6 @@ import os.path
 import string
 from FileSystem import documentType, unixDirectoryName, unixRelativePath, fileExtension
 
-class Dependency(object):
-    def __init__(self, searchName, searchResult, searchMacro, searchParameter = ''):
-        self.searchName = searchName
-        self.searchResult = searchResult
-        self.searchMacro = searchMacro
-        self.searchParameter = searchParameter
-
 class Document(object):
     def __init__(self, relativeName):
         '''
@@ -149,7 +142,3 @@ class Document(object):
         
         return self.documentType.linkDescription(self)
 
-def documentRelativeName(document):
-    if document == None:
-        return ''
-    return document.relativeName

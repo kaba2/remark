@@ -737,11 +737,7 @@ class Remark(object):
             # Replace the first characters with spaces
             # so that the previous macros won't interfere
             # with the rest of the processing.
-            try:
-                line = ' ' * column + text[row][column :]
-            except TypeError:
-                print text
-                raise TypeError()
+            line = ' ' * column + text[row][column :]
             
             # The indentation macro is invoked if and only if
             # * a non-empty line starts with a tab, and
