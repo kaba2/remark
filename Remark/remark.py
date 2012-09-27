@@ -126,6 +126,8 @@ def createDocumentTree(inputDirectory, filesToCopySet, reporter):
 
 def resolveRegeneration(documentTree, reporter):
     if globalOptions().quick:
+        reporter.reportWarning('Using quick preview mode. Some documents may not be updated.', 
+                               'quick')
         for document in documentTree:
             if not document.documentType.upToDate(document, documentTree, outputDirectory):
                 # Document has been modified
