@@ -5,7 +5,6 @@
 
 from MacroRegistry import registerMacro
 from FileSystem import unixRelativePath, outputDocumentName
-from Document import documentRelativeName, Dependency
 
 class Parent_Macro(object):
     def name(self):

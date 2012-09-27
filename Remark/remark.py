@@ -24,7 +24,7 @@ import shutil
 import time
 
 from MacroRegistry import findMacro
-from Document import Document, documentRelativeName
+from Document import Document
 from DocumentTree import DocumentTree
 
 from Conversion import convertAll

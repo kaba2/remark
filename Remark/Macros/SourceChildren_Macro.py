@@ -9,7 +9,6 @@ import string
 from MacroRegistry import registerMacro
 from FileSystem import unixRelativePath, outputDocumentName, escapeMarkdown
 from FileSystem import withoutFileExtension
-from Document import documentRelativeName, Dependency
 
 class SourceChildren_Macro(object):
     def name(self):

@@ -5,7 +5,6 @@
 
 from MacroRegistry import registerMacro
 from FileSystem import htmlDiv
-from Document import documentRelativeName, Dependency
 
 class ParentList_Macro(object):
     def name(self):
