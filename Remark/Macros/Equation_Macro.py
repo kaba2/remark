@@ -11,7 +11,6 @@ class Equation_Macro(object):
 
     def expand(self, parameter, remark):
         text = []
-        dependencySet = set()
 
         document = remark.document
 
@@ -40,7 +39,7 @@ class Equation_Macro(object):
                     '</span>')
         text.append('</div>')
 
-        return text, dependencySet
+        return text
 
     def outputType(self):
         return 'remark'
@@ -53,9 +52,6 @@ class Equation_Macro(object):
 
     def postConversion(self, inputDirectory, outputDirectory):
         None
-
-    def findDependency(self, searchName, document, documentTree, parameter = ''):
-        return None, True
 
 registerMacro('Equation', Equation_Macro())
 

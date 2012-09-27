@@ -13,14 +13,13 @@ class Verbatim_Macro(object):
 
     def expand(self, parameter, remark):
         text = []
-        dependencySet = set()
 
         for line in parameter:
             text.append('\t' + line)
 
         text.append('')
 
-        return text, dependencySet
+        return text
 
     def outputType(self):
         return 'remark'
@@ -33,8 +32,5 @@ class Verbatim_Macro(object):
 
     def postConversion(self, inputDirectory, outputDirectory):
         None
-
-    def findDependency(self, searchName, document, documentTree, parameter = ''):
-        return None, True
 
 registerMacro('Verbatim', Verbatim_Macro())

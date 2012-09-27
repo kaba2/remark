@@ -67,8 +67,6 @@ class Document(object):
         # description-tags have been parsed.
         self.setTag('link_description')
 
-        self.dependencySet = set()
-
         # Whether the document should be generated.
         # By default the document is not generated;
         # the regeneration rules change this later.
@@ -79,15 +77,6 @@ class Document(object):
 
     def regenerate(self):
         return self.regenerate_
-
-    def addDependency(self, dependency):
-        '''
-        Adds a dependency from this document to another document.
-
-        If document A is dependent on document B, then a change
-        in B forces the regeneration of document A.
-        '''
-        self.dependencySet.add(dependency)
 
     def insertChild(self, child):
         '''

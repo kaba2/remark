@@ -42,12 +42,10 @@ class Index_Macro(object):
         
         # Create links for the directories.
         text = []
-        dependencySet = set()
         for directory in directorySet:
             linkDirectory = os.path.join(document.relativeDirectory, directory)
             directoryIndexName = 'directory.remark-index'
             directoryDocument = documentTree.findDocumentLocal(directoryIndexName, linkDirectory)
-            dependencySet.add(Dependency(directoryDocument.relativeName, documentRelativeName(directoryDocument), self.name()))
             assert directoryDocument != None
 
             text.append(' 1. ' + remark.remarkLink(escapeMarkdown(directory + '/'),
@@ -56,7 +54,6 @@ class Index_Macro(object):
         # Create links for the files.
         for fileName in fileSet:
             fileDocument = documentTree.findDocumentLocal(fileName, document.relativeDirectory)
-            dependencySet.add(Dependency(fileDocument.relativeName, documentRelativeName(fileDocument), self.name()))
             assert fileDocument != None
 
             text.append(' 1. ' + remark.remarkLink(escapeMarkdown(fileName),
@@ -70,7 +67,7 @@ class Index_Macro(object):
         text.append('<div class = "remark-end-list"></div>')
         text.append('')
 
-        return text, dependencySet
+        return text
 
     def outputType(self):
         return 'remark'
@@ -84,9 +81,5 @@ class Index_Macro(object):
     def postConversion(self, inputDirectory, outputDirectory):
         None
         
-    def findDependency(self, searchName, document, documentTree, parameter = ''):
-        linkDocument = documentTree.findDocumentByRelativeName(searchName)
-        return linkDocument, True
-
 registerMacro('Index', Index_Macro())
         

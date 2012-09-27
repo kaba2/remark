@@ -30,7 +30,6 @@ and support for long-UNC paths under Windows.
 
 ### Core
 
-* Added incremental generation of documentation.
 * Added support for long-UNC-paths under Windows.
 * Added document-tags.
 * Added a reporting system for more accurate error messages
@@ -55,6 +54,8 @@ than just those which are to be copied.
 * Added an option for listing all the file-extensions in the input
 directory along with example files. This makes it easier to check
 that one has remembered to include all necessary files.
+* Added an option for generating only the modified files and their
+parents for quick previews.
 * Added an option for verbose mode, and moved successful output
 from the normal mode to the verbose mode. This makes it easier
 to spot warnings.
