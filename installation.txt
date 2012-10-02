@@ -14,7 +14,9 @@ The dependencies to other Python libraries are as follows:
  
 ### [Python Markdown 2.0][PythonMarkdown20]
 
-This library is used to convert Markdown to Html.
+This library is used to convert Markdown to Html. Note that the newer 
+[Python Markdown 2.2][PythonMarkdown22] does not work with Remark, because 
+it does not support Markdown inside html blocks.
  
 ### [Pygments 1.5][Pygments]
 
