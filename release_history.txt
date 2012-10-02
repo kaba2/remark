@@ -13,6 +13,22 @@ incremented, both y and z are zeroed. The x, y, and z need not consist
 of a single digit, and, for example, 1.12.0 is a much later version 
 than 1.1.3.
 
+Remark 1.5.1
+------------
+
+Release date 04.10.2012
+
+[Original webpage][Remark-1.5.1]
+
+[Remark-1.5.1]: http://kaba.hilvi.org/remark-1.5.1
+
+# Macros
+
+* Gallery: Made the PIL import work also in the case where PIL is 
+  installed in a directory named something else than PIL, as is the 
+  case when installing PIL via `easy_install` 
+  (bug credit: Germán Gómez-Herrero).
+
 Remark 1.5.0
 ------------
 

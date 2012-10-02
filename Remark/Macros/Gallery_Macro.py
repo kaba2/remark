@@ -14,10 +14,22 @@ import math
 import hashlib
 
 try: 
+    # On Linux and Mac the easy_install installs Python
+    # imaging library in a directory which is different from
+    # PIL. Therefore this may fail even though PIL is installed.
     from PIL import Image
-except ImportError, e:
-    print 'Error: Python Imaging Library missing. Please install it first.'
-    sys.exit(1)
+except ImportError:
+    try:
+        # When the previous does fail, we will try to import the
+        # Image module directly. If this works, it is because PIL 
+        # adds the PIL.pth file in the python site-packages directory,
+        # which then contains a redirect to the actual PIL directory.
+        # There is a danger, though, that this actually imports some
+        # other module than the PIL Image module.
+        import Image
+    except ImportError:
+        print 'Error: Python Imaging Library missing. Please install it first.'
+        sys.exit(1)
 
 class Gallery_Macro(object):
     def __init__(self):
@@ -27,7 +39,7 @@ class Gallery_Macro(object):
         # lossless formats over lossy formats.
         self.pixelBasedSet = ['.png', '.gif', '.jpeg', '.jpg']
 
-        # The support vector-based image file-extensions.
+        # The supported vector-based image file-extensions.
         self.vectorBasedSet = ['.svg', '.svgz']
 
         # The set of supported image file-extensions.
