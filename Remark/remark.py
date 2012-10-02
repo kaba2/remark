@@ -8,13 +8,13 @@ import sys
 
 try:
     import markdown
-except ImportError, e:
+except ImportError:
     print 'Error: Python Markdown library missing. Please install it first.'
     sys.exit(1)
 
 try: 
     import pygments
-except ImportError, e:
+except ImportError:
     print 'Error: Pygments library missing. Please install it first.'
     sys.exit(1)
 

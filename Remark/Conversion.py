@@ -904,10 +904,8 @@ def convertMarkdownToHtml(text):
     The converted html text.
     '''
     global markdownConverter
-    
     htmlString = markdownConverter.convert(string.join(text, '\n'))
     htmlText = string.split(htmlString, '\n')
-            
     return htmlText
 
 def addHtmlBoilerPlate(text, document, htmlHead):
