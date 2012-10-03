@@ -7,6 +7,21 @@ This section contains information on running Remark from the command-line.
 Remark also contains an inbuilt help which can be invoked by running Remark
 from the command-line without any arguments.
 
+Usage
+-----
+
+From the console (Windows, Linux, Unix, ...): 
+
+	remark.py [options] inputDirectory outputDirectory [files...]
+
+### Linux and Mac users
+
+The shells on Linux and Mac expand the globs (e.g \*.txt) _before_
+running an executable (unless the globs do not match anything in
+the current directory). Therefore, the globs should always be 
+provided in the form "\*.txt", to defer the glob-expansion from
+the shell to Remark.
+
 Options
 -------
 
