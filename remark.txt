@@ -16,8 +16,6 @@ From the console (Windows, Linux, Unix, ...):
 
 	remark.py [options] inputDirectory outputDirectory [files...]
 
-See the installation instructions below.
-
 ### Linux and Mac users
 
 The shells on Linux and Mac expand the globs (e.g \*.txt) _before_
