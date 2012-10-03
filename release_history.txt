@@ -22,17 +22,28 @@ Release date 04.10.2012
 
 [Remark-1.5.1]: http://kaba.hilvi.org/remark-1.5.1
 
-# Macros
+### Core
+
+* Added a check for Python Markdown version 2.0, to prevent using Remark 
+  with versions of Python Markdown (e.g. 2.2) that do not support Markdown 
+  in html blocks.
+
+### Macros
 
 * Gallery: Made the PIL import work also in the case where PIL is 
   installed in a directory named something else than PIL, as is the 
   case when installing PIL via `easy_install` 
   (bug credit: Germán Gómez-Herrero).
 
+### Others
+
+* Set the correct release date for Remark 1.5.0 in release history.
+* Rewrote the installation documentation.
+
 Remark 1.5.0
 ------------
 
-Release date 21.09.2012
+Release date 30.09.2012
 
 [Original webpage][Remark-1.5.0]
 

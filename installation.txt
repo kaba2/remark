@@ -3,20 +3,21 @@ Installation
 
 [[Parent]]: remark.txt
 
-Remark was programmed using Python 2.7. Thus it should run in any
-Python 2.x interpreter, where x is at least 7. Note that the syntaxes of 
-Python 3.x and Python 2.x are not compatible.
+This section describes gives instructions for installing Remark.
 
 Python dependencies
 -------------------
 
-The dependencies to other Python libraries are as follows:
+Remark was programmed in Python 2.7. Thus it should run in any
+Python 2.x interpreter, where x is at least 7. The syntaxes 
+of Python 3.x and Python 2.x are not compatible. The dependencies to 
+other Python libraries are as follows:
  
 ### [Python Markdown 2.0][PythonMarkdown20]
 
-This library is used to convert Markdown to Html. Note that the newer 
-[Python Markdown 2.2][PythonMarkdown22] does not work with Remark, because 
-it does not support Markdown inside html blocks.
+This library is used to convert Markdown to Html. Note: the newer 
+[Python Markdown 2.2][PythonMarkdown22] does not work with Remark, 
+because it does not support Markdown inside html blocks.
  
 ### [Pygments 1.5][Pygments]
 
@@ -31,6 +32,62 @@ This library is used to create thumbnails for image galleries.
 [Pygments]: http://pygments.org/
 [PIL]: http://www.pythonware.com/products/pil/
  
+Installing Python
+-----------------
+
+Remark requires Python 2.7. For instructions on installing Python 2.7, 
+see [here][PythonInstall]. In the following we will assume that you have
+the `easy_install` and `pip` working, as described in the link. These are 
+the tools for installing additional Python libraries.
+
+[PythonInstall]: http://docs.python-guide.org/en/latest/starting/installation/
+[PythonInstallMac]: http://docs.python-guide.org/en/latest/starting/install/osx/
+
+Installing Pygments
+-------------------
+
+To install the [Pygments][Pygments] library, type on the command-line:
+
+	easy_install Pygments
+
+Installing Python Markdown
+--------------------------
+
+To install the [Python Markdown 2.0][PythonMarkdown20] library, type:
+
+	pip install markdown==2.0.0
+
+Note that the newer [Python Markdown 2.2][PythonMarkdown22] does 
+not work with Remark, because it does not support Markdown inside
+html blocks.
+
+Installing Python Imaging Library
+---------------------------------
+
+The installation of [Python Imaging Library][PIL] (PIL) depends on
+your operating system and whether your Python is 32-bit or 64-bit.
+
+### MacOSX and Linux
+
+On the command-line, type:
+
+	pip install pil
+
+### Windows (32-bit Python)
+
+Install Python Imaging Library using a 32-bit installer from [here][PIL_Installer].
+On Windows 7 (and Vista?), make sure that you run the installer as an administrator 
+(right click --> run as administrator).
+
+### Windows (64-bit Python)
+
+Install Python Imaging Library using a 64-bit installer from [here][PIL-64]. 
+On Windows 7 (and Vista?), make sure that you run the installer as an administrator 
+(right click --> run as administrator).
+
+[PIL_Installer]: http://www.pythonware.com/products/pil/
+[PIL-64]: http://www.lfd.uci.edu/~gohlke/pythonlibs/
+
 Javascript dependencies
 -----------------------
 
@@ -50,92 +107,6 @@ We distribute it with Remark.
 
 [Highslide]: http://highslide.com/
 [AsciiMathML]: http://www1.chapman.edu/~jipsen/asciimath.html
-
-Windows and 32-bit Python
--------------------------
-
-The following summarizes the installation on Windows with 
-32-bit Python installed.
-
-The easiest way to install Remark is to make sure that you have the 32-bit 
-Python installed (not 64-bit). The 64-bit version is problematic because it 
-often happens that there is no installer for a 64-bit version of a Python 
-library. In particular, such an installer is missing for Python Markdown. 
-Naturally, you should then install all the Python libraries as 32-bit.
-
-On Windows 7 (and Vista?), make sure that you run all 
-the installers as an administrator (right click --> run as administrator). 
-Otherwise, for example, the Python Markdown installer complains of not 
-being able to add keys into the registry.
-
-* Download and install Python from [here][Python_Installer].
-* Download and install SetupTools from [here][SetupTools_Installer].
-  This installs the `easy_install` tool used to install Pygments.
-* Download and install Python Imaging Library from [here][PIL_Installer].
-
-[Python_Installer]: http://www.python.org/download/
-[PIL_Installer]: http://www.pythonware.com/products/pil/
-[SetupTools_Installer]: http://pypi.python.org/pypi/setuptools
-
-Open the command-line, and type in:
-
-	easy_install pip
-
-This installs the newer [Python package installer][PIP]. Then type:
-
-	easy_install Pygments
-
-This installs the [Pygments][Pygments] library. Finally, type:
-
-	pip install markdown==2.0.0
-
-This installs the [Python Markdown 2.0][PythonMarkdown20] library.
-Note that the newer [Python Markdown 2.2][PythonMarkdown22] does not
-work with Remark, because it does not support Markdown inside
-html blocks.
-
-[PIP]: http://www.pip-installer.org/en/latest/index.html
-
-Windows and 64-bit Python
--------------------------
-
-The following summarizes the installation on Windows with 
-64-bit Python installed.
-
-The steps are the same as for Windows and 32-bit Python. However,
-the installers for the Python Markdown 2.0 and Python Imaging
-Library 1.1.7 do not work straightforwardly in Windows 7 (when 
-writing this in 18.06.2012) if you have 64-bit Python installed. 
-The solution for the Python Imaging Library is to obtain a 64-bit 
-installer from [here][PIL-64].
-
-[PIL-64]: http://www.lfd.uci.edu/~gohlke/pythonlibs/
-
-The solution for the Markdown installer is to first write the 
-following in Notepad:
-
-	Windows Registry Editor Version 5.00 
-
-	[HKEY_CURRENT_USER\Software\Python] 
-	[HKEY_CURRENT_USER\Software\Python\Pythoncore]
-	[HKEY_CURRENT_USER\Software\Python\Pythoncore\2.7] 
-	[HKEY_CURRENT_USER\Software\Python\Pythoncore\2.7\InstallPath]
-	@="C:\\Python27" 
-	[HKEY_CURRENT_USER\Software\Python\Pythoncore\2.7\PythonPath]
-	@="C:\\Python27;C:\\Python27\\Lib\\;C:\\Python27\\DLLs\\"
-
-save this in a file with extension .reg, and then run it using 
-Registry Editor (right click --> Open with). Do note to replace 
-the Python version, and the Python directory above if they are not 
-what you use. At first it would seem that this also helps 
-with the Python Imaging Library installer (32-bit version); although 
-the installation completes, the library does not work.
-
-Summary
--------
-
-After installing Python, Python Markdown, Python Imaging Library, 
-and Pygments, you should be ready to use Remark. 
 
 See also
 --------
