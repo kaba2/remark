@@ -18,6 +18,14 @@ From the console (Windows, Linux, Unix, ...):
 
 See the installation instructions below.
 
+### Linux and Mac users
+
+The shells on Linux and Mac expand the globs (e.g \*.txt) _before_
+running an executable (unless the globs do not match anything in
+the current directory). Therefore, the globs should always be 
+provided in the form "\*.txt", to defer the glob-expansion from
+the shell to Remark.
+
 Download
 --------
 
