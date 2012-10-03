@@ -264,11 +264,11 @@ if __name__ == '__main__':
     initializeRemark()
     
     # This is the directory which contains 'remark.py'.
-    scriptDirectory = sys.path[0]
+    scriptDirectory = os.path.normpath(sys.path[0])
 
     reporter.report(['',
                      'Input directory: ' + inputDirectory,
-                     'Output directory: ' + outputDirectory], 
+                     'Output directory: ' + outputDirectory],
                     'verbose')
 
     # Create the document tree.
