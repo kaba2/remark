@@ -5,7 +5,7 @@
 
 import string
 
-from MacroRegistry import registerMacro
+from Macro_Registry import registerMacro
 from FileSystem import readFile, unixDirectoryName
 
 from pygments import highlight

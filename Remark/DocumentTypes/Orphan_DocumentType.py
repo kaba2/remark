@@ -30,9 +30,6 @@ class Orphan_DocumentType(object):
     def upToDate(self, document, documentTree, outputRootDirectory):
         return False
 
-    def updateDependent(self):
-        return False
-
     def mathEnabled(self):
         return False
 

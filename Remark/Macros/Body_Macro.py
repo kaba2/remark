@@ -4,7 +4,7 @@
 # Detail: Reads a document from file.
 
 from FileSystem import readFile
-from MacroRegistry import registerMacro
+from Macro_Registry import registerMacro
 
 class Body_Macro(object):
     def name(self):

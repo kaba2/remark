@@ -3,13 +3,16 @@
 # Description: Document tree
 # Documentation: data_structures.txt
 
+import re
 import os.path
 import string
-from Document import Document
-from FileSystem import documentType, unixDirectoryName, unixRelativePath, fileExtension
-from FileSystem import globalOptions, withoutFileExtension, strictDocumentType
-from FileSystem import pathSuffixSet
+
+from DocumentType_Registry import documentType, strictDocumentType
+from FileSystem import unixDirectoryName, unixRelativePath, fileExtension
+from FileSystem import globalOptions, withoutFileExtension
+from FileSystem import pathSuffixSet, globToRegex, pathExists
 from Reporting import Reporter, ScopeGuard
+from Document import Document
 
 class DocumentTree(object):
     def __init__(self, rootDirectory, reporter = Reporter()):
@@ -561,4 +564,60 @@ class DocumentTree(object):
             if document.parent == None:
                 self.orphan.insertChild(document)
                 
+def createDocumentTree(inputDirectory, filesToCopySet, reporter):
+    '''
+    Inserts all matching files in the directory into the document tree.
+
+    Also creates a directory.index document to each directory.
+    
+    inputDirectory (string):
+    The directory from which to insert files into the document tree.
+
+    filesToCopySet (iterable of glob strings):
+    A set of glob strings each defining a set of acceptable 
+    filenames.
+
+    returns (DocumentTree):
+    The document tree.
+    '''
+
+    if not pathExists(inputDirectory):
+        reporter.reportError('Input directory ' + inputDirectory + ' does not exist.',
+                             'invalid-input')
+        return None
+
+    # Construct an empty document-tree for the input directory.
+    documentTree = DocumentTree(inputDirectory, reporter)
+
+    # Construct the matching regex string.
+    filenameRegexString = globToRegex(filesToCopySet)
+
+    # Compile the regex string into a regex.
+    filenameRegex = re.compile(filenameRegexString)
             
+    for pathName, directorySet, fileNameSet in os.walk(documentTree.rootDirectory):
+        for filename in fileNameSet:
+            fullName = os.path.normpath(os.path.join(pathName, filename))
+            relativeName = unixRelativePath(inputDirectory, fullName)
+            if re.match(filenameRegex, filename) != None:
+                # The file matches a pattern, take it in.
+                documentTree.insertDocument(relativeName)
+
+    # Generate a directory.remark-index virtual document to each
+    # directory. This provides the directory listings.
+    for directory in documentTree.directorySet:
+        # Form the relative name of the document.
+        relativeName = os.path.join(directory, 'directory.remark-index')
+            
+        # Insert a document with that relative name.
+        document = documentTree.insertDocument(relativeName)
+            
+        # Give the document the description from the unix-style
+        # directory name combined with a '/' to differentiate 
+        # visually that it is a directory.
+        description = unixDirectoryName(document.relativeDirectory) + '/'
+
+        # Add the description to the document.
+        document.setTag('description', [description])
+
+    return documentTree

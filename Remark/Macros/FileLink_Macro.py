@@ -3,8 +3,9 @@
 # Description: FileLink macro
 # Detail: Generates a link to a document in the document tree.
 
-from MacroRegistry import registerMacro
-from FileSystem import unixRelativePath, outputDocumentName, escapeMarkdown
+from Macro_Registry import registerMacro
+from FileSystem import unixRelativePath, escapeMarkdown
+from DocumentType_Registry import outputDocumentName
 
 class FileLink_Macro(object):
     def name(self):

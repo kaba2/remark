@@ -3,8 +3,9 @@
 # Description: DocChildren macro
 # Detail: Generates links to documentation children.
 
-from MacroRegistry import registerMacro, findMacro
-from FileSystem import unixRelativePath, outputDocumentName, htmlDiv
+from Macro_Registry import registerMacro, findMacro
+from FileSystem import unixRelativePath, htmlDiv
+from DocumentType_Registry import outputDocumentName
 
 class DocChildren_Macro(object):
     def name(self):

@@ -45,11 +45,6 @@ class CodeView_DocumentType(object):
         return fileUpToDate(document.relativeName, documentTree.rootDirectory, 
                             self.outputName(document.relativeName), outputRootDirectory)
 
-    def updateDependent(self):
-        # If the change is in the description or detail, 
-        # then the dependents need to be updated.
-        return True
-
     def mathEnabled(self):
         return False
 

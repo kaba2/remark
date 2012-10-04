@@ -6,7 +6,7 @@
 import string
 import re
 
-from MacroRegistry import registerMacro
+from Macro_Registry import registerMacro
 from FileSystem import unixRelativePath, unixDirectoryName
 
 from pygments import highlight

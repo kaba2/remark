@@ -41,9 +41,6 @@ class RemarkPage_DocumentType(object):
         return fileUpToDate(document.relativeName, documentTree.rootDirectory, 
                             self.outputName(document.relativeName), outputRootDirectory)
 
-    def updateDependent(self):
-        return True
-
     def mathEnabled(self):
         return True
 
