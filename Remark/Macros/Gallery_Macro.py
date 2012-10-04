@@ -3,7 +3,7 @@
 # Description: Gallery macro
 # Detail: Generates an image gallery with thumbnails.
 
-from MacroRegistry import registerMacro
+from Macro_Registry import registerMacro
 from FileSystem import unixRelativePath, unixDirectoryName, changeExtension
 from FileSystem import fileExtension, copyIfNecessary, createDirectories, copyTree
 from FileSystem import pathExists, fileModificationTime

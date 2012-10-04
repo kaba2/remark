@@ -29,11 +29,6 @@ class Copy_DocumentType(object):
         return fileUpToDate(document.relativeName, documentTree.rootDirectory, 
                             self.outputName(document.relativeName), outputRootDirectory)
 
-    def updateDependent(self):
-        # No information is gathered from copied files.
-        # Therefore there is no need to update dependent documents.
-        return False
-
     def mathEnabled(self):
         return False
 

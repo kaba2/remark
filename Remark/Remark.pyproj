@@ -21,6 +21,7 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="DocumentType_Registry.py" />
     <Compile Include="FileSystem.py" />
     <Compile Include="Conversion.py" />
     <Compile Include="Document.py" />
@@ -32,7 +33,7 @@
     <Compile Include="DocumentTypes\Orphan_DocumentType.py" />
     <Compile Include="DocumentTypes\RemarkPage_DocumentType.py" />
     <Compile Include="DocumentTypes\__init__.py" />
-    <Compile Include="MacroRegistry.py" />
+    <Compile Include="Macro_Registry.py" />
     <Compile Include="Macros\Body_Macro.py" />
     <Compile Include="Macros\Code_Macro.py" />
     <Compile Include="Macros\Comment_Macro.py" />
@@ -56,6 +57,7 @@
     <Compile Include="Macros\Verbatim_Macro.py" />
     <Compile Include="Macros\__init__.py" />
     <Compile Include="Remark.py" />
+    <Compile Include="Remark_To_Markdown.py" />
     <Compile Include="Reporting.py" />
     <Compile Include="TagParsers\Dictionary_TagParser.py" />
     <Compile Include="TagParsers\Remark_TagParser.py" />

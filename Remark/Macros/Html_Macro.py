@@ -3,7 +3,7 @@
 # Description: Html macro
 # Detail: Copies the input to output and treats it as html.
 
-from MacroRegistry import registerMacro
+from Macro_Registry import registerMacro
 
 class Html_Macro(object):
     def name(self):

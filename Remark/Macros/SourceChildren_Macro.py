@@ -6,9 +6,10 @@
 import os.path
 import string
 
-from MacroRegistry import registerMacro
-from FileSystem import unixRelativePath, outputDocumentName, escapeMarkdown
+from Macro_Registry import registerMacro
+from FileSystem import unixRelativePath, escapeMarkdown
 from FileSystem import withoutFileExtension
+from DocumentType_Registry import outputDocumentName
 
 class SourceChildren_Macro(object):
     def name(self):

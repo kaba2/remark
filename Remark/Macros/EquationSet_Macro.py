@@ -3,7 +3,7 @@
 # Description: EquationSet macro
 # Detail: Presents multiple equations.
 
-from MacroRegistry import registerMacro
+from Macro_Registry import registerMacro
 from FileSystem import htmlDiv
 
 class EquationSet_Macro(object):

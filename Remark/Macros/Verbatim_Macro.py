@@ -3,7 +3,7 @@
 # Description: Verbatim macro
 # Detail: Reinterprets input as preformatted text.
 
-from MacroRegistry import registerMacro
+from Macro_Registry import registerMacro
 
 from FileSystem import htmlDiv
 

@@ -3,8 +3,9 @@
 # Description: Link macro
 # Detail: Generates a link to a document in the document tree.
 
-from MacroRegistry import registerMacro
-from FileSystem import unixRelativePath, outputDocumentName
+from Macro_Registry import registerMacro
+from FileSystem import unixRelativePath
+from DocumentType_Registry import outputDocumentName
 
 class Link_Macro(object):
     def name(self):
