@@ -404,6 +404,7 @@ in the 'remark-footer' div. */
 #remark div.Equation
 {
     display: block;
+	padding-bottom: 0.5em;
 }
 
 #remark .Equation-Body
@@ -413,6 +414,7 @@ in the 'remark-footer' div. */
 
 #remark .Equation-Number
 {
+	visibility: hidden;
     padding: 0;
     margin: 0;
     font-size: 1.5em;
