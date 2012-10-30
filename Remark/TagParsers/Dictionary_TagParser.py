@@ -43,7 +43,7 @@ class Dictionary_TagParser(object):
             # are meta-characters in a regular expression.
             # Therefore we need to escape the tag-names.
             regex += re.escape(tagKey.strip())
-            if tags > 0 and tags < len(tagMap) - 1:
+            if tags < len(tagMap) - 1:
                 regex += r'|'
             tags +=1
         regex += r')'
