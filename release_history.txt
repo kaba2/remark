@@ -16,7 +16,7 @@ than 1.1.3.
 Remark 1.5.1
 ------------
 
-Release date 04.10.2012
+Release date 31.10.2012
 
 [Original webpage][Remark-1.5.1]
 
@@ -27,6 +27,8 @@ Release date 04.10.2012
 * Added a check for Python Markdown version 2.0, to prevent using Remark 
   with versions of Python Markdown (e.g. 2.2) that do not support Markdown 
   in html blocks.
+* Fixed a regex-formation bug in `Dictionary_TagParser`, which caused the 
+`Author` and `DocumentationOf` tags to not being parsed.
 
 ### Macros
 

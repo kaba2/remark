@@ -524,15 +524,15 @@ class DocumentTree(object):
             # Reference linking is done only when no parent has been
             # found through explicit or implicit linking, and
             # a reference link has been specified.
-            if document.parent != None or 'parentOf' not in document.tagSet:
+            if document.parent != None or not ('parentOf' in document.tagSet):
                 continue
             
             # The parent file path in the tag is given relative to 
             # the directory containing the document file.
             referenceName = document.tagString('parentOf')
-            
+          
             reference, unique = self.findDocument(referenceName, 
-                                                  document.relativeDirectory)[0]
+                                                  document.relativeDirectory)
             if reference == None:
                 # If a reference file can't be found, it can be
                 # because of a typo in the tag or a missing file. 
