@@ -1,3 +1,8 @@
+# -*- coding: utf-8 -*-
+
+# Description: Document type registry
+# Documentation: data_structures.txt
+
 from FileSystem import fileExtension, unixDirectoryName
 
 _documentTypeMap = dict()
