@@ -537,7 +537,7 @@ class DocumentTree(object):
                 # If a reference file can't be found, it can be
                 # because of a typo in the tag or a missing file. 
                 # In any case we warn the user.
-                self.reporter.reportWarning('Reference parent file was not found for' + 
+                self.reporter.reportWarning('Reference parent file was not found for ' + 
                                        document.relativeName + '. The search was for: ' + 
                                        referenceName,
                                        'missing-parent')

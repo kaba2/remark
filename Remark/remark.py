@@ -101,8 +101,8 @@ globs are allowed (e.g. *.txt *.py).""")
     optionParser.add_option('-l', '--lines',
         dest = 'maxTagLines',
         type = 'int',
-        default = 100,
-        help = """sets maximum number of lines for a tag-parser to scan a file for tags (default 100)""",
+        default = 200,
+        help = """sets maximum number of lines for a tag-parser to scan a file for tags (default 200)""",
         metavar = 'LINES')
 
     optionParser.add_option('-m', '--max-file-size',
