@@ -62,7 +62,7 @@ specified by the `indent` variable. This variable may also
 contain expansion specifiers. By default, `indent` is set
 to `Verbatim`, to invoke the [Verbatim][VerbatimMacro] macro.
 However, depending on the field of study, it may be more
-useful to set the indentation macro to the [CodeView][CodeMacro] 
+useful to set the indentation macro to the [Code][CodeMacro] 
 macro or the [EquationSet][EquationSetMacro] macro. 
 
 ### Example
