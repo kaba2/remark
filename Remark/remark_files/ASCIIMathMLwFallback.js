@@ -29,7 +29,7 @@ General Public License (at http://www.gnu.org/copyleft/gpl.html)
 for more details.
 */
 
-var AMTcgiloc = ""; //path to CGI script that
+var AMTcgiloc = "http://kaba.hilvi.org/cgi/mimetex.cgi"; //path to CGI script that
    			        //can render a TeX string
 var checkForMathML = true;   // check if browser can display MathML
 var notifyIfNoMathML = false; // display note if no MathML capability

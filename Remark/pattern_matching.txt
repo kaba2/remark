@@ -14,7 +14,7 @@ Globs
 A _glob_ defines a pattern by a string in which:
 
   * a character matches itself, except that
-  * . matches anything any number of times, 
+  * \* matches anything any number of times, 
   * ? matches anything at most one time, 
   * \[seq\] matches any character in string seq, and 
   * \[!seq\] matches any character not in string seq.
