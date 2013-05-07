@@ -243,7 +243,7 @@ def readFile(fileName, ignoreLargeFiles = True):
     Opens a file using openFileUtf8, and reads the contents 
     into a list of strings corresponding to the rows of the file.
     The form-feeds and newlines are stripped off from the end of
-    each line.
+    each line. 
 
     fileName (string):
     The file to read.
@@ -280,14 +280,14 @@ def readFile(fileName, ignoreLargeFiles = True):
         print ' Ignoring it.'
         return []
 
-    # Remove possible newlines from the ends of the lines.
-    # The lines are encoded by the list-structure instead.
-    # Note that this should have been done by 
-    # file.readlines(keepends = False). However, it is a bug 
-    # in Python 2.7.3 that the keepends argument is missing. 
     for i in range(0, len(text)):
+        # Remove possible newlines from the ends of the lines.
+        # The lines are encoded by the list-structure instead.
+        # Note that this should have been done by 
+        # file.readlines(keepends = False). However, it is a bug 
+        # in Python 2.7.3 that the keepends argument is missing. 
         text[i] = text[i].rstrip('\r\n')
-            
+
     return text
 
 def writeFile(text, outputFullName):
@@ -385,7 +385,7 @@ def longPath(path):
     # artifically produce longer path-names (but the compressed path 
     # also needs to be <= 259 characters). In particular, this 
     # situation comes by when the mapped-drive is a Linux file 
-    # system, and contains paths longer than 259 characteers.
+    # system, and contains paths longer than 259 characters.
 
     # It is essential that the \\?\ is only prefixed
     # for paths longer than 259 characters. The reason is related to
