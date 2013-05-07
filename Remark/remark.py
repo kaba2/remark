@@ -91,8 +91,40 @@ globs are allowed (e.g. *.txt *.py).""")
         type = 'string',
         action = 'append',
         default = [],
-        help = """disables a specific warning (e.g. -dinvalid-input)""",
+        help = """disables a specific warning (e.g. -d invalid-input)""",
         metavar = 'WARNING')
+
+    optionParser.add_option('-i', '--include',
+        dest = 'includeSet',
+        type = 'string',
+        action = 'append',
+        default = [],
+        help = """includes files into the input set (default *) """,
+        metavar = 'FILES')
+
+    optionParser.add_option('-x', '--exclude',
+        dest = 'excludeSet',
+        type = 'string',
+        action = 'append',
+        default = [],
+        help = """excludes files from the input set (default "") """,
+        metavar = 'FILES')
+
+    optionParser.add_option('-I', '--include_directory',
+        dest = 'includeDirectorySet',
+        type = 'string',
+        action = 'append',
+        default = [],
+        help = """includes directories into the input set (default *) """,
+        metavar = 'FILES')
+
+    optionParser.add_option('-X', '--exclude_directory',
+        dest = 'excludeDirectorySet',
+        type = 'string',
+        action = 'append',
+        default = [],
+        help = """excludes directories from the input set (default "") """,
+        metavar = 'FILES')
 
     optionParser.add_option('-e', '--extensions',
         action="store_true", dest="extensions", default=False,
@@ -126,6 +158,8 @@ globs are allowed (e.g. *.txt *.py).""")
 
     options, args = optionParser.parse_args()
     
+    options.tabSize = 4;
+
     if len(args) < 2:
         optionParser.print_help()
         sys.exit(1)
@@ -143,11 +177,16 @@ globs are allowed (e.g. *.txt *.py).""")
     for reportType in options.disableSet:
         reporter.disable(reportType)
 
+    # Get the working directory.
+    workingDirectory = os.getcwd()
+
     # Get the input directory.
-    inputDirectory = os.path.normpath(os.path.join(os.getcwd(), args[0]))
+    # It is given relative to the working directory.
+    inputDirectory = os.path.normpath(os.path.join(workingDirectory, args[0]))
 
     # Get the output directory.
-    outputDirectory = os.path.normpath(os.path.join(os.getcwd(), args[1]))
+    # It is given relative to the working directory.
+    outputDirectory = os.path.normpath(os.path.join(workingDirectory, args[1]))
 
     # Get the files.
     filesToCopySet = args[2:]
