@@ -22,8 +22,22 @@ Release date xx.xx.xxxx.
 
 [Remark-1.5.2]: http://kaba.hilvi.org/remark-1.5.2
 
+### Breaking changes
+
+* Changed the command-line file inclusion to work by 
+relative-paths of files, rather than by filenames.
+This breaks the inclusion of multiple files with the
+same filename, but different directory; the old behavior
+can be recovered by changing 'filename.txt' to '*filename.txt'.
+
 ### Interface
 
+* Added the option `-i` to include files by their
+relative-paths. This is the same as simply listing
+them; this option is for symmetry.
+* Added the option `-x` to exclude files by their
+relative-paths. This helps in skipping build-files
+and other inessential files in a typical build-environment.
 * Increased the default maximum number of lines for the 
 tag-parsers from 100 to 200. In Matlab, the tags must be 
 placed at the end of this function documentation to not 
