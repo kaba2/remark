@@ -81,17 +81,19 @@ def parseArguments(reporter):
     from optparse import OptionParser
 
     optionParser = OptionParser(usage = """\
-%prog [options] inputDirectory outputDirectory [files...]
+%prog inputDirectory outputDirectory (option|file-glob)*
 
-The 'files' is a list of those files which should be converted;
-globs are allowed (e.g. *.txt *.py).""")
+Note: On Unix-based operating systems a glob must be surrounded
+by parentheses to prevent glob-expansion before they reach Remark; 
+write "*.txt" instead of *.txt.
+""")
     
     optionParser.add_option('-d', '--disable',
         dest = 'disableSet',
         type = 'string',
         action = 'append',
         default = [],
-        help = """disables a specific warning (e.g. -d invalid-input)""",
+        help = """disables a specific warning (e.g. -d invalid-input).""",
         metavar = 'WARNING')
 
     optionParser.add_option('-i', '--include',
@@ -99,7 +101,8 @@ globs are allowed (e.g. *.txt *.py).""")
         type = 'string',
         action = 'append',
         default = [],
-        help = """includes files by their relative-paths (e.g. "*.txt")""",
+        help = """includes files by their relative-paths (e.g. "*.txt").
+This is equivalent to writing the file-glob directly as a positional argument.""",
         metavar = 'GLOB')
 
     optionParser.add_option('-x', '--exclude',
@@ -107,29 +110,30 @@ globs are allowed (e.g. *.txt *.py).""")
         type = 'string',
         action = 'append',
         default = [],
-        help = """excludes files by their relative-paths (e.g "*CMake*") """,
+        help = """excludes files by their relative-paths (e.g "*CMake*").
+Exclusion takes priority over inclusion.""",
         metavar = 'GLOB')
 
     optionParser.add_option('-e', '--extensions',
         action="store_true", dest="extensions", default=False,
-        help = """lists all extensions in the input directory together with examples""")
+        help = """lists all extensions in the input directory together with examples.""")
 
-    optionParser.add_option('-u', '--unknown',
+    optionParser.add_option('-u', '--unknowns',
         action="store_true", dest="unknown", default=False,
-        help = """lists all files which are neither included or excluded""")
+        help = """lists all files which are neither included or excluded.""")
 
     optionParser.add_option('-l', '--lines',
         dest = 'maxTagLines',
         type = 'int',
         default = 200,
-        help = """sets maximum number of lines for a tag-parser to scan a file for tags (default 200)""",
+        help = """sets maximum number of lines for a tag-parser to scan a file for tags (default 200).""",
         metavar = 'LINES')
 
     optionParser.add_option('-m', '--max-file-size',
         dest = 'maxFileSize',
         type = 'int',
         default = 2**18,
-        help = """sets maximum file-size to load (in bytes, default 262144)""",
+        help = """sets maximum file-size to load (in bytes, default 262144).""",
         metavar = 'SIZE')
 
     optionParser.add_option('-q', '--quick',
@@ -138,11 +142,11 @@ globs are allowed (e.g. *.txt *.py).""")
 
     optionParser.add_option('-s', '--strict',
         action="store_true", dest="strict", default=False,
-        help = """treats warnings as errors""")
+        help = """treats warnings as errors.""")
 
     optionParser.add_option('-v', '--verbose',
         action="store_true", dest="verbose", default=False,
-        help = """prints additional progress information""")
+        help = """prints additional progress information.""")
 
     argumentSet, args = optionParser.parse_args()
     
