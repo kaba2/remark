@@ -12,6 +12,48 @@ import re
 
 globalOptions_ = None
 
+def findMatchingFiles(inputDirectory, includeSet, excludeSet):
+    '''
+    Finds each file in the given directory whose relative-name 
+    matches an inclusion-glob and does not match an exclusion-glob.
+
+    inputDirectory (string):
+    Path to the directory.
+
+    includeSet (iterable of strings):
+    A set of inclusion-globs.
+
+    excludeSet (iterable of strings):
+    A set of exclusion-globs.
+
+    returns (list of strings):
+    The set of relative-names of matching files.
+    '''
+
+    # Construct the matching regex strings.
+    includeRegexString = globToRegex(includeSet)
+    excludeRegexString = globToRegex(excludeSet)
+
+    # Compile the regex strings into regexes.
+    includeRegex = re.compile(includeRegexString)
+    excludeRegex = re.compile(excludeRegexString)
+    
+    # Gather the specified files.
+    relativeNameSet = []
+    for pathName, directorySet, fileNameSet in os.walk(inputDirectory):
+        for filename in fileNameSet:
+            fullName = os.path.normpath(os.path.join(pathName, filename))
+            relativeName = unixRelativePath(inputDirectory, fullName)
+            if (re.match(includeRegex, relativeName) != None and
+                not re.match(excludeRegex, relativeName)):
+                # The relative-name of the file matches 
+                # the inclusion-glob, and does not match 
+                # the exclusion-glob; take it in.
+                relativeNameSet.append(relativeName)
+
+    # Return the set of matching files.
+    return relativeNameSet
+
 def splitPath(p):
     '''
     Splits a pathname.

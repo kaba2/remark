@@ -99,36 +99,20 @@ globs are allowed (e.g. *.txt *.py).""")
         type = 'string',
         action = 'append',
         default = [],
-        help = """includes files into the input set (default *) """,
-        metavar = 'FILES')
+        help = """includes files by their relative-paths (e.g. "*.txt")""",
+        metavar = 'GLOB')
 
     optionParser.add_option('-x', '--exclude',
         dest = 'excludeSet',
         type = 'string',
         action = 'append',
         default = [],
-        help = """excludes files from the input set (default "") """,
-        metavar = 'FILES')
-
-    optionParser.add_option('-I', '--include_directory',
-        dest = 'includeDirectorySet',
-        type = 'string',
-        action = 'append',
-        default = [],
-        help = """includes directories into the input set (default *) """,
-        metavar = 'FILES')
-
-    optionParser.add_option('-X', '--exclude_directory',
-        dest = 'excludeDirectorySet',
-        type = 'string',
-        action = 'append',
-        default = [],
-        help = """excludes directories from the input set (default "") """,
-        metavar = 'FILES')
+        help = """excludes files by their relative-paths (e.g "*CMake*") """,
+        metavar = 'GLOB')
 
     optionParser.add_option('-e', '--extensions',
         action="store_true", dest="extensions", default=False,
-        help = """lists all file-extensions in the input-directory along with example files""")
+        help = """lists all files which are neither included or excluded""")
 
     optionParser.add_option('-l', '--lines',
         dest = 'maxTagLines',
@@ -156,25 +140,25 @@ globs are allowed (e.g. *.txt *.py).""")
         action="store_true", dest="verbose", default=False,
         help = """prints additional progress information""")
 
-    options, args = optionParser.parse_args()
+    argumentSet, args = optionParser.parse_args()
     
-    options.tabSize = 4;
+    argumentSet.tabSize = 4;
 
     if len(args) < 2:
         optionParser.print_help()
         sys.exit(1)
         
-    if options.maxTagLines <= 0:
+    if argumentSet.maxTagLines <= 0:
         reporter.reportError('The maximum number of lines to scan for tags must be at least 1.',
                              'invalid-input')
         sys.exit(1)
 
-    if not options.verbose:
+    if not argumentSet.verbose:
         # Disable the verbose reports.
         reporter.disable('verbose')
 
     # Disable the report-types given by the -d switch.
-    for reportType in options.disableSet:
+    for reportType in argumentSet.disableSet:
         reporter.disable(reportType)
 
     # Get the working directory.
@@ -182,18 +166,25 @@ globs are allowed (e.g. *.txt *.py).""")
 
     # Get the input directory.
     # It is given relative to the working directory.
-    inputDirectory = os.path.normpath(os.path.join(workingDirectory, args[0]))
+    argumentSet.inputDirectory = (
+        os.path.normpath(os.path.join(workingDirectory, args[0])))
 
     # Get the output directory.
     # It is given relative to the working directory.
-    outputDirectory = os.path.normpath(os.path.join(workingDirectory, args[1]))
+    argumentSet.outputDirectory = (
+        os.path.normpath(os.path.join(workingDirectory, args[1])))
 
-    # Get the files.
-    filesToCopySet = args[2:]
+    # This is the directory which contains 'remark.py'.
+    argumentSet.scriptDirectory = os.path.normpath(sys.path[0])
 
-    if options.extensions:
+    # Interpret the rest of the arguments
+    # as including files, i.e. the same
+    # as the -i option.
+    argumentSet.includeSet += args[2:]
+
+    if argumentSet.extensions:
         extensionSet = {}
-        for pathName, directorySet, filenameSet in os.walk(inputDirectory):
+        for pathName, directorySet, filenameSet in os.walk(argumentSet.inputDirectory):
             for filename in filenameSet:
                 extension = fileExtension(filename)
                 if not extension in extensionSet:
@@ -210,29 +201,28 @@ globs are allowed (e.g. *.txt *.py).""")
 
         sys.exit(0)
 
-    setGlobalOptions(options)
-
-    return inputDirectory, outputDirectory, filesToCopySet
+    return argumentSet
 
 if __name__ == '__main__':
     reporter = Reporter()
     reporter.openScope('Remark ' + remarkVersion())
 
-    # This is the directory which contains 'remark.py'.
-    scriptDirectory = os.path.normpath(sys.path[0])
+    # Parse the command-line arguments.
+    argumentSet = parseArguments(reporter)
 
-    # Parse the command-line options.
-    inputDirectory, outputDirectory, filesToCopySet = parseArguments(reporter)
+    # Set the global options. 
+    # I should get get rid of this, and pass
+    # around the argumentSet locally instead.
+    setGlobalOptions(argumentSet)
 
     # Do everything.
-    errors, warnings = convertDirectory(inputDirectory, outputDirectory, scriptDirectory,
-                                        filesToCopySet, reporter)
+    errors, warnings = convertDirectory(argumentSet, reporter)
 
     # Wrap things up.
     reporter.report(['', "That's all!"], 'verbose')
     reporter.closeScope('Remark ' + remarkVersion())
 
-    if errors > 0 or (warnings > 0 and globalOptions().strict):
+    if errors > 0 or (warnings > 0 and argumentSet.strict):
         # Indicate the presence of errors by a non-zero error-code.
         sys.exit(1)
 

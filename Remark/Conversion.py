@@ -214,17 +214,16 @@ def convertAll(documentTree, outputRootDirectory, reporter = Reporter()):
             reporter.reportError(traceback.format_exc(), 
                                  'exception')
 
-def convertDirectory(inputDirectory, outputDirectory, scriptDirectory, 
-                     filesToCopySet, reporter):
+def convertDirectory(argumentSet, reporter):
     startTime = time.clock()
 
     reporter.report(['',
-                     'Input directory: ' + inputDirectory,
-                     'Output directory: ' + outputDirectory],
+                     'Input directory: ' + argumentSet.inputDirectory,
+                     'Output directory: ' + argumentSet.outputDirectory],
                     'verbose')
 
     # Create the document tree.
-    documentTree = createDocumentTree(inputDirectory, filesToCopySet, reporter)
+    documentTree = createDocumentTree(argumentSet, reporter)
     if documentTree == None:
         return reporter.errors(), reporter.warnings()
 
@@ -234,12 +233,12 @@ def convertDirectory(inputDirectory, outputDirectory, scriptDirectory,
     # It is also important that these files are copied as early as
     # possible, since we want to see the changes in the .css files
     # as early as possible.
-    copyIfNecessary('./remark_files/remark.css', scriptDirectory, 
-                    './remark_files/remark.css', outputDirectory)
-    copyIfNecessary('./remark_files/pygments.css', scriptDirectory, 
-                    './remark_files/pygments.css', outputDirectory)
-    copyIfNecessary('./remark_files/' + asciiMathMlName(), scriptDirectory, 
-                    './remark_files/' + asciiMathMlName(), outputDirectory)
+    copyIfNecessary('./remark_files/remark.css', argumentSet.scriptDirectory, 
+                    './remark_files/remark.css', argumentSet.outputDirectory)
+    copyIfNecessary('./remark_files/pygments.css', argumentSet.scriptDirectory, 
+                    './remark_files/pygments.css', argumentSet.outputDirectory)
+    copyIfNecessary('./remark_files/' + asciiMathMlName(), argumentSet.scriptDirectory, 
+                    './remark_files/' + asciiMathMlName(), argumentSet.outputDirectory)
 
     # Parse the tags.
     with ScopeGuard(reporter, 'Parsing tags'):
@@ -264,11 +263,11 @@ def convertDirectory(inputDirectory, outputDirectory, scriptDirectory,
 
     # Resolve regeneration of documents.
     with ScopeGuard(reporter, 'Resolving regeneration'):
-        if globalOptions().quick:
+        if argumentSet.quick:
             reporter.reportWarning('Using quick preview mode. Some documents may not be updated.', 
                                    'quick')
             for document in documentTree:
-                if not document.documentType.upToDate(document, documentTree, outputDirectory):
+                if not document.documentType.upToDate(document, documentTree, argumentSet.outputDirectory):
                     # Document has been modified
                     document.setRegenerate(True)
                     document.parent.setRegenerate(True)
@@ -281,7 +280,7 @@ def convertDirectory(inputDirectory, outputDirectory, scriptDirectory,
 
     # Generate documents.
     with ScopeGuard(reporter, 'Generating documents'):
-        convertAll(documentTree, outputDirectory, reporter)
+        convertAll(documentTree, argumentSet.outputDirectory, reporter)
         reporter.report(['', 'Done.'], 'verbose')
 
     # Find out statistics.
