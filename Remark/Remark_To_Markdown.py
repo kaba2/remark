@@ -409,13 +409,14 @@ class Remark(object):
             # The end of a multi-line parameter
             # is marked by a line which is not all whitespace
             # and has no indentation. 
-            if (_leadingTabs(text[endRow])[0] == 0 and 
+            if (_leadingTabs(text[endRow], globalOptions().tabSize)[0] == 0 and 
                 string.strip(text[endRow]) != ''):
                 break
             endRow += 1
             
         # Copy the parameter and remove the indentation from it.
-        parameterSet = [_removeLeadingTabs(line, 1) for line in text[startRow : endRow]]
+        parameterSet = [_removeLeadingTabs(line, globalOptions().tabSize, 1) 
+            for line in text[startRow : endRow]]
     
         # Remove the possible empty trailing parameter lines.
         nonEmptyLines = len(parameterSet)
@@ -896,15 +897,17 @@ class Remark(object):
             htmlText += macro.htmlHead(self)
         return htmlText                                
 
-def _leadingTabs(text, tabsAtMost = -1):
+def _leadingTabs(text, tabSize, tabsAtMost = -1):
     '''
     Returns the number of leading tabs.
-    If there are globalOptions().tabSize number of
-    consecutive spaces, then this will interpreted
-    as a single tab.
+    If there are 'tabSize' number of consecutive spaces, 
+    then this will interpreted as a single tab.
 
     text (string):
     The text from which to count the leading tabs from.
+
+    tabSize (integer):
+    The number of spaces in a tab.
 
     tabsAtMost (integer):
     The number of leading tabs to count at most.
@@ -926,7 +929,7 @@ def _leadingTabs(text, tabsAtMost = -1):
             consecutiveSpaces = 0
         elif c == ' ':
             consecutiveSpaces += 1
-            if consecutiveSpaces == globalOptions().tabSize:
+            if consecutiveSpaces == tabSize:
                 # Interpret the spaces as a single tab.
                 tabs += 1
                 characters += consecutiveSpaces
@@ -939,7 +942,7 @@ def _leadingTabs(text, tabsAtMost = -1):
     
     return tabs, characters
 
-def _removeLeadingTabs(text, tabsAtMost = -1):
+def _removeLeadingTabs(text, tabSize, tabsAtMost = -1):
     '''
     Removes at most a given number of leading tabs from the text.
 
@@ -949,6 +952,9 @@ def _removeLeadingTabs(text, tabsAtMost = -1):
     text (string):
     The text from which to remove the leading tabs from.
 
+    tabSize (integer):
+    The number of spaces in a tab.
+
     tabsAtMost (integer):
     The number of leading tabs to remove at most. If this is negative,
     then all leading tabs will be removed.
@@ -957,6 +963,6 @@ def _removeLeadingTabs(text, tabsAtMost = -1):
     The text with leading tabs removed.
     '''
 
-    tabs, characters = _leadingTabs(text, tabsAtMost)
+    tabs, characters = _leadingTabs(text, tabSize, tabsAtMost)
     return text[characters :]
 

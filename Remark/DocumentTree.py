@@ -10,7 +10,7 @@ import string
 from DocumentType_Registry import documentType, strictDocumentType
 from FileSystem import unixDirectoryName, unixRelativePath, fileExtension
 from FileSystem import globalOptions, withoutFileExtension
-from FileSystem import pathSuffixSet, globToRegex, pathExists
+from FileSystem import pathSuffixSet, globToRegex, pathExists, findMatchingFiles
 from Reporting import Reporter, ScopeGuard
 from Document import Document
 
@@ -563,45 +563,79 @@ class DocumentTree(object):
         for document in self.documentMap.itervalues():
             if document.parent == None:
                 self.orphan.insertChild(document)
-                
-def createDocumentTree(inputDirectory, filesToCopySet, reporter):
+
+def createDocumentTree(argumentSet, reporter):
     '''
     Inserts all matching files in the directory into the document tree.
+    A file matches if it matches an include glob, and does not match
+    an exclude glob.
 
     Also creates a directory.index document to each directory.
-    
+
+    argumentSet (ArgumentSet):
+    A structure object containing the following
+    fields.
+
+    ArgumentSet
+    -----------
+
     inputDirectory (string):
     The directory from which to insert files into the document tree.
 
-    filesToCopySet (iterable of glob strings):
-    A set of glob strings each defining a set of acceptable 
-    filenames.
+    outputDirectory (string):
+    The directory to which to converted files will be placed.
+
+    includeSet (iterable of glob strings):
+    A set of glob strings each defining a set of 
+    relative-names of files to include. These names are
+    relative to the include directory.
+
+    excludeSet (iterable of glob strings):
+    A set of glob strings each defining a set of 
+    relative-names of files to exclude. These names are
+    relative to the include directory. Exclusion has 
+    priority over inclusion.
+
+    disableSet (iterable of strings):
+    A set of warning-types that should not be reported.
+
+    maxTagLines (integer):
+    The maximum number of lines to scan for tags.
+
+    maxFileSize (integer):
+    The maximum file size to convert. This limit is
+    useful when a directory contains a large matching 
+    file which actually shouldn't be part of the
+    documentation.
+
+    strict (boolean):
+    Whether warnings should be treated as errors.
+
+    verbose (boolean):
+    Whether additional information should be reported.
+
+    extensions (boolean):
+    Whether to report the extensions in the input directory.
 
     returns (DocumentTree):
-    The document tree.
+    The created document tree.
     '''
 
-    if not pathExists(inputDirectory):
+    if not pathExists(argumentSet.inputDirectory):
         reporter.reportError('Input directory ' + inputDirectory + ' does not exist.',
                              'invalid-input')
         return None
 
     # Construct an empty document-tree for the input directory.
-    documentTree = DocumentTree(inputDirectory, reporter)
+    documentTree = DocumentTree(argumentSet.inputDirectory, reporter)
 
-    # Construct the matching regex string.
-    filenameRegexString = globToRegex(filesToCopySet)
+    # Find the matching files.
+    relativeNameSet = findMatchingFiles(argumentSet.inputDirectory, 
+        argumentSet.includeSet, argumentSet.excludeSet)
 
-    # Compile the regex string into a regex.
-    filenameRegex = re.compile(filenameRegexString)
-            
-    for pathName, directorySet, fileNameSet in os.walk(documentTree.rootDirectory):
-        for filename in fileNameSet:
-            fullName = os.path.normpath(os.path.join(pathName, filename))
-            relativeName = unixRelativePath(inputDirectory, fullName)
-            if re.match(filenameRegex, filename) != None:
-                # The file matches a pattern, take it in.
-                documentTree.insertDocument(relativeName)
+    # Add the matching files into the document tree.
+    for relativeName in relativeNameSet:
+        documentTree.insertDocument(relativeName)
 
     # Generate a directory.remark-index virtual document to each
     # directory. This provides the directory listings.
