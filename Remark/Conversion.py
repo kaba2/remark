@@ -172,7 +172,7 @@ def saveRemarkToHtml(remarkText, document, documentTree,
     # Write the resulting html.
     writeFile(htmlText, outputFullName)
 
-def convertAll(documentTree, outputRootDirectory, reporter = Reporter()):
+def convertAll(documentTree, argumentSet, reporter = Reporter()):
     '''
     Converts all documents in the document-tree.
 
@@ -186,7 +186,7 @@ def convertAll(documentTree, outputRootDirectory, reporter = Reporter()):
     The reporter to use for reporting.
     '''
     
-    outputRootDirectory = os.path.normpath(outputRootDirectory)
+    outputDirectory = os.path.normpath(argumentSet.outputDirectory)
 
     # We wish to convert the files in alphabetical order
     # by their relative-name (in the map they are in hashed order).
@@ -201,10 +201,13 @@ def convertAll(documentTree, outputRootDirectory, reporter = Reporter()):
                         'verbose')
         
         try:
-            # Let the document-type convert the document.
+            # Find the document-type based on the
+            # filename-extension.
             type = documentType(document.extension)
+            
+            # Let the document-type convert the document.
             with ScopeGuard(reporter, document.relativeName):
-                type.convert(document, documentTree, outputRootDirectory,
+                type.convert(document, documentTree, outputDirectory,
                             reporter)
         except IOError:
             # If an exception is thrown, for example because a document
@@ -280,7 +283,7 @@ def convertDirectory(argumentSet, reporter):
 
     # Generate documents.
     with ScopeGuard(reporter, 'Generating documents'):
-        convertAll(documentTree, argumentSet.outputDirectory, reporter)
+        convertAll(documentTree, argumentSet, reporter)
         reporter.report(['', 'Done.'], 'verbose')
 
     # Find out statistics.
