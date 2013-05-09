@@ -27,9 +27,9 @@ the shell to Remark.
 Download
 --------
 
-### [Download Remark 1.5.2][Library]
+### [Download Remark 1.6.0][Library]
 
-[Library]: ./files/remark-1.5.2.zip
+[Library]: ./files/remark-1.6.0.zip
 
 For previous versions, see the [release history][History].
 

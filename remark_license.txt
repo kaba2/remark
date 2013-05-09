@@ -1,4 +1,4 @@
-# Remark 1.5.2
+# Remark 1.6.0
 # Copyright (c) 2009 - 2012 
 # Kalle Rutanen
 # Distributed under the MIT license (see license.txt).
