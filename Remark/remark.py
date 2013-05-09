@@ -35,7 +35,7 @@ from Conversion import convertDirectory
 from FileSystem import unixDirectoryName, unixRelativePath, readFile, writeFile
 from FileSystem import remarkVersion, fileExtension
 from FileSystem import asciiMathMlName, copyIfNecessary, setGlobalOptions, globalOptions
-from FileSystem import splitPath
+from FileSystem import splitPath, findMatchingFiles
 
 from Reporting import Reporter, ScopeGuard
 
@@ -112,6 +112,10 @@ globs are allowed (e.g. *.txt *.py).""")
 
     optionParser.add_option('-e', '--extensions',
         action="store_true", dest="extensions", default=False,
+        help = """lists all extensions in the input directory together with examples""")
+
+    optionParser.add_option('-u', '--unknown',
+        action="store_true", dest="unknown", default=False,
         help = """lists all files which are neither included or excluded""")
 
     optionParser.add_option('-l', '--lines',
@@ -181,6 +185,22 @@ globs are allowed (e.g. *.txt *.py).""")
     # as including files, i.e. the same
     # as the -i option.
     argumentSet.includeSet += args[2:]
+
+    if argumentSet.unknown:
+        relativeNameSet = findMatchingFiles(
+            argumentSet.inputDirectory,
+            ["*"],
+            argumentSet.includeSet + argumentSet.excludeSet)
+
+        # Sort to an alphabetical order by relative-path.
+        relativeNameSet.sort()
+
+        # Print the unknown files.
+        print
+        for relativeName in relativeNameSet:
+            print relativeName
+
+        sys.exit(0)
 
     if argumentSet.extensions:
         extensionSet = {}
