@@ -38,6 +38,11 @@ them; this option is for symmetry.
 * Added the option `-x` to exclude files by their
 relative-paths. This helps in skipping build-files
 and other inessential files in a typical build-environment.
+* Added the option `-u` to list all those files in
+the input directory which are neither included or
+excluded (called unknown files). This helps to check
+whether one has remembered to include all essential 
+files into the documentation.
 * Increased the default maximum number of lines for the 
 tag-parsers from 100 to 200. In Matlab, the tags must be 
 placed at the end of this function documentation to not 
