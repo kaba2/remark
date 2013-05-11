@@ -83,9 +83,9 @@ def parseArguments(reporter):
     optionParser = OptionParser(usage = """\
 %prog inputDirectory outputDirectory (option|file-glob)*
 
-Note: On Unix-based operating systems a glob must be surrounded
-by parentheses to prevent glob-expansion before they reach Remark; 
-write "*.txt" instead of *.txt.
+Note: On Unix-based operating systems a glob must be placed in 
+double quotes to prevent glob-expansion taking place before
+reaching Remark; write "*.txt" instead of *.txt.
 """)
     
     optionParser.add_option('-d', '--disable',
