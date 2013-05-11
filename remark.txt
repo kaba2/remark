@@ -5,24 +5,30 @@ Remark
 
 [Back]: http://kaba.hilvi.org
 
-_Remark_ is a Python library to generate html documentation for software libraries.
-Remark is documented with Remark, the results of which you are inspecting
-right now.
+_Remark_ is a Python library to generate html documentation for software
+libraries. Remark is documented with Remark, the results of which you are
+inspecting right now.
 
 Usage
 -----
 
-From the console (Windows, Linux, Unix, ...): 
+From the console (Windows, Linux, Mac, ...): 
 
-	remark.py [options] inputDirectory outputDirectory [files...]
+	remark.py inputDirectory outputDirectory (option|file-glob)*
+
+For example:
+
+	remark.py . docs "*.txt" "*.py" "*.png" -x "docs/*"
+
+Assuming the directory containing `remark.py` has been added to 
+the operating system's application search path.
 
 ### Linux and Mac users
 
-The shells on Linux and Mac expand the globs (e.g \*.txt) _before_
-running an executable (unless the globs do not match anything in
-the current directory). Therefore, the globs should always be 
-provided in the form "\*.txt", to defer the glob-expansion from
-the shell to Remark.
+The shells on Linux and Mac expand the globs (e.g \*.txt) _before_ running an
+executable (unless the globs do not match anything in the current directory).
+Therefore, the globs should always be  provided in the form "\*.txt", to defer
+the glob-expansion from the shell to Remark.
 
 Download
 --------

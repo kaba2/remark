@@ -27,17 +27,17 @@ Release date xx.xx.2013.
 * Changed the command-line file inclusion to work by 
 relative-paths of files, rather than by filenames.
 This breaks the inclusion of multiple files with the
-same filename, but different directory; the old behavior
-can be recovered by changing 'filename.txt' to '*filename.txt'.
+same filename, but in different directories; the old behavior
+can be recovered by changing `"filename.txt"` to `"*filename.txt"`.
 
 ### Interface
 
-* Added the option `-i` to include files by their
-relative-paths. This is the same as simply listing
-them; this option is for symmetry.
 * Added the option `-x` to exclude files by their
 relative-paths. This helps in skipping build-files
 and other inessential files in a typical build-environment.
+* Added the option `-i` to include files by their
+relative-paths. This is the same as simply listing
+them; this option is for symmetry with the option `-x`.
 * Added the option `-u` to list all those files in
 the input directory which are neither included or
 excluded (called unknown files). This helps to check
