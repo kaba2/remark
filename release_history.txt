@@ -54,6 +54,10 @@ interfere with the built-in help system. My own Matlab
 function documentation exceeded 100 lines, one being 
 135 lines.
 
+### Style
+
+* Restyled the default CSS file.
+
 Remark 1.5.1
 ------------
 

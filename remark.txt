@@ -31,7 +31,7 @@ Installation
 ------------
 
 In the following we will assume that Python 2.7 has been installed
-properly, as described [here][InstallPython]. In particular, we
+properly, as described in [here][InstallPython]. In particular, we
 assume that `pip` has been installed. Remark is then installed
 from the command-line by typing
 

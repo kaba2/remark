@@ -10,6 +10,14 @@ html, body
     height: 100%;
 }
 
+body 
+{
+    /* Fonts from the sans-serif generic family are easier to read
+    on the screen. Sans-serif roughly means 'without wiggles'. */
+    font-family: Arial, Sans-serif;
+    /* Trebuchet MS, */
+}
+
 #remark-all
 {
     /* We need this for positioning the footer. */
@@ -24,9 +32,6 @@ at div-block whose id is 'remark' (id's are supposed
 to be unique). */
 #remark
 {
-    /* Fonts from the sans-serif generic family are easier to read
-    on the screen. Sans-serif roughly means 'without wiggles'. */
-    font-family: Trebuchet MS, Sans-Serif;
     /* See the W3C CSS School for this trick. */
     font-size: 100%;
     /* Using more space between lines of text makes it easier to read. */
@@ -34,17 +39,19 @@ to be unique). */
     /* Using margins, the text concentrates more tighly
     towards the center. There will be empty regions on both 
     sides. I find this easier to read. */
-    margin-left: 25%;
-    margin-right: 25%;
+    margin-left: 20%;
+    margin-right: 20%;
 }
 
 /* Verbatim content */
 #remark pre
 {
     /* Verbatim content is bordered with a dotted, one-pixel wide rectangle. */
+    /*
     border-style: dotted;
     border-width: 1px;
     border-color: rgb(85, 85, 85);
+    */
 
     /* Its background is colored light blue. */
     background-color: rgb(234, 240, 255);
@@ -72,7 +79,6 @@ to be unique). */
 #remark p
 {
     margin-left: 0px;
-    font-weight: normal;
     /*text-align: justify;*/
 }
 
@@ -88,15 +94,14 @@ to be unique). */
 {
     clear: left;
     font-size: 1.6em;
-    font-weight: normal;
-    color: #656565;
+    color: #800000;
     margin: 0;
     margin-bottom: 1em;
     /* Draw a dotted line under the heading. */
-    border-bottom: 2px dotted #aca899;
+    border-bottom: 1px solid #aca899;
     /* Make some space between the heading and the line under it.*/ 
-    padding-bottom: 0.3em;
-    letter-spacing: 0.7em;
+    padding-bottom: 0.2em;
+    /*letter-spacing: 0.7em;*/
     line-height: 1.5em;
 }
 
@@ -105,14 +110,13 @@ to be unique). */
 {
     clear: left;
     font-size: 1.4em;
-    font-weight: normal;
-    color: #656565;
+    color: #85A500;
     margin: 1.5em 0em 1em 0em;
     /* Draw a dotted line under the heading. */
     border-bottom: 1px dotted #aca899;
     /* Make some space between the heading and the line under it.*/ 
-    padding-bottom: 0.4em;
-    letter-spacing: 0.3em;
+    padding-bottom: 0.3em;
+    /*letter-spacing: 0.3em;*/
 }
 
 /* Level 3 headings */
@@ -121,7 +125,6 @@ to be unique). */
     clear: left;
     margin: 1.5em 0em 1em 0em;
     font-size: 1.2em;
-    font-weight: normal;
     color: #356535;
 }
 
@@ -130,7 +133,6 @@ to be unique). */
 {
     clear: left;
     font-size: 1.0em;
-    font-weight: normal;
     color: #255525;
     margin: 1.5em 0em 1em 0em;
 }
@@ -162,14 +164,14 @@ to be unique). */
 #remark a 
 { 
     text-decoration: none; 
-    color: #a00000; 
+    color: #505090; 
 }
 
 /* Links when the mouse is hold over them */
 #remark a:hover 
 { 
-    text-decoration: underline; 
-    color: #600000; 
+    text-decoration: underline;
+    color: #800000; 
 }
 
 /* Tables */
@@ -359,9 +361,9 @@ in the 'remark-footer' div. */
 {
     position: absolute;
     bottom: 0;
-    width: 50%;
-    margin-left: 25%;
-    margin-right: 25%;
+    width: 60%;
+    margin-left: 20%;
+    margin-right: 20%;
 }
 
 #remark-footer p 
