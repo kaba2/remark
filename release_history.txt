@@ -22,6 +22,10 @@ Release date xx.xx.2013.
 
 [Remark-1.6.0]: http://kaba.hilvi.org/remark-1.6.0
 
+### Packaging
+
+* Added `pip` packaging.
+
 ### Breaking changes
 
 * Changed the command-line file inclusion to work by 
