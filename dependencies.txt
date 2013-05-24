@@ -52,7 +52,7 @@ This library is used to create thumbnails for image galleries.
 The installation of [Python Imaging Library][PIL] (PIL) depends on
 your operating system and whether your Python is 32-bit or 64-bit.
 
-#### MacOSX and Linux
+#### Mac OS X and Linux
 
 On the command-line, type:
 
