@@ -1,9 +1,5 @@
-include *.txt
-include *.css
-include *.png
-include *.svg
-include *.js
-include *.pyproj
-include *.sln
-include index.htm
-include Remark/remark_files/*
+include index.htm 
+include Remark/Remark.pyproj 
+include Remark.sln
+global-include *.py *.txt *.css *.png *.svg *.js
+recursive-include Remark/remark_files *

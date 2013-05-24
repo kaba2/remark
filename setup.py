@@ -14,14 +14,15 @@ setup(name = 'remark',
       keywords = 'lightweight markup software documentation html',
       url = 'http://kaba.hilvi.org/remark',
       author = 'Kalle Rutanen',
+      author_email = 'kalle_rutanen@hotmail.com',
       license = 'MIT',
       packages = ['Remark'],
       install_requires = [
         'markdown == 2.0.0', 
         'pygments >= 1.5',
-        'pil >= 1.1'
+        'pil >= 1.1',
       ],
       scripts = {
-          'Remark/remark.py'],
+          'Remark/remark.py',
       },
       zip_safe=False)
