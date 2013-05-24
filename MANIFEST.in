@@ -1,0 +1,9 @@
+include *.txt
+include *.css
+include *.png
+include *.svg
+include *.js
+include *.pyproj
+include *.sln
+include index.htm
+include Remark/remark_files/*
