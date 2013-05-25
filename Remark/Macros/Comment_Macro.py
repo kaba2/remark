@@ -24,7 +24,7 @@ class Comment_Macro(object):
     def htmlHead(self, remark):
         return []                
 
-    def postConversion(self, inputDirectory, outputDirectory):
+    def postConversion(self, remark):
         None
 
 registerMacro('Comment', Comment_Macro())

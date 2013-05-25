@@ -12,6 +12,12 @@ import re
 
 globalOptions_ = None
 
+def remarkDirectory():
+    '''
+    Returns the directory containing the Remark package.
+    '''
+    return os.path.dirname(os.path.realpath(__file__))
+
 def findMatchingFiles(inputDirectory, includeSet, excludeSet):
     '''
     Finds each file in the given directory whose relative-name 

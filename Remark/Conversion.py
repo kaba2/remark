@@ -22,7 +22,7 @@ if not (markdown.version == '2.0'):
     print 'Error: Python Markdown must be of version 2.0. Now it is ' + markdown.version + '.',
     sys.exit(1)
 
-from Remark.FileSystem import unixDirectoryName, copyIfNecessary
+from Remark.FileSystem import unixDirectoryName, copyIfNecessary, remarkDirectory
 from Remark.FileSystem import asciiMathMlName, remarkVersion, globalOptions, unixRelativePath, writeFile
 from Remark.Reporting import Reporter, ScopeGuard
 from Remark.DocumentType_Registry import documentType, outputDocumentName
@@ -246,12 +246,15 @@ def convertDirectory(argumentSet, reporter):
     # It is also important that these files are copied as early as
     # possible, since we want to see the changes in the .css files
     # as early as possible.
-    copyIfNecessary('./remark_files/remark.css', argumentSet.scriptDirectory, 
-                    './remark_files/remark.css', argumentSet.outputDirectory)
-    copyIfNecessary('./remark_files/pygments.css', argumentSet.scriptDirectory, 
-                    './remark_files/pygments.css', argumentSet.outputDirectory)
-    copyIfNecessary('./remark_files/' + asciiMathMlName(), argumentSet.scriptDirectory, 
-                    './remark_files/' + asciiMathMlName(), argumentSet.outputDirectory)
+    copyNameSet = [
+        './remark_files/remark.css',
+        './remark_files/pygments.css',
+        './remark_files/' + asciiMathMlName(),
+        ]
+
+    for name in copyNameSet:
+        copyIfNecessary(name, remarkDirectory(), 
+                        name, argumentSet.outputDirectory)
 
     # Parse the tags.
     with ScopeGuard(reporter, 'Parsing tags'):

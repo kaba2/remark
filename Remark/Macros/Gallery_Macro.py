@@ -6,7 +6,7 @@
 from Remark.Macro_Registry import registerMacro
 from Remark.FileSystem import unixRelativePath, unixDirectoryName, changeExtension
 from Remark.FileSystem import fileExtension, copyIfNecessary, createDirectories, copyTree
-from Remark.FileSystem import pathExists, fileModificationTime
+from Remark.FileSystem import pathExists, fileModificationTime, remarkDirectory
 
 import sys
 import os.path
@@ -240,17 +240,22 @@ class Gallery_Macro(object):
                 'hs.showCredits = false;',
                 '</script>',]
         
-    def postConversion(self, inputDirectory, outputDirectory):
+    def postConversion(self, remark):
         scriptDirectory = sys.path[0]
 
-        copyIfNecessary('./remark_files/highslide/highslide.css', scriptDirectory,
-                        './remark_files/highslide/highslide.css', outputDirectory);
+        copyNameSet = [
+            './remark_files/highslide/highslide.css',
+            './remark_files/highslide/highslide-full.js'
+            ]
 
-        copyIfNecessary('./remark_files/highslide/highslide-full.js', scriptDirectory,
-                        './remark_files/highslide/highslide-full.js', outputDirectory);
+        for name in copyNameSet:
+            copyIfNecessary(name, remarkDirectory(),
+                        name, remark.outputRootDirectory);
+            copyIfNecessary(name, remarkDirectory(),
+                        name, remark.outputRootDirectory);
 
-        highslideSource = os.path.join(scriptDirectory, './remark_files/highslide/graphics')
-        highslideTarget = os.path.join(outputDirectory, './remark_files/highslide/graphics')
+        highslideSource = os.path.join(remarkDirectory(), './remark_files/highslide/graphics')
+        highslideTarget = os.path.join(remark.outputRootDirectory, './remark_files/highslide/graphics')
         if not pathExists(highslideTarget):
             copyTree(highslideSource, highslideTarget)
 

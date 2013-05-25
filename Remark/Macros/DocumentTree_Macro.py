@@ -82,7 +82,7 @@ class DocumentTree_Macro(object):
     def htmlHead(self, remark):
         return []                
 
-    def postConversion(self, inputDirectory, outputDirectory):
+    def postConversion(self, remark):
         None
 
     def _parse(self, globSet, map, transform):

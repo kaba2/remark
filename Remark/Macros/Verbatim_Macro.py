@@ -30,7 +30,7 @@ class Verbatim_Macro(object):
     def htmlHead(self, remark):
         return []                
 
-    def postConversion(self, inputDirectory, outputDirectory):
+    def postConversion(self, remark):
         None
 
 registerMacro('Verbatim', Verbatim_Macro())
