@@ -27,7 +27,7 @@ setup(name = 'remark',
         'Intended Audience :: Science/Research',
         'Operating System :: OS Independent',
         ],
-        scripts = ['Remark/remark.py',],
+        scripts = ['remark.py',],
         requires = [
           'markdown (==2.0.0)', 
           'pygments (>=1.5)',
