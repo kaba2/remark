@@ -712,8 +712,7 @@ class Remark(object):
         
         # Run through the post-conversions of all used macros.    
         for macro in self.usedMacroSet:
-            macro.postConversion(self.inputRootDirectory, 
-                                 self.outputRootDirectory)
+            macro.postConversion(self)
 
         # Generate the link definitions.
         text = []

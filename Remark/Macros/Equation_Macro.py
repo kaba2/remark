@@ -50,7 +50,7 @@ class Equation_Macro(object):
     def htmlHead(self, remark):
         return []                
 
-    def postConversion(self, inputDirectory, outputDirectory):
+    def postConversion(self, remark):
         None
 
 registerMacro('Equation', Equation_Macro())

@@ -22,7 +22,7 @@ class Copy_Macro(object):
     def htmlHead(self, remark):
         return []                
 
-    def postConversion(self, inputDirectory, outputDirectory):
+    def postConversion(self, remark):
         None
 
 registerMacro('Copy', Copy_Macro())
