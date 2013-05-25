@@ -9,6 +9,12 @@ import os
 import shutil
 from time import clock
 
+try: 
+    import pygments
+except ImportError:
+    print 'Error: Pygments library missing. Please install it first.'
+    sys.exit(1)
+
 try:
     import markdown
 except ImportError:
@@ -19,12 +25,6 @@ if not (markdown.version == '2.0'):
     # The later versions of Markdown do not support Markdown in html-blocks.
     # This makes Remark work incorrectly, so we will check the version here.
     print 'Error: Python Markdown must be of version 2.0. Now it is ' + markdown.version + '.',
-    sys.exit(1)
-
-try: 
-    import pygments
-except ImportError:
-    print 'Error: Pygments library missing. Please install it first.'
     sys.exit(1)
 
 from Macro_Registry import findMacro
