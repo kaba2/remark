@@ -3,7 +3,3 @@ include Remark/Remark.pyproj
 include Remark.sln
 global-include *.py *.txt *.css *.png *.svg *.js
 recursive-include Remark/remark_files *
-
-global-exclude *.pyc
-recursive-exclude .hg *
-recursive-exclude docs *
