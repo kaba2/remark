@@ -33,4 +33,7 @@ setup(name = 'remark',
           'pygments (>=1.5)',
           'pil (>=1.1)',
         ],
+        provides = [
+          'Remark'
+        ],
      )
