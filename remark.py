@@ -9,47 +9,43 @@ import os
 import shutil
 from time import clock
 
+# Test that the Pygments library is present.
 try: 
     import pygments
 except ImportError:
     print 'Error: Pygments library missing. Please install it first.'
     sys.exit(1)
 
-try:
-    import markdown
-except ImportError:
-    print 'Error: Python Markdown library missing. Please install it first.'
-    sys.exit(1)
+# Unfortunately, because of a bug in Markdown script
+# the import for the Markdown library can not be tested here.
+# An import command would try to import the markdown.py module,
+# which is the command-line script for Markdown, located at the
+# same directory as the command-line script for Remark. We
+# will test the presence of Markdown deeper in Remark.
 
-if not (markdown.version == '2.0'):
-    # The later versions of Markdown do not support Markdown in html-blocks.
-    # This makes Remark work incorrectly, so we will check the version here.
-    print 'Error: Python Markdown must be of version 2.0. Now it is ' + markdown.version + '.',
-    sys.exit(1)
+from Remark.Macro_Registry import findMacro
+from Remark.Document import Document
+from Remark.DocumentTree import DocumentTree
 
-from Macro_Registry import findMacro
-from Document import Document
-from DocumentTree import DocumentTree
+from Remark.Conversion import convertDirectory
+from Remark.FileSystem import unixDirectoryName, unixRelativePath, readFile, writeFile
+from Remark.FileSystem import remarkVersion, fileExtension
+from Remark.FileSystem import asciiMathMlName, copyIfNecessary, setGlobalOptions, globalOptions
+from Remark.FileSystem import splitPath, findMatchingFiles
 
-from Conversion import convertDirectory
-from FileSystem import unixDirectoryName, unixRelativePath, readFile, writeFile
-from FileSystem import remarkVersion, fileExtension
-from FileSystem import asciiMathMlName, copyIfNecessary, setGlobalOptions, globalOptions
-from FileSystem import splitPath, findMatchingFiles
+from Remark.Reporting import Reporter, ScopeGuard
 
-from Reporting import Reporter, ScopeGuard
+from Remark.Macros import *
 
-from Macros import *
+from Remark.DocumentType_Registry import setDefaultDocumentType, associateDocumentType
+from Remark.DocumentType_Registry import documentType
 
-from DocumentType_Registry import setDefaultDocumentType, associateDocumentType
-from DocumentType_Registry import documentType
-
-from DocumentTypes.CppCodeView_DocumentType import CppCodeView_DocumentType
-from DocumentTypes.CodeView_DocumentType import CodeView_DocumentType
-from DocumentTypes.RemarkPage_DocumentType import RemarkPage_DocumentType
-from DocumentTypes.DirectoryView_DocumentType import DirectoryView_DocumentType
-from DocumentTypes.Orphan_DocumentType import Orphan_DocumentType
-from DocumentTypes.Copy_DocumentType import Copy_DocumentType
+from Remark.DocumentTypes.CppCodeView_DocumentType import CppCodeView_DocumentType
+from Remark.DocumentTypes.CodeView_DocumentType import CodeView_DocumentType
+from Remark.DocumentTypes.RemarkPage_DocumentType import RemarkPage_DocumentType
+from Remark.DocumentTypes.DirectoryView_DocumentType import DirectoryView_DocumentType
+from Remark.DocumentTypes.Orphan_DocumentType import Orphan_DocumentType
+from Remark.DocumentTypes.Copy_DocumentType import Copy_DocumentType
 
 if os.name == 'nt':
     # Apply the bug-fix for the os.path.split() to
@@ -84,7 +80,7 @@ def parseArguments(reporter):
 %prog inputDirectory outputDirectory (option|file-glob)*
 
 Note: On Unix-based operating systems a glob must be placed in 
-double quotes to prevent glob-expansion taking place before
+double quotes to prevent glob-expansion from taking place before
 reaching Remark; write "*.txt" instead of *.txt.
 """)
     

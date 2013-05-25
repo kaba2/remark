@@ -2,7 +2,7 @@
 
 # Description: Example macro
 
-from Macro_Registry import registerMacro
+from Remark.Macro_Registry import registerMacro
 
 class Example_Macro(object):
     def name(self):

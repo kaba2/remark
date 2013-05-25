@@ -3,8 +3,8 @@
 # Description: ParentList macro
 # Detail: Generates a list of parent documents up to the root.
 
-from Macro_Registry import registerMacro
-from FileSystem import htmlDiv
+from Remark.Macro_Registry import registerMacro
+from Remark.FileSystem import htmlDiv
 
 class ParentList_Macro(object):
     def name(self):

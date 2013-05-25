@@ -2,8 +2,8 @@
 
 # Description: Orphan document-type
 
-from FileSystem import changeExtension 
-from Conversion import saveRemarkToHtml
+from Remark.FileSystem import changeExtension 
+from Remark.Conversion import saveRemarkToHtml
 
 class Orphan_DocumentType(object):
     def name(self):

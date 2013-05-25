@@ -3,9 +3,9 @@
 # Description: DirectoryLink macro
 # Detail: Generates a relative link to the containing directory.
 
-from Macro_Registry import registerMacro
-from FileSystem import unixRelativePath, escapeMarkdown
-from DocumentType_Registry import outputDocumentName
+from Remark.Macro_Registry import registerMacro
+from Remark.FileSystem import unixRelativePath, escapeMarkdown
+from Remark.DocumentType_Registry import outputDocumentName
 
 class DirectoryLink_Macro(object):
     def name(self):

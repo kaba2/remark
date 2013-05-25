@@ -4,8 +4,8 @@
 
 import re
 
-from FileSystem import escapeMarkdown, fileUpToDate, copyIfNecessary
-from TagParsers.Dictionary_TagParser import Dictionary_TagParser 
+from Remark.FileSystem import escapeMarkdown, fileUpToDate, copyIfNecessary
+from Remark.TagParsers.Dictionary_TagParser import Dictionary_TagParser 
 
 class Copy_DocumentType(object):
     def name(self):

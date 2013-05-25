@@ -3,8 +3,8 @@
 # Description: EquationSet macro
 # Detail: Presents multiple equations.
 
-from Macro_Registry import registerMacro
-from FileSystem import htmlDiv
+from Remark.Macro_Registry import registerMacro
+from Remark.FileSystem import htmlDiv
 
 class EquationSet_Macro(object):
     def name(self):

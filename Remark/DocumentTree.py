@@ -7,12 +7,12 @@ import re
 import os.path
 import string
 
-from DocumentType_Registry import documentType, strictDocumentType
-from FileSystem import unixDirectoryName, unixRelativePath, fileExtension
-from FileSystem import globalOptions, withoutFileExtension
-from FileSystem import pathSuffixSet, globToRegex, pathExists, findMatchingFiles
-from Reporting import Reporter, ScopeGuard
-from Document import Document
+from Remark.DocumentType_Registry import documentType, strictDocumentType
+from Remark.FileSystem import unixDirectoryName, unixRelativePath, fileExtension
+from Remark.FileSystem import globalOptions, withoutFileExtension
+from Remark.FileSystem import pathSuffixSet, globToRegex, pathExists, findMatchingFiles
+from Remark.Reporting import Reporter, ScopeGuard
+from Remark.Document import Document
 
 class DocumentTree(object):
     def __init__(self, rootDirectory, reporter = Reporter()):

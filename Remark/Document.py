@@ -6,8 +6,8 @@
 import os.path
 import string
 
-from FileSystem import unixDirectoryName, unixRelativePath, fileExtension
-from DocumentType_Registry import documentType
+from Remark.FileSystem import unixDirectoryName, unixRelativePath, fileExtension
+from Remark.DocumentType_Registry import documentType
 
 class Document(object):
     def __init__(self, relativeName):

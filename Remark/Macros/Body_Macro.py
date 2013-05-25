@@ -3,8 +3,8 @@
 # Description: Body macro
 # Detail: Reads a document from file.
 
-from FileSystem import readFile
-from Macro_Registry import registerMacro
+from Remark.FileSystem import readFile
+from Remark.Macro_Registry import registerMacro
 
 class Body_Macro(object):
     def name(self):

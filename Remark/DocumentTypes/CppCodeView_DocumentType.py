@@ -2,9 +2,9 @@
 
 # Description: CppCodeView document-type
 
-from FileSystem import escapeMarkdown, globalOptions, fileUpToDate
-from Conversion import saveRemarkToHtml
-from TagParsers.Dictionary_TagParser import Dictionary_TagParser 
+from Remark.FileSystem import escapeMarkdown, globalOptions, fileUpToDate
+from Remark.Conversion import saveRemarkToHtml
+from Remark.TagParsers.Dictionary_TagParser import Dictionary_TagParser 
 
 class CppCodeView_DocumentType(object):
     def __init__(self):
