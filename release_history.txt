@@ -33,6 +33,9 @@ relative-paths of files, rather than by filenames.
 This breaks the inclusion of multiple files with the
 same filename, but in different directories; the old behavior
 can be recovered by changing `"filename.txt"` to `"*filename.txt"`.
+* Changed the location of the Remark command-line
+script from the `Remark` directory to the Remark root directory.
+This had to be done so that `pip` packaging works correctly.
 
 ### Interface
 
