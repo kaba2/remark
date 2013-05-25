@@ -11,8 +11,9 @@ from time import clock
 
 try:
     import markdown
-except ImportError:
+except ImportError as e:
     print 'Error: Python Markdown library missing. Please install it first.'
+    print e.strerror;
     sys.exit(1)
 
 if not (markdown.version == '2.0'):
