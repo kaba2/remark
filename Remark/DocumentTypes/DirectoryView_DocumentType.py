@@ -2,8 +2,8 @@
 
 # Description: DirectoryView document-type
 
-from FileSystem import changeExtension, fileExists
-from Conversion import saveRemarkToHtml
+from Remark.FileSystem import changeExtension, fileExists
+from Remark.Conversion import saveRemarkToHtml
 
 class DirectoryView_DocumentType(object):
     def name(self):

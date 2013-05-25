@@ -6,8 +6,8 @@
 import string
 import re
 
-from Macro_Registry import registerMacro
-from FileSystem import unixRelativePath, unixDirectoryName, globalOptions
+from Remark.Macro_Registry import registerMacro
+from Remark.FileSystem import unixRelativePath, unixDirectoryName, globalOptions
 
 from pygments import highlight
 from pygments.lexers import CppLexer

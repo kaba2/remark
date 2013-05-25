@@ -3,7 +3,7 @@
 # Description: Equation macro
 # Detail: Presents mathematics.
 
-from Macro_Registry import registerMacro
+from Remark.Macro_Registry import registerMacro
 
 class Equation_Macro(object):
     def name(self):

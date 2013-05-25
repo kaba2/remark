@@ -10,13 +10,23 @@ import datetime
 import traceback
 import time
 
-import markdown
+try:
+    import markdown
+except ImportError:
+    print 'Error: Python Markdown library missing. Please install it first.'
+    sys.exit(1)
 
-from FileSystem import unixDirectoryName, copyIfNecessary
-from FileSystem import asciiMathMlName, remarkVersion, globalOptions, unixRelativePath, writeFile
-from Reporting import Reporter, ScopeGuard
-from DocumentType_Registry import documentType, outputDocumentName
-from DocumentTree import createDocumentTree
+if not (markdown.version == '2.0'):
+    # The later versions of Markdown do not support Markdown in html-blocks.
+    # This makes Remark work incorrectly, so we will check the version here.
+    print 'Error: Python Markdown must be of version 2.0. Now it is ' + markdown.version + '.',
+    sys.exit(1)
+
+from Remark.FileSystem import unixDirectoryName, copyIfNecessary
+from Remark.FileSystem import asciiMathMlName, remarkVersion, globalOptions, unixRelativePath, writeFile
+from Remark.Reporting import Reporter, ScopeGuard
+from Remark.DocumentType_Registry import documentType, outputDocumentName
+from Remark.DocumentTree import createDocumentTree
 from Remark_To_Markdown import Remark
 
 def convertMarkdownToHtml(text):

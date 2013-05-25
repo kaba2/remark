@@ -4,9 +4,9 @@
 
 import re
 
-from TagParsers.Remark_TagParser import Remark_TagParser
-from FileSystem import changeExtension, globalOptions, fileUpToDate
-from Conversion import saveRemarkToHtml
+from Remark.TagParsers.Remark_TagParser import Remark_TagParser
+from Remark.FileSystem import changeExtension, globalOptions, fileUpToDate
+from Remark.Conversion import saveRemarkToHtml
 
 class RemarkPage_DocumentType(object):
     def __init__(self):

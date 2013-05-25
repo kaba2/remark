@@ -6,8 +6,8 @@
 import fnmatch
 import re
 
-from Macro_Registry import registerMacro
-from FileSystem import htmlDiv, globToRegex, combineRegex
+from Remark.Macro_Registry import registerMacro
+from Remark.FileSystem import htmlDiv, globToRegex, combineRegex
 
 class DocumentTree_Macro(object):
     def name(self):

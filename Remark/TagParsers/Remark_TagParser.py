@@ -4,8 +4,8 @@
 # Detail: Parses the description-tag from the header, and tags based on names.
 # Documentation: tag_parsers.txt
 
-from Dictionary_TagParser import Dictionary_TagParser
-from FileSystem import openFileUtf8, globalOptions
+from Remark.TagParsers.Dictionary_TagParser import Dictionary_TagParser
+from Remark.FileSystem import openFileUtf8, globalOptions
 
 import string
 import re

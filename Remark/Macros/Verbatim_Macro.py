@@ -3,9 +3,9 @@
 # Description: Verbatim macro
 # Detail: Reinterprets input as preformatted text.
 
-from Macro_Registry import registerMacro
+from Remark.Macro_Registry import registerMacro
 
-from FileSystem import htmlDiv
+from Remark.FileSystem import htmlDiv
 
 class Verbatim_Macro(object):
     def name(self):

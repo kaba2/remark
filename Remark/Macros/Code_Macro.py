@@ -5,8 +5,8 @@
 
 import string
 
-from Macro_Registry import registerMacro
-from FileSystem import readFile, unixDirectoryName
+from Remark.Macro_Registry import registerMacro
+from Remark.FileSystem import readFile, unixDirectoryName
 
 from pygments import highlight
 from pygments.lexers import guess_lexer, guess_lexer_for_filename

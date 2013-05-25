@@ -13,12 +13,12 @@ import copy
 import traceback
 import time
 
-from Macro_Registry import findMacro
-from FileSystem import changeExtension, unixDirectoryName, copyIfNecessary
-from FileSystem import asciiMathMlName, remarkVersion, globalOptions, unixRelativePath, writeFile
-from Reporting import Reporter, ScopeGuard
-from DocumentType_Registry import documentType, outputDocumentName
-from DocumentTree import createDocumentTree
+from Remark.Macro_Registry import findMacro
+from Remark.FileSystem import changeExtension, unixDirectoryName, copyIfNecessary
+from Remark.FileSystem import asciiMathMlName, remarkVersion, globalOptions, unixRelativePath, writeFile
+from Remark.Reporting import Reporter, ScopeGuard
+from Remark.DocumentType_Registry import documentType, outputDocumentName
+from Remark.DocumentTree import createDocumentTree
 
 class Scope(object):
     def __init__(self, parent, name):

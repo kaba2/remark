@@ -3,9 +3,9 @@
 # Description: Ref macro
 # Detail: Finds the relative output name of a file in document tree.
 
-from Macro_Registry import registerMacro
-from FileSystem import unixRelativePath
-from DocumentType_Registry import outputDocumentName
+from Remark.Macro_Registry import registerMacro
+from Remark.FileSystem import unixRelativePath
+from Remark.DocumentType_Registry import outputDocumentName
 
 class Ref_Macro(object):
     def name(self):

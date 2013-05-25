@@ -3,7 +3,7 @@
 # Description: Comment macro
 # Detail: Consumes its input and produces no output.
 
-from Macro_Registry import registerMacro
+from Remark.Macro_Registry import registerMacro
 
 class Comment_Macro(object):
     def name(self):

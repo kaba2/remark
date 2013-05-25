@@ -4,7 +4,7 @@
 # Detail: Searches for tags based on tag-key : tag-text patterns.
 # Documentation: tag_parsers.txt
 
-from FileSystem import openFileUtf8
+from Remark.FileSystem import openFileUtf8
 
 import re
 import string

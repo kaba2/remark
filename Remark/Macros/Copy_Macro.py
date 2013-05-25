@@ -3,7 +3,7 @@
 # Description: Copy macro
 # Detail: Copies the input to output.
 
-from Macro_Registry import registerMacro
+from Remark.Macro_Registry import registerMacro
 
 class Copy_Macro(object):
     def name(self):
