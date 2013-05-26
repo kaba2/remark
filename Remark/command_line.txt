@@ -47,9 +47,10 @@ as follows:
 :	Sets maximum file-size to load (in bytes, default 262144).
 
 -o or --options
-:	Reads command-line options from an option-file (if present).
+:	Reads command-line options from an option-file (if it exists).
+	An option-file is a plain-text file, with one option per line.
 	If the file path is relative, it is relative to the input directory.
-	The file `remark_options` is always included.
+	The file `remark_options` is always included as an option-file.
 
 -q or --quick
 :	Regenerates only modified documents and their parents. 

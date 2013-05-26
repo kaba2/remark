@@ -158,9 +158,10 @@ This is equivalent to writing the file-glob directly as a positional argument.""
         type = 'string',
         action = 'append',
         default = ['remark_options'],
-        help = """reads command-line options from an option-file (if present).
+        help = """reads command-line options from an option-file (if it exists).
+An option-file is a plain-text file, with one option per line.
 If the file path is relative, it is relative to the input directory.
-The file `remark_options` is always included.""",
+The file `remark_options` is always included as an option-file.""",
         metavar = 'FILEPATH')
 
     optionParser.add_option('-q', '--quick',
