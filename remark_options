@@ -9,10 +9,11 @@ index.htm
 -x MANIFEST.in
 -x license.txt
 -x remark_license.txt
--x *.sln
--x *.pyproj
--x docs/*
 -x Remark/remark_files/highslide/*
+-x docs/*
+-x MANIFEST
 -x build/*
 -x dist/*
 -x .hg*
+-x .DS*
+
