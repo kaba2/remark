@@ -7,3 +7,4 @@ dist/
 remark.egg-info
 *.egg
 build/
+docs/

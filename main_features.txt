@@ -8,13 +8,12 @@ This section summarizes the main features of Remark.
 Unicode source files 
 --------------------
 
-In Remark, the documentation is written in plain UTF-8 text files. UTF-8 is a (Unicode) 
+The documentation in Remark is written in plain UTF-8 text files. UTF-8 is a (Unicode) 
 text encoding scheme which is compatible with ASCII encoding in the sense that ASCII 
 encoded text files are automatically valid UTF-8 text files. However,
 in contrast to ASCII text files, a UTF-8 text file can also represent
-the more exotic characters if needed. A UTF-8 text file consist of nothing else than 
-a sequence of Unicode characters, which you can edit using the text editor 
-of your choice.
+the more exotic characters if needed. A UTF-8 text file consist of a sequence 
+of Unicode characters, which you can edit using any plain-text editor.
 
 Human-readable content description 
 ----------------------------------
@@ -23,14 +22,11 @@ The Remark syntax is just a slightly extended version of the
 [Markdown][Markdown] syntax. This syntax fulfills the following goals:
  
  * The representation is decoupled from the content.  
- 
- * The content description (i.e. Remark source) is as human-readable 
- as possible.
- 
+ * The content description is as human-readable as possible.
  * There is minimal redundancy. 
 
 The first item means that the Remark syntax covers only structural matters 
-(e.g. a section, a sub-section, a table, emphasis, etc). The 
+(e.g. a section, a sub-section, a table, emphasis, etc.). The 
 representation of the content (colors, fonts, etc.) can be 
 arbitrarily changed later without touching the content (using _Cascading
 Style Sheets_). Here's an example of the Remark syntax from the source of this page:
@@ -41,10 +37,7 @@ Style Sheets_). Here's an example of the Remark syntax from the source of this p
 	[Markdown][Markdown] syntax. This syntax fulfills the following goals:
  
 	 * The representation is decoupled from the content.  
-	 
-	 * The content description (i.e. Remark source) is as human-readable 
-	 as possible.
-	 
+	 * The content description is as human-readable as possible.
 	 * There is minimal redundancy. 
 
 The source code is first converted from Remark syntax to Markdown syntax
@@ -111,8 +104,8 @@ Automatic generation of links
 Usually each document in documentation can be given a title or some 
 kind of a description. When building documentation manually, one
 faces the task of building links between documents and naming
-each of them with the description of the target document. However,
-this quickly becomes a maintenance problem because the link 
+each of them with the description of the target document.
+This becomes a maintenance problem very quickly because the link 
 descriptions will need to be corrected every time the target 
 document's description changes. Remark solves this problem by
 embedding to each document its description. This way links can be
@@ -137,9 +130,9 @@ like this:
 
 The description and parent documentation for a source code file are 
 embedded into it using comments. For example, here's
-what reads at the start of the file _Convert.py_ (a Python source code 
-file of Remark):
+what reads at the start of the file [[FileLink: Conversion.py]] 
+(a Python source code file of Remark):
 
-	# Description: Macro expansion algorithm, variables, and html conversion.
-	# Documentation: implementation.txt
+	# Description: Conversions between Remark, Markdown, and html
+	# Documentation: algorithms.txt
 

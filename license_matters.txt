@@ -31,7 +31,7 @@ optional as follows.
  * The Highslide javascript-library is copied to the output
  directory if and only if some generated html-page refers to it.
 
-The Python Imaging Library is used by the Gallery-macro to
+The Python Imaging Library is used by the [[Link: Gallery_Macro.txt]] to
 create thumbnails automatically.
 
 Commercial use

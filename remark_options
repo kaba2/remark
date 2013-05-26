@@ -1,0 +1,18 @@
+*.txt
+*.py
+*.js
+*.css
+*.png
+*.svg
+index.htm
+-x remark_options
+-x MANIFEST.in
+-x license.txt
+-x remark_license.txt
+-x *.sln
+-x *.pyproj
+-x docs/*
+-x Remark/remark_files/highslide/*
+-x build/*
+-x dist/*
+-x .hg*
