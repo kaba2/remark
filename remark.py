@@ -115,8 +115,7 @@ def parseArguments(reporter):
 
 Note: On Unix-based operating systems a glob must be placed in 
 double quotes to prevent glob-expansion from taking place before
-reaching Remark; write "*.txt" instead of *.txt.
-""")
+reaching Remark; write "*.txt" instead of *.txt.""")
     
     optionParser.add_option('-d', '--disable',
         dest = 'disableSet',
