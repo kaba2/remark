@@ -10,9 +10,9 @@ from the command-line without any arguments.
 Usage
 -----
 
-From the console (Windows, Linux, Unix, ...): 
+From the console (Windows, Linux, Mac, ...): 
 
-	remark.py [options] inputDirectory outputDirectory [files...]
+	remark.py inputDirectory outputDirectory (option|file-glob)*
 
 ### Linux and Mac users
 
