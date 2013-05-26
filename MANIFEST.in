@@ -2,4 +2,4 @@ include index.htm
 include Remark/Remark.pyproj 
 include Remark.sln
 global-include *.py *.txt *.css *.png *.svg *.js
-recursive-include Remark/remark_files *
+recursive-include Remark/remark_files *.css

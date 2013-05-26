@@ -16,6 +16,14 @@ setup(name = 'remark',
         'Remark.DocumentTypes',
         'Remark.TagParsers',
         ],
+      package_data = {
+        'Remark' : [
+          'remark_files/*.*',
+          'remark_files/highslide/*.*',
+          'remark_files/highslide/graphics/*.*',
+          'remark_files/highslide/graphics/outlines/*.*',
+          ], 
+      },
       license = 'MIT',
       classifiers = [
         'Development Status :: 5 - Production/Stable',
@@ -27,13 +35,13 @@ setup(name = 'remark',
         'Intended Audience :: Science/Research',
         'Operating System :: OS Independent',
         ],
-        scripts = ['remark.py',],
-        requires = [
-          'markdown (==2.0.0)', 
-          'pygments (>=1.5)',
-          'pil (>=1.1)',
-        ],
-        provides = [
-          'Remark'
-        ],
+      scripts = ['remark.py',],
+      requires = [
+        'markdown (==2.0.0)', 
+        'pygments (>=1.5)',
+        'pil (>=1.1)',
+      ],
+      provides = [
+        'Remark'
+      ],
      )

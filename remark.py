@@ -9,19 +9,45 @@ import os
 import shutil
 from time import clock
 
+# Older versions of Markdown (e.g. 2.0.0 which we need), have
+# the following bug. While the command-line script is named `markdown.py`,
+# the package is also named `markdown`. When `import markdown` is
+# issued in the same directory as `markdown.py` (or `markdown.pyc`), 
+# the import refers to the script module, and not the package as it should. 
+# We fix this problem by removing those paths from sys.path which refer 
+# to the same directory as where the remark.py script is located.
+
+scriptDirectory = os.path.normpath(os.path.dirname(os.path.realpath(__file__)))
+
+newSysPath = []
+for i in range(len(sys.path)):
+    path = os.path.normpath(os.path.join(scriptDirectory, sys.path[i]))
+    if path != scriptDirectory:
+        newSysPath.append(path)
+    else:
+        #print 'Removed', sys.path[i], ' from Python path.'
+        None
+sys.path = newSysPath
+
+# Test that the Markdown library is present.
+try:
+    import markdown
+except ImportError:
+    print 'Error: Python Markdown library missing. Please install it first.'
+    sys.exit(1)
+
+if not (markdown.version == '2.0'):
+    # The later versions of Markdown do not support Markdown in html-blocks.
+    # This makes Remark work incorrectly, so we will check the version here.
+    print 'Error: Python Markdown must be of version 2.0. Now it is ' + markdown.version + '.',
+    sys.exit(1)
+
 # Test that the Pygments library is present.
 try: 
     import pygments
 except ImportError:
     print 'Error: Pygments library missing. Please install it first.'
     sys.exit(1)
-
-# Unfortunately, because of a bug in Markdown script
-# the import for the Markdown library can not be tested here.
-# An import command would try to import the markdown.py module,
-# which is the command-line script for Markdown, located at the
-# same directory as the command-line script for Remark. We
-# will test the presence of Markdown deeper in Remark.
 
 from Remark.Macro_Registry import findMacro
 from Remark.Document import Document
