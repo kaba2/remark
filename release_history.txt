@@ -45,6 +45,9 @@ and other inessential files in a typical build-environment.
 * Added the option `-i` to include files by their
 relative-paths. This is the same as simply listing
 them; this option is for symmetry with the option `-x`.
+* Added the option `-o` to read command-line options
+from an option-file (if the file exists). The 
+`remark_options` is implicitly included as an option-file.
 * Added the option `-u` to list all those files in
 the input directory which are neither included or
 excluded (called unknown files). This helps to check

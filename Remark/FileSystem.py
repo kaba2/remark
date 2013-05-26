@@ -286,7 +286,7 @@ def fileSize(fileName):
     '''
     return os.path.getsize(longPath(fileName))
 
-def readFile(fileName, ignoreLargeFiles = True):
+def readFile(fileName, maxSize = -1):
     '''
     Opens a file using openFileUtf8, and reads the contents 
     into a list of strings corresponding to the rows of the file.
@@ -296,17 +296,16 @@ def readFile(fileName, ignoreLargeFiles = True):
     fileName (string):
     The file to read.
 
-    ignoreLargeFiles (boolean):
-    Whether to skip reading files that are larger than
-    globalOptions().maxFileSize. 
+    maxSize (integer):
+    Maximum size of a file to read. Use a negative number
+    for unbounded size.
     
     returns (list of strings):
     The rows of the file, if the file is not skipped. Otherwise
     the empty list [].
     '''
     size = fileSize(fileName)
-    maxSize = globalOptions().maxFileSize
-    if size >= maxSize and ignoreLargeFiles:
+    if maxSize >= 0 and size >= maxSize:
         # If the file is very large, then it probably is not
         # part of the Remark documentation. Refuse to read
         # such files.

@@ -222,7 +222,8 @@ def convertDirectory(argumentSet, reporter):
 
     reporter.report(['',
                      'Input directory: ' + argumentSet.inputDirectory,
-                     'Output directory: ' + argumentSet.outputDirectory],
+                     'Output directory: ' + argumentSet.outputDirectory,
+                     'Remark directory: ' + remarkDirectory(),],
                     'verbose')
 
     # Create the document tree.
@@ -241,8 +242,6 @@ def convertDirectory(argumentSet, reporter):
         './remark_files/pygments.css',
         './remark_files/' + asciiMathMlName(),
         ]
-
-    print remarkDirectory()
 
     for name in copyNameSet:
         copyIfNecessary(name, remarkDirectory(), 
