@@ -3,7 +3,7 @@
 # Description: Body macro
 # Detail: Reads a document from file.
 
-from Remark.FileSystem import readFile
+from Remark.FileSystem import readFile, globalOptions
 from Remark.Macro_Registry import registerMacro
 
 class Body_Macro(object):
@@ -14,7 +14,7 @@ class Body_Macro(object):
         document = remark.document
         fileName = remark.documentTree.fullName(document);
 
-        text = readFile(fileName)
+        text = readFile(fileName, globalOptions().maxFileSize)
 
         return text
     

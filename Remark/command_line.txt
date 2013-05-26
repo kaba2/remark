@@ -34,12 +34,22 @@ as follows:
 -e or --extensions
 :	Lists all file-extensions in the input-directory along with example files.
 
+-i or --include
+:	Includes files by their relative-paths (e.g. "*.txt").
+	This is equivalent to writing the file-glob directly as a 
+	positional argument.
+
 -l or --lines
 :	Sets maximum number of lines for a tag-parser to scan a file
 	for tags (default 100).
 
 -m or --max-file-size
 :	Sets maximum file-size to load (in bytes, default 262144).
+
+-o or --options
+:	Reads command-line options from an option-file (if present).
+	If the file path is relative, it is relative to the input directory.
+	The file `remark_options` is always included.
 
 -q or --quick
 :	Regenerates only modified documents and their parents. 
@@ -49,8 +59,15 @@ as follows:
 -s or --strict
 :	Treats warnings as errors.
 
+-u or --unknowns
+:	Lists all files which are neither included or excluded.
+
 -v or --verbose
 :	Prints additional progress information.
+
+-x or --exclude
+:	Excludes files by their relative-paths (e.g "*CMake*").
+	Exclusion takes priority over inclusion.
 
 Warnings
 --------
