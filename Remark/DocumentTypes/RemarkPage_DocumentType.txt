@@ -34,7 +34,7 @@ Generating Remark text
 
 		[[set RemarkPage.mid_text]]
 		[[set RemarkPage.end_text]]
-		[[Body]]
+		[[+ReadFile]]: [[tag file_name]]
 		[[DocChildren]]
 		[[RemarkPage.mid_text]]
 		[[SourceChildren]]

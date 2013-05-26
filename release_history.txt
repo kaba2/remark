@@ -58,6 +58,13 @@ interfere with the built-in help system. My own Matlab
 function documentation exceeded 100 lines, one being 
 135 lines.
 
+### Macros
+
+* Added the ReadFile macro, to read plain-text files. This
+generalizes the Body macro.
+* Added the `type` variable in the `Code` macro so that the
+type of the code can be specified explicitly.
+
 ### Style
 
 * Restyled the default CSS file.

@@ -22,6 +22,7 @@ __all__ = ['Body_Macro',
            'Link_Macro',
            'Parent_Macro',
            'ParentList_Macro',
+           'ReadFile_Macro',
            'Ref_Macro',
            'SourceChildren_Macro',
            'Verbatim_Macro',]

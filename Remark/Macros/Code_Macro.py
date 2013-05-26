@@ -9,7 +9,7 @@ from Remark.Macro_Registry import registerMacro
 from Remark.FileSystem import readFile, unixDirectoryName
 
 from pygments import highlight
-from pygments.lexers import guess_lexer, guess_lexer_for_filename
+from pygments.lexers import guess_lexer, get_lexer_by_name
 from pygments.formatters import HtmlFormatter
 
 class Code_Macro(object):
@@ -19,11 +19,26 @@ class Code_Macro(object):
     def expand(self, parameter, remark):
         document = remark.document
         
+        scope = remark.scopeStack.top()
+        codeType = scope.getString('Code.type', '')
+
+        lexer = None
+        if codeType != '':
+            # The code-type was given explicitly.
+            # See if we can find a corresponding pygments lexer.
+            try:
+                lexer = get_lexer_by_name(codeType)
+            except:
+                remark.reporter.reportWarning(
+                    'The code-type ' + codeType + ' is not recognized by Pygments. ' +
+                    'Guessing code-type from content.', 'invalid-input')
+
         # Prepare for Pygments input.
         inputText = '\n'.join(parameter)
 
-        # Try to guess the type of the code.
-        lexer = guess_lexer_for_filename(document.fileName, inputText)
+        if lexer == None:
+            # Try to guess the type of the code.
+            lexer = guess_lexer(inputText)
         
         # Highlight the code.
         hilightedText = highlight(inputText, lexer, HtmlFormatter())

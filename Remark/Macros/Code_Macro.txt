@@ -4,7 +4,9 @@ Code macro
 [[Parent]]: available_macros.txt
 
 The Code macro highlights source code. The syntax-highlighting is 
-carried out by the Pygments library.
+carried out by the Pygments library. If you want to specifically 
+highlight C++ code, then you should look at [[Link: CppCode_Macro.txt]] 
+for additional features.
 
 Properties
 ----------
@@ -23,7 +25,21 @@ The source code to highlight.
 
 ### Variables
 
-None.
+Code.type
+: 	The type of the code. You may provide any of the Pygments lexer
+	names available [here][PygmentLexers]. If this variable
+	is empty, then the code-type is guessed from the content
+	by Pygments. This guessing is not very reliable, so explicit
+	specification should be favored. Default: Empty.
+
+[PygmentLexers]: http://pygments.org/docs/lexers/
+
+Warnings
+--------
+
+invalid-input
+:	This warning is generated when the `type` is not recognized
+	by Pygments.
 
 Example
 -------
@@ -43,14 +59,6 @@ produces this:
 	{
 		return x * x;
 	}
-
-If you compare this with the [CppCode][CppCode] macro
-example, you'll see that the coloring is different. Possibly
-because of the small size of the code snippet the
-heuristic to guess the programming language has failed
-in this example.
-
-[CppCode]: [[Ref]]: CppCode_Macro.txt
 
 Links
 -----
