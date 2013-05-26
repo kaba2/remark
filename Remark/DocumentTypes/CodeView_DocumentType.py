@@ -6,6 +6,8 @@ from Remark.FileSystem import escapeMarkdown, globalOptions, fileUpToDate
 from Remark.Conversion import saveRemarkToHtml
 from Remark.TagParsers.Dictionary_TagParser import Dictionary_TagParser 
 
+from pygments.lexers import get_lexer_for_filename
+
 class CodeView_DocumentType(object):
     def __init__(self):
         tagMap = {'description' : 'Description',
@@ -26,6 +28,8 @@ class CodeView_DocumentType(object):
         return self.tagParser.parse(fileName, globalOptions().maxTagLines, reporter)
         
     def convert(self, document, documentTree, outputRootDirectory, reporter):
+        lexer = get_lexer_for_filename(document.fileName)
+
         remarkText = [
                 '[[ParentList]]',
                 '',
@@ -36,6 +40,7 @@ class CodeView_DocumentType(object):
                 '',
                 '[[Link]]: directory.remark-index',
                 '',
+                '[[set Code.type]]: ' + lexer.aliases[0],
                 '[[-+Code]]: [[-Body]]']
 
         saveRemarkToHtml(remarkText, document, documentTree, 

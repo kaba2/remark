@@ -28,7 +28,7 @@ class RemarkPage_DocumentType(object):
                  '[[set RemarkPage.mid_text]]',
                  '[[set RemarkPage.end_text]]',
                  '[[ParentList]]',
-                 '[[Body]]',
+                 '[[+ReadFile]]: [[tag file_name]]',
                  '[[DocChildren]]',
                  '[[RemarkPage.mid_text]]',
                  '[[SourceChildren]]',

@@ -1,0 +1,55 @@
+ReadFile macro
+==============
+
+[[Parent]]: available_macros.txt
+
+The ReadFile macro reads the file specified in its parameter,
+and expands into its contents. 
+
+Properties
+----------
+
+### Output type
+
+Remark
+
+### Output expansion default
+
+Enabled.
+
+### Parameters
+
+The name of the file to read. The file must be found from the document
+tree. If no parameter is given, then ReadFile expands into an empty text. 
+
+### Variables
+
+None.
+
+Warnings
+--------
+
+invalid-input
+:	This warning is generated when multiple parameter-lines are given. 
+	In this case the first line is chosen as the file to read.
+
+ambiguous-document
+:	This warning is generated when there are multiple matching documents
+	in the document-tree.
+
+missing-document
+:	This warning is generated when there is no matching document in 
+	the document-tree.
+
+Example
+-------
+
+This
+
+	[[-+Verbatim]]: [[-+ReadFile]]: [[tag file_name]]
+
+produces this:
+
+[[-+Verbatim]]: [[-+ReadFile]]: [[tag file_name]]
+ 
+ 

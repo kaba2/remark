@@ -4,7 +4,8 @@ Body macro
 [[Parent]]: available_macros.txt
 
 The Body macro reads the currently considered document from a file and
-expands into its contents.
+expands into its contents. The [[Link: ReadFile_Macro.txt]] generalizes
+this macro; the Body macro is retained for compatibility.
 
 Properties
 ----------
