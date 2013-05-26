@@ -10,18 +10,7 @@ import datetime
 import traceback
 import time
 import sys
-
-try:
-    import markdown
-except ImportError:
-    print 'Error: Python Markdown library missing. Please install it first.'
-    sys.exit(1)
-
-if not (markdown.version == '2.0'):
-    # The later versions of Markdown do not support Markdown in html-blocks.
-    # This makes Remark work incorrectly, so we will check the version here.
-    print 'Error: Python Markdown must be of version 2.0. Now it is ' + markdown.version + '.',
-    sys.exit(1)
+import markdown
 
 from Remark.FileSystem import unixDirectoryName, copyIfNecessary, remarkDirectory
 from Remark.FileSystem import asciiMathMlName, remarkVersion, globalOptions, unixRelativePath, writeFile
@@ -252,6 +241,8 @@ def convertDirectory(argumentSet, reporter):
         './remark_files/pygments.css',
         './remark_files/' + asciiMathMlName(),
         ]
+
+    print remarkDirectory()
 
     for name in copyNameSet:
         copyIfNecessary(name, remarkDirectory(), 
