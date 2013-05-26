@@ -29,13 +29,13 @@ The command-line options control the way Remark operates. They are
 as follows:
 
 -d or --disable
-:	Disables a specific warning (e.g. -dinvalid-input).
+:	Disables a specific warning (e.g. `-dinvalid-input`).
 
 -e or --extensions
 :	Lists all file-extensions in the input-directory along with example files.
 
 -i or --include
-:	Includes files by their relative-paths (e.g. "*.txt").
+:	Includes files by their relative-paths (e.g. `"*.txt"`).
 	This is equivalent to writing the file-glob directly as a 
 	positional argument.
 
@@ -67,7 +67,7 @@ as follows:
 :	Prints additional progress information.
 
 -x or --exclude
-:	Excludes files by their relative-paths (e.g "*CMake*").
+:	Excludes files by their relative-paths (e.g `"*CMake*"`).
 	Exclusion takes priority over inclusion.
 
 Warnings

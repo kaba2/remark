@@ -1,5 +1,8 @@
 #!/usr/bin/env python
 
+# Description: Distutils packaging for Remark
+# Documentation: dependencies.txt
+
 from distutils.core import setup
 
 setup(name = 'remark',

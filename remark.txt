@@ -5,9 +5,9 @@ Remark
 
 [Back]: http://kaba.hilvi.org
 
-_Remark_ is a Python library to generate html documentation for software
-libraries. Remark is documented with Remark, the results of which you are
-inspecting right now.
+_Remark_ is a Python command-line script and a Python library to generate 
+html documentation for software libraries. Remark is documented with Remark, 
+the results of which you are inspecting right now.
 
 Usage
 -----
@@ -22,10 +22,10 @@ For example:
 
 ### Linux and Mac users
 
-The shells on Linux and Mac expand the globs (e.g \*.txt) _before_ running an
+The shells on Linux and Mac expand the globs (e.g `*.txt`) _before_ running an
 executable (unless the globs do not match anything in the current directory).
-Therefore, on the _command-line_ the globs should always be  provided in the 
-form "\*.txt", to defer the glob-expansion from the shell to Remark.
+Therefore, on the command-line the globs should always be  provided in the 
+form `"*.txt"`, to defer the glob-expansion from the shell to Remark.
 
 ### Option files
 
@@ -60,7 +60,7 @@ from the command-line by typing
 	pip install remark
 
 Depending on your operating system, you may need to explicitly run
-the command under administrator rights (e.g. by prepending `sudo` 
+this command under administrator rights (e.g. by prepending `sudo` 
 in Mac OS X).
 
 [InstallPython]: http://docs.python-guide.org/en/latest/starting/installation/
@@ -68,7 +68,7 @@ in Mac OS X).
 Source code
 -----------
 
-You may also download the full source code for Remark,
+Here you may download the full source code for Remark,
 which includes the Remark source for this documentation.
 
 ### [Download Remark 1.6.0 Source Code][SourceCode]

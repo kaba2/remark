@@ -225,6 +225,13 @@ Exclusion takes priority over inclusion.""",
     # as the -i option.
     argumentSet.includeSet += args[2:]
 
+    # Act on options before parsing option files
+    # ------------------------------------------
+
+    if not argumentSet.verbose:
+        # Disable the verbose reports.
+        reporter.disable('verbose')
+
     # Option files
     # ------------
 
