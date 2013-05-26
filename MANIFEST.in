@@ -1,5 +1,7 @@
-include index.htm 
-include Remark/Remark.pyproj 
-include Remark.sln
-global-include *.py *.txt *.css *.png *.svg *.js
-recursive-include Remark/remark_files *.css
+global-include *
+exclude .DS*
+exclude .hg*
+exclude MANIFEST
+recursive-exclude build *
+recursive-exclude docs *
+recursive-exclude dist *
