@@ -27,8 +27,8 @@ setRemarkScriptPath(scriptDirectory)
 # to work around the Markdown import bug.
 from Remark.Conversion import convertDirectory
 from Remark.Version import remarkVersion
-from Remark.FileSystem import splitPath, fileExists, unixDirectoryName
-from Remark.FileSystem import readFile, setGlobalOptions
+from Remark.FileSystem import splitPath, fileExists, unixDirectoryName, fileExtension
+from Remark.FileSystem import readFile, setGlobalOptions, findMatchingFiles
 from Remark.Reporting import Reporter, ScopeGuard
 
 # This must be done to make Macros register themselves.
