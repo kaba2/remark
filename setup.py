@@ -55,8 +55,7 @@ setup(name = 'remark',
       requires = [
         'markdown (==2.0.0)', 
         'pygments (>=1.5)',
-        ]
-
+        ],
       provides = [
         'Remark'
         ],
