@@ -57,12 +57,14 @@ assume that `pip` and `easy_install` have both been installed.
 From the command-line, run
 
 	sudo pip install remark
+	sudo easy_install pillow
 
 ### Linux
 
 From the command-line, run with administrator rights
 
 	pip install remark
+	easy_install pillow
 
 ### Windows
 

@@ -36,13 +36,11 @@ This library is used to highlight source code.
 ### [Pillow 2.0][Pillow]
 
 This library is used to create thumbnails for image galleries.
-On Windows, this dependency is not automatically installed by 
-`pip` when installing Remark. Instead, it must be installed 
-separately with `easy_install`. The reason for this is that 
-`pip install pillow` builds the Pillow library from C++ source 
-code, and thus on Windows requires a specific version of Visual 
-Studio to work. In contrast, `easy_install` provides a prebuilt 
-binary distribution of Pillow. 
+Unfortunately this library can not be installed automatically as 
+a dependency in `pip`, since on Windows `pip install pillow` builds 
+the Pillow library from C++ source code, and thus requires a specific 
+version of Visual Studio to work. In contrast, `easy_install pillow` 
+provides a prebuilt binary distribution of Pillow. 
 
 [PythonMarkdown20]: http://freewisdom.org/projects/python-markdown/
 [PythonMarkdown22]: http://packages.python.org/Markdown
