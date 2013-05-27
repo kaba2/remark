@@ -3,11 +3,9 @@ Dependencies
 
 [[Parent]]: remark.txt
 
-This section describes the dependencies of Remark. You should not need this 
+This section describes the dependencies of Remark. You do not need this 
 information to install Remark; the `pip` handles the installation of
-the dependencies as part of the installation of Remark. However, if this
-does not work for some reason, we also describe here the manual installation 
-of the dependencies.
+the dependencies as part of the installation of Remark. 
 
 Python
 ------
@@ -15,13 +13,9 @@ Python
 Remark was programmed in Python 2.7. Thus it should run in any
 Python 2.x interpreter, where x is at least 7. The syntaxes 
 of Python 3.x and Python 2.x are not compatible. For instructions on 
-installing Python 2.7, see [here][PythonInstall]. In the following we 
-will assume that you have the `easy_install` and `pip` working, as 
-described in the link. These are the tools for installing additional 
-Python libraries.
+installing Python 2.7, see [here][PythonInstall]. 
 
 [PythonInstall]: http://docs.python-guide.org/en/latest/starting/installation/
-[PythonInstallMac]: http://docs.python-guide.org/en/latest/starting/install/osx/
 
 Python dependencies
 -------------------
@@ -31,10 +25,6 @@ The dependencies to other Python libraries are as follows:
 ### [Python Markdown 2.0][PythonMarkdown20]
 
 This library is used to convert Markdown to Html. 
-To install Python Markdown, type on the command-line:
-
-	pip install markdown==2.0.0
-
 Note that the newer [Python Markdown 2.2][PythonMarkdown22] does 
 not work with Remark, because it does not support Markdown inside
 html blocks.
@@ -42,41 +32,22 @@ html blocks.
 ### [Pygments 1.5][Pygments]
 
 This library is used to highlight source code. 
-To install Pygments, type on the command-line:
-
-	easy_install Pygments
  
-### [Python Imaging Library 1.1.7][PIL]
+### [Pillow 2.0.0][Pillow]
 
 This library is used to create thumbnails for image galleries.
-The installation of [Python Imaging Library][PIL] (PIL) depends on
-your operating system and whether your Python is 32-bit or 64-bit.
-
-#### Mac OS X and Linux
-
-On the command-line, type:
-
-	pip install pil
-
-#### Windows (32-bit Python)
-
-Install Python Imaging Library using a 32-bit installer from [here][PIL_Installer].
-On Windows 7 (and Vista?), make sure that you run the installer as an administrator 
-(right click --> run as administrator).
-
-#### Windows (64-bit Python)
-
-Install Python Imaging Library using a 64-bit installer from [here][PIL-64]. 
-On Windows 7 (and Vista?), make sure that you run the installer as an administrator 
-(right click --> run as administrator).
-
-[PIL_Installer]: http://www.pythonware.com/products/pil/
-[PIL-64]: http://www.lfd.uci.edu/~gohlke/pythonlibs/
+On Windows, this dependency is not automatically installed by 
+`pip` when installing Remark. Instead, it must be installed 
+separately with `easy_install`. The reason for this is that 
+`pip install pillow` builds the Pillow library from C++ source 
+code, and thus on Windows requires a specific version of Visual 
+Studio to work. In contrast, `easy_install` provides a prebuilt 
+binary distribution of Pillow. 
 
 [PythonMarkdown20]: http://freewisdom.org/projects/python-markdown/
 [PythonMarkdown22]: http://packages.python.org/Markdown
 [Pygments]: http://pygments.org/
-[PIL]: http://www.pythonware.com/products/pil/
+[Pillow]: https://pypi.python.org/pypi/Pillow
 
 Javascript dependencies
 -----------------------

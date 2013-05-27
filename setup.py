@@ -5,6 +5,23 @@
 
 from distutils.core import setup
 
+dependencySet = [
+        'markdown (==2.0.0)', 
+        'pygments (>=1.5)',
+      ]
+
+if os.name !== 'nt':
+    # To install Pillow on Windows requires
+    # Visual Studio, and even a specific version
+    # of Visual Studio. This is an unreasonable
+    # requirement for the user. Pillow has binary
+    # distributions readily available; unfortunately
+    # pip can not install binary distributions.
+    # But easy_install can. So on Windows we
+    # will leave it to the user of Remark to install
+    # pillow via 'easy_install pillow'.
+    dependencySet.append('pillow (>=2.0)')
+
 setup(name = 'remark',
       version = '1.6.0',
       description = 'Remark',
@@ -21,11 +38,11 @@ setup(name = 'remark',
         ],
       package_data = {
         'Remark' : [
-          'remark_files/*.*',
-          'remark_files/highslide/*.*',
-          'remark_files/highslide/graphics/*.*',
-          'remark_files/highslide/graphics/outlines/*.*',
-          ], 
+            'remark_files/*.*',
+            'remark_files/highslide/*.*',
+            'remark_files/highslide/graphics/*.*',
+            'remark_files/highslide/graphics/outlines/*.*',
+            ], 
       },
       license = 'MIT',
       classifiers = [
@@ -39,12 +56,8 @@ setup(name = 'remark',
         'Operating System :: OS Independent',
         ],
       scripts = ['remark.py',],
-      requires = [
-        'markdown (==2.0.0)', 
-        'pygments (>=1.5)',
-        'pil (>=1.1)',
-      ],
+      requires = dependencySet,
       provides = [
         'Remark'
-      ],
+        ],
      )
