@@ -21,8 +21,12 @@ from Remark.FileSystem import setRemarkScriptPath
 scriptDirectory = os.path.dirname(os.path.realpath(__file__))
 setRemarkScriptPath(scriptDirectory)
 
+# Note that Remark.Conversion must be imported after
+# setting the location of the remark.py script. This
+# is because Remark.Conversion relies on that path
+# to work around the Markdown import bug.
 from Remark.Conversion import convertDirectory
-from Remark.FileSystem import remarkVersion
+from Remark.FileSystem import remarkVersion, splitPath
 from Remark.Reporting import Reporter, ScopeGuard
 
 if os.name == 'nt':
@@ -252,6 +256,12 @@ Exclusion takes priority over inclusion.""",
 
     return argumentSet
 
+# Associate the document-types
+# ----------------------------
+
+# In the future this should be done somewhere else.
+# Otherwise Remark is not usable as a library.
+
 from Remark.DocumentType_Registry import setDefaultDocumentType, associateDocumentType
 
 from Remark.DocumentTypes.CppCodeView_DocumentType import CppCodeView_DocumentType
@@ -279,6 +289,7 @@ associateDocumentType(codeViewSet, codeViewType)
 associateDocumentType('.remark-index', directoryViewType)
 associateDocumentType('.remark-orphan', orphanType)
 
+# Create a reporter for progress, error, and warning reporting.
 reporter = Reporter()
 reporter.openScope('Remark ' + remarkVersion())
 
