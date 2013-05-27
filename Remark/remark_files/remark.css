@@ -39,8 +39,8 @@ to be unique). */
     /* Using margins, the text concentrates more tighly
     towards the center. There will be empty regions on both 
     sides. I find this easier to read. */
-    margin-left: 20%;
-    margin-right: 20%;
+    margin-left: 25%;
+    margin-right: 25%;
 }
 
 /* Verbatim content */
@@ -361,9 +361,9 @@ in the 'remark-footer' div. */
 {
     position: absolute;
     bottom: 0;
-    width: 60%;
-    margin-left: 20%;
-    margin-right: 20%;
+    width: 50%;
+    margin-left: 25%;
+    margin-right: 25%;
 }
 
 #remark-footer p 
