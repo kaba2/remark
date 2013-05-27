@@ -11,51 +11,50 @@ import traceback
 import time
 import sys
 
-from Remark.FileSystem import remarkScriptPath
+from Remark.FileSystem import remarkScriptPath, fileExists
 
 # Older versions of Markdown (e.g. 2.0.0 which we need), have
 # the following bug. The command-line script is named `markdown.py`,
 # and the package is named `markdown`. When `import markdown` is
-# issued in the same directory as `markdown.py` (or `markdown.pyc`), 
-# the import refers to the script module, and not the package as it should.
-# Python uses the sys.path as a list of directories to search for modules 
-# to import. Therefore we fix this problem by removing those directories from 
-# sys.path which refer to the same directory as where the remark.py script 
-# is located.
+# issued, depending on the location of this file the import may
+# refer to either the markdown.py or the package markdown. The
+# latter is what we want. We fix this problem by temporarily 
+# removing those directories from sys.path which contain 
+# markdown.py.
 
 oldSysPath = sys.path
 
 scriptDirectory = remarkScriptPath()
 if remarkScriptPath() != '':
-    # Remove 'scriptDirectory' from sys.path.
+    # Remove all those directories from sys.path which
+    # contain markdown.py.
     newSysPath = []
     for i in range(len(sys.path)):
         # The paths in sys.path are relative to the script directory
-        # (or they are absolute paths).
-        # Note that sys.path may contain the script directory in multiple 
-        # different forms, e.g. '/usr/local/bin', '../bin', or ''. 
-        path = os.path.normpath(os.path.join(scriptDirectory, sys.path[i]))
-        if path != scriptDirectory:
+        # (or they are absolute paths). Note that sys.path may contain 
+        # the script directory in multiple different forms, e.g. 
+        # '/usr/local/bin', '../bin', or ''. 
+        path = os.path.join(scriptDirectory, sys.path[i])
+        if not fileExists('markdown.py', path):
             newSysPath.append(path)
         else:
             #print 'Removed', sys.path[i], ' from Python path.'
             None
     sys.path = newSysPath
 
-# Test that the Markdown library is present.
 try:
     import markdown
 except ImportError:
     print 'Error: Python Markdown library missing. Please install it first.'
     sys.exit(1)
 
+sys.path = oldSysPath
+
 if not (markdown.version == '2.0'):
     # The later versions of Markdown do not support Markdown in html-blocks.
     # This makes Remark work incorrectly, so we will check the version here.
     print 'Error: Python Markdown must be of version 2.0. Now it is ' + markdown.version + '.',
     sys.exit(1)
-
-sys.path = oldSysPath
 
 from Remark.Version import asciiMathMlName, remarkVersion
 from Remark.FileSystem import unixDirectoryName, copyIfNecessary, remarkDirectory

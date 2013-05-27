@@ -3,20 +3,11 @@
 # Description: Distutils packaging for Remark
 # Documentation: dependencies.txt
 
-from distutils.core import setup
-from Remark.Version import remarkVersion
+import distribute_setup
+distribute_setup.use_setuptools()
 
-# On Windows, `pip install pillow` requires
-# Visual Studio, and even a specific version
-# of Visual Studio. This is an unreasonable
-# requirement for the user. Pillow has binary
-# distributions readily available; unfortunately
-# pip can not install binary distributions.
-# But easy_install can. Since I am unable to
-# specify os-specific dependencies, I will have
-# to leave the dependency to Pillow out. This
-# has then to be manually installed by
-# 'easy_install pillow'.
+from setuptools import setup, find_packages
+from Remark.Version import remarkVersion
 
 setup(name = 'remark',
       version = remarkVersion(),
@@ -26,20 +17,8 @@ setup(name = 'remark',
       author = 'Kalle Rutanen',
       author_email = 'kalle_rutanen@hotmail.com',
       url = 'http://kaba.hilvi.org/remark',
-      packages = [
-        'Remark', 
-        'Remark.Macros',
-        'Remark.DocumentTypes',
-        'Remark.TagParsers',
-        ],
-      package_data = {
-        'Remark' : [
-            'remark_files/*.*',
-            'remark_files/highslide/*.*',
-            'remark_files/highslide/graphics/*.*',
-            'remark_files/highslide/graphics/outlines/*.*',
-            ], 
-      },
+      packages = find_packages(),
+      include_package_data = True,
       license = 'MIT',
       classifiers = [
         'Development Status :: 5 - Production/Stable',
@@ -52,11 +31,13 @@ setup(name = 'remark',
         'Operating System :: OS Independent',
         ],
       scripts = ['remark.py',],
-      requires = [
-        'markdown (==2.0.0)', 
-        'pygments (>=1.5)',
+      install_requires = [
+        'markdown==2.0.0', 
+        'pygments>=1.5',
+        'pillow>=2.0',
         ],
       provides = [
         'Remark'
         ],
+      zip_safe = False,
      )
