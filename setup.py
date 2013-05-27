@@ -36,8 +36,5 @@ setup(name = 'remark',
         'pygments>=1.5',
         'pillow>=2.0',
         ],
-      provides = [
-        'Remark'
-        ],
       zip_safe = False,
      )
