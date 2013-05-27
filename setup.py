@@ -3,26 +3,20 @@
 # Description: Distutils packaging for Remark
 # Documentation: dependencies.txt
 
-import os
 from distutils.core import setup
 from Remark.Version import remarkVersion
 
-dependencySet = [
-        'markdown (==2.0.0)', 
-        'pygments (>=1.5)',
-      ]
-
-if os.name != 'nt':
-    # To install Pillow on Windows requires
-    # Visual Studio, and even a specific version
-    # of Visual Studio. This is an unreasonable
-    # requirement for the user. Pillow has binary
-    # distributions readily available; unfortunately
-    # pip can not install binary distributions.
-    # But easy_install can. So on Windows we
-    # will leave it to the user of Remark to install
-    # pillow via 'easy_install pillow'.
-    dependencySet.append('pillow (>=2.0)')
+# On Windows, `pip install pillow` requires
+# Visual Studio, and even a specific version
+# of Visual Studio. This is an unreasonable
+# requirement for the user. Pillow has binary
+# distributions readily available; unfortunately
+# pip can not install binary distributions.
+# But easy_install can. Since I am unable to
+# specify os-specific dependencies, I will have
+# to leave the dependency to Pillow out. This
+# has then to be manually installed by
+# 'easy_install pillow'.
 
 setup(name = 'remark',
       version = remarkVersion(),
@@ -58,7 +52,11 @@ setup(name = 'remark',
         'Operating System :: OS Independent',
         ],
       scripts = ['remark.py',],
-      requires = dependencySet,
+      requires = [
+        'markdown (==2.0.0)', 
+        'pygments (>=1.5)',
+        ]
+
       provides = [
         'Remark'
         ],
