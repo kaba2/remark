@@ -26,7 +26,8 @@ setRemarkScriptPath(scriptDirectory)
 # is because Remark.Conversion relies on that path
 # to work around the Markdown import bug.
 from Remark.Conversion import convertDirectory
-from Remark.FileSystem import remarkVersion, splitPath, fileExists, unixDirectoryName
+from Remark.Version import remarkVersion
+from Remark.FileSystem import splitPath, fileExists, unixDirectoryName
 from Remark.FileSystem import readFile, setGlobalOptions
 from Remark.Reporting import Reporter, ScopeGuard
 

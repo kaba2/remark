@@ -57,8 +57,9 @@ if not (markdown.version == '2.0'):
 
 sys.path = oldSysPath
 
+from Remark.Version import asciiMathMlName, remarkVersion
 from Remark.FileSystem import unixDirectoryName, copyIfNecessary, remarkDirectory
-from Remark.FileSystem import asciiMathMlName, remarkVersion, globalOptions, unixRelativePath, writeFile
+from Remark.FileSystem import globalOptions, unixRelativePath, writeFile
 from Remark.Reporting import Reporter, ScopeGuard
 from Remark.DocumentType_Registry import documentType, outputDocumentName
 from Remark.DocumentTree import createDocumentTree

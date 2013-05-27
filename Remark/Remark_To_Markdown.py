@@ -13,9 +13,10 @@ import copy
 import traceback
 import time
 
+from Remark.Version import asciiMathMlName, remarkVersion
 from Remark.Macro_Registry import findMacro
 from Remark.FileSystem import changeExtension, unixDirectoryName, copyIfNecessary
-from Remark.FileSystem import asciiMathMlName, remarkVersion, globalOptions, unixRelativePath, writeFile
+from Remark.FileSystem import globalOptions, unixRelativePath, writeFile
 from Remark.Reporting import Reporter, ScopeGuard
 from Remark.DocumentType_Registry import documentType, outputDocumentName
 from Remark.DocumentTree import createDocumentTree
@@ -224,7 +225,10 @@ class Remark(object):
         self.externalGroupId = 5
         self.recursionDepth = 0
         self.used = False
+
+        # Set default variables.
         self.scopeStack.top().insert('indent', ['Verbatim'])
+        self.scopeStack.top().insert('remark_version', [remarkVersion()])
 
     def linkId(self):
         '''

@@ -4,6 +4,7 @@
 # Documentation: dependencies.txt
 
 from distutils.core import setup
+from Remark.Version import remarkVersion
 
 dependencySet = [
         'markdown (==2.0.0)', 
@@ -23,7 +24,7 @@ if os.name !== 'nt':
     dependencySet.append('pillow (>=2.0)')
 
 setup(name = 'remark',
-      version = '1.6.0',
+      version = remarkVersion(),
       description = 'Remark',
       long_description = 'Generates html documentation for software libraries from lightweight markup.',
       keywords = 'lightweight markup software documentation html',
