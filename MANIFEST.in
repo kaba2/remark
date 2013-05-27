@@ -1,7 +1,1 @@
 global-include *
-exclude .DS*
-exclude .hg*
-exclude MANIFEST
-recursive-exclude build *
-recursive-exclude docs *
-recursive-exclude dist *
