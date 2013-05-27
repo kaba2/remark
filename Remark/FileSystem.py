@@ -18,6 +18,20 @@ def remarkDirectory():
     '''
     return os.path.dirname(os.path.realpath(__file__))
 
+remarkScriptpath_ = ''
+def remarkScriptPath():
+    '''
+    Returns the path to the remark.py command-line script.
+    This is non-empty only if Remark is used from the
+    command-line, and not as a module.
+    '''
+    global remarkScriptPath_
+    return remarkScriptPath_
+
+def setRemarkScriptPath(path):
+    global remarkScriptPath_
+    remarkScriptPath_ = os.path.normpath(path)
+
 def findMatchingFiles(inputDirectory, includeSet, excludeSet):
     '''
     Finds each file in the given directory whose relative-name 

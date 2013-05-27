@@ -1,54 +1,13 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
 
-# Description: Console executable
-# Documentation: implementation.txt 
+# Description: Remark console-script
+# Documentation: command_line.txt 
 
 import sys
 import os
 import shutil
 from time import clock
-
-# Older versions of Markdown (e.g. 2.0.0 which we need), have
-# the following bug. The command-line script is named `markdown.py`,
-# and the package is named `markdown`. When `import markdown` is
-# issued in the same directory as `markdown.py` (or `markdown.pyc`), 
-# the import refers to the script module, and not the package as it should.
-# Python uses the sys.path as a list of directories to search for modules 
-# to import. Therefore we fix this problem by removing those directories from 
-# sys.path which refer to the same directory as where the remark.py script 
-# is located.
-
-# This is where remark.py is located.
-scriptDirectory = os.path.normpath(os.path.dirname(os.path.realpath(__file__)))
-
-# Remove 'scriptDirectory' from sys.path.
-newSysPath = []
-for i in range(len(sys.path)):
-    # The paths in sys.path are relative to the script directory
-    # (or they are absolute paths).
-    # Note that sys.path may contain the script directory in multiple 
-    # different forms, e.g. '/usr/local/bin', '../bin', or ''. 
-    path = os.path.normpath(os.path.join(scriptDirectory, sys.path[i]))
-    if path != scriptDirectory:
-        newSysPath.append(path)
-    else:
-        #print 'Removed', sys.path[i], ' from Python path.'
-        None
-sys.path = newSysPath
-
-# Test that the Markdown library is present.
-try:
-    import markdown
-except ImportError:
-    print 'Error: Python Markdown library missing. Please install it first.'
-    sys.exit(1)
-
-if not (markdown.version == '2.0'):
-    # The later versions of Markdown do not support Markdown in html-blocks.
-    # This makes Remark work incorrectly, so we will check the version here.
-    print 'Error: Python Markdown must be of version 2.0. Now it is ' + markdown.version + '.',
-    sys.exit(1)
 
 # Test that the Pygments library is present.
 try: 
@@ -57,52 +16,19 @@ except ImportError:
     print 'Error: Pygments library missing. Please install it first.'
     sys.exit(1)
 
-from Remark.Macro_Registry import findMacro
-from Remark.Document import Document
-from Remark.DocumentTree import DocumentTree
+# Store the location of this script (remark.py).
+from Remark.FileSystem import setRemarkScriptPath
+scriptDirectory = os.path.dirname(os.path.realpath(__file__))
+setRemarkScriptPath(scriptDirectory)
 
 from Remark.Conversion import convertDirectory
-from Remark.FileSystem import unixDirectoryName, unixRelativePath, readFile, writeFile
-from Remark.FileSystem import remarkVersion, fileExtension
-from Remark.FileSystem import asciiMathMlName, copyIfNecessary, setGlobalOptions, globalOptions
-from Remark.FileSystem import splitPath, findMatchingFiles, fileExists
-
+from Remark.FileSystem import remarkVersion
 from Remark.Reporting import Reporter, ScopeGuard
-
-from Remark.Macros import *
-
-from Remark.DocumentType_Registry import setDefaultDocumentType, associateDocumentType
-from Remark.DocumentType_Registry import documentType
-
-from Remark.DocumentTypes.CppCodeView_DocumentType import CppCodeView_DocumentType
-from Remark.DocumentTypes.CodeView_DocumentType import CodeView_DocumentType
-from Remark.DocumentTypes.RemarkPage_DocumentType import RemarkPage_DocumentType
-from Remark.DocumentTypes.DirectoryView_DocumentType import DirectoryView_DocumentType
-from Remark.DocumentTypes.Orphan_DocumentType import Orphan_DocumentType
-from Remark.DocumentTypes.Copy_DocumentType import Copy_DocumentType
 
 if os.name == 'nt':
     # Apply the bug-fix for the os.path.split() to
     # support UNC-paths (bug present in Python 2.7.3).
     os.path.split = splitPath
-
-remarkPageType = RemarkPage_DocumentType()
-cppCodeViewType = CppCodeView_DocumentType()
-directoryViewType = DirectoryView_DocumentType()
-codeViewType= CodeView_DocumentType()
-orphanType = Orphan_DocumentType()
-copyType = Copy_DocumentType()
-
-remarkPageSet = ['.txt']
-cppCodeViewSet = ['.cpp', '.cc', '.h', '.hh', '.hpp']
-codeViewSet = ['.py', '.m', '.pm', '.pl', '.css', '.js', '.lua']
-       
-setDefaultDocumentType(copyType)
-associateDocumentType(remarkPageSet, remarkPageType)
-associateDocumentType(cppCodeViewSet, cppCodeViewType)
-associateDocumentType(codeViewSet, codeViewType)
-associateDocumentType('.remark-index', directoryViewType)
-associateDocumentType('.remark-orphan', orphanType)
 
 def parseArguments(reporter):
     '''
@@ -326,26 +252,52 @@ Exclusion takes priority over inclusion.""",
 
     return argumentSet
 
-if __name__ == '__main__':
-    reporter = Reporter()
-    reporter.openScope('Remark ' + remarkVersion())
+from Remark.DocumentType_Registry import setDefaultDocumentType, associateDocumentType
 
-    # Parse the command-line arguments.
-    argumentSet = parseArguments(reporter)
+from Remark.DocumentTypes.CppCodeView_DocumentType import CppCodeView_DocumentType
+from Remark.DocumentTypes.CodeView_DocumentType import CodeView_DocumentType
+from Remark.DocumentTypes.RemarkPage_DocumentType import RemarkPage_DocumentType
+from Remark.DocumentTypes.DirectoryView_DocumentType import DirectoryView_DocumentType
+from Remark.DocumentTypes.Orphan_DocumentType import Orphan_DocumentType
+from Remark.DocumentTypes.Copy_DocumentType import Copy_DocumentType
 
-    # Set the global options. 
-    # I should get get rid of this, and pass
-    # around the argumentSet locally instead.
-    setGlobalOptions(argumentSet)
+remarkPageType = RemarkPage_DocumentType()
+cppCodeViewType = CppCodeView_DocumentType()
+directoryViewType = DirectoryView_DocumentType()
+codeViewType= CodeView_DocumentType()
+orphanType = Orphan_DocumentType()
+copyType = Copy_DocumentType()
 
-    # Do everything.
-    errors, warnings = convertDirectory(argumentSet, reporter)
+remarkPageSet = ['.txt']
+cppCodeViewSet = ['.cpp', '.cc', '.h', '.hh', '.hpp']
+codeViewSet = ['.py', '.m', '.pm', '.pl', '.css', '.js', '.lua']
+       
+setDefaultDocumentType(copyType)
+associateDocumentType(remarkPageSet, remarkPageType)
+associateDocumentType(cppCodeViewSet, cppCodeViewType)
+associateDocumentType(codeViewSet, codeViewType)
+associateDocumentType('.remark-index', directoryViewType)
+associateDocumentType('.remark-orphan', orphanType)
 
-    # Wrap things up.
-    reporter.report(['', "That's all!"], 'verbose')
-    reporter.closeScope('Remark ' + remarkVersion())
+reporter = Reporter()
+reporter.openScope('Remark ' + remarkVersion())
 
-    if errors > 0 or (warnings > 0 and argumentSet.strict):
-        # Indicate the presence of errors by a non-zero error-code.
-        sys.exit(1)
+# Parse the command-line arguments.
+argumentSet = parseArguments(reporter)
+
+# Set the global options. 
+# I should get get rid of this, and pass
+# around the argumentSet locally instead.
+setGlobalOptions(argumentSet)
+
+# Do everything.
+errors, warnings = convertDirectory(argumentSet, reporter)
+
+# Wrap things up.
+reporter.report(['', "That's all!"], 'verbose')
+reporter.closeScope('Remark ' + remarkVersion())
+
+if errors > 0 or (warnings > 0 and argumentSet.strict):
+    # Indicate the presence of errors by a non-zero error-code.
+    sys.exit(1)
 
