@@ -8,7 +8,7 @@ Remark
 _Remark_ is a Python command-line script and a Python library to generate 
 html documentation for software libraries. Remark is documented with Remark, 
 the results of which you are inspecting right now. The version documented 
-here is [[remark_version]]. The latest version can be found from 
+here is [[remark_version]]. The latest version can always be found from 
 [here][RemarkHomepage].
 
 [RemarkHomepage]: http://kaba.hilvi.org/remark

@@ -3,6 +3,7 @@
 # Description: Distutils packaging for Remark
 # Documentation: dependencies.txt
 
+import os
 from distutils.core import setup
 from Remark.Version import remarkVersion
 
@@ -11,7 +12,7 @@ dependencySet = [
         'pygments (>=1.5)',
       ]
 
-if os.name !== 'nt':
+if os.name != 'nt':
     # To install Pillow on Windows requires
     # Visual Studio, and even a specific version
     # of Visual Studio. This is an unreasonable
