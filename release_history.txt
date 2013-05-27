@@ -58,6 +58,11 @@ interfere with the built-in help system. My own Matlab
 function documentation exceeded 100 lines, one being 
 135 lines.
 
+### Variables
+
+* Added the `remark_version` as a predefined variable,
+to aid in the documentation of Remark itself.
+
 ### Macros
 
 * Added the ReadFile macro, to read plain-text files. This

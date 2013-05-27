@@ -33,7 +33,7 @@ html blocks.
 
 This library is used to highlight source code. 
  
-### [Pillow 2.0.0][Pillow]
+### [Pillow 2.0][Pillow]
 
 This library is used to create thumbnails for image galleries.
 On Windows, this dependency is not automatically installed by 

@@ -10,11 +10,15 @@ have a dual role as user-defined text transformations.
 Predefined variables
 --------------------
 
-These predefined variables have a special meaning in Remark:
+The following variables are predefined in Remark:
 
 parameter
 :	The parameter of a macro invocation.
 
 indent
 :	The name of the macro to use for indented content.
-	Default: `Verbatim`.
+	Default: `[[indent]]`.
+
+remark_version
+:	The version of Remark used to produce the documentation.
+	Default: `[[remark_version]]`
