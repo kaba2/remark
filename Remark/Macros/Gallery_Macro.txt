@@ -7,7 +7,10 @@ The Gallery macro generates an image gallery. The supported image formats
 are PNG, JPEG, GIF, SVG, and SVGZ. These image formats are the ones that 
 are [well-supported][ImageFormats] in browsers (as of October 2012).
 Thumbnails are automatically generated for images with filename 
-extensions .png, .gif, .jpeg, .jpg. 
+extensions .png, .gif, .jpeg, .jpg. The Gallery macro uses the Pillow
+library to generate the thumbnails. If the Pillow library is not installed,
+then the Gallery macro will still run, but thumbnails will not be generated
+(a warning is given in this case).
 
 [ImageFormats]: http://en.wikipedia.org/wiki/Comparison_of_browsers
 

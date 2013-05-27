@@ -13,11 +13,15 @@ import os.path
 import math
 import hashlib
 
+pillowPresent = False
+pillowReported = False
+
 try: 
     # On Linux and Mac the easy_install installs Python
     # imaging library in a directory which is different from
     # PIL. Therefore this may fail even though PIL is installed.
     from PIL import Image
+    pillowPresent = True
 except ImportError:
     try:
         # When the previous does fail, we will try to import the
@@ -27,9 +31,9 @@ except ImportError:
         # There is a danger, though, that this actually imports some
         # other module than the PIL Image module.
         import Image
+        pillowPresent = True
     except ImportError:
-        print 'Error: Python Imaging Library missing. Please install it first.'
-        sys.exit(1)
+        None
 
 class Gallery_Macro(object):
     def __init__(self):
@@ -53,7 +57,15 @@ class Gallery_Macro(object):
         document = remark.document
         inputRootDirectory = remark.inputRootDirectory
         outputRootDirectory = remark.outputRootDirectory
-        
+
+        global pillowReported
+        if not pillowPresent and not pillowReported:
+            remark.reporter.reportWarning(
+                'Thumbnails will not be created; the Pillow library is missing. ' +
+                "To install Pillow, run 'easy_install pillow' from the command-line. ",
+                'thumbnail-failed')
+            pillowReported = True
+
         scope = remark.scopeStack.top()
         thumbnailMaxWidth = scope.getInteger('Gallery.thumbnail_max_width', 300)
         thumbnailMaxHeight = scope.getInteger('Gallery.thumbnail_max_height', 300)
@@ -145,10 +157,10 @@ class Gallery_Macro(object):
             thumbLinkName = unixRelativePath(document.relativeDirectory, thumbRelativeName)
             if pixelDocument == None:
                 # If we could not find a pixel-based image, we will use
-                # the vector-based image as the thumbnail itself.
+                # the vector-based image itself as the thumbnail.
                 thumbRelativeName = input.relativeName
                 thumbLinkName = inputLinkName
-                remark.reportWarning('Using ' + input.relativeName + ' as its own thumbnail. ' +
+                remark.reportWarning('Using a vector-based image ' + input.relativeName + ' as its own thumbnail. ' +
                                      'Provide a pixel-based alternative image to generate a thumbnail.',
                                      'vector-thumbnail')
 
@@ -195,7 +207,7 @@ class Gallery_Macro(object):
             # or it is not up-to-date.
             thumbnailUpToDate = (pathExists(thumbFullName) and
                                  fileModificationTime(inputFullName) <= fileModificationTime(thumbFullName))
-            if not thumbnailUpToDate:
+            if not thumbnailUpToDate and pillowPresent:
                 try:
                     if pixelDocument != None:
                         # For pixel-based images, we use the Python Imaging Library to
@@ -213,10 +225,10 @@ class Gallery_Macro(object):
                         remark.report(['', message],
                                      'verbose')
                 except IOError as err: 
-                    remark.reportWarning('Cannot create a thumbnail for ' + input.relativeName + '. ',
-                                         'thumbnail-failed')
+                    remark.reportWarning('Cannot create a thumbnail for ' + input.relativeName + 
+                                         ' because of a file-error. ', 'thumbnail-failed')
                     continue
-        
+
         text.append('</div>')
         
         return text

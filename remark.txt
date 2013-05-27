@@ -12,56 +12,60 @@ the results of which you are inspecting right now.
 Usage
 -----
 
-From the console (Windows, Linux, Mac, ...): 
+From the command-line (Windows, Linux, Mac OS X, ...): 
 
 	remark.py inputDirectory outputDirectory (option|file-glob)*
 
-For example:
+### Example
 
-	remark.py . docs "*.txt" "*.py" "*.png" -x "docs/*"
+From the command-line, run
 
-### Linux and Mac users
+	remark.py . docs 
 
-The shells on Linux and Mac expand the globs (e.g `*.txt`) _before_ running an
-executable (unless the globs do not match anything in the current directory).
-Therefore, on the command-line the globs should always be  provided in the 
-form `"*.txt"`, to defer the glob-expansion from the shell to Remark.
-
-### Option files
-
-Command-line options can be refactored into option-files. An option-file is 
-a plain text file which contains one option per line. Using an option-file 
-is advantageous because
-
- * its options are not affected by the command-line glob-expansion,
- * it reduces repetitive specification of the files and options.
-
-The `remark_options` file is always read as an option-file if it exists. 
-Additional option-files can be specified with the `-o` option. For example, 
-the above example can be rewritten as
-	
-	remark.py . docs
-
-where the `remark_options` file contains
+where the `remark_options` file in the input directory 
+contains
 
 	*.txt
 	*.py
 	*.png
 	-x docs/*
 
+Alternatively, the same can be achieved without using an option-file by
+
+	remark.py . docs "*.txt" "*.py" "*.png" -x "docs/*"
+
+### Linux and Mac OS X
+
+The shells on Linux and Mac OS X expand the globs (e.g `*.txt`) _before_ running 
+an executable (unless the globs do not match anything in the current directory).
+Therefore, on the command-line the globs should always be  provided in the 
+form `"*.txt"`, to defer the glob-expansion from the shell to Remark.
+
 Installation
 ------------
 
 In the following we will assume that Python 2.7 has been installed
 properly, as described in [here][InstallPython]. In particular, we
-assume that `pip` has been installed. Remark is then installed
-from the command-line by typing
+assume that `pip` and `easy_install` have both been installed.
+
+### Mac OS X
+
+From the command-line, run
+
+	sudo pip install remark
+
+### Linux
+
+From the command-line, run with administrator rights
 
 	pip install remark
 
-Depending on your operating system, you may need to explicitly run
-this command under administrator rights (e.g. by prepending `sudo` 
-in Mac OS X).
+### Windows
+
+From the command-line, run
+
+	pip install remark
+	easy_install pillow
 
 [InstallPython]: http://docs.python-guide.org/en/latest/starting/installation/
 
@@ -76,20 +80,6 @@ which includes the Remark source for this documentation.
 [SourceCode]: ./files/remark-1.6.0.zip
 
 For previous versions, see the [release history][History].
-
-Manual installation
--------------------
-
-If for some reason you want to install Remark without
-using `pip`, then you must
-
- * download the source code,
- * extract the source code to some desired directory,
- * install the [dependencies][Dependencies], and 
- * add the directory containing `remark.py` to the path 
- variable of the operating system.
-
-[Dependencies]: [[Ref]]: dependencies.txt
 
 [History]: [[Ref]]: release_history.txt
 
