@@ -11,8 +11,7 @@ from Remark.Version import remarkVersion
 
 setup(name = 'remark',
       version = remarkVersion(),
-      description = 'Remark',
-      long_description = 'Generates html documentation for software libraries from lightweight markup.',
+      description = 'Generates html documentation for software libraries from lightweight markup.',
       keywords = 'lightweight markup software documentation html',
       author = 'Kalle Rutanen',
       author_email = 'kalle_rutanen@hotmail.com',
