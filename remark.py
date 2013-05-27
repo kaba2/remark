@@ -26,8 +26,14 @@ setRemarkScriptPath(scriptDirectory)
 # is because Remark.Conversion relies on that path
 # to work around the Markdown import bug.
 from Remark.Conversion import convertDirectory
-from Remark.FileSystem import remarkVersion, splitPath
+from Remark.FileSystem import remarkVersion, splitPath, fileExists, unixDirectoryName
+from Remark.FileSystem import readFile, setGlobalOptions
 from Remark.Reporting import Reporter, ScopeGuard
+
+# This must be done to make Macros register themselves.
+# I should get rid of this to make Remark usable as a
+# library.
+from Remark.Macros import *
 
 if os.name == 'nt':
     # Apply the bug-fix for the os.path.split() to
