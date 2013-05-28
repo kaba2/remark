@@ -258,14 +258,16 @@ to be unique). */
     float: left;
     
     /* background-color: rgba(0, 0, 255, 0.25); */
-    padding-right: 1em;
+    /*padding-right: 1em;*/
     padding-bottom: 0.5em;
 }
 
-/* Add a '>' after each ParentList list-item. */
-#remark .ParentList li :after
+/* Add a '/' between subsequent ParentList list-items. */
+#remark .ParentList li+li :before
 {
-    content: ">";
+    content: "/";
+    padding-left: 0.5em;
+    padding-right: 0.5em;
 }
 
 /* DocumentTree */

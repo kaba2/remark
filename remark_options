@@ -16,4 +16,3 @@ index.htm
 -x dist/*
 -x .hg*
 -x .DS*
-

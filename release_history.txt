@@ -16,7 +16,7 @@ than 1.1.3.
 Remark 1.6.0
 ------------
 
-Release date 27.05.2013.
+Release date 28.05.2013.
 
 [Original webpage][Remark-1.6.0]
 
@@ -76,11 +76,10 @@ type of the code can be specified explicitly.
 
 ### Packaging
 
-* Added `distutils` packaging, so that Remark can be
-installed automatically from [PyPI][] using `pip`.
+* Added a repository for Remark on BitBucket.
+* Added an issue tracker for Remark on BitBucket.
+* Made Remark installable from PyPI using `pip` and `easy_install`.
 * Changed to use Pillow instead of PIL.
-
-[PyPI]: https://pypi.python.org
 
 Remark 1.5.1
 ------------

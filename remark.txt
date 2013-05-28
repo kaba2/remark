@@ -20,30 +20,25 @@ From the command-line (Windows, Linux, Mac OS X, ...):
 
 	remark.py inputDirectory outputDirectory (option|file-glob)*
 
-### Example
-
-From the command-line, run
-
-	remark.py . docs 
-
-where the `remark_options` file in the input directory 
-contains
-
-	*.txt
-	*.py
-	*.png
-	-x docs/*
-
-Alternatively, the same can be achieved without using an option-file by
-
-	remark.py . docs "*.txt" "*.py" "*.png" -x "docs/*"
-
 ### Linux and Mac OS X
 
-The shells on Linux and Mac OS X expand the globs (e.g `*.txt`) _before_ running 
-an executable (unless the globs do not match anything in the current directory).
-Therefore, on the command-line the globs should always be  provided in the 
-form `"*.txt"`, to defer the glob-expansion from the shell to Remark.
+The shells on Linux and Mac OS X expand the globs (e.g `*.txt`) _before_ 
+running an executable (unless the globs do not match anything in the 
+current directory). Therefore, on the command-line the globs should always 
+be  provided in the form `"*.txt"`, to defer the glob-expansion from the 
+shell to Remark.
+
+### Example
+
+Perhaps the best example is to build the documentation of Remark itself. 
+After obtaining the source code for Remark, assuming you are at the root
+directory of the source code, run from the command-line
+
+	remark.py . docs -v
+
+The `-v` option produces additional progress information. The other used 
+options can be found the `remark_options` file. The resulting documentation 
+can be read by opening `docs/remark.htm`.
 
 Installation
 ------------
@@ -76,16 +71,22 @@ From the command-line, run
 Source code
 -----------
 
-Here you may download the full source code for Remark,
-which includes the Remark source for this documentation.
+The source code for [Remark][RemarkBitBucket] is hosted on [BitBucket][] 
+in a [Mercurial][] repository. Assuming you have Mercurial installed, the 
+repository can be cloned from the command-line by
 
-### [Download Remark [[remark_version]] Source Code][SourceCode]
+	hg clone https://bitbucket.org/kaba2/remark
 
-[SourceCode]: ./files/remark-[[remark_version]].zip
+[BitBucket]: http://bitbucket.org
+[RemarkBitBucket]: http://bitbucket.org/kaba2/remark
+[Mercurial]: mercurial.selenic.com
 
-For previous versions, see the [release history][History].
+Issue tracker
+-------------
 
-[History]: [[Ref]]: release_history.txt
+The issue tracker for Remark is also hosted on Bitbucket in [here][RemarkBugs].
+
+[RemarkBugs]: https://bitbucket.org/kaba2/remark/issues
 
 [[Comment]]:
 	The following is a javascript for Google Analytics by which we can
