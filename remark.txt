@@ -71,20 +71,19 @@ From the command-line, run
 Source code
 -----------
 
-The source code for [Remark][RemarkBitBucket] is hosted on [BitBucket][] 
+The source code for Remark is hosted on [BitBucket][] 
 in a [Mercurial][] repository. Assuming you have Mercurial installed, the 
 repository can be cloned from the command-line by
 
 	hg clone https://bitbucket.org/kaba2/remark
 
-[BitBucket]: http://bitbucket.org
-[RemarkBitBucket]: http://bitbucket.org/kaba2/remark
-[Mercurial]: mercurial.selenic.com
+[BitBucket]: http://bitbucket.org/kaba2/remark
+[Mercurial]: http://mercurial.selenic.com
 
 Issue tracker
 -------------
 
-The issue tracker for Remark is also hosted on Bitbucket in [here][RemarkBugs].
+The issue tracker for Remark is hosted on Bitbucket in [here][RemarkBugs].
 
 [RemarkBugs]: https://bitbucket.org/kaba2/remark/issues
 
