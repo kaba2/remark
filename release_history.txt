@@ -69,6 +69,8 @@ to aid in the documentation of Remark itself.
 generalizes the Body macro.
 * Added the `type` variable in the Code macro so that the
 type of the code can be specified explicitly.
+* Made description grouping more effective in the 
+SourceChildren macro.
 
 ### Style
 
