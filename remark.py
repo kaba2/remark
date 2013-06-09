@@ -222,6 +222,8 @@ Exclusion takes priority over inclusion.""",
         # Disable the verbose reports.
         reporter.disable('verbose')
 
+    reporter.disable('debug-implicit')
+
     # Disable the report-types given by the -d switch.
     for reportType in argumentSet.disableSet:
         reporter.disable(reportType)
