@@ -85,8 +85,8 @@ class SourceChildren_Macro(object):
                 detail = ''
 
         # If a group does not have a description, it can be
-        # joined together with a preceding group, on the condition that
-        # without extensions the names in the preceding group are 
+        # joined together with a preceding described group, on the condition 
+        # that without extensions the names in the preceding group are 
         # prefixes of the names in the following group.
         i = 1
         while i < len(groupSet):
@@ -100,26 +100,50 @@ class SourceChildren_Macro(object):
                     break;
             if not joined: 
                 i += 1
-        
-        # Output the groups
-        #for group in groupSet:
-        #    for child in group[2]:
-        #        print child.relativeName
-        #    print ''
 
         # Set default descriptions for those
         # groups that do not have a description.
         for group in groupSet:
             if group[0] == '':
-                group[0] = '-'
                 message = ['Description missing for the document-group']
                 for child in group[2]:
                     message.append(child.fileName)
                 remark.reportWarning(message, 'missing-description')
-        
+
+        # Find the first group that has no description.
+        i = 0
+        while i < len(groupSet):
+            if groupSet[i][0] == '':
+                break
+            i += 1
+
+        # Join all groups without a description to the
+        # first such group.
+        if i < len(groupSet):
+            j = i + 1
+            while j < len(groupSet):
+                if groupSet[j][0] == '':
+                    groupSet[i][2] += groupSet[j][2]
+                    groupSet[j : j + 1] = []
+                else:
+                    j += 1;
+
+        # Output the groups
+        #for group in groupSet:
+        #    for child in group[2]:
+        #        print child.relativeName
+        #    print ''
+       
         # Order the groups in alphabetical order w.r.t.
         # their descriptions. 
         groupSet.sort(lambda x, y: cmp(x[0], y[0]))
+
+        # Move the unnamed group to the end.
+        if len(groupSet) > 0 and groupSet[0][0] == '':
+            groupSet.append(groupSet[0])
+            groupSet[0 : 1] = []
+
+        defaultDescription = '?';
 
         # Output the links in the groups together
         # with a description for the group.
@@ -130,6 +154,9 @@ class SourceChildren_Macro(object):
         for group in groupSet:
             # Output description for the group.
             description = group[0]
+            if description == '':
+                description = defaultDescription
+
             text.append('')
             text.append('### ' + description)
             text.append('')
