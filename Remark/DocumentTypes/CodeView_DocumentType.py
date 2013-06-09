@@ -6,7 +6,7 @@ from Remark.FileSystem import escapeMarkdown, globalOptions, fileUpToDate
 from Remark.Conversion import saveRemarkToHtml
 from Remark.TagParsers.Dictionary_TagParser import Dictionary_TagParser 
 
-from pygments.lexers import get_lexer_for_filename
+from pygments.lexers import get_lexer_for_filename, MatlabLexer
 
 class CodeView_DocumentType(object):
     def __init__(self):
@@ -28,7 +28,15 @@ class CodeView_DocumentType(object):
         return self.tagParser.parse(fileName, globalOptions().maxTagLines, reporter)
         
     def convert(self, document, documentTree, outputRootDirectory, reporter):
-        lexer = get_lexer_for_filename(document.fileName)
+        if document.extension == '.m':
+            # The Linguist library, which Pygments uses,
+            # associates the .m extension to Objective-C.
+            # However, I need it to associate to Matlab.
+            # I should make this configurable in the future,
+            # but for now I will just override it.
+            lexer = MatlabLexer()
+        else:
+            lexer = get_lexer_for_filename(document.fileName)
 
         remarkText = [
                 '[[ParentList]]',
