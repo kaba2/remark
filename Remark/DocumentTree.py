@@ -406,7 +406,10 @@ class DocumentTree(object):
             if document.parent != None or 'parentOf' in document.tagSet:
                 continue
             
-            #print 'Implicit find for', document.relativeName
+            self.reporter.report(
+                'Implicit linking for ' + document.relativeName + ' ...', 
+                'debug-implicit')
+
             searchDirectory = document.relativeDirectory
             searchName = withoutFileExtension(document.fileName)
             # The implicit linking only concerns
@@ -510,8 +513,10 @@ class DocumentTree(object):
                     newParent = sourceMatches.pop()
                     newParent.insertChild(document)                              
                 
-            #if document.parent != None:
-            #    print document.relativeName, '->', document.parent.relativeName
+            if document.parent != None:
+                self.reporter.report(
+                    'Found ' + document.parent.relativeName + '.', 
+                    'debug-implicit')
         
     def _resolveReferenceLinks(self):
         '''

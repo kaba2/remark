@@ -88,16 +88,25 @@ class SourceChildren_Macro(object):
         # joined together with a preceding group, on the condition that
         # without extensions the names in the preceding group are 
         # prefixes of the names in the following group.
-
-        i = 0
-        while i < len(groupSet) - 1:
-            if groupSet[i + 1][0] == '' and prefixOf(groupSet[i][2][0].relativeName, groupSet[i + 1][2][0].relativeName):
-                    #print 'Join', groupSet[i][1][0].relativeName, groupSet[i + 1][1][0].relativeName
-                    groupSet[i][2] += groupSet[i + 1][2]
-                    groupSet[i + 1 : i + 2] = []
-            else: 
+        i = 1
+        while i < len(groupSet):
+            joined = False;
+            for j in range(i - 1, -1, -1):
+                if groupSet[i][0] == '' and prefixOf(groupSet[j][2][0].relativeName, groupSet[i][2][0].relativeName):
+                    # print 'Join', groupSet[j][2][0].relativeName, groupSet[i][2][0].relativeName
+                    groupSet[j][2] += groupSet[i][2]
+                    groupSet[i : i + 1] = []
+                    joined = True;
+                    break;
+            if not joined: 
                 i += 1
         
+        # Output the groups
+        #for group in groupSet:
+        #    for child in group[2]:
+        #        print child.relativeName
+        #    print ''
+
         # Set default descriptions for those
         # groups that do not have a description.
         for group in groupSet:
@@ -111,7 +120,7 @@ class SourceChildren_Macro(object):
         # Order the groups in alphabetical order w.r.t.
         # their descriptions. 
         groupSet.sort(lambda x, y: cmp(x[0], y[0]))
-        
+
         # Output the links in the groups together
         # with a description for the group.
         text.append('')
