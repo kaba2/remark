@@ -179,26 +179,33 @@ to be unique). */
 {
     border-collapse: collapse;
     margin-left: 0;
+    width: 100%;
 }
 
 /* Tables and cells*/
 #remark table, th, td
 {
     /* Give them a one-pixel wide border. */
-    border: 1px solid black;
+    /*border: 1px solid black;*/
 }
 
 /* Tables: Cells */
 #remark td, th
 {
     /* Give some empty space around the content of a cell. */
-    padding: 5px;
+    padding-left: 0.5em;
+    padding-bottom: 0.5em;
+    padding-top: 0.5em;
+    background-color: rgb(234, 240, 255);
+    border: 1px solid white;
 }
 
 /* Table: Cells: Headers */
 #remark th
 {
-    color: Maroon;
+    text-align: left;
+    color: #356535;
+    background-color: rgb(210, 216, 255);
 }
 
 /* Table: Cells: Data */
