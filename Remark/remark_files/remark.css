@@ -206,6 +206,7 @@ to be unique). */
     text-align: left;
     color: #356535;
     background-color: rgb(210, 216, 255);
+    font-weight: normal;
 }
 
 /* Table: Cells: Data */
