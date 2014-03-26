@@ -288,9 +288,13 @@ def convertDirectory(argumentSet, reporter):
         './remark_files/' + asciiMathMlName(),
         ]
 
-    for name in copyNameSet:
-        copyIfNecessary(name, remarkDirectory(), 
-                        name, argumentSet.outputDirectory)
+    with ScopeGuard(reporter, 'Updating files'):
+        for name in copyNameSet:
+            copied = copyIfNecessary(
+                            name, remarkDirectory(), 
+                            name, argumentSet.outputDirectory)
+            if copied:
+                reporter.report(name, 'verbose')
 
     # Parse the tags.
     with ScopeGuard(reporter, 'Parsing tags'):
@@ -308,7 +312,7 @@ def convertDirectory(argumentSet, reporter):
                 reporter.reportWarning(document.relativeName + 
                                        ': Tag parsing failed because of a unicode decode error.')
 
-        reporter.report(['', 'Done.'], 'verbose')
+        reporter.report('Done.', 'verbose')
 
     # Resolve parent links.
     documentTree.resolveParentLinks()
@@ -328,12 +332,12 @@ def convertDirectory(argumentSet, reporter):
             for document in documentTree:
                 document.setRegenerate(True)
 
-        reporter.report(['', 'Done.'], 'verbose')
+        reporter.report('Done.', 'verbose')
 
     # Generate documents.
     with ScopeGuard(reporter, 'Generating documents'):
         convertAll(documentTree, argumentSet, reporter)
-        reporter.report(['', 'Done.'], 'verbose')
+        reporter.report('Done.', 'verbose')
 
     # Find out statistics.
     seconds = round(time.clock() - startTime, 2)
@@ -342,8 +346,7 @@ def convertDirectory(argumentSet, reporter):
 
     # Report the statistics.
     with ScopeGuard(reporter, 'Summary'):
-        reporter.report(['',
-                         str(seconds) + ' seconds,',
+        reporter.report([str(seconds) + ' seconds,',
                          str(errors) + ' errors,',
                          str(warnings) + ' warnings.'], 
                         'summary')

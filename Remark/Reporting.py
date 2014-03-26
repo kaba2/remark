@@ -130,6 +130,7 @@ class Reporter(object):
             text.append('-' * max(len(name), 3))
         else:
             text.append('#' * level + ' ' + name)
+        text.append('');
         return text
 
     def scope(self):

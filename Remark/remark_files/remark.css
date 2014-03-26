@@ -82,6 +82,14 @@ to be unique). */
     /*text-align: justify;*/
 }
 
+/* Emphasized text */
+#remark em
+{
+    color: #806000;
+    font-style: italic;
+    font-weight: bold;
+}
+
 /* Code */
 #remark code
 {
