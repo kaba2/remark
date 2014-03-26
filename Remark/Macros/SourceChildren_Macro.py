@@ -93,7 +93,7 @@ class SourceChildren_Macro(object):
             joined = False;
             for j in range(i - 1, -1, -1):
                 if groupSet[i][0] == '' and prefixOf(groupSet[j][2][0].relativeName, groupSet[i][2][0].relativeName):
-                    # print 'Join', groupSet[j][2][0].relativeName, groupSet[i][2][0].relativeName
+                    #print 'Join', groupSet[j][2][0].relativeName, groupSet[i][2][0].relativeName
                     groupSet[j][2] += groupSet[i][2]
                     groupSet[i : i + 1] = []
                     joined = True;

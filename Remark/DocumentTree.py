@@ -110,25 +110,25 @@ class DocumentTree(object):
 
         with ScopeGuard(self.reporter, 'Resolving explicit links'):
             self._resolveExplicitLinks()
-            self.reporter.report(['', 'Done.'], 'verbose')
+            self.reporter.report('Done.', 'verbose')
 
         # Resolve implicit links
         
         with ScopeGuard(self.reporter, 'Resolving implicit links'):
             self._resolveImplicitLinks()
-            self.reporter.report(['', 'Done.'], 'verbose')
+            self.reporter.report('Done.', 'verbose')
 
         # Resolve reference links
         
         with ScopeGuard(self.reporter, 'Resolving reference links'):
             self._resolveReferenceLinks()
-            self.reporter.report(['', 'Done.'], 'verbose')
+            self.reporter.report('Done.', 'verbose')
 
         # Link orphans
 
         #with ScopeGuard(self.reporter, 'Linking orphans'):
         self._linkOrphans()
-        #self.reporter.report(['', 'Done.'], 'verbose')
+        #self.reporter.report('Done.', 'verbose')
         
     def findDocumentLocal(self, filePath, searchDirectory):
         '''
