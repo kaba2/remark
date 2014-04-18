@@ -3,8 +3,8 @@
 # Description: Distutils packaging for Remark
 # Documentation: dependencies.txt
 
-import distribute_setup
-distribute_setup.use_setuptools()
+import ez_setup
+ez_setup.use_setuptools()
 
 from setuptools import setup, find_packages
 from Remark.Version import remarkVersion
@@ -14,7 +14,7 @@ setup(name = 'remark',
       description = 'Generates html documentation for software libraries from lightweight markup.',
       keywords = 'lightweight markup software documentation html',
       author = 'Kalle Rutanen',
-      author_email = 'kalle_rutanen@hotmail.com',
+      author_email = 'kalle.rutanen@hotmail.com',
       url = 'http://kaba.hilvi.org/remark',
       packages = find_packages(),
       include_package_data = True,
