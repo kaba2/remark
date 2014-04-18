@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-# Description: Distutils packaging for Remark
+# Description: Setuptools packaging for Remark
 # Documentation: dependencies.txt
 
 import ez_setup
