@@ -3,9 +3,6 @@
 # Description: Distutils packaging for Remark
 # Documentation: dependencies.txt
 
-import ez_setup
-ez_setup.use_setuptools()
-
 from setuptools import setup, find_packages
 from Remark.Version import remarkVersion
 
