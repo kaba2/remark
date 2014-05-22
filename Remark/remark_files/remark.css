@@ -85,8 +85,8 @@ to be unique). */
 /* Emphasized text */
 #remark em
 {
-    color: #806000;
-    font-style: italic;
+    color: #807000;
+    font-style: normal;
     font-weight: bold;
 }
 
