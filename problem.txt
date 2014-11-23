@@ -6,6 +6,8 @@ Problems and solutions
 This section contains some problems that you might run into when using
 Remark, and the solutions of those problems.
 
+[[set Code.type]]: javascript
+
 SVG-images that do not get loaded
 ---------------------------------
 
