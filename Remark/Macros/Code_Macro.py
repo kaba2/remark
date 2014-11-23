@@ -38,7 +38,13 @@ class Code_Macro(object):
 
         if lexer == None:
             # Try to guess the type of the code.
-            lexer = guess_lexer(inputText)
+            try:
+                lexer = guess_lexer(inputText)
+            except:
+                remark.reporter.reportWarning(
+                    'The code-type cannot be guessed from the content by Pygments. ' + 
+                    'Setting code-type to text.', 'invalid-input')
+                lexer = get_lexer_by_name('text')
         
         # Highlight the code.
         hilightedText = highlight(inputText, lexer, HtmlFormatter())
