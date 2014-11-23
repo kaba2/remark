@@ -46,13 +46,15 @@ Example
 -------
 
 This
-
+	
+	[[set Code.type]]: python
 	[[Code]]:
 		def square(x):
 			return x * x
 		
 produces this:
 		
+[[set Code.type]]: python
 [[Code]]:
 	def square(x):
 		return x * x
