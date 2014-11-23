@@ -29,7 +29,8 @@ Code.type
 : 	The type of the code. You may provide any of the Pygments lexer
 	names available [here][PygmentLexers]. If this variable
 	is empty, then the code-type is guessed from the content
-	by Pygments. This guessing is not very reliable, so explicit
+	by Pygments. If the guessing fails, then the lexer is assumed
+	to be the text lexer. The guessing is not very reliable, so explicit
 	specification should be favored. Default: Empty.
 
 [PygmentLexers]: http://pygments.org/docs/lexers/
