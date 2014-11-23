@@ -48,18 +48,14 @@ Example
 This
 
 	[[Code]]:
-		int square(int x)
-		{
-			return x * x;
-		}
-
+		def square(x):
+			return x * x
+		
 produces this:
 		
 [[Code]]:
-	int square(int x)
-	{
-		return x * x;
-	}
+	def square(x):
+		return x * x
 
 Links
 -----
