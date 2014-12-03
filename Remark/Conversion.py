@@ -13,7 +13,7 @@ import sys
 
 from Remark.FileSystem import remarkScriptPath, fileExists
 
-# Older versions of Markdown (e.g. 2.0.0 which we need), have
+# Older versions of Markdown (e.g. 2.0.x which we need), have
 # the following bug. The command-line script is named `markdown.py`,
 # and the package is named `markdown`. When `import markdown` is
 # issued, depending on the location of this file the import may
@@ -50,10 +50,10 @@ except ImportError:
 
 sys.path = oldSysPath
 
-if not (markdown.version == '2.0'):
+if not (markdown.version.startswith('2.0')):
     # The later versions of Markdown do not support Markdown in html-blocks.
     # This makes Remark work incorrectly, so we will check the version here.
-    print 'Error: Python Markdown must be of version 2.0. Now it is ' + markdown.version + '.',
+    print 'Error: Python Markdown must be of version 2.0.x. Now it is ' + markdown.version + '.',
     sys.exit(1)
 
 from Remark.Version import asciiMathMlName, remarkVersion
