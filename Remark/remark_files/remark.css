@@ -7,46 +7,42 @@ html, body
 {
     margin:0;
     padding:0;
-    height: 100%;
+}
+
+html
+{
 }
 
 body 
 {
     /* Fonts from the sans-serif generic family are easier to read
-    on the screen. Sans-serif roughly means 'without wiggles'. */
+    on the screen. Sans-serif means 'without wiggles'. */
     font-family: Arial, Sans-serif;
-    /* Trebuchet MS, */
 }
 
+/* The 'remark-all'-div contains the 'remark'-div and the 'remark-footer'-div */
 #remark-all
 {
-    /* We need this for positioning the footer. */
-    position: relative;
-    min-height: 100%;
-    padding: 0;
-    padding-bottom: 1em;
+    /* This centers the text and limits its width. Wide text is hard to read. */
+    margin: auto;
+    max-width: 19cm;
 }
 
-/* All of Remark-generated content is located at
-at div-block whose id is 'remark' (id's are supposed
-to be unique). */
+/* Remark-generated content is contained in the 'remark'-div. */
 #remark
 {
     /* See the W3C CSS School for this trick. */
     font-size: 100%;
     /* Using more space between lines of text makes it easier to read. */
     line-height: 1.3em;
-    /* Using margins, the text concentrates more tighly
-    towards the center. There will be empty regions on both 
-    sides. I find this easier to read. */
-    margin-left: 25%;
-    margin-right: 25%;
+    /* Push the footer out of sight. */
+    min-height: 100vh;
 }
 
 /* Verbatim content */
 #remark pre
 {
-    /* Verbatim content is bordered with a dotted, one-pixel wide rectangle. */
+    /* Border with a dotted, one-pixel wide rectangle. */
     /*
     border-style: dotted;
     border-width: 1px;
@@ -56,7 +52,7 @@ to be unique). */
     /* Its background is colored light blue. */
     background-color: rgb(234, 240, 255);
 
-    /* This can be used to indent the verbatim content. */
+    /* This indents the verbatim content. */
     margin-top: 1em;
     margin-bottom: 0em;
     margin-left: 0em;
@@ -86,8 +82,9 @@ to be unique). */
 #remark em
 {
     color: #807000;
-    font-style: normal;
-    font-weight: bold;
+    /*font-style: normal;*/
+    font-style: italic;
+    /*font-weight: bold;*/
 }
 
 /* Code */
@@ -187,6 +184,7 @@ to be unique). */
 {
     border-collapse: collapse;
     margin-left: 0;
+    /* Make tables to cover the whole content in width. */
     width: 100%;
 }
 
@@ -204,7 +202,7 @@ to be unique). */
     padding-left: 0.5em;
     padding-bottom: 0.5em;
     padding-top: 0.5em;
-    background-color: rgb(234, 240, 255);
+    background-color: hsl(220, 100%, 93%);
     border: 1px solid white;
 }
 
@@ -213,7 +211,7 @@ to be unique). */
 {
     text-align: left;
     color: #356535;
-    background-color: rgb(210, 216, 255);
+    background-color: hsl(220, 100%, 88%);
     font-weight: normal;
 }
 
@@ -230,9 +228,11 @@ to be unique). */
 /* Definition lists: The thing to define. */
 #remark dt
 {
-    font-size: 1.1em;
-    color: rgb(0, 71, 201);
+    /* Make the font of the defined thing larger. */
+    font-size: 1.4em;
+    color: rgb(0, 51, 140);
     padding-bottom: 0em;
+    font-family: monospace;
 }
 
 /* Definition lists: The definition of the thing. */
@@ -365,40 +365,38 @@ to be unique). */
     padding-bottom: 1em;
 }
 
-/* The remark-all div contains the remark div and the remark-footer div.*/
-#remark-all
-{
-    /* Height of the footer */
-    padding-bottom: 3em;
-}
-
 /* Remark generates the time-date and the link to itself 
 in the 'remark-footer' div. */
 
 #remark-footer 
 {
-    position: absolute;
-    bottom: 0;
-    width: 50%;
-    margin-left: 25%;
-    margin-right: 25%;
+    /* Separate the footer from the content with a line. */
+    border-top: 1px dotted #aca899;
+    /* Add some space for the footer. */
+    padding-top: 0.2em;
+    padding-bottom: 0.2em;
 }
 
 #remark-footer p 
 {
-    border-top: 1px dotted #716f64;
+    margin: 0cm;
+    /* Make the footer small. */
     font-size: 0.7em;
-    font-family:'Trebuchet MS',Arial;
+    font-family: 'Trebuchet MS', Arial, Sans-serif;
+    /* Make the footer neutrally colored. */
     color: #716f64;
 }
+
 #remark-footer a 
 { 
+    /* Make links in the footer look neutral. */
     text-decoration: none; 
-    color: #716f64; 
+    color: #716f64;
 }
 
 #remark-footer a:hover 
 { 
+    /* Reveals links in the footer by hovering. */
     text-decoration: underline; 
     color: #600; 
 }
