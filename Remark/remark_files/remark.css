@@ -50,7 +50,7 @@ body
     */
 
     /* Its background is colored light blue. */
-    background-color: rgb(234, 240, 255);
+    background-color: hsl(220, 100%, 97%);
 
     /* This indents the verbatim content. */
     margin-top: 1em;
@@ -202,7 +202,7 @@ body
     padding-left: 0.5em;
     padding-bottom: 0.5em;
     padding-top: 0.5em;
-    background-color: hsl(220, 100%, 93%);
+    background-color: hsl(220, 100%, 97%);
     border: 1px solid white;
 }
 
@@ -211,7 +211,7 @@ body
 {
     text-align: left;
     color: #356535;
-    background-color: hsl(220, 100%, 88%);
+    background-color: hsl(220, 100%, 92%);
     font-weight: normal;
 }
 
