@@ -5,7 +5,7 @@ def remarkVersion():
     '''
     Returns the version of Remark as a string.
     '''
-    return '1.6.3'
+    return '1.6.4'
 
 def asciiMathMlName():
     '''
