@@ -25,10 +25,6 @@ class EquationSet_Macro(object):
 
         text = htmlDiv(text, className)
 
-        text.append('')
-        text.append('<div class = "remark-end-list"></div>')
-        text.append('')
-
         return text
 
     def outputType(self):

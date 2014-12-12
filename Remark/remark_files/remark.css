@@ -321,6 +321,10 @@ body
 /* Styling for DocChildren lists. */
 #remark .DocChildren ol
 {
+    /* The items are placed side-by-side, until the
+    right-edge and they wrap to the next row. */
+    display: inline-block;
+
     /* Get rid of default-indentation for lists. */
     margin: 0em;
     padding: 0em;
@@ -329,23 +333,25 @@ body
     list-style-type: none;
 }
 
-/* Styling for DocChildren list-items. */ 
-#remark .DocChildren ol li
+/* Styling for links in DocChildren. */
+#remark .DocChildren li
 {
-    /* The items are placed side-by-side, until the
-    right-edge and they wrap to the next row. */
+    /* List the links left-to-right, top-to-bottom.*/
     float: left;
-    /* Since the width of an item is 50%, there are
-    at most 2 items per row. */
+    
+    /* Use two columns.*/
     width: 50%;
 }
 
 /* Styling for links in DocChildren. */
 #remark .DocChildren li a
 { 
+    /* The links are block-based, for increased area. */
     display: block;
-    padding-top: 0.25em;
-    padding-bottom: 0.25em;
+
+    /* Add some spacing. */
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
 }
 
 /* SourceChildren */
@@ -354,6 +360,9 @@ body
 /* Styling for SourceChildren lists. */
 #remark .SourceChildren ul
 {
+    /* List the links vertically. */
+    display: block;
+
     /* Get rid of default-indentation for lists. */
     margin: 0em;
     padding: 0em;
@@ -362,17 +371,15 @@ body
     list-style-type: none;
 }
 
-/* Styling for SourceChildren list-items. */ 
-#remark .SourceChildren ul li
-{
-}
-
 /* Styling for links in SourceChildren. */
 #remark .SourceChildren li a
 { 
+    /* The links are block-based, for increased area. */
     display: block;
-    margin-top: 0.5em;
-    margin-bottom: 0.5em;
+
+    /* Add some spacing. */
+    padding-top: 0.25em;
+    padding-bottom: 0.25em;
 }
 
 /* Index */
@@ -442,15 +449,6 @@ in the 'remark-footer' div. */
     text-decoration: underline; 
     color: #600; 
 }
-
-#remark .remark-end-list
-{
-    display: block;
-    clear: left;
-    padding: 0;
-    border: 0;
-}
-
 
 /* EquationSet */
 
