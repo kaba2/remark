@@ -3,9 +3,7 @@ SourceChildren macro
 
 [[Parent]]: available_macros.txt
 
-The SourceChildren macro generates a list of links to the source-code 
-children of the currently processed document. This list is preceded by 
-a level-1 heading.
+The SourceChildren macro generates a list of links to the source children of the given document. This list is preceded by a level-2 heading. If the document does not have source children, the heading is not generated.
 
 Properties
 ----------
@@ -24,9 +22,13 @@ Ignored.
 
 ### Variables
 
+SourceChildren.class_name
+: 	The name of the html-class to give to the `<div>` tag. The html-class 
+	allows to style the generated list using CSS.
+	Default `SourceChildren`.
+
 SourceChildren.title
-:	The header name to use.
-	Default `Files`.
+:	The title of the heading. Default `Files`.
 
 Warnings
 --------
@@ -43,5 +45,7 @@ This
 
 	[[SourceChildren]]
 	
-produces the following section (we don't want to duplicate it here).
+produces the following 
+
+[[SourceChildren]]
 
