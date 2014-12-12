@@ -5,8 +5,8 @@ Documentation: style.txt
 
 html, body 
 {
-    margin:0;
-    padding:0;
+    margin: 0em;
+    padding: 0em;
 }
 
 html
@@ -25,14 +25,25 @@ body
 {
     /* This centers the text and limits its width. Wide text is hard to read. */
     margin: auto;
-    max-width: 19cm;
+
+    /* Add padding for the case when the browser is made small. */
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+    padding-top: 0.5em;
+    padding-bottom: 0em;
+}
+
+@media only screen 
+and (min-device-aspect-ratio: 1/1) {
+    #remark-all
+    {
+        max-width: 40em;
+    }
 }
 
 /* Remark-generated content is contained in the 'remark'-div. */
 #remark
 {
-    /* See the W3C CSS School for this trick. */
-    font-size: 100%;
     /* Using more space between lines of text makes it easier to read. */
     line-height: 1.3em;
     /* Push the footer out of sight. */
@@ -57,12 +68,10 @@ body
     margin-bottom: 0em;
     margin-left: 0em;
     margin-right: 0em;
-    
-    /* The verbatim content box should always have enough space
-    to cover some 80 characters per source-code line, but it
-    should never be wider than the containing element.*/
-    min-width: 40em;
-    max-width: 100%;
+
+    /* Pre-formatted text should not introduce new-lines. 
+    Therefore, if the content does not fit, provide scrolling. */
+    overflow: auto;
     
     /* The content should not be near the border. */
     padding-left: 0.5em;
@@ -82,9 +91,7 @@ body
 #remark em
 {
     color: #807000;
-    /*font-style: normal;*/
     font-style: italic;
-    /*font-weight: bold;*/
 }
 
 /* Code */
@@ -148,7 +155,7 @@ body
     /* For the image styling, use the highslide.css file instead */
 }
 
-/* Unordered lists (bullets) */
+/* Unordered lists */
 #remark ul 
 {
     list-style: disk;
@@ -163,6 +170,9 @@ body
 /* A list item */
 #remark li 
 {
+    /*overflow: auto;*/
+    padding: 0;
+    margin: 0;
 }
 
 /* Links */
@@ -249,14 +259,10 @@ body
 {
     /* Set visibility to hidden to remove parent-list from sight. */
     /*visibility: hidden;*/
-    
-    /* The position is given by us, not deduced from others. */
-    /* position: absolute; */
-    
+   
     /* Get rid of default-indentation for lists. */
-    margin: 0;
-    padding: 0;
-    padding-top: 1em;
+    margin: 0em;
+    padding: 0em;
     
     /* Get rid of default-dots for the list items. */
     list-style-type: none;
@@ -272,11 +278,15 @@ body
 #remark .ParentList li
 {
     float: left;
-    
-    /* background-color: rgba(0, 0, 255, 0.25); */
-    /*padding-right: 1em;*/
-    padding-bottom: 0.5em;
 }
+
+/* Styling for Links in ParentList. */
+#remark .ParentList li a
+{ 
+    display: block;
+    padding-bottom: 0em;
+}
+
 
 /* Add a '/' between subsequent ParentList list-items. */
 #remark .ParentList li+li :before
@@ -334,7 +344,12 @@ body
     /* Since the width of an item is 50%, there are
     at most 2 items per row. */
     width: 50%;
-    /* Add some vertical spacing between items. */
+}
+
+/* Styling for links in DocChildren. */
+#remark .DocChildren li a
+{ 
+    display: block;
     padding-bottom: 1em;
 }
 
@@ -375,11 +390,16 @@ in the 'remark-footer' div. */
     /* Add some space for the footer. */
     padding-top: 0.2em;
     padding-bottom: 0.2em;
+
+    margin-top: 1.5em;
+    margin-bottom: 0em;
+    margin-left: 0em;
+    margin-right: 0em;
 }
 
 #remark-footer p 
 {
-    margin: 0cm;
+    margin: 0em;
     /* Make the footer small. */
     font-size: 0.7em;
     font-family: 'Trebuchet MS', Arial, Sans-serif;

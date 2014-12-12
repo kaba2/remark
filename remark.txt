@@ -43,9 +43,7 @@ can be read by opening `docs/remark.htm`.
 Installation
 ------------
 
-In the following we will assume that Python 2.7 has been installed
-properly, as described in [here][InstallPython]. In particular, we
-assume that `pip` and `easy_install` have both been installed.
+In the following we will assume that [Python 2.7][InstallPython] and [pip][Pip] have already been installed.
 
 ### Mac OS X
 
@@ -63,10 +61,10 @@ From the command-line, run with administrator rights
 
 From the command-line, run
 
-	easy_install pillow
 	pip install remark
 
 [InstallPython]: http://docs.python-guide.org/en/latest/starting/installation/
+[Pip]: https://pip.pypa.io/en/latest/installing.html
 
 Source code
 -----------
