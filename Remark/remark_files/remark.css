@@ -25,20 +25,13 @@ body
 {
     /* This centers the text and limits its width. Wide text is hard to read. */
     margin: auto;
+    max-width: 40em;
 
     /* Add padding for the case when the browser is made small. */
     padding-left: 0.5em;
     padding-right: 0.5em;
     padding-top: 0.5em;
     padding-bottom: 0em;
-}
-
-@media only screen 
-and (min-device-aspect-ratio: 1/1) {
-    #remark-all
-    {
-        max-width: 40em;
-    }
 }
 
 /* Remark-generated content is contained in the 'remark'-div. */
@@ -328,8 +321,8 @@ and (min-device-aspect-ratio: 1/1) {
 #remark .DocChildren ol
 {
     /* Get rid of default-indentation for lists. */
-    margin: 0;
-    padding: 0;
+    margin: 0em;
+    padding: 0em;
 
     /* Get rid of default-dots for the list items. */
     list-style-type: none;
@@ -350,7 +343,8 @@ and (min-device-aspect-ratio: 1/1) {
 #remark .DocChildren li a
 { 
     display: block;
-    padding-bottom: 1em;
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
 }
 
 /* Index */

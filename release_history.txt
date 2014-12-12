@@ -22,9 +22,9 @@ Release date 11.12.2014.
 
 [Remark-1.6.4]: http://kaba.hilvi.org/remark-1.6.4
 
-### Style
+### Core
 
-* Updated the default CSS to work nicely with tablets and phones.
+* Made Remark generate html and CSS which works nicely also with tablets and phones.
 
 Remark 1.6.3
 ------------
