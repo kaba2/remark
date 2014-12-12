@@ -8,7 +8,7 @@ import string
 
 from Remark.Macro_Registry import registerMacro
 from Remark.FileSystem import unixRelativePath, escapeMarkdown
-from Remark.FileSystem import withoutFileExtension
+from Remark.FileSystem import withoutFileExtension, htmlDiv
 from Remark.DocumentType_Registry import outputDocumentName
 
 class SourceChildren_Macro(object):
@@ -17,8 +17,14 @@ class SourceChildren_Macro(object):
 
     def expand(self, parameter, remark):
         document = remark.document
-                
+        documentTree = remark.documentTree
         scope = remark.scopeStack.top()
+
+        # Variables
+        self.rootName = scope.getString('SourceChildren.root_document', document.fileName)
+        self.className = scope.getString('SourceChildren.class_name', 'SourceChildren')
+        self.title = scope.getString('SourceChildren.title', 'Files')
+
         text = []
 
         def prefixOf(left, right):
@@ -35,6 +41,7 @@ class SourceChildren_Macro(object):
                         x.tagString('document_type') == 'CodeView')]
 
         if len(sortedMap) == 0:
+            # There are no source files.
             return text
 
         # Sort the list alphabetically w.r.t. the relative file names.
@@ -148,7 +155,7 @@ class SourceChildren_Macro(object):
         # Output the links in the groups together
         # with a description for the group.
         text.append('')
-        text.append(scope.getString('SourceChildren.title', 'Files'))
+        text.append(self.title)
         text.append('---')
         text.append('')
         for group in groupSet:
@@ -168,14 +175,13 @@ class SourceChildren_Macro(object):
                 text.append('')
                 text.append('_' + detail + '_')
                 text.append('')
-                
-            # Output the links in the group.
+
+            # Output the links in the group as a list.
             for child in group[2]:
-                text.append(remark.remarkLink(escapeMarkdown(child.fileName),
-                                              document, child))
-                text.append('')
+                text.append('* ' + remark.remarkLink(escapeMarkdown(child.fileName),
+                            document, child))
             
-        return text
+        return htmlDiv(text, self.className);
 
     def outputType(self):
         return 'remark'

@@ -92,6 +92,7 @@ body
 {
     color: #505080;
     font-family: monospace;
+    overflow: auto;
 }
 
 /* Level 1 headings */
@@ -341,6 +342,33 @@ body
 
 /* Styling for links in DocChildren. */
 #remark .DocChildren li a
+{ 
+    display: block;
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+}
+
+/* SourceChildren */
+/* -------------- */
+
+/* Styling for SourceChildren lists. */
+#remark .SourceChildren ul
+{
+    /* Get rid of default-indentation for lists. */
+    margin: 0em;
+    padding: 0em;
+
+    /* Get rid of default-dots for the list items. */
+    list-style-type: none;
+}
+
+/* Styling for SourceChildren list-items. */ 
+#remark .SourceChildren ul li
+{
+}
+
+/* Styling for links in SourceChildren. */
+#remark .SourceChildren li a
 { 
     display: block;
     padding-top: 0.5em;
