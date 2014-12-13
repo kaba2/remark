@@ -19,7 +19,7 @@ From the command-line (Windows, Linux, Mac OS X, ...):
 The shells on Linux and Mac expand the globs (e.g `*.txt`) _before_
 running an executable (unless the globs do not match anything in
 the current directory). Therefore, the globs should always be 
-provided in the form `*.txt`, to defer the glob-expansion from
+provided in the form `"*.txt"`, to defer the glob-expansion from
 the shell to Remark.
 
 ### Option-files
