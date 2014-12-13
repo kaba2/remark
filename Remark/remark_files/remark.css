@@ -252,6 +252,7 @@ body
 #remark .ParentList ol
 {
     display: flex;
+    flex-wrap: wrap;
 
     /* Set visibility to hidden to remove parent-list from sight. */
     /*visibility: hidden;*/
@@ -284,7 +285,7 @@ body
 
 
 /* Add a '/' between subsequent ParentList list-items. */
-#remark .ParentList li+li :before
+#remark .ParentList li + li ::before
 {
     content: "/";
     padding-left: 0.5em;
@@ -299,21 +300,23 @@ body
 {
     /* Get rid of default-indentation for lists. */
     margin: 0;
-    /*padding: 0;*/
     
     /* Give some indendation to nested lists. */
+    padding-right: 0em;
     padding-left: 2.5em;
     padding-top: 0em;
-    padding-bottom: 0.5em;
+    padding-bottom: 0em;
 
     /* Get rid of default-dots for the list items. */
     list-style-type: none;
 }
 
 /* Styling for DocumentTree list-items. */ 
-#remark .DocumentTree ol li
+#remark .DocumentTree li a
 {
-    padding-bottom: 0em;
+    display: block;
+    padding-top: 0.25em;
+    padding-bottom: 0.25em;
 }
 
 /* DocChildren */
@@ -387,6 +390,11 @@ body
 /* Styling for Index lists. */
 #remark .Index ol
 {
+    /* The items are placed side-by-side, until the
+    right-edge and they wrap to the next row. */
+    display: flex;
+    flex-wrap: wrap;
+
     /* Get rid of default-indentation for lists. */
     margin: 0;
     padding: 0;
@@ -396,16 +404,20 @@ body
 }
 
 /* Styling for Index list-items. */ 
-#remark .Index ol li
+#remark .Index li
 {
-    /* The items are placed side-by-side, until the
-    right-edge and they wrap to the next row. */
-    float: left;
-    /* Since the width of an item is 50%, there are
-    at most 2 items per row. */
-    width: 50%;
-    /* Add some vertical spacing between items. */
-    padding-bottom: 1em;
+    /* At most 2 columns. */
+    min-width: 50%;
+}
+
+#remark .Index li a
+{
+    /* The links are block-based, for increased area. */
+    display: block;
+
+    /* Add some spacing. */
+    padding-top: 0.25em;
+    padding-bottom: 0.25em;
 }
 
 /* Remark generates the time-date and the link to itself 
