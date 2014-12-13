@@ -242,10 +242,9 @@ body
 #remark dt
 {
     /* Make the font of the defined thing larger. */
-    font-size: 1.4em;
+    font-size: 18px;
     color: rgb(0, 51, 140);
     padding-bottom: 0em;
-    font-family: 'Consolas', 'Inconsolata', monospace;
 }
 
 /* Definition lists: The definition of the thing. */
