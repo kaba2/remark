@@ -16,23 +16,14 @@ Setting a tag
 -------------
 
 A document-tag can be set by the `set_tag` command, and retrieved by
-the `tag` command. For example, the following
+the `tag` command. 
 
-[[Verbatim]]:
-	[[set_tag author]]: 
-		John Doe 
-		Jane Doe
-
-	[[tag author]]
-
-produces
-
-[[+Verbatim]]:
-	[[set_tag author]]: 
-		John Doe
-		Jane Doe
-
-	[[tag author]]
+[[Example]]:
+	[[Verbatim]]:
+		[[set_tag author]]: 
+			John Doe 
+			Jane Doe
+		[[tag author]]
 
 Predefined tags
 ---------------
@@ -81,29 +72,13 @@ html_head
 
 ### Example
 
-This
-
-[[Verbatim]]:
-	Description: [[tag description]]
-	Link-description: [[tag link_description]]
-	Detail: [[tag detail]]
-	Author: [[tag author]]
-	Filename: [[tag file_name]]
-	Relative name: [[tag relative_name]]
-	Relative directory: [[tag relative_directory]]
-	File extension: [[tag extension]]
-	Html-head: [[tag html_head]]
-
-produces this
-
-[[+Verbatim]]:
-	Description: [[tag description]]
-	Link-description: [[tag link_description]]
-	Detail: [[tag detail]]
-	Author: [[tag author]]
-	Filename: [[tag file_name]]
-	Relative name: [[tag relative_name]]
-	Relative directory: [[tag relative_directory]]
-	File extension: [[tag extension]]
-	Html-head: [[tag html_head]]
-
+[[Example]]:
+	* Description: [[tag description]]
+	* Link-description: [[tag link_description]]
+	* Detail: [[tag detail]]
+	* Author: [[tag author]]
+	* Filename: [[tag file_name]]
+	* Relative name: [[tag relative_name]]
+	* Relative directory: [[tag relative_directory]]
+	* File extension: [[tag extension]]
+	* Html-head: [[tag html_head]]

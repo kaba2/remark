@@ -33,10 +33,6 @@ Index.class_name
 Example
 -------
 
-This
-
+[[Example]]:
 	[[Index]]
 	
-produces this:
-
-[[Index]]

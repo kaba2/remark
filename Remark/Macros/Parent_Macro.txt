@@ -32,10 +32,5 @@ None.
 Example
 -------
 
-This
-
+[[Example]]:
 	[[Parent]]
-	
-produces this:
-
-[[Parent]]

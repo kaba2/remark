@@ -9,77 +9,36 @@ are user-defined text transformations.
 Constant-output macros
 ----------------------
 
-Consider the following variable definition:
+A variable is a user-defined macro that takes in an arbitrary input, but does not use it.
 
+[[Example]]:
 	[[set my_macro]]: Hello world!
-
-[[set my_macro]]: Hello world!
-
-Taking a bit different view, we interpret `my_macro` as a user-defined 
-macro that takes in arbitrary input and produces as output `Hello world!`. 
-For example, this:
-
 	[[my_macro]]
-	
 	[[my_macro]]: Arbitrary input.
 
-produces this:
-
-[[my_macro]]
-
-[[my_macro]]: Arbitrary input.
-
-Constant-output macros have their uses, but more generally we would like 
-to build macros whose output are dependent on the input.
+Constant-output macros have their uses, but more generally we would like to build macros whose output are dependent on the input.
 
 Input-dependent macros
 ----------------------
 
-Remark passes the parameter of a macro in the `parameter` variable. Using 
-this knowledge we can build a generalized version of our macro:
+Remark passes the parameter of a macro in the `parameter` variable. Using this knowledge we can build a generalized version of our macro:
 
+[[Example]]:
 	[[set my_macro]]: Hello [[parameter]]!
-
-[[set my_macro]]: Hello [[parameter]]!
-
-Then this:
-
 	[[my_macro]]: world
-	
 	[[my_macro]]: jello
-
-produces this:
-
-[[my_macro]]: world
-
-[[my_macro]]: jello
 
 ### `parameter` is local to each macro invocation
 
 The `parameter` is a variable local to each macro invocation.
-The following example demonstrates. First define:
 
+[[Example]]:
 	[[set my_macro]]:
 		[[set my_replicate]]:
 			[[parameter]][[parameter]]
 		[[+my_replicate]]: Hello [[parameter]]!
-		
-[[set my_macro]]:
-	[[set my_replicate]]:
-		[[parameter]][[parameter]]
-	[[+my_replicate]]: Hello [[parameter]]!
-
-Then this:
-
 	[[my_macro]]: world
-	
 	[[my_macro]]: jello
-
-produces this:
-
-[[my_macro]]: world
-
-[[my_macro]]: jello
 			
 		
 		

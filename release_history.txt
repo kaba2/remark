@@ -29,9 +29,13 @@ Release date 14.12.2014.
 
 ### Example macro
 
- * Wrapped the produced item in a div.
+ * Wrapped the produced content in a div.
  * Separated the example from its surrounding by drawing a box around it.
  * Removed the preceding and following texts.
+
+### Documentation
+
+* Changed to use the improved Example macro. This provided clearer documentation.
 
 Remark 1.6.4
 ------------
