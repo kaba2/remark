@@ -28,10 +28,5 @@ None.
 Examples
 --------
 
-This
-
+[[Example]]:
 	[[+Verbatim]]: [[tag description]]
-		
-produces this:
-
-[[+Verbatim]]: [[tag description]]

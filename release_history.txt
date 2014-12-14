@@ -29,9 +29,13 @@ Release date 14.12.2014.
 
 ### Example macro
 
- * Wrapped the produced content in a div.
- * Separated the example from its surrounding by drawing a box around it.
- * Removed the preceding and following texts.
+* Wrapped the produced content in a div.
+* Separated the example from its surrounding by drawing a box around it.
+* Removed the preceding and following texts.
+
+### SourceChildren macro
+
+* The title is created only if it is non-empty.
 
 ### Documentation
 

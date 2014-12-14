@@ -28,20 +28,11 @@ None.
 Example
 -------
 
-This
-
+[[Example]]:
 	[[Comment]]:
 		Place some explanation here.
 		Do use more than one line if you want.
 		
 		Still a comment.
-		
-produces:
 
-[[Comment]]:
-	Place some explanation here.
-	Do use more than one line if you want.
-	
-	Still a comment.
-
-i.e. nothing.  
+	Not a comment.

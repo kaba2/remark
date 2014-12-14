@@ -3,18 +3,14 @@ Macro expansion
 
 [[Parent]]: macros.txt
 
-Macro expansion refers to the process of taking a
-[macro invocation][Invocation] and replacing it with 
-the output of the macro. In Remark, this process can be 
-carried out in different ways depending on the need. 
+Macro expansion refers to the process of taking a [macro invocation][Invocation] and replacing it with the output of the macro. In Remark, this process can be carried out in different ways depending on the need.
 
 [Invocation]: [[Ref]]: macro_invocation.txt
 
 Controlling expansion
 ---------------------
 
-In a macro invocation the user has explicit control 
-over
+In a macro invocation the user has explicit control over
 
  * whether the macros in the parameter should be 
  recursively expanded before invoking the macro, and
@@ -22,42 +18,22 @@ over
  * whether the output of the macro expansion should
  be recursively expanded. 
 
-These behaviors can be set by using a pair of signs
-(+ or -) before the name of the macro. In this notation
-+ means _yes_ and - means _no_. The first sign refers
-to the expansion of the output, while the second sign 
-refers to the expansion of the parameter. For example,
-the following invocation of the Verbatim macro 
-explicitly disables the expansion of the output and 
-enables the expansion of the parameter. 
-	
+These behaviors can be set by using a pair of signs (+ or -) before the name of the macro. In this notation + means _yes_ and - means _no_. The first sign refers to the expansion of the output, while the second sign refers to the expansion of the parameter. For example, the following invocation of the Verbatim macro explicitly disables the expansion of the output and enables the expansion of the parameter.
+
+[[Example]]:
 	[[-+Verbatim]]: [[tag description]] 
 
-The example above produces:
-
-[[-+Verbatim]]: [[tag description]]
-
-If only one sign is given, then that sign is assumed
-for both expansions, i.e. - = -- and + = ++.
+If only one sign is given, then that sign is assumed for both expansions, i.e. - = -- and + = ++.
 
 ### Default behaviors
 
-If the expansion signs are not given, then
-the expansions assume default behaviors. 
-The default behavior for parameter expansion
-is not to do it. The default behavior 
-for output expansion is determined by the invoked 
-macro.
+If the expansion signs are not given, then the expansions assume default behaviors. The default behavior for parameter expansion is not to do it. The default behavior for output expansion is determined by the invoked macro.
 
 Placement of macros
 -------------------
 
-The macros can be placed freely as shown in the following
-example:
-	
+The macros can be placed freely as shown in the following example: 
+
+[[Example]]:
 	[[set b: Nom]]Nom[[b]] [[b]]Nom[[b]] Nom[[b]]
-
-[[set b: Nom]]Nom[[b]] [[b]]Nom[[b]] Nom[[b]]
-
-
 

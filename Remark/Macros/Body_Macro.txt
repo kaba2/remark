@@ -29,19 +29,11 @@ None.
 Example
 -------
 
-This
-
 	[[Body]]
 
-would lead to an an infinite macro expansion loop.
-This form of the macro invocation is seen only on
-document templates. For demonstration purposes,
-we can use:
+would lead to an an infinite macro expansion loop. This form of the macro invocation is seen only on document templates. For demonstration purposes, we can use:
 
+[[Example]]:
 	[[-+Verbatim]]: [[-Body]]
 
-which produces this:
-
-[[-+Verbatim]]: [[-Body]]
- 
  

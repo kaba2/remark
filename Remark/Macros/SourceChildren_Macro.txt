@@ -41,11 +41,6 @@ missing-description
 Example
 -------
 
-This
-
+[[Example]]:
+	[[set SourceChildren.title]]
 	[[SourceChildren]]
-	
-produces the following 
-
-[[SourceChildren]]
-

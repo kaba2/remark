@@ -44,12 +44,7 @@ missing-document
 Example
 -------
 
-This
-
+[[Example]]:
 	[[-+Verbatim]]: [[-+ReadFile]]: [[tag file_name]]
-
-produces this:
-
-[[-+Verbatim]]: [[-+ReadFile]]: [[tag file_name]]
  
  

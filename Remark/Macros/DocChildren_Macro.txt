@@ -3,10 +3,7 @@ DocChildren macro
 
 [[Parent]]: available_macros.txt
 
-The DocChildren macro generates a list of links to the documentation
-children of the given document. This list is preceded by a level-2 
-heading. The heading is not generated if there are no documentation 
-children.
+The DocChildren macro generates a list of links to the documentation children of the given document. This list is preceded by a level-2 heading. The heading is not generated if there are no documentation children.
 
 Properties
 ----------
@@ -62,25 +59,15 @@ DocChildren.title
 Notes
 -----
 
-When specifying patterns, multiple rows are interpreted as alternatives. 
-Possible surrounding whitespace is stripped off for each line.
-If both a regex pattern and a glob pattern is given, they
-are combined as alternatives.
+When specifying patterns, multiple rows are interpreted as alternatives. Possible surrounding whitespace is stripped off for each line. If both a regex pattern and a glob pattern is given, they are combined as alternatives.
 
 Example
 -------
 
-This
-
+[[Example]]:
+	[[set DocChildren.root_document]]: macros.txt
+	[[set DocChildren.title]]
 	[[DocChildren]]
-	
-produces
-
-[[DocChildren]]
-
-i.e. nothing because this document has no children.
-For a more interesting example see the parent document
-of this document.
 
 See also
 --------
