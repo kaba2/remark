@@ -19,26 +19,22 @@ To introduce invocation, we shall take the Comment macro as an example.
 
 ### Invoking with no parameters
 
-The Comment macro is invoked with no parameters as follows:
-
+[[Verbatim]]:
 	[[Comment]]
 
 ### Invoking with an inline parameter
 	
-With an inline parameter you would write like this:
-
+[[Verbatim]]:
 	[[Comment: This is an inline parameter.]]
 	
 ### Invoking with a one-line parameter
 
-With a one-line parameter you would write like this:
-
+[[Verbatim]]:
 	[[Comment]]: This is a one-line parameter.
 
 ### Invoking with a multi-line parameter
-	
-And with a multi-line parameter you would write like this:
 
+[[Verbatim]]:
 	[[Comment]]:
 		This is a multi-line parameter
 		which can use as many rows as needed.
@@ -65,8 +61,6 @@ However, depending on the field of study, it may be more
 useful to set the indentation macro to the [Code][CodeMacro] 
 macro or the [EquationSet][EquationSetMacro] macro. 
 
-### Example
-
 [[Example]]:
 	[[set indent]]: EquationSet
 	
@@ -91,8 +85,8 @@ The range of a multi-line parameter extends downwards
 until there is a line which contains non-white-space
 characters _and_ which has indentation (counted in _tabs_) 
 equal to or less than the indentation of the macro invocation. 
-For example:
 
+[[Example]]:
 	[[Comment]]:
 		This is a multi-line parameter
 		which can use as many rows as needed.

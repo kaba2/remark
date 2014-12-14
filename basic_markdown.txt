@@ -63,6 +63,8 @@ Markdown syntax
 		7. Wait until the water boils.
 	2. Put potatos into the water.
 	3. Decrease the heat somewhat.
+		* Be careful not to touch the hot stove!
+		* About 80% heat is fine.
 	3. Wait for 30 minutes.
 	11. Turn off the heat.
 	10. Pour the water out of the kettle.
