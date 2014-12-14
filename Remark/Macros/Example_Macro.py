@@ -3,26 +3,28 @@
 # Description: Example macro
 
 from Remark.Macro_Registry import registerMacro
+from Remark.FileSystem import htmlDiv
 
 class Example_Macro(object):
     def name(self):
         return 'Example'
 
     def expand(self, parameter, remark):
+        scope = remark.scopeStack.top()
+
+        className = scope.getString('Example.class_name', 'Example')
+
         text = []
-        
-        text.append('')
-        text.append('This')
+
         text.append('')
         text.append('[[Verbatim]]:')
         for line in parameter:
             text.append('\t' + line)
-        text.append('produces this')
         text.append('')
-        text += parameter
+        text += htmlDiv(parameter, className)
         text.append('')
 
-        return text
+        return text;
 
     def outputType(self):
         return 'remark'
