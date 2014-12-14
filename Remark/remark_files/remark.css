@@ -202,6 +202,7 @@ html, body
     margin-bottom: 0.25em;
 }
 
+/*
 #remark li > *:first-child
 {
     margin-top: 0.25em;
@@ -211,6 +212,7 @@ html, body
 {
     margin-bottom: 0.25em;
 }
+*/
 
 /* Links */
 #remark a 
@@ -561,15 +563,19 @@ in the 'remark-footer' div. */
 #remark .Example
 {
     padding: 1em;
+    margin-top: 1em;
+    margin-bottom: 1em;
     border: 0.25em solid #8A8;
 }
 
-#remark .Example *:first-child
+/* The Example-box already contains padding. Zero margin-top from the first child to avoid heavy margins. */
+#remark .Example > *:first-child
 {
     margin-top: 0em;
 }
 
-#remark .Example *:last-child
+/* The same for the margin-bttom of the last child. */
+#remark .Example > *:last-child
 {
     margin-bottom: 0em;
 }
