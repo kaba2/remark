@@ -18,10 +18,14 @@ the MathML output.
 [1]: [[Ref: problem.txt]]
 
 [[set MathExample]]:
-	[[-+Verbatim]]: 
-		[[outer parameter]]
+	[[-+Verbatim]]:
+		[[parameter]]
+
+ 	<div class = "Example">
 
 	''[[parameter]]''
+
+ 	</div>
 
 Some basic examples
 -------------------
