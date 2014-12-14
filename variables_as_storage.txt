@@ -9,113 +9,66 @@ Here we view variables as a way to store and retrieve text.
 Defining variables
 ------------------
 
-Variables can be defined and redefined as follows.
+[[Example]]:
+	[[set Gallery.thumbnail_max_width: 500]]
+	[[Gallery.thumbnail_max_width]]
 
-	[[set Gallery.thumb_min_length: 50]]
-
-	[[set Gallery.thumb_min_length]]: 50
-
+[[Example]]:
 	[[set some_file_list]]:
 		filename.txt
 		another.txt
-		
+	[[some_file_list]]
+
+[[Example]]:		
 	[[set_many]]:
-		Gallery.thumb_min_length 50
-		Gallery.thumb_max_length 70
-		
+		Gallery.thumbnail_max_width 300
+		Gallery.thumbnail_max_height 400
+	[[Gallery.thumbnail_max_width]]
+	[[Gallery.thumbnail_max_height]]
+
+[[Example]]:		
 	[[set_many Gallery]]:
-		thumb_min_length 55
-		thumb_max_length 75
-		
-[[set Gallery.thumb_min_length: 50]]
+		thumbnail_max_width 200
+		thumbnail_max_height 100
+	[[Gallery.thumbnail_max_width]]
+	[[Gallery.thumbnail_max_height]]
 
-[[set Gallery.thumb_min_length]]: 50
-
-[[set some_file_list]]:
-	filename.txt
-	another.txt
-	
-[[set_many]]:
-	Gallery.thumb_min_length 50
-	Gallery.thumb_max_length 70
-	
-[[set_many Gallery]]:
-	thumb_min_length 55
-	thumb_max_length 75
-
-Note that with `set_many` it is not possible to
-assign multi-line parameters.
-
-Retrieving variables
---------------------
-
-The text contained in a variable can be obtained
-like this:
-
-	[[Gallery.thumb_min_length]]
-
-	[[some_file_list]]
-	
-which produces
-
-[[+Verbatim]]:
-	[[Gallery.thumb_min_length]]
-	
-	[[some_file_list]]
+Note that with `set_many` it is not possible to assign multi-line parameters.
 
 Appending to a variable
 -----------------------
 
-Text can be appended at the end of a variable like this:
-
+[[Example]]:
+	[[set some_file_list]]:
+		filename.txt
+		another.txt
 	[[add some_file_list]]:
 		third_file.txt
-		
-[[add some_file_list]]:
-	third_file.txt
-
-After which invoking
-
-	[[some_file_list]]
-	
-Yields:
-
-[[+Verbatim]]:
 	[[some_file_list]]
 
 ### Alternative 
 
-Alternatively, variables can be appended to like this:
-
+[[Example]]:
+	[[set some_file_list]]:
+		filename.txt
+		another.txt
 	[[+set some_file_list]]:
 		[[some_file_list]]
-		fourth_file.txt
-
-[[+set some_file_list]]:
-	[[some_file_list]]
-	fourth_file.txt
-
-After which invoking
-
-	[[some_file_list]]
-	
-Yields:
-
-[[+Verbatim]]:
+		third_file.txt
 	[[some_file_list]]
 
-However, writing instead
+However, 
 
+[[Verbatim]]:
+	[[set some_file_list]]:
+		filename.txt
+		another.txt
 	[[set some_file_list]]:
 		[[some_file_list]]
-		fourth_file.txt
-
-and then
-
+		third_file.txt
 	[[some_file_list]]
 
-will send Remark into a never-ending loop 
-(Python cuts the recursion).
+sends Remark into a never-ending loop (Python cuts the recursion).
 
 Variable scopes
 ---------------
@@ -129,31 +82,14 @@ macro invocations are active, the only active scope is the _global
 scope_. Child scopes can refer to variables in the parent scopes, 
 but not vice versa. When a variable that does not exist in the 
 current scope is set, a new local variable is created.
-Consider the following example:
 
+[[Example]]:
 	[[set word: world]]
-	
 	[[set my_macro]]:
 	    [[set word: jello]]
 		Hello [[word]]!
-
-[[set word: world]]
-
-[[set my_macro]]:
-	[[set word: jello]]
-	Hello [[word]]!
-
-Then this:
-
 	[[my_macro]]
-	
 	word = [[word]]
-
-produces this:
-
-[[my_macro]]
-
-word = [[word]]
 
 That is, the variable `word` inside `set my_macro` is introduced as a 
 local variable and hence does not affect the variable `word` at the 
@@ -166,40 +102,22 @@ found at the local scope. However, when there is _both_ a local variable
 and a variable of the same name in an outer scope, the latter can be 
 retrieved with the `outer` command.    
 
-Consider the following example:
-
+[[Example]]:
 	[[set word: world]]
-	
 	[[set my_macro]]:
 		[[set word: jello]]
 		Hello [[outer word]]!
-
-[[set word: world]]
-
-[[set my_macro]]:
-	[[set word: jello]]
-	Hello [[outer word]]!
-
-Then this:
-
 	[[my_macro]]
-	
 	word = [[word]]
 	
-produces this:
-
-[[my_macro]]
-
-word = [[word]]
-
 ### Setting a variable in an outer scope 
 
 The `set` command always creates a local variable. You
 can use the `set_outer` command to set an existing variable
 at an outer scope. In case no such variable is found, a
 new variable is created at the global scope. 
-Consider the following example:
 
+[[Example]]:
 	[[set word: world]]
 	
 	[[set my_macro]]:
@@ -207,27 +125,9 @@ Consider the following example:
 		[[set_outer word: jello]]
 		Hello [[word]]!
 		Hello [[outer word]]!
-	
-[[set word: world]]
-
-[[set my_macro]]:
-	[[set word: cello]]
-	[[set_outer word: jello]]
-	Hello [[word]]!
-	Hello [[outer word]]!
-
-Then this:
-
 	[[my_macro]]
-	
 	word = [[word]]
 	
-produces this:
-
-[[my_macro]]
-
-word = [[word]]
-
 ### Appending a variable in an outer scope.
 
 The `add_outer` command works similarly to `set_outer`,
