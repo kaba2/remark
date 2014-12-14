@@ -17,30 +17,21 @@ html, body
     padding: 0em;
 }
 
-html
-{
-}
-
-body 
-{
-    /* Fonts from the sans-serif generic family are easier to read
-    on the screen. Sans-serif means 'without wiggles'. */
-    
-    font-family: 'Open Sans', Arial, Sans-serif;
-}
-
 /* The 'remark-all'-div contains the 'remark'-div and the 'remark-footer'-div */
 #remark-all
 {
-    /* This centers the text and limits its width. Wide text is hard to read. */
-    margin: auto;
+    /* Fonts from the sans-serif generic family are easier to read
+    on the screen. Sans-serif means 'without wiggles'. */
+    font-family: 'Open Sans', Arial, Sans-serif;
+
+    /* Limit the width of the content. This makes it easier to read. */
     max-width: 40em;
 
+    /* Center the content. */
+    margin: auto;
+
     /* Add padding for the case when the browser is made small. */
-    padding-left: 0.5em;
-    padding-right: 0.5em;
-    padding-top: 0.5em;
-    padding-bottom: 0em;
+    padding: 0.5em;
 }
 
 /* Remark-generated content is contained in the 'remark'-div. */
@@ -48,6 +39,7 @@ body
 {
     /* Using more space between lines of text makes it easier to read. */
     line-height: 1.3em;
+
     /* Push the footer out of sight. */
     min-height: 100vh;
 }
@@ -66,29 +58,29 @@ body
     /* The Consolas font is Microsoft's proprietary font which was designed to work well with ClearType; it looks great. If Consolas is not available, we fall back to Inconsolata; another nice coding font. */
     font-family: 'Consolas', 'Inconsolata', monospace;
 
-    /* Its background is colored light blue. */
+    /* Use light blue as a background color. */
     background-color: hsl(220, 100%, 97%);
 
-    /* This indents the verbatim content. */
+    /* Give the content margins. */
     margin-top: 1em;
-    margin-bottom: 0em;
+    margin-bottom: 1em;
     margin-left: 0em;
     margin-right: 0em;
 
-    /* Pre-formatted text should not introduce new-lines. 
-    Therefore, if the content does not fit, provide scrolling. */
+    /* Pre-formatted text should not introduce new-lines. If the content does not fit, provide scrolling. */
     overflow: auto;
     
     /* The content should not be near the border. */
-    padding-left: 0.5em;
-    padding-right: 0.5em;
-    padding-top: 0.5em;
-    padding-bottom: 0.5em;
+    padding: 0.5em;
 }
 
-/* Normal text */
+/* Paragraph */
 #remark p
 {
+    margin-left: 0em;
+    margin-right: 0em;
+    margin-top: 1em;
+    margin-bottom: 1em;
 }
 
 /* Emphasized text */
@@ -112,10 +104,13 @@ body
     color: #800000;
     margin: 0;
     margin-bottom: 1em;
+    
     /* Draw a dotted line under the heading. */
     border-bottom: 1px solid #aca899;
+    
     /* Make some space between the heading and the line under it.*/ 
     padding-bottom: 0.2em;
+    
     /*letter-spacing: 0.7em;*/
     line-height: 1.5em;
 }
@@ -127,11 +122,12 @@ body
     font-size: 1.4em;
     color: #85A500;
     margin: 1.5em 0em 1em 0em;
+    
     /* Draw a dotted line under the heading. */
     border-bottom: 1px dotted #aca899;
+    
     /* Make some space between the heading and the line under it.*/ 
     padding-bottom: 0.3em;
-    /*letter-spacing: 0.3em;*/
 }
 
 /* Level 3 headings */
@@ -162,20 +158,58 @@ body
 #remark ul 
 {
     list-style: disk;
+    list-style-position: inside;
+
+    margin: 1em;
+    padding: 0em;
+}
+
+/* Indent nested lists. */
+#remark ul ul
+{
+    padding-left: 1em;
+}
+
+#remark ol ul
+{
+    padding-left: 1em;
+}
+
+#remark ul ol
+{
+    padding-left: 1em;
+}
+
+#remark ol ol
+{
+    padding-left: 1em;
 }
 
 /* Ordered lists */
 #remark ol
 {
     list-style-type: decimal;
+    list-style-position: inside;
+
+    margin: 1em;
+    padding: 0em;
 }
 
 /* A list item */
-#remark li 
+#remark li
 {
-    /*overflow: auto;*/
-    padding: 0;
-    margin: 0;
+    margin-top: 0.25em;
+    margin-bottom: 0.25em;
+}
+
+#remark li > *:first-child
+{
+    margin-top: 0.25em;
+}
+
+#remark li > *:last-child
+{
+    margin-bottom: 0.25em;
 }
 
 /* Links */
@@ -185,7 +219,7 @@ body
     color: #505090; 
 }
 
-/* Links when the mouse is hold over them */
+/* Link with a mouse hovering over it. */
 #remark a:hover 
 { 
     text-decoration: underline;
@@ -197,6 +231,7 @@ body
 {
     border-collapse: collapse;
     margin-left: 0;
+
     /* Make tables to cover the whole content in width. */
     width: 100%;
 }
@@ -250,7 +285,13 @@ body
 /* Definition lists: The definition of the thing. */
 #remark dd
 {
-    padding-bottom: 1em;
+    margin-left: 2em;
+}
+
+#remark dl dd
+{
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
 }
 
 /* ParentList */
@@ -262,7 +303,7 @@ body
     display: flex;
     flex-wrap: wrap;
 
-    /* Set visibility to hidden to remove parent-list from sight. */
+    /* Hide the parent-list from sight. */
     /*visibility: hidden;*/
    
     /* Get rid of default-indentation for lists. */
@@ -271,12 +312,6 @@ body
     
     /* Get rid of default-dots for the list items. */
     list-style-type: none;
-
-    /* Place a border around the list items. */
-    /*
-    border-style: solid;
-    border-color: rgba(0, 0, 0, 0.15);
-    */
 }
 
 /* Styling for ParentList list-items. */
@@ -306,23 +341,32 @@ body
 /* Syling for DocumentTree lists. */
 #remark .DocumentTree ol
 {
+    /*
+    display: flex;
+    flex-direction: column;
+    */
+
     /* Get rid of default-indentation for lists. */
     margin: 0;
+    padding: 0;
     
-    /* Give some indendation to nested lists. */
-    padding-right: 0em;
-    padding-left: 2.5em;
-    padding-top: 0em;
-    padding-bottom: 0em;
-
     /* Get rid of default-dots for the list items. */
     list-style-type: none;
+}
+
+#remark .DocumentTree ol ol
+{
+    /* Give some indendation to nested lists. */
+    padding-left: 2em;
 }
 
 /* Styling for DocumentTree list-items. */ 
 #remark .DocumentTree li a
 {
     display: block;
+
+    /* Convert margin (from being first and last) to padding. */
+    margin: 0em;
     padding-top: 0.25em;
     padding-bottom: 0.25em;
 }
@@ -349,6 +393,8 @@ body
 /* Styling for links in DocChildren. */
 #remark .DocChildren li
 {
+    display: block;
+
     /* Use two columns.*/
     min-width: 50%;
 }
@@ -359,9 +405,10 @@ body
     /* The links are block-based, for increased area. */
     display: block;
 
-    /* Add some spacing. */
-    padding-top: 0.5em;
-    padding-bottom: 0.5em;
+    /* Convert margin (from being first and last) to padding. */
+    margin: 0em;
+    padding-top: 0.25em;
+    padding-bottom: 0.25em;
 }
 
 /* SourceChildren */
@@ -387,7 +434,8 @@ body
     /* The links are block-based, for increased area. */
     display: block;
 
-    /* Add some spacing. */
+    /* Convert margin (from being first and last) to padding. */
+    margin: 0em;
     padding-top: 0.25em;
     padding-bottom: 0.25em;
 }
@@ -508,3 +556,20 @@ in the 'remark-footer' div. */
     content: "(";
 }
 
+/* Example */
+
+#remark .Example
+{
+    padding: 1em;
+    border: 0.25em solid #8A8;
+}
+
+#remark .Example *:first-child
+{
+    margin-top: 0em;
+}
+
+#remark .Example *:last-child
+{
+    margin-bottom: 0em;
+}

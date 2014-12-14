@@ -12,184 +12,124 @@ Markdown syntax
 
 ### Normal text
 
-Normal text is generated simply by writing some.
-Note that in Markdown new-lines do not start new lines
-in the output. That needs an empty line.  
-
+[[Example]]:
 	Once upon a time there was an apple-worm...
 	It was a very green apple-worm.
 	
 	Its home was built into a red apple. 
 
-This produces:
+### Emphasis
 
-Once upon a time there was an apple-worm...
-It was a very green apple-worm.
-	
-Its home was built into a red apple. 
-
-### Emphasized text
-
-Emphasis can be added by using surrounding 
-underlines:
-
+[[Example]]:
 	It was a _very_ green apple-worm.
 	
 	It was a __very__ green apple-worm.
 
 	It was a ___very___ green apple-worm.
-	
-This produces:	
-
-It was a _very_ green apple-worm.
-
-It was a __very__ green apple-worm.
-
-It was a ___very___ green apple-worm.
 
 ### Headings
 
-The headings corresponding to html heading levels 1, 2, and 3,
-respectively, are denoted as follows:
-
-	Remark syntax
-	=============
+[[Example]]:
+	Level 1
+	=======
 	
-	Markdown syntax
-	---------------
+	Level 2
+	-------
 	
-	### Headings
+	### Level 3
 
-It would confusing to show here what these produce.
-Instead, look at the corresponding headings on this page as 
-examples of these headings.
+	#### Level 4
+
+### Unordered lists
+
+[[Example]]:
+	Things to buy:
+
+	* apples
+		* royal gala for john
+		* red delicious for jane
+	* carrots
+	* milk
+
+### Ordered lists
+
+[[Example]]:
+	How to cook potatos:
+
+	1. Heat water to the boiling point.
+		5. Put water into a kettle.
+		3. Put the kettle on the stove.
+		6. Turn on the heat.
+		7. Wait until the water boils.
+	2. Put potatos into the water.
+	3. Decrease the heat somewhat.
+	3. Wait for 30 minutes.
+	11. Turn off the heat.
+	10. Pour the water out of the kettle.
 
 ### Verbatim content
 
-Verbatim content can be written by indenting
-the text. For example, this:
-
+[[Example]]:
 		Indented text.
 
-produces this:
-
-	Indented text.
-
-The verbatim content is what we are using on this
-page to demonstrate the syntax such that it isn't
-interpreted as Remark code. In Remark, the indentation
-is used invoke the indentation macro, which defaults
-to the [Verbatim][VerbatimMacro]] macro.
+In Remark, the indentation is used invoke the indentation macro, which defaults to the [Verbatim][VerbatimMacro] macro.
 
 [VerbatimMacro]: [[Ref]]: Verbatim_Macro.txt
 
 ### Tables
 
-This
-
+[[Example]]:
 	First Header  | Second Header
 	------------- | -------------
 	Content Cell  | Content Cell
 	Content Cell  | Content Cell
 
-produces this:
-
-First Header  | Second Header
-------------- | -------------
-Content Cell  | Content Cell
-Content Cell  | Content Cell
-
 ### Definition lists
 
-This
-
+[[Example]]:
 	Apple
 	:   Pomaceous fruit of plants of the genus Malus in 
 	    the family Rosaceae.
+	:	A company.
 	
 	Orange
 	:   The fruit of an evergreen tree of the genus Citrus.
 
-produces this:
-
-Apple
-:   Pomaceous fruit of plants of the genus Malus in 
-    the family Rosaceae.
-
-Orange
-:   The fruit of an evergreen tree of the genus Citrus.
-
 ### Abbreviations
 
-This
-
-	The HTML specification 
-	is maintained by the W3C.
+[[Example]]:
+	The HTML specification is maintained by the W3C.
 	
 	*[HTML]: Hyper Text Markup Language
 	*[W3C]:  World Wide Web Consortium
 
-produces this:
-
-The HTML specification 
-is maintained by the W3C.
-
-*[HTML]: Hyper Text Markup Language
-*[W3C]:  World Wide Web Consortium
+The explanation for the abbreviation can be seen by hovering the mouse over it.
 
 ### Links in Markdown
 
-Links are created as follows:
-
-	[Remark syntax][1]
+[[Example]]:
+	[Remark syntax][Syntax]
 	
-	[1]: remark_syntax.htm
-
-Here we have mimicked the way literature is cited
-in scientific publications. However, instead of '1' there
-could be an arbitrary link name. The previous
-produces:
-
-[Remark syntax][Remark_Syntax]
-
-[Remark_Syntax]: remark_syntax.htm
+	[Syntax]: remark_syntax.htm
 
 ### Links in Remark
 
-While the Markdown linking mechanism is fine
-(and required) for external links, you will want 
-to use the Remark linking mechanism for links internal
-to the documentation. This is because it is
-able to automatically fetch information about the
-target file, helping to keep the documentation in sync. 
-For example:
+While the Markdown linking mechanism is fine (and required) for external links, you will want to use the Remark linking mechanism for links internal to the documentation. This is because it is able to automatically fetch information about the target file, helping to keep the documentation in sync. 
 
+[[Example]]:
 	[[Link: remark_syntax.txt]]  
 	
 	[[FileLink: remark_syntax.txt]]
 	
 	[[DirectoryLink: remark_syntax.txt]]
 
-produces:
-
-[[Link: remark_syntax.txt]]  
-
-[[FileLink: remark_syntax.txt]]
-
-[[DirectoryLink: remark_syntax.txt]]  
-
 When you need to give links specific names, use the following
 syntax:
 
+[[Example]]:
 	[Remark syntax][2]
 	
 	[2]: [[Ref: remark_syntax.txt]]
-
-This will produce:
-
-[Remark syntax][2]
-
-[2]: [[Ref: remark_syntax.txt]]
 
 Remark linking relies on the [file searching algorithm][file-search], which 
 is important to make the documentation robust to changes

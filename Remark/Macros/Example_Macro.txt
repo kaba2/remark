@@ -24,7 +24,9 @@ The text to copy.
 
 ### Variables
 
-None.
+Example.class_name
+:	The class-name to give to the equation html-div.
+	Default: `Example`.
 
 Examples
 --------

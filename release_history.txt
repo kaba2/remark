@@ -27,6 +27,12 @@ Release date 14.12.2014.
 * Changed to use the Open Sans font for prose.
 * Changed to use the Inconsolata font for code, or Consolas if available (Windows).
 
+### Example macro
+
+ * Wrapped the produced item in a div.
+ * Separated the example from its surrounding by drawing a box around it.
+ * Removed the preceding and following texts.
+
 Remark 1.6.4
 ------------
 

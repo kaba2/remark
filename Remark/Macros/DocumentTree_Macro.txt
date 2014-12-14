@@ -107,19 +107,20 @@ Examples
 --------
 
 [[Example]]:
+	[[set_many DocumentTree]]:
+		root_document remark.txt
+		compact 0
+		min_depth 0
+		include file_name *Tree*
 	[[DocumentTree]]
 
 [[Example]]:
 	[[set_many DocumentTree]]:
+		root_document remark.txt
+		compact 1
 		min_depth 0
+		include file_name *Tree*
 	[[DocumentTree]]
-
-[[Example]]:
-	[[set_many DocumentTree]]:
-		min_depth 0
-		include document_type RemarkPage
-	[[DocumentTree]]
-
 
 See also
 --------
