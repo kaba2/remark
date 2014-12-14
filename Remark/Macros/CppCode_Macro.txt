@@ -37,21 +37,12 @@ ambiguous-include
 Example
 -------
 
-This
-
+[[Example]]:
 	[[CppCode]]:
 		int square(int x)
 		{
 			return x * x;
 		}
-
-produces this:
-		
-[[CppCode]]:
-	int square(int x)
-	{
-		return x * x;
-	}
 
 Links
 -----

@@ -28,21 +28,12 @@ None.
 Example
 -------
 
-This
-	
+[[Example]]:	
 	[[FileLink]]: 
 		available_macros.txt
 		remark_syntax.txt
 		../../remark_syntax.txt
 		directory.remark-index
-	
-produces this:
-
-[[FileLink]]: 
-	available_macros.txt
-	remark_syntax.txt
-	../../remark_syntax.txt
-	directory.remark-index
 
 See also
 --------

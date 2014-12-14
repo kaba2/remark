@@ -33,11 +33,6 @@ ParentList.class_name
 Examples
 --------
 
-This
-
+[[Example]]:
 	[[ParentList]]
-		
-produces this:
-
-[[ParentList]]
 

@@ -45,19 +45,11 @@ invalid-input
 Example
 -------
 
-This
-	
+[[Example]]:	
 	[[set Code.type]]: python
 	[[Code]]:
 		def square(x):
 			return x * x
-		
-produces this:
-		
-[[set Code.type]]: python
-[[Code]]:
-	def square(x):
-		return x * x
 
 Links
 -----

@@ -30,16 +30,8 @@ None.
 Examples
 --------
 
-This
-
+[[Example]]:
 	[[Html]]:
 		<p>Some text</p>
 		
 		<p>Some more text</p>
-		
-produces this:
-
-[[Html]]:
-	<p>Some text</p>
-	
-	<p>Some more text</p>
