@@ -154,9 +154,14 @@ class SourceChildren_Macro(object):
 
         # Output the links in the groups together
         # with a description for the group.
-        text.append('')
-        text.append(self.title)
-        text.append('---')
+
+        # The title is output only if its non-empty.
+        if len(self.title.strip()) > 0:
+            # Output the title
+            text.append('')
+            text.append(self.title)
+            text.append('---')
+
         text.append('')
         for group in groupSet:
             # Output description for the group.
