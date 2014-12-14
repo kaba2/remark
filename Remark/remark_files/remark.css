@@ -202,18 +202,6 @@ html, body
     margin-bottom: 0.25em;
 }
 
-/*
-#remark li > *:first-child
-{
-    margin-top: 0.25em;
-}
-
-#remark li > *:last-child
-{
-    margin-bottom: 0.25em;
-}
-*/
-
 /* Links */
 #remark a 
 { 
