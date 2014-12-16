@@ -90,6 +90,13 @@ html, body
     font-style: italic;
 }
 
+/* Emphasized text (alternative) */
+#remark strong
+{
+    color: #807000;
+    font-style: bold;
+}
+
 /* Code */
 #remark code
 {
@@ -160,29 +167,38 @@ html, body
     list-style: disk;
     list-style-position: inside;
 
-    margin: 1em;
+    margin-top: 1em;
+    margin-bottom: 1em;
     padding: 0em;
 }
 
 /* Indent nested lists. */
 #remark ul ul
 {
-    padding-left: 1em;
+    margin-top: 0em;
+    margin-bottom: 0em;
+    padding-left: 2em;
 }
 
 #remark ol ul
 {
-    padding-left: 1em;
+    margin-top: 0em;
+    margin-bottom: 0em;
+    padding-left: 2em;
 }
 
 #remark ul ol
 {
-    padding-left: 1em;
+    margin-top: 0em;
+    margin-bottom: 0em;
+    padding-left: 2em;
 }
 
 #remark ol ol
 {
-    padding-left: 1em;
+    margin-top: 0em;
+    margin-bottom: 0em;
+    padding-left: 2em;
 }
 
 /* Ordered lists */
@@ -191,7 +207,8 @@ html, body
     list-style-type: decimal;
     list-style-position: inside;
 
-    margin: 1em;
+    margin-top: 1em;
+    margin-bottom: 1em;
     padding: 0em;
 }
 
@@ -550,7 +567,7 @@ in the 'remark-footer' div. */
 
 #remark .Example
 {
-    padding: 1em;
+    padding: 0.75em;
     margin-top: 1em;
     margin-bottom: 1em;
     border: 0.25em solid #8A8;

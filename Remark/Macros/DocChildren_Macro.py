@@ -4,7 +4,7 @@
 # Detail: Generates links to documentation children.
 
 from Remark.Macro_Registry import registerMacro, findMacro
-from Remark.FileSystem import unixRelativePath, htmlDiv
+from Remark.FileSystem import unixRelativePath
 from Remark.DocumentType_Registry import outputDocumentName
 
 class DocChildren_Macro(object):
