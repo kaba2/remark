@@ -1,0 +1,199 @@
+Latex math syntax
+=================
+
+[[Parent]]: remark_syntax.txt
+
+Here we provide a brief tutorial to the Latex math syntax which is used to typeset mathematics in Remark. Latex math expressions are written by enclosing them between `$`. Remark uses [MathJax][] to interpret and render the mathematics.
+
+[MathJax]: https://www.mathjax.org/
+
+Some basic examples
+-------------------
+
+### Quadratic equation
+
+[[Example]]:
+	`$x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}$`
+
+### Relations
+
+[[Example]]:
+	$R \textrm{ is reflexive} \iff \forall x: x R x$
+
+[[Example]]:	
+	$R \textrm{ is transitive} \iff \forall x, y, z: (xRy \land yRz) \implies xRz$
+
+### Continuity
+
+[[Example]]:
+	$\forall \epsilon \in \mathbb{R}^{> 0}: \exists \delta \in \mathbb{R}^{> 0}: \forall y \in X: d_1(x, y) < \delta => d_2(f(x), f(y)) < \epsilon$
+
+### Limit
+
+[[Example]]:
+	$1 / n stackrel(n \to infty)(\to) 0$
+
+A more comprehensive demo
+-------------------------
+
+### Basic constructs
+
+#### Fraction
+
+[[Example]]:
+	$\frac{x + 1}{x - 1}$
+ 
+#### Power
+
+[[Example]]:
+	$x^(i+j)$ 
+
+#### 
+
+[[Example]]:
+	$x_{ij}$
+
+#### Square-root
+	
+[[Example]]:
+	$\sqrt{x}$ 
+
+#### Root
+
+[[Example]]:
+	$root(n)(x)$ 
+
+#### Stacking symbols
+
+[[Example]]:
+	$stackrel(n \to infty)(\to)$
+
+#### Text
+
+[[Example]]:
+	 $text(is reflexive)$
+	 $"is reflexive"$
+
+### Operation symbols
+
+[[Example]]:
+	$+ - * // \\ xx -: @ o+ ox sum prod ^^ ^^^ vv vvv nn nnn uu uuu$
+
+### Relation symbols
+
+[[Example]]:
+	$= != < \leq > \geq -< >- in !in sub sup sube supe -= ~= ~~ prop$
+
+### Logical symbols
+
+[[Example]]:
+	$and or not => if iff forall exists TT |--$
+
+### Miscellaneous symbols
+
+[[Example]]:
+	$int oint del grad +- O/ oo aleph ... cdots \ quad qquad diamond square |~ ~|$
+
+### Standard functions
+
+[[Example]]:
+	$sin cos tan csc sec cot sinh cosh tanh log ln det dim lim mod gcd lcm$
+
+### Grouping brackets
+
+[[Example]]:
+	$(x) [x] {x} (:x:) {:x:}$
+
+### Arrows
+
+[[Example]]:
+	$uarr darr \to larr harr => lArr \iff$
+
+### Accents
+
+#### Hat
+
+[[Example]]:
+	$hat(2 + 3 * 4)$
+
+#### Dot
+
+[[Example]]:
+	$dot(x)$
+
+#### Two dots
+
+[[Example]]:
+	$ddot(x)$
+
+#### Overline
+
+[[Example]]:
+	$bar(2 + 3 * 4)$
+
+#### Underline
+
+[[Example]]:
+	$ul(2 + 3 * 4)$
+	
+#### Vector arrow
+
+[[Example]]:
+	$vec(2 + 3 * 4)$
+
+### Font commands
+
+#### Bold
+
+[[Example]]:
+	$bb("abcdefghijklmnopqrstuvwxyz")$
+	$bb("ABCDEFGHIJKLMNOPQRSTUVWXYZ")$
+
+#### Blackboard-bold
+	
+[[Example]]:
+	$bbb("abcdefghijklmnopqrstuvwxyz")$
+	$bbb("ABCDEFGHIJKLMNOPQRSTUVWXYZ")$
+
+#### Cursive
+	
+[[Example]]:
+	$cc("abcdefghijklmnopqrstuvwxyz")$
+	$cc("ABCDEFGHIJKLMNOPQRSTUVWXYZ")$
+	
+#### Monospace
+
+[[Example]]:
+	$tt("abcdefghijklmnopqrstuvwxyz")$
+	$tt("ABCDEFGHIJKLMNOPQRSTUVWXYZ")$
+
+#### Fractura
+	
+[[Example]]:
+	$fr("abcdefghijklmnopqrstuvwxyz")$
+	$fr("ABCDEFGHIJKLMNOPQRSTUVWXYZ")$
+	
+#### Sans-serif
+
+[[Example]]:
+	$sf("abcdefghijklmnopqrstuvwxyz")$
+	$sf("ABCDEFGHIJKLMNOPQRSTUVWXYZ")$
+
+### Matrices
+
+[[Example]]:
+	$[[a,b],[c,d]] ((1,0),(0,1))$
+
+### Greek letters
+
+[[Example]]:
+	$alpha beta gamma delta epsi zeta eta theta iota kappa lambda mu nu xi o pi rho sigma tau upsilon phi chi psi omega$
+	$A B Gamma Delta E Z H theta I K Lambda N N Xi O Pi P Sigma T Y Phi X Psi Omega$
+
+Links
+-----
+
+[Complete AsciiMath documentation][AsciiMath]
+
+[AsciiMath]: http://www1.chapman.edu/~jipsen/mathml/asciimathsyntax.html
+ 

@@ -11,9 +11,9 @@ import traceback
 import time
 import sys
 
-from Remark.FileSystem import remarkScriptPath, fileExists
+from Remark.FileSystem import remarkScriptPath, fileExists, withoutFileExtension
 
-# Older versions of Markdown (e.g. 2.0.x which we need), have
+# Older versions of Markdown (e.g. 2.0.x), have
 # the following bug. The command-line script is named `markdown.py`,
 # and the package is named `markdown`. When `import markdown` is
 # issued, depending on the location of this file the import may
@@ -38,7 +38,7 @@ if remarkScriptPath() != '':
         if not fileExists('markdown.py', path):
             newSysPath.append(path)
         else:
-            #print 'Removed', sys.path[i], ' from Python path.'
+            print 'Removed', sys.path[i], ' from Python path.'
             None
     sys.path = newSysPath
 
@@ -50,13 +50,7 @@ except ImportError:
 
 sys.path = oldSysPath
 
-if not (markdown.version.startswith('2.0')):
-    # The later versions of Markdown do not support Markdown in html-blocks.
-    # This makes Remark work incorrectly, so we will check the version here.
-    print 'Error: Python Markdown must be of version 2.0.x. Now it is ' + markdown.version + '.',
-    sys.exit(1)
-
-from Remark.Version import asciiMathMlName, remarkVersion
+from Remark.Version import remarkVersion
 from Remark.FileSystem import unixDirectoryName, copyIfNecessary, remarkDirectory
 from Remark.FileSystem import globalOptions, unixRelativePath, writeFile
 from Remark.Reporting import Reporter, ScopeGuard
@@ -64,42 +58,16 @@ from Remark.DocumentType_Registry import documentType, outputDocumentName
 from Remark.DocumentTree import createDocumentTree
 from Remark_To_Markdown import Remark
 
-def convertMarkdownToHtml(text):
-    '''
-    Converts Markdown to html.
-
-    text (list of strings):
-    The Markdown text to convert.
-
-    returns (list of strings):
-    The converted html text.
-    '''
-    markdownConverter = markdown.Markdown(extensions = ['tables', 'abbr', 'def_list'])
-    htmlString = markdownConverter.convert(string.join(text, '\n'))
-    htmlText = string.split(htmlString, '\n')
-    return htmlText
-
 def addHtmlBoilerPlate(text, document, htmlHead):
     remarkDirectory = os.path.relpath('remark_files', document.relativeDirectory)
     
     # Add boilerplate code.
-    
-    includeAsciiMathML = False
-    if documentType(document.extension).mathEnabled:
-        # Search the text for mathematical expressions.
-        # The AsciiMathML script is only included if the
-        # page contains at least one expression.
-        for line in text:
-            if line.find("''") != -1:
-                includeAsciiMathML = True
-                break
-    
+   
     now = datetime.datetime.now()
     timeText = now.strftime("%d.%m.%Y %H:%M")
     
     remarkCss = unixDirectoryName(os.path.normpath(os.path.join(remarkDirectory, 'remark.css')))
     pygmentsCss = unixDirectoryName(os.path.normpath(os.path.join(remarkDirectory, 'pygments.css')))
-    asciiMathML = unixDirectoryName(os.path.normpath(os.path.join(remarkDirectory, asciiMathMlName())))
             
     htmlText = []
     htmlText.append('<!DOCTYPE html>')
@@ -111,8 +79,25 @@ def addHtmlBoilerPlate(text, document, htmlHead):
     htmlText.append('<link rel="stylesheet" type="text/css" href="' + remarkCss + '" />')
     htmlText.append('<link rel="stylesheet" type="text/css" href="' + pygmentsCss + '" />')
 
-    if includeAsciiMathML:
-        htmlText.append('<script type="text/javascript" src="' + asciiMathML + '"></script>')
+    htmlText += '''
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    asciimath2jax: 
+    {
+        delimiters: [["''", "''"]]
+    },
+    tex2jax: 
+    {   
+        inlineMath: [["$","$"]],
+        displayMath: [["$$", "$$"]],
+        processEscapes: true
+    }
+});
+</script>
+<script type="text/javascript" 
+    src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_HTMLorMML"> 
+</script>'''.splitlines()
+
     htmlText += htmlHead
     htmlText.append('</head>')
     htmlText.append('<body>')
@@ -152,6 +137,67 @@ def convertRemarkToMarkdown(remarkText, document, documentTree,
     # Return the resulting Markdown text.
     return markdownText, remark.htmlHeader()
 
+def convertMarkdownToHtml(
+    markdownText, headText, 
+    document, documentTree, 
+    outputRootDirectory,
+    reporter = Reporter()):
+    '''
+    Converts Remark-generated Markdown to html.
+
+    markdownText (list of strings):
+    The Markdown text to convert, string per row.
+
+    document (Document):
+    The underlying document.
+
+    documentTree (DocumentTree):
+    The underlying document tree.
+
+    outputRootDirectory
+
+    returns (list of strings):
+    The converted html text.
+    '''
+
+    # Convert Markdown to html.
+    markdownConverter = markdown.Markdown(extensions = ['tables', 'abbr', 'def_list'])
+    htmlString = markdownConverter.convert(string.join(markdownText, '\n'))
+    htmlText = string.split(htmlString, '\n')
+
+    # Remark injects html code directly into the 
+    # Markdown source by enclosing it into html
+    # comments in the form
+    #
+    # <!--RemarkInject
+    # ...
+    # RemarkInject-->
+    #
+    # Python Markdown copies html-comments as they 
+    # are, and therefore they can be used to carry 
+    # the raw html code. The only step left is to 
+    # remove the comments.
+
+    # All of this is done because Python Markdown 
+    # cannot handle html nested with Markdown
+    # (the markdown="1" and similar options are 
+    # buggy).
+
+    # Remove html-injection comments.
+    cleanHtmlText = []
+    for i in range(0, len(htmlText)):
+        cleanLine = htmlText[i].replace('<!--RemarkInject', '');
+        cleanLine = cleanLine.replace('RemarkInject-->', '')
+        cleanHtmlText.append(cleanLine)
+
+    # Add html boilerplate.
+    htmlText = addHtmlBoilerPlate(
+        cleanHtmlText, document, 
+        headText + document.tag('html_head'))
+
+    # Return the resulting html-text. 
+    return htmlText
+
 def convertRemarkToHtml(remarkText, document, documentTree, 
                         outputRootDirectory,
                         reporter = Reporter()):
@@ -177,16 +223,14 @@ def convertRemarkToHtml(remarkText, document, documentTree,
     markdownText, headText = convertRemarkToMarkdown(
                                  remarkText, document, documentTree,
                                  outputRootDirectory, reporter)
-    headText += document.tag('html_head')
-     
-    # Convert Markdown to html.
-    htmlText = convertMarkdownToHtml(markdownText)
-    
-    # Add html boilerplate.
-    htmlText = addHtmlBoilerPlate(htmlText, document, headText)
 
-    # Return the resulting html-text and the set of dependencies.      
-    return htmlText
+    return convertMarkdownToHtml(
+        markdownText, 
+        headText, 
+        document,
+        documentTree, 
+        outputRootDirectory, 
+        reporter)
 
 def saveRemarkToHtml(remarkText, document, documentTree, 
                      outputRootDirectory,
@@ -206,16 +250,29 @@ def saveRemarkToHtml(remarkText, document, documentTree,
     reporter (Reporter):
     The reporter to use for reporting.
     '''
-    # Convert Remark to html.
-    htmlText = convertRemarkToHtml(
-            remarkText, document, documentTree, 
-            outputRootDirectory, reporter)
+    # Convert Remark to Markdown.
+    markdownText, headText = convertRemarkToMarkdown(
+                                 remarkText, document, documentTree,
+                                 outputRootDirectory, reporter)
 
     # Find out some names.
     outputRelativeName = outputDocumentName(document.relativeName)
     outputFullName = os.path.join(outputRootDirectory, outputRelativeName)
 
-    # Write the resulting html.
+    if globalOptions().generateMarkdown:
+        # Write the generated Markdown source.
+        writeFile(markdownText, withoutFileExtension(outputFullName) + '.md.txt')
+
+    # Convert Markdown to Html.
+    htmlText = convertMarkdownToHtml(
+        markdownText, 
+        headText, 
+        document,
+        documentTree, 
+        outputRootDirectory, 
+        reporter)
+
+    # Write the generated html.
     writeFile(htmlText, outputFullName)
 
 def convertAll(documentTree, argumentSet, reporter = Reporter()):
@@ -285,8 +342,7 @@ def convertDirectory(argumentSet, reporter):
     # as early as possible.
     copyNameSet = [
         './remark_files/remark.css',
-        './remark_files/pygments.css',
-        './remark_files/' + asciiMathMlName(),
+        './remark_files/pygments.css'
         ]
 
     with ScopeGuard(reporter, 'Updating files'):

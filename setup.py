@@ -31,7 +31,7 @@ setup(name = 'remark',
         ],
       scripts = ['remark.py',],
       install_requires = [
-        'markdown==2.0', 
+        'markdown>=2.6', 
         'pygments>=1.5',
         'pillow>=2.0',
         ],

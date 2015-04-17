@@ -13,7 +13,7 @@ import copy
 import traceback
 import time
 
-from Remark.Version import asciiMathMlName, remarkVersion
+from Remark.Version import remarkVersion
 from Remark.Macro_Registry import findMacro
 from Remark.FileSystem import changeExtension, unixDirectoryName, copyIfNecessary
 from Remark.FileSystem import globalOptions, unixRelativePath, writeFile
@@ -660,12 +660,6 @@ class Remark(object):
                     # Mark the macro as used.
                     self.usedMacroSet.append(macro)
                     
-                    # If the output is meant to be html,
-                    # we need to add some dummy html newlines
-                    # for Markdown.
-                    if macro.outputType() == 'html':
-                        self.addDummyHtmlNewLines(macroText)
-
                     # The output of the macro is either
                     # recursively expanded or not.
                     # The macro suggests a default for this
@@ -862,7 +856,7 @@ class Remark(object):
         # The last '' is extraneous.
         if newText[-1] == '':
             newText[-1 :] = []
-        
+
         return newText
     
     def macro(self, macroName, macroParameter = ''):

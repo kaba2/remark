@@ -39,13 +39,9 @@ class ParentList_Macro(object):
             text.append(repr(level) + '. ' + linkText)
             level += 1
             
-            
         text = htmlDiv(text, className)
 
         return text
-
-    def outputType(self):
-        return 'remark'
 
     def expandOutput(self):
         return True

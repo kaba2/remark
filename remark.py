@@ -63,8 +63,16 @@ reaching Remark; write "*.txt" instead of *.txt.""")
         metavar = 'WARNING')
 
     optionParser.add_option('-e', '--extensions',
-        action="store_true", dest="extensions", default=False,
+        action = "store_true", 
+        dest = "extensions", 
+        default = False,
         help = """lists all extensions in the input directory together with examples.""")
+
+    optionParser.add_option('-g', '--generate-markdown',
+        action = 'store_true',
+        dest = 'generateMarkdown',
+        default = False,
+        help = """generates the Markdown source. This is useful mainly for debugging Remark.""")
 
     optionParser.add_option('-i', '--include',
         dest = 'includeSet',

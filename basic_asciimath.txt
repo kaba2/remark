@@ -3,150 +3,192 @@ AsciiMath syntax
 
 [[Parent]]: remark_syntax.txt
 
-Here we provide a brief tutorial to AsciiMath syntax
-which is used to typeset mathematics in Remark.
-We provide an external link to complete documentation below.
-The _math mode_ is activated and deactivated by two subsequent 
-characters of '. Unfortunately, [a current unsolved problem][1] in 
-Remark prohibits me from explicitly writing those characters 
-down since they would be interpreted as a mathematical 
-expression independent of whether it is written as verbatim content
-or not. Thus, in the examples below I will be leaving those
-characters out. However, they must be included to produce
-the MathML output. 
+Here we provide a brief tutorial to the [AsciiMath][] syntax which is used to typeset mathematics in Remark. AsciiMath expressions are written by enclosing them between `''`. Remark uses [MathJax][] to interpret and render the mathematics.
 
-[1]: [[Ref: problem.txt]]
-
-[[set MathExample]]:
-	[[-+Verbatim]]:
-		[[parameter]]
-
- 	<div class = "Example">
-
-	''[[parameter]]''
-
- 	</div>
+[MathJax]: https://www.mathjax.org/
 
 Some basic examples
 -------------------
 
 ### Quadratic equation
 
-[[MathExample]]:
-	x = (-b +- sqrt(b^2 - 4ac)) / (2a)
+[[Example]]:
+	''x = (-b +- sqrt(b^2 - 4ac)) / (2a)''
 
 ### Relations
 
-[[MathExample]]:
-	R " is reflexive" <=> forall x: x R x
+[[Example]]:
+	''R " is reflexive" <=> forall x: x R x''
 
-[[MathExample]]:	
-	R " is transitive" <=> forall x, y, z: xRy quad ^^ quad yRz => xRz
-
-In this example I had to add the quad's to make the spacing
-look natural. Unfortunately AsciiMathML does not always make
-a perfect work in the conversion...
+[[Example]]:	
+	''R " is transitive" <=> forall x, y, z: (xRy ^^ yRz) => xRz''
 
 ### Continuity
 
-[[MathExample]]:
-	forall epsilon > 0 in RR: exists delta > 0 in RR: AA y: d_1(x, y) < delta => d_2(f(x), f(y)) < epsilon
+[[Example]]:
+	''forall epsilon in RR^{> 0}: exists delta in RR^{> 0}: forall y in X: d_1(x, y) < delta => d_2(f(x), f(y)) < epsilon''
+
+### Limit
+
+[[Example]]:
+	''1 / n stackrel(n -> infty)(->) 0''
 
 A more comprehensive demo
 -------------------------
 
-These examples are a reproduction of the examples
-given in the official AsciiMathML pages (linked below)
-with some additions.
-
 ### Basic constructs
 
-[[MathExample]]:
-	(x+1)/(x-1) x^(i+j) x_(ij) sqrt(x) root(n)(x) stackrel(+)(->) text(any) "any"
+#### Fraction
+
+[[Example]]:
+	''(x+1)/(x-1)''
+
+#### Superscript
+
+[[Example]]:
+	''x^(i+j)'' 
+
+#### Subscript
+
+[[Example]]:
+	''x_(ij)''
+
+#### Square-root
+	
+[[Example]]:
+	''sqrt(x)'' 
+
+#### Root
+
+[[Example]]:
+	''root(n)(x)'' 
+
+#### Stacking symbols
+
+[[Example]]:
+	''stackrel(n -> infty)(->)''
+
+#### Text
+
+[[Example]]:
+	 ''text(is reflexive)''
+	 ''"is reflexive"''
 
 ### Operation symbols
 
-[[MathExample]]:
-	+ - * // \\ xx -: @ o+ ox sum prod ^^ ^^^ vv vvv nn nnn uu uuu
+[[Example]]:
+	''+ - * // \\ xx -: @ o+ ox sum prod ^^ ^^^ vv vvv nn nnn uu uuu''
 
 ### Relation symbols
 
-[[MathExample]]:
-	= != < <= > >= -< >- in !in sub sup sube supe -= ~= ~~ prop
+[[Example]]:
+	''= != < <= > >= -< >- in !in sub sup sube supe -= ~= ~~ prop''
 
 ### Logical symbols
 
-[[MathExample]]:
-	and or not => if iff forall exists TT |--
+[[Example]]:
+	''and or not => if iff forall exists TT |--''
 
 ### Miscellaneous symbols
 
-[[MathExample]]:
-	int oint del grad +- O/ oo aleph ... cdots \ quad qquad diamond square |~ ~| CC NN QQ RR ZZ
+[[Example]]:
+	''int oint del grad +- O/ oo aleph ... cdots \ quad qquad diamond square |~ ~|''
 
 ### Standard functions
 
-[[MathExample]]:
-	sin cos tan csc sec cot sinh cosh tanh log ln det dim lim mod gcd lcm
+[[Example]]:
+	''sin cos tan csc sec cot sinh cosh tanh log ln det dim lim mod gcd lcm''
 
 ### Grouping brackets
 
-[[MathExample]]:
-	(x) [x] {x} (:x:) {:x:}
+[[Example]]:
+	''(x) [x] {x} (:x:) {:x:}''
 
 ### Arrows
 
-[[MathExample]]:
-	uarr darr -> larr harr => lArr <=>
+[[Example]]:
+	''uarr darr -> larr harr => lArr <=>''
 
 ### Accents
 
-[[MathExample]]:
-	hat x bar x ul x vec x dot x ddot x
+#### Hat
 
-[[MathExample]]:
-	hat(2 + 3 * 4)
+[[Example]]:
+	''hat(2 + 3 * 4)''
 
-[[MathExample]]:
-	bar(2 + 3 * 4)
+#### Dot
 
-[[MathExample]]:
-	ul(2 + 3 * 4)
+[[Example]]:
+	''dot(x)''
+
+#### Two dots
+
+[[Example]]:
+	''ddot(x)''
+
+#### Overline
+
+[[Example]]:
+	''bar(2 + 3 * 4)''
+
+#### Underline
+
+[[Example]]:
+	''ul(2 + 3 * 4)''
 	
-[[MathExample]]:
-	vec(2 + 3 * 4)
+#### Vector arrow
+
+[[Example]]:
+	''vec(2 + 3 * 4)''
 
 ### Font commands
 
-[[MathExample]]:
-	bb("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
+#### Bold
+
+[[Example]]:
+	''bb("abcdefghijklmnopqrstuvwxyz")''
+	''bb("ABCDEFGHIJKLMNOPQRSTUVWXYZ")''
+
+#### Blackboard-bold
 	
-[[MathExample]]:
-	bbb("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
+[[Example]]:
+	''bbb("abcdefghijklmnopqrstuvwxyz")''
+	''bbb("ABCDEFGHIJKLMNOPQRSTUVWXYZ")''
+
+#### Cursive
 	
-[[MathExample]]:
-	cc("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
+[[Example]]:
+	''cc("abcdefghijklmnopqrstuvwxyz")''
+	''cc("ABCDEFGHIJKLMNOPQRSTUVWXYZ")''
 	
-[[MathExample]]:
-	tt("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
+#### Monospace
+
+[[Example]]:
+	''tt("abcdefghijklmnopqrstuvwxyz")''
+	''tt("ABCDEFGHIJKLMNOPQRSTUVWXYZ")''
+
+#### Fractura
 	
-[[MathExample]]:
-	fr("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
+[[Example]]:
+	''fr("abcdefghijklmnopqrstuvwxyz")''
+	''fr("ABCDEFGHIJKLMNOPQRSTUVWXYZ")''
 	
-[[MathExample]]:
-	sf("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
+#### Sans-serif
+
+[[Example]]:
+	''sf("abcdefghijklmnopqrstuvwxyz")''
+	''sf("ABCDEFGHIJKLMNOPQRSTUVWXYZ")''
 
 ### Matrices
 
-[[MathExample]]:
-	[[a,b],[c,d]] ((1,0),(0,1))
+[[Example]]:
+	''[[a,b],[c,d]] ((1,0),(0,1))''
 
 ### Greek letters
 
-[[MathExample]]:
-	alpha beta chi delta Delta epsi eta gamma Gamma iota kappa lambda 
-	Lambda mu nu omega Omega phi Phi pi Pi psi rho sigma Sigma tau theta 
-	Theta upsilon xi Xi zeta
+[[Example]]:
+	''alpha beta gamma delta epsi zeta eta theta iota kappa lambda mu nu xi o pi rho sigma tau upsilon phi chi psi omega''
+	''A B Gamma Delta E Z H theta I K Lambda N N Xi O Pi P Sigma T Y Phi X Psi Omega''
 
 Links
 -----

@@ -188,9 +188,6 @@ class SourceChildren_Macro(object):
             
         return htmlDiv(text, self.className);
 
-    def outputType(self):
-        return 'remark'
-
     def expandOutput(self):
         return True
 

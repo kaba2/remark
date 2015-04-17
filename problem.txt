@@ -29,43 +29,6 @@ Files that are not UTF-8 encoded
 If you pass Remark a file that is not a valid UTF-8 encoding, Remark
 replaces each erroneous symbol with the U+FFFD REPLACEMENT CHARACTER.
 
-Mathematical expressions not shown in Internet Explorer
--------------------------------------------------------
-
-Internet Explorer does not directly support MathML which is used to 
-present mathematics in Remark (by AsciiMathML). In this case, the 
-[[FileLink: ASCIIMathMLwFallback.js]] script contains a fallback to 
-image-based rendering. To enable this fallback, replace the line
-which reads
-
-[[Code]]:
-	var AMTcgiloc = "";
-
-with an url to a cgi-server that can render Latex mathematics strings 
-into images, e.g.
-
-[[Code]]:
-	var AMTcgiloc = "http://www.somesite.com/cgi-bin/mimetex.cgi";
-
-[Mimetex][Mimetex] is one program which can do this. Unfortunately
-there seem to be quite few free Mimetex-servers to use for this task,
-and I am unable to provide one either.
-
-[Mimetex]: http://www.forkosh.com/mimetex.html
-
-Mathematical expressions in wrong places
-----------------------------------------
-
-The AsciiMathML Javascript library affects the whole generated page and 
-can't be scoped. This is problematic in some cases. For example, in Python 
-code an empty string is denoted by two subsequent '. This will be erased 
-from the output because AsciiMathML interprets it as a start of a 
-mathematical expression. Remark solves this problem partially by making 
-it configurable per document type whether AsciiMath should be interpreted 
-or not: currently only documentation files (.txt) are interpreted. This
-way, for example, Python files can be shown correctly in the CodeView
-document type.
-
 Indentation macro-invocation after a multi-line parameter
 ---------------------------------------------------------
 
