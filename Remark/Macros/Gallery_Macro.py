@@ -6,7 +6,7 @@
 from Remark.Macro_Registry import registerMacro
 from Remark.FileSystem import unixRelativePath, unixDirectoryName, changeExtension
 from Remark.FileSystem import fileExtension, copyIfNecessary, createDirectories, copyTree
-from Remark.FileSystem import pathExists, fileModificationTime, remarkDirectory
+from Remark.FileSystem import pathExists, fileModificationTime, remarkDirectory, htmlInject
 
 import sys
 import os.path
@@ -231,10 +231,7 @@ class Gallery_Macro(object):
 
         text.append('</div>')
         
-        return text
-
-    def outputType(self):
-        return 'html'
+        return htmlInject(text)
 
     def expandOutput(self):
         return False

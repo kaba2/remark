@@ -6,7 +6,7 @@
 import string
 
 from Remark.Macro_Registry import registerMacro
-from Remark.FileSystem import readFile, unixDirectoryName
+from Remark.FileSystem import readFile, unixDirectoryName, htmlInject
 
 from pygments import highlight
 from pygments.lexers import guess_lexer, get_lexer_by_name
@@ -52,10 +52,7 @@ class Code_Macro(object):
         # Prepare for Remark output.
         hilightedText = string.split(hilightedText, '\n')
        
-        return hilightedText
-
-    def outputType(self):
-        return 'html'
+        return htmlInject(hilightedText)
 
     def expandOutput(self):
         return False

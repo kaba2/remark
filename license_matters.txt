@@ -3,27 +3,15 @@ License matters
 
 [[Parent]]: remark.txt
 
-Remark is licensed under the [MIT license][MIT]. However, Remark 
-uses some third-party libraries whose licenses also have to be 
-taken into account. 
+Remark is licensed under the [MIT license][MIT]. However, Remark uses some third-party libraries whose licenses also have to be taken into account.
 
 [MIT]: http://en.wikipedia.org/wiki/MIT_License
 
 Third-party libraries
 ---------------------
 
-The Python Markdown and Pygments libraries are licensed under
-the BSD license. These libraries are firmly integrated, and 
-have an essential role, in Remark. The other libraries are 
-optional as follows.
+The Python Markdown and Pygments libraries are licensed under the BSD license. These libraries are firmly integrated, and have an essential role, in Remark. The other libraries are optional as follows.
 
- * The AsciiMathML javascript-library is referred to in an html-page 
- if and only if one uses the math-mode in the Remark-source
- of that page.
- 
- * The AsciiMathML javascript-library is copied to the output
- directory if and only if some generated html-page refers to it.
- 
  * The Highslide javascript-library is referred to in an html-page 
  if and only if one invokes the Gallery-macro to generate 
  that page.
@@ -31,16 +19,10 @@ optional as follows.
  * The Highslide javascript-library is copied to the output
  directory if and only if some generated html-page refers to it.
 
-The Python Imaging Library is used by the [[Link: Gallery_Macro.txt]] to
-create thumbnails automatically.
+The Python Imaging Library is used by the [[Link: Gallery_Macro.txt]] to create thumbnails automatically.
 
 Commercial use
 --------------
 
-Remark is free for use in commercial products for the most part. 
-The only exception is the use of the Gallery-macro which depends 
-on the Python Imaging Library and the Highslide library. To use 
-the Gallery-macro in commercial products, you need to obtain the 
-commercial licenses for these products.
-
+Remark is free for use in commercial products for the most part. The only exception is the use of the Gallery-macro which depends on the Python Imaging Library and the Highslide library. To use the Gallery-macro in commercial products, you need to obtain the commercial licenses for these products.
  

@@ -37,9 +37,6 @@ class CppCode_Macro(object):
         
         return text
 
-    def outputType(self):
-        return 'html'
-
     def expandOutput(self):
         return False
 

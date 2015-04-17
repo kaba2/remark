@@ -115,6 +115,15 @@ def globalOptions():
     '''
     return globalOptions_;
 
+def htmlInject(text):
+    if text == []:
+        return text
+
+    text[0] = '<!--RemarkInject' + text[0]
+    text[-1] = text[-1] + 'RemarkInject-->'
+    
+    return text
+
 def htmlDiv(enclosedText, className = '', elementName = 'div', addWhitespace = True):
     '''
     Encloses the given text in a <div> block and gives it a
@@ -129,13 +138,15 @@ def htmlDiv(enclosedText, className = '', elementName = 'div', addWhitespace = T
     text = []
     text.append('')
 
+    elementText = elementName
+
     if className != '':
-        text.append('<' + elementName + ' class = "' + className + '">')
-    else:
-        text.append('<' + elementName + '>')
+        elementText += ' class="' + className + '"'
+
+    text += htmlInject(['<' + elementText + '>'])
     
     if addWhitespace:
-        # Note that this empty line is essential for Markdown
+        # This empty line is essential for Markdown
         # not to interpret the following stuff as html.
         text.append('')
     
@@ -143,8 +154,9 @@ def htmlDiv(enclosedText, className = '', elementName = 'div', addWhitespace = T
     
     if addWhitespace:
         text.append('')
+        None
 
-    text.append('</' + elementName + '>')
+    text += htmlInject(['</' + elementName + '>'])
     text.append('')
 
     return text

@@ -3,17 +3,12 @@ Dependencies
 
 [[Parent]]: remark.txt
 
-This section describes the dependencies of Remark. You do not need this 
-information to install Remark; the `pip` handles the installation of
-the dependencies as part of the installation of Remark. 
+This section describes the dependencies of Remark. You do not need this information to install Remark; the `pip` handles the installation of the dependencies as part of the installation of Remark.
 
 Python
 ------
 
-Remark was programmed in Python 2.7. Thus it should run in any
-Python 2.x interpreter, where x is at least 7. The syntaxes 
-of Python 3.x and Python 2.x are not compatible. For instructions on 
-installing Python 2.7, see [here][PythonInstall]. 
+Remark was programmed in Python 2.7. Thus it should run in any Python 2.x interpreter, where x is at least 7. The syntaxes of Python 3.x and Python 2.x are not compatible. For instructions on installing Python 2.7, see [here][PythonInstall].
 
 [PythonInstall]: http://docs.python-guide.org/en/latest/starting/installation/
 
@@ -22,50 +17,37 @@ Python dependencies
 
 The dependencies to other Python libraries are as follows:
  
-### [Python Markdown 2.0][PythonMarkdown20]
+### [Python Markdown][PythonMarkdown]
 
-This library is used to convert Markdown to Html. 
-Note that the newer [Python Markdown 2.2][PythonMarkdown22] does 
-not work with Remark, because it does not support Markdown inside
-html blocks.
+The Python Markdown library is used to convert Markdown to Html. 
+
+### [Pygments][Pygments]
+
+The Pygments library is used to highlight source code. 
  
-### [Pygments 1.5][Pygments]
+### [Pillow][Pillow]
 
-This library is used to highlight source code. 
- 
-### [Pillow 2.0][Pillow]
+The Pillow library is used to create thumbnails for image galleries. 
 
-This library is used to create thumbnails for image galleries.
-Unfortunately this library can not be installed automatically as 
-a dependency in `pip`, since on Windows `pip install pillow` builds 
-the Pillow library from C++ source code, and thus requires a specific 
-version of Visual Studio to work. In contrast, `easy_install pillow` 
-provides a prebuilt binary distribution of Pillow. 
-
-[PythonMarkdown20]: http://freewisdom.org/projects/python-markdown/
-[PythonMarkdown22]: http://packages.python.org/Markdown
+[PythonMarkdown]: https://pythonhosted.org/Markdown/
 [Pygments]: http://pygments.org/
 [Pillow]: https://pypi.python.org/pypi/Pillow
 
 Javascript dependencies
 -----------------------
 
-The Javascript dependencies are on a per-page basis depending on 
-which features the page uses. The dependencies to Javascript libraries 
-are as follows.
+The Javascript dependencies are on a per-page basis depending on which features the page uses. The dependencies to Javascript libraries are as follows.
 
-### [Highslide][Highslide]
+### [Highslide][]
 
-This library is used to view image galleries. 
-We distribute it with Remark.
+The Highslide library is used to view image galleries. We distribute it with Remark.
  
-### [AsciiMathML][AsciiMathML]
+### [MathJax][]
 
-This library is used to convert AsciiMath to MathML. 
-We distribute it with Remark.
+The MathJax library is used to interpret and render mathematics in Latex and AsciiMath. It is automatically downloaded from the MathJax CDN by the browser.
 
 [Highslide]: http://highslide.com/
-[AsciiMathML]: http://www1.chapman.edu/~jipsen/asciimath.html
+[MathJax]: https://www.mathjax.org/
 
 See also
 --------

@@ -35,9 +35,6 @@ class FileLink_Macro(object):
             
         return text
     
-    def outputType(self):
-        return 'remark'
-
     def expandOutput(self):
         return False
 

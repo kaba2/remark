@@ -69,9 +69,6 @@ class DocumentTree_Macro(object):
 
         return text
 
-    def outputType(self):
-        return 'remark'
-
     def expandOutput(self):
         return True
 

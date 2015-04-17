@@ -15,9 +15,6 @@ class Comment_Macro(object):
         text = []
         return text
 
-    def outputType(self):
-        return 'remark'
-
     def expandOutput(self):
         return False
 
