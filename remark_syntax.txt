@@ -3,14 +3,4 @@ Remark syntax
 
 [[Parent]]: user_documentation.txt
 
-Remark syntax is a slightly extended version of the Markdown
-syntax. Therefore, if you can write Markdown, you can also
-write much of Remark. To write Remark, you must be able to
-write Markdown, AsciiMathML, and use the Remark macros.
-In these pages we will give you just the basics of the former two,
-and direct more advanced usage to dedicated tutorials. Remark 
-syntax is quite simple and intuitive and shouldn't take you 
-much time to get a good grasp on.  
-
-
-
+Remark syntax is a slightly extended version of the Markdown syntax. Therefore, if you can write Markdown, you can also write much of Remark. In addition, there are macros, tags, and variables; and writing mathematics using either the AsciiMath or the Latex syntax.
