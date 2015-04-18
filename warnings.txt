@@ -8,8 +8,10 @@ document is accidentally left off linked, that every document
 has a description, and that links are specified in a way that 
 promotes robustness. These warnings can be disabled one by one 
 by the `-d` option. Warnings which are specific to a given macro 
-are listed in the documentation of that macro. The general purpose
-warnings are:
+are listed in the documentation of that macro. 
+
+General-purpose warnings
+------------------------
 
 ambiguous-document
 :	This warning is generated when a given path matches multiple documents
