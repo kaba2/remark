@@ -3,10 +3,13 @@ AsciiMath syntax
 
 [[Parent]]: remark_syntax.txt
 
-Here we provide a brief tutorial to the [AsciiMath][] syntax which is used to typeset mathematics in Remark. AsciiMath expressions are written by enclosing them between `''`. Remark uses [MathJax][] to interpret and render the mathematics.
+Here we provide a brief tutorial to the [AsciiMath][] syntax which is used to typeset mathematics in Remark. AsciiMath expressions are written by enclosing them between `''`. 
+
+A complete list of commands is given in [here][AsciiMath].
 
 [MathJax]: https://www.mathjax.org/
-
+[AsciiMath]: http://www1.chapman.edu/~jipsen/mathml/asciimathsyntax.html
+ 
 Some basic examples
 -------------------
 
@@ -87,7 +90,7 @@ A more comprehensive demo
 ### Logical symbols
 
 [[Example]]:
-	''and or not => if iff forall exists TT |--''
+	''and or not => iff forall exists TT |--''
 
 ### Miscellaneous symbols
 
@@ -102,7 +105,7 @@ A more comprehensive demo
 ### Grouping brackets
 
 [[Example]]:
-	''(x) [x] {x} (:x:) {:x:}''
+	''(x) [x] {x} (:x:)''
 
 ### Arrows
 
@@ -155,7 +158,7 @@ A more comprehensive demo
 	''bbb("abcdefghijklmnopqrstuvwxyz")''
 	''bbb("ABCDEFGHIJKLMNOPQRSTUVWXYZ")''
 
-#### Cursive
+#### Calligraphic
 	
 [[Example]]:
 	''cc("abcdefghijklmnopqrstuvwxyz")''
@@ -167,7 +170,7 @@ A more comprehensive demo
 	''tt("abcdefghijklmnopqrstuvwxyz")''
 	''tt("ABCDEFGHIJKLMNOPQRSTUVWXYZ")''
 
-#### Fractura
+#### Fraktur
 	
 [[Example]]:
 	''fr("abcdefghijklmnopqrstuvwxyz")''
@@ -190,10 +193,3 @@ A more comprehensive demo
 	''alpha beta gamma delta epsi zeta eta theta iota kappa lambda mu nu xi o pi rho sigma tau upsilon phi chi psi omega''
 	''A B Gamma Delta E Z H theta I K Lambda N N Xi O Pi P Sigma T Y Phi X Psi Omega''
 
-Links
------
-
-[Complete AsciiMath documentation][AsciiMath]
-
-[AsciiMath]: http://www1.chapman.edu/~jipsen/mathml/asciimathsyntax.html
- 

@@ -3,9 +3,11 @@ Markdown syntax
 
 [[Parent]]: remark_syntax.txt
 
-Here we provide a brief tutorial to the Markdown syntax
-which is the basis on which Remark syntax has been built.
-We provide an external link to complete documentation below. 
+Here we provide a brief tutorial to the Markdown syntax which is the basis on which Remark syntax has been built. We provide an external link to complete documentation below.
+
+A complete syntax documentation is given in [here][Markdown_Syntax].
+
+[Markdown_Syntax]: http://daringfireball.net/projects/markdown/syntax
 
 Markdown syntax
 ---------------
@@ -139,9 +141,3 @@ in the directory structure.
 
 [file-search]: [[Ref: file_searching_algorithm.txt]]
 
-Links
------
-
-[Complete Markdown syntax documentation][Markdown_Syntax]
-
-[Markdown_Syntax]: http://daringfireball.net/projects/markdown/syntax
