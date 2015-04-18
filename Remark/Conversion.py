@@ -68,6 +68,7 @@ def addHtmlBoilerPlate(text, document, htmlHead):
     
     remarkCss = unixDirectoryName(os.path.normpath(os.path.join(remarkDirectory, 'remark.css')))
     pygmentsCss = unixDirectoryName(os.path.normpath(os.path.join(remarkDirectory, 'pygments.css')))
+    mathJaxConfig = unixDirectoryName(os.path.normpath(os.path.join(remarkDirectory, 'mathjax-config.js')))
             
     htmlText = []
     htmlText.append('<!DOCTYPE html>')
@@ -76,29 +77,14 @@ def addHtmlBoilerPlate(text, document, htmlHead):
     htmlText.append('<meta http-equiv="Content-Type" content="text/html; charset=utf-8">')
     htmlText.append('<meta name="viewport" content="width=device-width, initial-scale=1">')
     htmlText.append('<title>' + document.linkDescription() + '</title>')
-    htmlText.append('<link rel="stylesheet" type="text/css" href="' + remarkCss + '" />')
-    htmlText.append('<link rel="stylesheet" type="text/css" href="' + pygmentsCss + '" />')
+    htmlText.append('<link rel="stylesheet" type="text/css" href="' + remarkCss + '"/>')
+    htmlText.append('<link rel="stylesheet" type="text/css" href="' + pygmentsCss + '"/>')
 
-    htmlText += '''
-<script type="text/x-mathjax-config">
-MathJax.Hub.Config({
-    asciimath2jax: 
-    {
-        delimiters: [["''", "''"]]
-    },
-    tex2jax: 
-    {   
-        inlineMath: [["$","$"]],
-        displayMath: [["$$", "$$"]],
-        processEscapes: true
-    }
-});
-</script>
-<script type="text/javascript" 
-    src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_HTMLorMML"> 
-</script>'''.splitlines()
+    htmlText.append('<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_HTMLorMML&delayStartupUntilConfig"></script>')
+    htmlText.append('<script type="text/javascript" src="' + mathJaxConfig + '"></script>')
 
     htmlText += htmlHead
+
     htmlText.append('</head>')
     htmlText.append('<body>')
     htmlText.append('<div id = "remark-all">')
@@ -342,7 +328,8 @@ def convertDirectory(argumentSet, reporter):
     # as early as possible.
     copyNameSet = [
         './remark_files/remark.css',
-        './remark_files/pygments.css'
+        './remark_files/pygments.css',
+        './remark_files/mathjax-config.js'
         ]
 
     with ScopeGuard(reporter, 'Updating files'):
