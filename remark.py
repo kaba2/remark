@@ -72,7 +72,7 @@ reaching Remark; write "*.txt" instead of *.txt.""")
         action = 'store_true',
         dest = 'generateMarkdown',
         default = False,
-        help = """generates the Markdown source. This is useful mainly for debugging Remark.""")
+        help = """generates the Markdown source for each file. This is useful for debugging Remark.""")
 
     optionParser.add_option('-i', '--include',
         dest = 'includeSet',

@@ -60,6 +60,9 @@ as follows:
 -e or --extensions
 :	Lists all file-extensions in the input-directory along with example files.
 
+-g or --generate-markdown
+:	Generates the Markdown-source for each file, before the conversion to html. This is useful for debugging Remark. The file-name of the Markdown-source is the file-name of the input file, with the file-extension replaced with `.md.txt`.
+
 -i or --include
 :	Includes files by their relative-paths (e.g. `"*.txt"`).
 	This is equivalent to writing the file-glob directly as a 

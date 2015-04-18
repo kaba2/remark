@@ -19,11 +19,10 @@ A document-tag can be set by the `set_tag` command, and retrieved by
 the `tag` command. 
 
 [[Example]]:
-	[[Verbatim]]:
-		[[set_tag author]]: 
-			John Doe 
-			Jane Doe
-		[[tag author]]
+	[[set_tag author]]: 
+		John Doe 
+		Jane Doe
+	[[tag author]]
 
 Predefined tags
 ---------------

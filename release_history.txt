@@ -16,7 +16,8 @@ Release date xx.04.2015.
 
 ### Core
 
-* Changed to use Python Markdown 2.6. Previously we had to stay at Python Markdown 2.0, because there was no support for Markdown in html-blocks.
+* Bypassed buggy html handling in Python Markdown by transporting html code through html-comments.
+* Changed to use Python Markdown 2.6. 
 
 ### Mathematics
 
@@ -27,6 +28,10 @@ Release date xx.04.2015.
 ### CSS
 
 * Made Example-div to scroll on overflow.
+
+### Interface
+
+* Added an option to generate the Markdown source for each file. This is useful for debugging.
 
 Remark 1.6.5
 ------------
