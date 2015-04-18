@@ -50,30 +50,12 @@ to html using the [Python Markdown][PyMarkdown] library.
 Human-readable mathematics
 --------------------------
 
-In its original form, Markdown syntax lacks the ability to typeset mathematics. 
-To remedy this, Remark extends the Markdown syntax with the [AsciiMath][AsciiMath] 
-syntax. AsciiMath is a syntax which formalizes a commonly used notation 
-for mathematical formulas. Similar notations have been used for decades 
-in newsgroup discussions where only ASCII characters are available for 
-typesetting mathematics. AsciiMath fulfills the following goal:
+Remark extends the Markdown syntax with Latex math and AsciiMath syntaxes. 
 
- * The description of the formulas are as human-readable as possible.
-
-An example of the AsciiMath syntax is given by:
+[[Example]]:
+	The solution to the quadratic equation in AsciiMath is ''x = (-b +- sqrt(b^2 - 4ac)) / (2a)''.
+	The solution to the quadratic equation in Latex is $x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}$.
 	
-	[[Equation]]:
-		x = (-b +- sqrt(b^2 - 4ac)) / (2a) 
-	
-which generates:
-
-[[Equation]]: 
-	x = (-b +- sqrt(b^2 - 4ac)) / (2a)
-
-Contrast this to e.g. Latex syntax. The conversion of the AsciiMath syntax 
-to MathML is handled on the fly via the [AsciiMathML][AsciiMath] java-script library.
-
-[AsciiMath]: http://www1.chapman.edu/~jipsen/asciimath.html
-
 Color-encoding of source code
 -----------------------------
 
