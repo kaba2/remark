@@ -3,14 +3,24 @@ License matters
 
 [[Parent]]: remark.txt
 
-Remark is licensed under the [MIT license][MIT]. However, Remark uses some third-party libraries whose licenses also have to be taken into account.
+Remark is licensed under the [MIT license][MIT]. Certain third-party libraries used by Remark are not free for commercial use.
 
 [MIT]: http://en.wikipedia.org/wiki/MIT_License
 
 Third-party libraries
 ---------------------
 
-The Python Markdown and Pygments libraries are licensed under the BSD license. These libraries are firmly integrated, and have an essential role, in Remark. The other libraries are optional as follows.
+### Python Markdown (Python)
+
+Python Markdown is licensed under the BSD license. This library is used to generate the html code from Markdown.
+
+### Pygments (Python)
+
+Pygments is licensed under the BSD license. This library is used to generate the highlighting for source code.
+
+### Highslide (JavaScript)
+
+Highslide is not free for commercial use. This library is used by [[Link: Gallery_Macro.txt]] to view images in Remark.
 
  * The Highslide javascript-library is referred to in an html-page 
  if and only if one invokes the Gallery-macro to generate 
@@ -19,10 +29,7 @@ The Python Markdown and Pygments libraries are licensed under the BSD license. T
  * The Highslide javascript-library is copied to the output
  directory if and only if some generated html-page refers to it.
 
-The Python Imaging Library is used by the [[Link: Gallery_Macro.txt]] to create thumbnails automatically.
+### Pillow (Python)
 
-Commercial use
---------------
-
-Remark is free for use in commercial products for the most part. The only exception is the use of the Gallery-macro which depends on the Python Imaging Library and the Highslide library. To use the Gallery-macro in commercial products, you need to obtain the commercial licenses for these products.
+Pillow is not free for commercial use. This library is used by the [[Link: Gallery_Macro.txt]] to generate thumbnails automatically.
  

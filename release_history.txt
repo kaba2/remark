@@ -16,7 +16,7 @@ Release date 20.04.2015.
 
 ### Core
 
-* Bypassed buggy html handling in Python Markdown by transporting html code through html-comments.
+* Bypassed nested Markdown-html handling in Python Markdown. This was needed to upgrade to the latest Python Markdown.
 * Changed to use Python Markdown 2.6. 
 * Extended Python Markdown to parse mathematics directly as a new inline-pattern.
 
@@ -32,7 +32,7 @@ Release date 20.04.2015.
 
 ### Interface
 
-* Added an option to generate the Markdown source for each file. This is useful for debugging.
+* Added the option `-g` to generate the Markdown source for each file. This is useful for debugging.
 
 Remark 1.6.5
 ------------
