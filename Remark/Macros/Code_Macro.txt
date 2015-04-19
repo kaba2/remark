@@ -3,10 +3,9 @@ Code macro
 
 [[Parent]]: available_macros.txt
 
-The Code macro highlights source code. The syntax-highlighting is 
-carried out by the Pygments library. If you want to specifically 
-highlight C++ code, then you should look at [[Link: CppCode_Macro.txt]] 
-for additional features.
+The Code macro highlights source code. The syntax-highlighting is carried out by the [Pygments][] library. If you want to specifically highlight C++ code, then you should look at [[Link: CppCode_Macro.txt]] for additional features.
+
+[Pygments]: http://pygments.org
 
 Properties
 ----------
@@ -47,9 +46,3 @@ Example
 		def square(x):
 			return x * x
 
-Links
------
-
-[Pygments syntax highlighter][Pygments]
-
-[Pygments]: http://pygments.org
