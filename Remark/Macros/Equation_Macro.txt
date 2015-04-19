@@ -25,10 +25,6 @@ Equation.class_name
 :	The class-name to give to the equation html-div.
 	Default: `Equation`.
 
-Equation.body_class_name
-:	The class-name to give to the equation-body html-span.
-	Default: `Equation-Body`.
-
 Equation.number_class_name
 :	The class-name to give to the equation-number html-span.
 	Default: `Equation-Number`.
