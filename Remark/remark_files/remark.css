@@ -301,6 +301,16 @@ html, body
     margin-bottom: 0.5em;
 }
 
+#remark .ascii-math,
+#remark .latex-math,
+#remark .display-latex-math
+{
+    /*
+    color: red;
+    font-size: 2em;
+    */
+}
+
 /* ParentList */
 /* ---------- */
 
