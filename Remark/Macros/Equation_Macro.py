@@ -4,6 +4,7 @@
 # Detail: Presents mathematics.
 
 from Remark.Macro_Registry import registerMacro
+from Remark.FileSystem import htmlDiv, htmlInject
 
 class Equation_Macro(object):
     def name(self):
@@ -24,22 +25,18 @@ class Equation_Macro(object):
         # Variables
         scope = remark.scopeStack.top()
         className = scope.getString('Equation.class_name', 'Equation')
-        bodyClassName = scope.getString('Equation.body_class_name', 'Equation-Body')
         numberClassName = scope.getString('Equation.number_class_name', 'Equation-Number')
 
-        text.append('<div class = "' + className + '">')
-        text.append('<span class = "' + bodyClassName + '">' + "''")
+        text.append("''")
         if len(parameter) == 1:
             text[-1] += parameter[0]
         else:
             text += parameter
-        text[-1] += "''" + '</span>'
-        text.append('<span class = "' + numberClassName + '">' + 
-                    str(equationNumber) + 
-                    '</span>')
-        text.append('</div>')
+        
+        text[-1] += "''"
+        text += htmlInject(['<span class="' + numberClassName + '">' + str(equationNumber) + '</span>'])
 
-        return text
+        return htmlDiv(text, className, 'div')
 
     def expandOutput(self):
         return False
