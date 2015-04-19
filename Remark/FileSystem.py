@@ -154,7 +154,6 @@ def htmlDiv(enclosedText, className = '', elementName = 'div', addWhitespace = T
     
     if addWhitespace:
         text.append('')
-        None
 
     text += htmlInject(['</' + elementName + '>'])
     text.append('')
