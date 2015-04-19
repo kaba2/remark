@@ -11,10 +11,6 @@ files. Both directories and files are listed in alphabetical order.
 Properties
 ----------
 
-### Output type
-
-Remark
-
 ### Output expansion default
 
 Enabled.

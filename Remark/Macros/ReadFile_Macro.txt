@@ -9,10 +9,6 @@ and expands into its contents.
 Properties
 ----------
 
-### Output type
-
-Remark
-
 ### Output expansion default
 
 Enabled.

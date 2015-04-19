@@ -8,10 +8,6 @@ The DocChildren macro generates a list of links to the documentation children of
 Properties
 ----------
 
-### Output type
-
-Remark
-
 ### Output expansion default
 
 Enabled.

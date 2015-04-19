@@ -11,10 +11,6 @@ for additional features.
 Properties
 ----------
 
-### Output type
-
-Html
-
 ### Output expansion default
 
 Disabled.

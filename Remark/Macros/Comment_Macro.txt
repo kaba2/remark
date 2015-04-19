@@ -9,10 +9,6 @@ commenting the Remark source.
 Properties
 ----------
 
-### Output type
-
-Remark
-
 ### Output expansion default
 
 Disabled.
