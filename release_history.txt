@@ -8,7 +8,7 @@ This section summarizes the release history of Remark. Previous versions can be 
 Remark 1.7.0
 ------------
 
-Release date xx.04.2015.
+Release date 19.04.2015.
 
 [Original webpage][Remark-1.7.0]
 
@@ -18,12 +18,13 @@ Release date xx.04.2015.
 
 * Bypassed buggy html handling in Python Markdown by transporting html code through html-comments.
 * Changed to use Python Markdown 2.6. 
+* Extended Python Markdown to parse mathematics directly as a new inline-pattern.
 
 ### Mathematics
 
 * Changed to use MathJax for vastly improved parsing and rendering of mathematics.
-* Added support for Latex mathematics.
 * Removed dependency to `ASCIIMathMLwFallback.js`.
+* Added support for Latex mathematics.
 
 ### CSS
 
