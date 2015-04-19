@@ -571,6 +571,7 @@ in the 'remark-footer' div. */
     margin-top: 1em;
     margin-bottom: 1em;
     border: 0.25em solid #8A8;
+    overflow: auto;
 }
 
 /* The Example-box already contains padding. Zero margin-top from the first child to avoid heavy margins. */
