@@ -216,9 +216,11 @@ Basic constructs
 
 [[Example]]:
 	''text(abcdefghijklmnopqrstuvwxyz)''
+	
+	''text(ABCDEFGHIJKLMNOPQRSTUVWXYZ)''
 
 	$\mathrm{abcdefghijklmnopqrstuvwxyz}$
-
+	
 	$\mathrm{ABCDEFGHIJKLMNOPQRSTUVWXYZ}$
 
 #### Bold
