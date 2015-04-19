@@ -10,6 +10,7 @@ import datetime
 import traceback
 import time
 import sys
+import re
 
 from Remark.FileSystem import remarkScriptPath, fileExists, withoutFileExtension
 
@@ -123,6 +124,45 @@ def convertRemarkToMarkdown(remarkText, document, documentTree,
     # Return the resulting Markdown text.
     return markdownText, remark.htmlHeader()
 
+from markdown.inlinepatterns import Pattern
+from markdown.util import etree, AtomicString
+
+class Math_Pattern(Pattern):
+    def __init__(self, beginString, endString, tagName, className):
+        self.tagName = tagName
+        self.className = className
+        self.pattern = (
+            r'^(.*?)' +
+            r'(' +
+            re.escape(beginString) +
+            r'.*?' +
+            re.escape(endString) +
+            r')' + 
+            r'(.*?)$'
+            )
+        self.regex = re.compile(self.pattern, re.DOTALL | re.UNICODE)
+
+    def getCompiledRegExp(self):
+        return self.regex
+
+    def handleMatch(self, match):
+        element = etree.Element(self.tagName, {'class' : self.className })
+
+        escapedMatch = match.group(2)
+
+        # escapedMatch = (
+        #     match.group(2)
+        #     .replace('<', '&lt;')
+        #     .replace('>', '&gt;')
+        #     .replace('&', '&amp;')
+        # )
+
+        # The AtomicString makes sure that the expression will not
+        # be considered by the other inline patterns. 
+        element.text = AtomicString(escapedMatch)
+
+        return element
+
 def convertMarkdownToHtml(
     markdownText, headText, 
     document, documentTree, 
@@ -148,6 +188,48 @@ def convertMarkdownToHtml(
 
     # Convert Markdown to html.
     markdownConverter = markdown.Markdown(extensions = ['tables', 'abbr', 'def_list'])
+
+    # Add math inline-patterns.
+
+    # Math in backticks should not be interpreted
+    # as math. Therefore, `backticks` inline-pattern
+    # should run before math.
+
+    # The `escape` inline-pattern does Markdown-escaping,
+    # and therefore should not run on math. Therefore,
+    # math inline-pattern must run before the `escape`
+    # inline-pattern.
+
+    # The math inline-patterns block future inline-patterns 
+    # from modifying the math (by using AtomicString in 
+    # Math_Pattern).
+
+    # First run latex display-math $$, because
+    # otherwise $ would incorrectly handle it.
+    # Notice how we use 'div' for display-math.
+    markdownConverter.inlinePatterns.add(
+        'display-latex-math', 
+        Math_Pattern('$$', '$$', 'div', 'latex-math'), 
+        '<escape' )
+
+    # Then run Latex inline-math $. 
+    # Notice how we use 'span' for inline-math.
+    markdownConverter.inlinePatterns.add(
+        'inline-latex-math', 
+        Math_Pattern('$', '$', 'span', 'latex-math'), 
+        '>display-latex-math' )
+
+    # Finally run Asciimath inline-math ''.
+    # Notice how we use 'span' for inline-math.
+    markdownConverter.inlinePatterns.add(
+        'inline-ascii-math', 
+        Math_Pattern("''", "''", 'span', 'ascii-math'), 
+        '>inline-latex-math' )
+
+    # for item in markdownConverter.inlinePatterns:
+    #     print item
+    # sys.exit(0)
+
     htmlString = markdownConverter.convert(string.join(markdownText, '\n'))
     htmlText = string.split(htmlString, '\n')
 
