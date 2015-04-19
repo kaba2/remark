@@ -81,7 +81,7 @@ def addHtmlBoilerPlate(text, document, htmlHead):
     htmlText.append('<link rel="stylesheet" type="text/css" href="' + remarkCss + '"/>')
     htmlText.append('<link rel="stylesheet" type="text/css" href="' + pygmentsCss + '"/>')
 
-    htmlText.append('<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_HTMLorMML&delayStartupUntilConfig"></script>')
+    htmlText.append('<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?delayStartupUntilConfig"></script>')
     htmlText.append('<script type="text/javascript" src="' + mathJaxConfig + '"></script>')
 
     htmlText += htmlHead
@@ -128,16 +128,14 @@ from markdown.inlinepatterns import Pattern
 from markdown.util import etree, AtomicString
 
 class Math_Pattern(Pattern):
-    def __init__(self, beginString, endString, tagName, className):
-        self.tagName = tagName
+    def __init__(self, beginString, endString, scriptType, className):
         self.className = className
+        self.scriptType = scriptType
         self.pattern = (
             r'^(.*?)' +
-            r'(' +
             re.escape(beginString) +
-            r'.*?' +
+            r'(.*?)' +
             re.escape(endString) +
-            r')' + 
             r'(.*?)$'
             )
         self.regex = re.compile(self.pattern, re.DOTALL | re.UNICODE)
@@ -146,22 +144,40 @@ class Math_Pattern(Pattern):
         return self.regex
 
     def handleMatch(self, match):
-        element = etree.Element(self.tagName, {'class' : self.className })
+        # We need a span-element to be able to assign
+        # a class-identifier for CSS-styling. Why not
+        # assign a class to the <script> element?
+        # Because MathJax gets rid of it, and so it
+        # cannot be used for styling.
+        spanElement = etree.Element(
+            'span', 
+            {
+                'class' : self.className
+            })
 
-        escapedMatch = match.group(2)
+        scriptElement = etree.SubElement(
+            spanElement,
+            'script', 
+            {
+                'type' : self.scriptType
+            })
 
-        # escapedMatch = (
-        #     match.group(2)
-        #     .replace('<', '&lt;')
-        #     .replace('>', '&gt;')
-        #     .replace('&', '&amp;')
-        # )
+        # Inside a <script> element, the characters are interpreted
+        # as CDATA, and the first occurrence of </ is interpreted
+        # as the beginning of the end-tag </script>. Therefore,
+        # if the mathematics contains a </, we need to convert it
+        # to something else. We interpret </ as a combination of 
+        # less-than and division, and therefore replace it with < /.
+        escapedMatch = (
+            match.group(2)
+            .replace('</', '< /')
+        )
 
         # The AtomicString makes sure that the expression will not
         # be considered by the other inline patterns. 
-        element.text = AtomicString(escapedMatch)
+        scriptElement.text = AtomicString(escapedMatch)
 
-        return element
+        return spanElement
 
 def convertMarkdownToHtml(
     markdownText, headText, 
@@ -209,21 +225,21 @@ def convertMarkdownToHtml(
     # Notice how we use 'div' for display-math.
     markdownConverter.inlinePatterns.add(
         'display-latex-math', 
-        Math_Pattern('$$', '$$', 'div', 'latex-math'), 
+        Math_Pattern('$$', '$$', 'math/tex; mode=display', 'display-latex-math'), 
         '<escape' )
 
     # Then run Latex inline-math $. 
     # Notice how we use 'span' for inline-math.
     markdownConverter.inlinePatterns.add(
         'inline-latex-math', 
-        Math_Pattern('$', '$', 'span', 'latex-math'), 
+        Math_Pattern('$', '$', 'math/tex', 'latex-math'), 
         '>display-latex-math' )
 
     # Finally run Asciimath inline-math ''.
     # Notice how we use 'span' for inline-math.
     markdownConverter.inlinePatterns.add(
         'inline-ascii-math', 
-        Math_Pattern("''", "''", 'span', 'ascii-math'), 
+        Math_Pattern("''", "''", 'math/asciimath', 'ascii-math'), 
         '>inline-latex-math' )
 
     # for item in markdownConverter.inlinePatterns:
