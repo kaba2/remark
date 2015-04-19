@@ -46,7 +46,7 @@ MathJax.Hub.Config({
         delimiters: [],
         // Disable MathJax on all class-names...
         ignoreClass: 'remark-all',
-        // ... with no exceptions.
+        // ... except on AsciiMath spans.
         processClass: 'ascii-math'
     },
     tex2jax: 
@@ -56,7 +56,7 @@ MathJax.Hub.Config({
         displayMath: [],
         // Disable MathJax on all class-names...
         ignoreClass: 'remark-all',
-        // ... with no exceptions.
+        // ... except on Latex math spans.
         processClass: 'latex-math|display-latex-math'
     }
 });

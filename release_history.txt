@@ -8,7 +8,7 @@ This section summarizes the release history of Remark. Previous versions can be 
 Remark 1.7.0
 ------------
 
-Release date 19.04.2015.
+Release date 20.04.2015.
 
 [Original webpage][Remark-1.7.0]
 
