@@ -3,16 +3,12 @@ CppCode macro
 
 [[Parent]]: available_macros.txt
 
-The CppCode macro highlights C++ source code and links the include
-directives to other C++ source-code files in the document tree.
-The syntax-highlighting is carried out by the Pygments library.
+The CppCode macro highlights C++ source code and links the include directives to other C++ source-code files in the document tree. The syntax-highlighting is carried out by the [Pygments][] library.
+
+[Pygments]: http://pygments.org
 
 Properties
 ----------
-
-### Output type
-
-Html
 
 ### Output expansion default
 
@@ -44,9 +40,3 @@ Example
 			return x * x;
 		}
 
-Links
------
-
-[Pygments syntax highlighter][Pygments]
-
-[Pygments]: http://pygments.org

@@ -13,10 +13,6 @@ into an equation-set html-div.
 Properties
 ----------
 
-### Output type
-
-Remark
-
 ### Output expansion default
 
 Enabled.

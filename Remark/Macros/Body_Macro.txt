@@ -10,10 +10,6 @@ this macro; the Body macro is retained for compatibility.
 Properties
 ----------
 
-### Output type
-
-Remark
-
 ### Output expansion default
 
 Enabled.

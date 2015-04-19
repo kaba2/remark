@@ -11,10 +11,6 @@ that newlines are interpreted as ending the html block.
 Properties
 ----------
 
-### Output type
-
-Html
-
 ### Output expansion default
 
 Disabled.

@@ -11,10 +11,6 @@ the document-tree can be styled using CSS.
 Properties
 -----------
 
-### Output type
-
-Remark
-
 ### Output expansion default
 
 Enabled.

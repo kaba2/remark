@@ -10,10 +10,6 @@ simple examples.
 Properties
 ----------
 
-### Output type
-
-Remark
-
 ### Output expansion default
 
 Enabled.

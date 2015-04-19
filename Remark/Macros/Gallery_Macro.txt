@@ -17,10 +17,6 @@ then the Gallery macro will still run, but thumbnails will not be generated
 Properties
 ----------
 
-### Output type
-
-Html
-
 ### Output expansion default
 
 Disabled.

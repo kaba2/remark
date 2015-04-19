@@ -12,10 +12,6 @@ the parameter is essential.
 Properties
 ----------
 
-### Output type
-
-Remark
-
 ### Output expansion default
 
 Disabled.

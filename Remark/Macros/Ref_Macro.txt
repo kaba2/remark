@@ -10,10 +10,6 @@ making use of implicit Remark-linking.
 Properties
 ----------
 
-### Output type
-
-Remark
-
 ### Output expansion default
 
 Disabled.

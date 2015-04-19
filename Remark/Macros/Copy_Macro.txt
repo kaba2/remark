@@ -9,10 +9,6 @@ prohibit macro expansion.
 Properties
 ----------
 
-### Output type
-
-Remark
-
 ### Output expansion default
 
 Enabled.

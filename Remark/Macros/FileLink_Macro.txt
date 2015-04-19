@@ -9,10 +9,6 @@ filenames.
 Properties
 ----------
 
-### Output type
-
-Remark
-
 ### Output expansion default
 
 Disabled.

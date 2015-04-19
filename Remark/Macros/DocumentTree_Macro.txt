@@ -13,10 +13,6 @@ using CSS.
 Properties
 -----------
 
-### Output type
-
-Remark
-
 ### Output expansion default
 
 Enabled.

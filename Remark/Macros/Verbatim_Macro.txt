@@ -9,10 +9,6 @@ input parameter, thus reinterpreting text as verbatim content.
 Properties
 ----------
 
-### Output type
-
-Remark
-
 ### Output expansion default
 
 Disabled.

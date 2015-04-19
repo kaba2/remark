@@ -11,10 +11,6 @@ two span elements are wrapped into an equation html-div.
 Properties
 ----------
 
-### Output type
-
-Remark
-
 ### Output expansion default
 
 Disabled.

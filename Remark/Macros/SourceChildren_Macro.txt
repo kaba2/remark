@@ -8,10 +8,6 @@ The SourceChildren macro generates a list of links to the source children of the
 Properties
 ----------
 
-### Output type
-
-Remark
-
 ### Output expansion default
 
 Enabled.

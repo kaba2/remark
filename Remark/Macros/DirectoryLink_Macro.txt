@@ -9,10 +9,6 @@ containing the given documents.
 Properties
 ----------
 
-### Output type
-
-Remark
-
 ### Output expansion default
 
 Disabled.
