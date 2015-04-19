@@ -1,28 +1,63 @@
 // Description: MathJax configuration file for Remark
 // Documentation: math_syntax.txt
 
-// The delimiters '', $, and $$ match those defined in Conversion.py.
-// Therefore, to change the delimiters requires changing them here, and 
-// to update Conversion.py correspondingly.
+// We disable MathJax's delimiter-based detection of mathematics.
+// Instead, we provide the MathJax <script> elements directly.
+// For example, for inline latex math, we provide
+//
+// <script class="latex-math" type="math/tex">ax^2 + bx^2 + c = 0</script>
 
 MathJax.Hub.Config({
+    config: 
+    [
+        "MMLorHTML.js"
+    ],
+    jax: 
+    [
+        "input/TeX",
+        //"input/MathML",
+        "input/AsciiMath",
+        "output/HTML-CSS",
+        "output/NativeMML", 
+        "output/CommonHTML"
+    ],
+    extensions: 
+    [
+        "tex2jax.js",
+        //"mml2jax.js",
+        "asciimath2jax.js",
+        "MathMenu.js",
+        "MathZoom.js", 
+        "CHTML-preview.js"
+    ],
+    TeX: 
+    {
+        extensions: 
+        [
+            "AMSmath.js",
+            "AMSsymbols.js",
+            "noErrors.js",
+            "noUndefined.js"
+        ]
+    },
     asciimath2jax: 
     {
-        delimiters: [["''", "''"]],
+        // Disable delimiter-based detection.
+        delimiters: [],
         // Disable MathJax on all class-names...
-        ignoreClass: '.*',
-        // ... except on 'ascii-math'.
+        ignoreClass: 'remark-all',
+        // ... with no exceptions.
         processClass: 'ascii-math'
     },
     tex2jax: 
-    {   
-        inlineMath: [["$","$"]],
-        displayMath: [["$$", "$$"]],
-        processEscapes: true,
+    {
+        // Disable delimiter-based detection.
+        inlineMath: [],
+        displayMath: [],
         // Disable MathJax on all class-names...
-        ignoreClass: '.*',
-        // ... except on 'latex-math'.
-        processClass: 'latex-math'
+        ignoreClass: 'remark-all',
+        // ... with no exceptions.
+        processClass: 'latex-math|display-latex-math'
     }
 });
 
