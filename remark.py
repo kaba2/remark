@@ -308,6 +308,8 @@ associateDocumentType('.remark-orphan', orphanType)
 
 # Create a reporter for progress, error, and warning reporting.
 reporter = Reporter()
+reporter.disable('debug-macro-invocation')
+reporter.disable('debug-macro-expansion')
 reporter.openScope('Remark ' + remarkVersion())
 
 # Parse the command-line arguments.
