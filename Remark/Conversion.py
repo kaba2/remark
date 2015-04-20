@@ -179,6 +179,8 @@ class Math_Pattern(Pattern):
 
         return spanElement
 
+from Remark.MarkdownRegion import MarkdownRegion_Extension
+
 def convertMarkdownToHtml(
     markdownText, headText, 
     document, documentTree, 
@@ -203,7 +205,13 @@ def convertMarkdownToHtml(
     '''
 
     # Convert Markdown to html.
-    markdownConverter = markdown.Markdown(extensions = ['tables', 'abbr', 'def_list'])
+    markdownConverter = markdown.Markdown(
+        extensions = [
+            'tables', 
+            'abbr', 
+            'def_list',
+            MarkdownRegion_Extension()
+        ])
 
     # Add math inline-patterns.
 

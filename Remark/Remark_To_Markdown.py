@@ -305,6 +305,9 @@ class Remark(object):
     def reportError(self, text, type):
         self.reporter.reportError(text, type)
 
+    def reportDebug(self, text, type):
+        self.reporter.reportDebug(text, type)
+
     def report(self, text, type):
         self.reporter.report(text, type)
         
@@ -622,6 +625,15 @@ class Remark(object):
 
         self.recursionDepth += 1
 
+        # maxRecursionDepth = 100
+        # if self.recursionDepth > maxRecursionDepth:
+        #     self.reportDebug(
+        #         'Macro expansion recursion exceeded ' + 
+        #         str(maxRecursionDepth) + 
+        #         ' levels.', 
+        #         'debug-recursion')
+        #     sys.exit(0)
+
         # This function expands the given macro in
         # the current position.
         scope = self.scopeStack.top()
@@ -726,10 +738,8 @@ class Remark(object):
         text (list of strings):
         The Remark text to convert.
         
-        returns (list of strings, set of documents):
-        The converted Markdown text and the set of 
-        document-objects from which the converted text 
-        is dependent on.
+        returns (list of strings):
+        The converted Markdown text.
         '''
 
         # The strategy in this function is to trace the 'text' 
@@ -819,13 +829,28 @@ class Remark(object):
             
                 # Find out the whole macro invocation.
                 macroInvocation = self.extractMacro(row, match, text)
-            
-            #print 'Macro invocation:'
-            #print macroInvocation.name
-            #print macroInvocation.beginRow, macroInvocation.beginColumn
-            #print macroInvocation.endRow, macroInvocation.endColumn
-            #for parameterLine in macroInvocation.parameterSet:
-            #    print parameterLine
+
+            # Debug-report the macro-invocation.
+            underlining = '-' * len(macroInvocation.name)
+
+            invocationText = []
+            invocationText.append(
+                macroInvocation.name + ' ' +
+                '(' + 
+                    str(macroInvocation.beginRow) + 
+                    ', ' +
+                    str(macroInvocation.beginColumn) + 
+                ')' +
+                ' -> ' +
+                '(' + 
+                    str(macroInvocation.endRow) + 
+                    ', ' +
+                    str(macroInvocation.endColumn) + 
+                ')')
+            invocationText.append(underlining)
+            invocationText += macroInvocation.parameterSet
+            invocationText.append(underlining)
+            self.reportDebug(invocationText, 'debug-macro-invocation')
 
             # See if the user requests the macro parameter to be 
             # expanded before the macro.
@@ -838,17 +863,16 @@ class Remark(object):
             # Recursively expand the macro.
             macroText = self.expandMacro(macroInvocation)
 
-            #print 'I write:'
-            #for line in macroText:
-            #    print line
-           
+            # Debug-report the result of the macro-expansion.
+            self.reportDebug([underlining] + macroText + [underlining], 'debug-macro-expansion')
+
             # Append the first line of the macro expansion to 
             # the end of the latest line.
             newText[-1] += macroText[0]
             # Append the other lines of the macro expansion to
             # the following lines.
             newText += macroText[1 :]
-            
+
             # Move on.
             row = macroInvocation.endRow
             column = macroInvocation.endColumn

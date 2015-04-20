@@ -21,14 +21,17 @@ class EquationSet_Macro(object):
             cleanLine = line.strip()
             if cleanLine != '':
                 # An ordered list of equations.
-                text.append(' 1. [[Equation]]: ' + cleanLine);
+                equationText = remark.macro('Equation', [cleanLine])
+                if len(equationText) > 0:
+                    equationText[0] = '1. ' + equationText[0]
+                text += equationText
 
-        text = htmlDiv(text, className)
+        text =  htmlDiv(text, className, 'div')
 
         return text
 
     def expandOutput(self):
-        return True
+        return False
 
     def htmlHead(self, remark):
         return []                

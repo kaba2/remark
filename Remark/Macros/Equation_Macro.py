@@ -25,18 +25,17 @@ class Equation_Macro(object):
         # Variables
         scope = remark.scopeStack.top()
         className = scope.getString('Equation.class_name', 'Equation')
+        bodyClassName = scope.getString('Equation.body_class_name', 'Equation-Body')
         numberClassName = scope.getString('Equation.number_class_name', 'Equation-Number')
 
-        text.append("''")
-        if len(parameter) == 1:
-            text[-1] += parameter[0]
-        else:
-            text += parameter
-        
-        text[-1] += "''"
-        text += htmlInject(['<span class="' + numberClassName + '">' + str(equationNumber) + '</span>'])
+        if len(parameter) >  0:
+            parameter[0] = "''" + parameter[0]
+            parameter[-1] += "''"
 
-        return htmlDiv(text, className, 'div')
+        text = htmlDiv(parameter, bodyClassName)
+        text += htmlDiv([str(equationNumber)], numberClassName, 'span', 'text')
+
+        return htmlDiv(text, className)
 
     def expandOutput(self):
         return False
