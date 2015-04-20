@@ -100,6 +100,15 @@ class Reporter(object):
             if self.enabled(type):
                self.warnings_ += 1
 
+    def reportDebug(self, text, type):
+        if isinstance(text, basestring):
+            self.reportWarning([text], type)
+            return 
+
+        if len(text) > 0:
+            text = [''] + ['[' + type + ']'] + text;
+            self.report(text, type, False)
+
     def reportError(self, text, type):
         if isinstance(text, basestring):
             self.reportError([text], type)

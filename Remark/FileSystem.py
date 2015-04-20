@@ -119,15 +119,20 @@ def htmlInject(text):
     if text == []:
         return text
 
-    text[0] = '<!--RemarkInject' + text[0]
-    text[-1] = text[-1] + 'RemarkInject-->'
-    
+    for i in range(0, len(text)):
+        if text[i].strip() == '':
+            text[i] = '<p></p>'
+
     return text
 
-def htmlDiv(enclosedText, className = '', elementName = 'div', addWhitespace = True):
+def htmlDiv(enclosedText, className = '', elementName = 'div', contentType = 'markdown'):
     '''
-    Encloses the given text in a <div> block and gives it a
-    html-class, so that it can be styled with CSS.
+    Encloses the given text in a 
+
+    !!! elementName(className)
+
+    region. This is the Remark's 'MarkdownRegion' Markdown-extension.
+    It corresponds to wrapping content in an <elementName> tag.
 
     enclosedText (list of strings):
     The text to enclose.
@@ -138,24 +143,16 @@ def htmlDiv(enclosedText, className = '', elementName = 'div', addWhitespace = T
     text = []
     text.append('')
 
-    elementText = elementName
-
-    if className != '':
-        elementText += ' class="' + className + '"'
-
-    text += htmlInject(['<' + elementText + '>'])
+    regionText = '!!! ' + elementName + '(' + className
+    if contentType != 'markdown':
+    	regionText += ', ' + contentType
+    regionText += ')'
     
-    if addWhitespace:
-        # This empty line is essential for Markdown
-        # not to interpret the following stuff as html.
-        text.append('')
-    
-    text += enclosedText
-    
-    if addWhitespace:
-        text.append('')
+    text.append(regionText)
 
-    text += htmlInject(['</' + elementName + '>'])
+    for line in enclosedText:
+        text.append('\t' + line)
+
     text.append('')
 
     return text

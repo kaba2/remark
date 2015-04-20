@@ -15,19 +15,13 @@ class Example_Macro(object):
         className = scope.getString('Example.class_name', 'Example')
 
         text = []
+        text = remark.macro('Verbatim', parameter)
+        text += htmlDiv(remark.convert(parameter), className)
 
-        text.append('')
-        text.append('[[Verbatim]]:')
-        for line in parameter:
-            text.append('\t' + line)
-        text.append('')
-        text += htmlDiv(parameter, className)
-        text.append('')
-
-        return text;
+        return text
 
     def expandOutput(self):
-        return True
+        return False
 
     def htmlHead(self, remark):
         return []                

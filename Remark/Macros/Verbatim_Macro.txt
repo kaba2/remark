@@ -25,4 +25,8 @@ Examples
 --------
 
 [[Example]]:
-	[[+Verbatim]]: [[tag description]]
+	[[Verbatim]]: 
+		This [[tag description]] is not expanded.
+		Another line
+
+		Third line
