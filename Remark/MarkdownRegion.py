@@ -47,26 +47,29 @@ class MarkdownRegion_Extension(Extension):
 class MarkdownRegion_BlockProcessor(BlockProcessor):
 
     introPattern = r"(?:^|\n)!!!"
-    whitespace = r'[ \t]*'
+    whitespacePattern = r'[ \t]*'
     namePattern = r'([\w\-]*?)'
     tagNamePattern = namePattern
     classNamePattern = namePattern
     contentTypePattern = namePattern
+    trailingWhitespacePattern = r'[ \t]*\n'
+
     pattern = (
     	introPattern + 
-    	whitespace + 
+    	whitespacePattern + 
     	tagNamePattern + 
-    	whitespace + 
+    	whitespacePattern + 
     	r'\(' + 
     		classNamePattern + 
     		r'(?:' + 
-    			whitespace + 
+    			whitespacePattern + 
     			r',' + 
-    			whitespace + 
+    			whitespacePattern + 
     			contentTypePattern + 
     		r')?' + 
-    		whitespace + 
-    	'\)')
+    		whitespacePattern + 
+    	r'\)' +
+        trailingWhitespacePattern)
 
     regex = re.compile(pattern)
 
@@ -81,9 +84,14 @@ class MarkdownRegion_BlockProcessor(BlockProcessor):
         sibling = self.lastChild(parent)
         block = blocks.pop(0)
 
+        parsedSet = self.parseBlocks(block)
+
+        blocks[0 : 0] = parsedSet        
+        block = blocks.pop(0)
+
         match = self.regex.search(block)
         if match:
-            block = block[match.end() + 1:]  # removes the first line
+            block = block[match.end():]
 
         block, theRest = self.detab(block)
 
@@ -124,6 +132,22 @@ class MarkdownRegion_BlockProcessor(BlockProcessor):
             # line. Insert these lines as the first block of the master blocks
             # list for future processing.
             blocks.insert(0, theRest)
+
+    def parseBlocks(self, block):
+        previousStart = 0;
+        blockSet = []
+        for match in re.finditer(self.regex, block):
+            if match:
+                if match.start() != previousStart:
+                    newBlock = block[previousStart : match.start()]
+                    blockSet.append(newBlock)
+                    previousStart = match.start()
+        
+        if previousStart < len(block):
+            blockSet.append(block[previousStart : ])
+
+        return blockSet
+
 
 def makeExtension(*args, **kwargs):
     return RegionExtension(*args, **kwargs)
