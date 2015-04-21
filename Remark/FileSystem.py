@@ -141,7 +141,6 @@ def htmlDiv(enclosedText, className = '', elementName = 'div', contentType = 'ma
     The name of the html-class to give to the div block.
     '''
     text = []
-    text.append('')
 
     regionText = '!!! ' + elementName + '(' + className
     if contentType != 'markdown':
@@ -152,8 +151,6 @@ def htmlDiv(enclosedText, className = '', elementName = 'div', contentType = 'ma
 
     for line in enclosedText:
         text.append('\t' + line)
-
-    text.append('')
 
     return text
 
