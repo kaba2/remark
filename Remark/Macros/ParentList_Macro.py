@@ -39,12 +39,12 @@ class ParentList_Macro(object):
             text.append(repr(level) + '. ' + linkText)
             level += 1
             
-        text = markdownRegion(text, {'class' : className})
-
-        return text
+        return markdownRegion(
+            remark.convert(text), 
+            {'class' : className})
 
     def expandOutput(self):
-        return True
+        return False
 
     def htmlHead(self, remark):
         return []                

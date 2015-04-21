@@ -14,9 +14,11 @@ class Example_Macro(object):
 
         className = scope.getString('Example.class_name', 'Example')
 
-        text = []
         text = remark.macro('Verbatim', parameter)
-        text += markdownRegion(remark.convert(parameter), {'class' : className})
+
+        text += markdownRegion(
+            remark.convert(parameter), 
+            {'class' : className})
 
         return text
 

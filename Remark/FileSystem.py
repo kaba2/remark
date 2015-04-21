@@ -147,7 +147,6 @@ def markdownRegion(enclosedText, keySet = dict(), elementName = 'div'):
     elementName (string):
     The name of the region element.
     '''
-    text = []
 
     regionText = '!!! <' 
     regionText += elementName
@@ -157,6 +156,7 @@ def markdownRegion(enclosedText, keySet = dict(), elementName = 'div'):
 
     regionText += '>'
     
+    text = []
     text.append(regionText)
 
     for line in enclosedText:

@@ -187,10 +187,12 @@ class SourceChildren_Macro(object):
                 text.append('* ' + remark.remarkLink(escapeMarkdown(child.fileName),
                             document, child))
             
-        return markdownRegion(text, {'class' : self.className});
+        return markdownRegion(
+            remark.convert(text), 
+            {'class' : self.className});
 
     def expandOutput(self):
-        return True
+        return False
 
     def htmlHead(self, remark):
         return []                

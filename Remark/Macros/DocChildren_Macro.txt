@@ -10,7 +10,7 @@ Properties
 
 ### Output expansion default
 
-Enabled.
+Disabled.
 
 ### Parameters
 
