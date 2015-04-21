@@ -6,7 +6,7 @@
 import string
 import os.path
 
-from Remark.FileSystem import unixRelativePath, htmlDiv, escapeMarkdown
+from Remark.FileSystem import unixRelativePath, markdownRegion, escapeMarkdown
 from Remark.FileSystem import unixDirectoryName, listDirectory
 from Remark.Macro_Registry import registerMacro
 from Remark.DocumentType_Registry import outputDocumentName
@@ -61,7 +61,7 @@ class Index_Macro(object):
                     
         text.append('')
 
-        text = htmlDiv(text, className)
+        text = markdownRegion(text, {'class' : className})
 
         return text
 

@@ -115,46 +115,45 @@ def globalOptions():
     '''
     return globalOptions_;
 
-def htmlInject(text):
-    if text == []:
-        return text
+def addDummyHtmlNewLines(htmlText):
+    dummyText = []
+    for line in htmlText:
+        if string.strip(line) == '':
+            # The Markdown syntax interprets
+            # empty lines as ending the html
+            # block. This tricks avoids that
+            # behaviour. Note that it is not
+            # equivalent to simply remove the 
+            # line.
+            dummyText.append('<span class="p"></span>')
+        else:
+            dummyText.append(line)
 
-    for i in range(0, len(text)):
-        if text[i].strip() == '':
-            text[i] = '<p></p>'
+    return dummyText
 
-    return text
-
-def htmlDiv(enclosedText, className = '', elementName = 'div', contentType = 'markdown'):
+def markdownRegion(enclosedText, keySet = dict(), elementName = 'div'):
     '''
-    Encloses the given text in a 
+    Encloses the given text in a Markdown region (Remark extension)
 
-    !!! elementName(className)
-
-    region. This is the Remark's 'MarkdownRegion' Markdown-extension.
-    It corresponds to wrapping content in an <elementName> tag.
+    !!! <elementName aKey="aValue" bKey="bValue" ...>
+        enclosedText
 
     enclosedText (list of strings):
     The text to enclose.
 
-    className:
-    The name of the html-class to give to the div block.
+    keySet (string:string):
+    A set of key-value pairs to apply to the region.
+
+    elementName (string):
+    The name of the region element.
     '''
     text = []
 
-    className = className.strip()
-    elementName = elementName.strip()
-    contentType = contentType.strip()
-
     regionText = '!!! <' 
-
     regionText += elementName
-    
-    if className != '':
-        regionText +=' class = "' + className + '"'
 
-    if contentType != '' and contentType != 'markdown':
-        regionText += ' content = "' + contentType + '"'
+    for (key, value) in keySet.iteritems():
+        regionText += ' ' + key.strip() + ' = "' + value + '"'
 
     regionText += '>'
     

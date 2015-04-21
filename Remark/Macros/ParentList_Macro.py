@@ -4,7 +4,7 @@
 # Detail: Generates a list of parent documents up to the root.
 
 from Remark.Macro_Registry import registerMacro
-from Remark.FileSystem import htmlDiv
+from Remark.FileSystem import markdownRegion
 
 class ParentList_Macro(object):
     def name(self):
@@ -39,7 +39,7 @@ class ParentList_Macro(object):
             text.append(repr(level) + '. ' + linkText)
             level += 1
             
-        text = htmlDiv(text, className)
+        text = markdownRegion(text, {'class' : className})
 
         return text
 

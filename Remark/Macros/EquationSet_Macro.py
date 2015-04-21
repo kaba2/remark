@@ -4,7 +4,7 @@
 # Detail: Presents multiple equations.
 
 from Remark.Macro_Registry import registerMacro
-from Remark.FileSystem import htmlDiv
+from Remark.FileSystem import markdownRegion
 
 class EquationSet_Macro(object):
     def name(self):
@@ -26,7 +26,7 @@ class EquationSet_Macro(object):
                     equationText[0] = '1. ' + equationText[0]
                 text += equationText
 
-        text =  htmlDiv(text, className, 'div')
+        text =  markdownRegion(text, {'class' : className})
 
         return text
 

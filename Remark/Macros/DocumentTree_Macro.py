@@ -7,7 +7,7 @@ import fnmatch
 import re
 
 from Remark.Macro_Registry import registerMacro
-from Remark.FileSystem import htmlDiv, globToRegex, combineRegex
+from Remark.FileSystem import markdownRegion, globToRegex, combineRegex
 
 class DocumentTree_Macro(object):
     def name(self):
@@ -65,7 +65,7 @@ class DocumentTree_Macro(object):
         if text == ['']:
             return []
 
-        text = htmlDiv(text, self.className)
+        text = markdownRegion(text, {'class' : self.className})
 
         return text
 

@@ -437,17 +437,6 @@ class Remark(object):
 
         return parameterSet
 
-    def addDummyHtmlNewLines(self, htmlText):
-        for j in range(0, len(htmlText)):
-            if string.strip(htmlText[j]) == '':
-                # The Markdown syntax interprets
-                # empty lines as ending the html
-                # block. This tricks avoids that
-                # behaviour. Note that it is not
-                # equivalent to simply remove the 
-                # line.
-                htmlText[j] = '<span class="p"></span>'
-
     def expandBuiltInMacro(self, macroNameSet, parameterSet, scope):
         '''
         Expands a built-in macro.

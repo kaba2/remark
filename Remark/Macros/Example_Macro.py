@@ -3,7 +3,7 @@
 # Description: Example macro
 
 from Remark.Macro_Registry import registerMacro
-from Remark.FileSystem import htmlDiv
+from Remark.FileSystem import markdownRegion
 
 class Example_Macro(object):
     def name(self):
@@ -16,7 +16,7 @@ class Example_Macro(object):
 
         text = []
         text = remark.macro('Verbatim', parameter)
-        text += htmlDiv(remark.convert(parameter), className)
+        text += markdownRegion(remark.convert(parameter), {'class' : className})
 
         return text
 
