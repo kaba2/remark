@@ -5,8 +5,6 @@
 
 from Remark.Macro_Registry import registerMacro
 
-from Remark.FileSystem import htmlDiv
-
 class Verbatim_Macro(object):
     def name(self):
         return 'Verbatim'

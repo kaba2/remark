@@ -4,7 +4,7 @@
 # Detail: Presents mathematics.
 
 from Remark.Macro_Registry import registerMacro
-from Remark.FileSystem import htmlDiv, htmlInject
+from Remark.FileSystem import markdownRegion
 
 class Equation_Macro(object):
     def name(self):
@@ -32,10 +32,16 @@ class Equation_Macro(object):
             parameter[0] = "''" + parameter[0]
             parameter[-1] += "''"
 
-        text = htmlDiv(parameter, bodyClassName)
-        text += htmlDiv([str(equationNumber)], numberClassName, 'span', 'text')
+        text = markdownRegion(parameter, {'class' : bodyClassName})
+        text += markdownRegion(
+            [str(equationNumber)], 
+            {
+                'class' : numberClassName,
+                'content' : 'text'
+            }, 
+            'span')
 
-        return htmlDiv(text, className)
+        return markdownRegion(text, {'class' : className})
 
     def expandOutput(self):
         return False

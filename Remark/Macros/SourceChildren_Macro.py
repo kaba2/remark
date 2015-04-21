@@ -1,3 +1,4 @@
+
 # -*- coding: utf-8 -*-
 
 # Description: SourceChildren macro
@@ -8,7 +9,7 @@ import string
 
 from Remark.Macro_Registry import registerMacro
 from Remark.FileSystem import unixRelativePath, escapeMarkdown
-from Remark.FileSystem import withoutFileExtension, htmlDiv
+from Remark.FileSystem import withoutFileExtension, markdownRegion
 from Remark.DocumentType_Registry import outputDocumentName
 
 class SourceChildren_Macro(object):
@@ -186,7 +187,7 @@ class SourceChildren_Macro(object):
                 text.append('* ' + remark.remarkLink(escapeMarkdown(child.fileName),
                             document, child))
             
-        return htmlDiv(text, self.className);
+        return markdownRegion(text, {'class' : self.className});
 
     def expandOutput(self):
         return True

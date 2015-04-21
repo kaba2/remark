@@ -4,14 +4,14 @@
 # Detail: Copies the input to output and treats it as html.
 
 from Remark.Macro_Registry import registerMacro
-from Remark.FileSystem import htmlInject
+from Remark.FileSystem import addDummyHtmlNewLines
 
 class Html_Macro(object):
     def name(self):
         return 'Html'
 
     def expand(self, parameter, remark):
-        return htmlInject(parameter)
+        return addDummyHtmlNewLines(parameter)
 
     def expandOutput(self):
         return False
