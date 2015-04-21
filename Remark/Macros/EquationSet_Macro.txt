@@ -10,21 +10,6 @@ into an equation-set html-div.
 
 [EquationMacro]: [[Ref]]: Equation_Macro.txt
 
-
-[[Comment]]:
-	!!! div(outer)
-		asdfsdfa
-		asdfdas
-
-		asdfasfsdaf
-		!!! div(inner)
-			asdfdas
-		!!! div(inner2)
-			asdfdas
-		outer
-
-		outer
-
 Properties
 ----------
 
