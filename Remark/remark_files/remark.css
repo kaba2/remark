@@ -535,6 +535,13 @@ in the 'remark-footer' div. */
 
 /* EquationSet */
 
+#remark .EquationSet ol
+{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
 #remark .EquationSet li
 {
     list-style-type: none;
@@ -542,10 +549,11 @@ in the 'remark-footer' div. */
 
 /* Equation */
 
-#remark div.Equation
+#remark .Equation
 {
-    display: block;
-	padding-bottom: 0.5em;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
 #remark .Equation-Body
@@ -555,12 +563,11 @@ in the 'remark-footer' div. */
 
 #remark .Equation-Number
 {
-	visibility: hidden;
+    /*display: none;*/
     padding: 0;
     margin: 0;
-    font-size: 1.5em;
-    color: rgb(190, 190, 0);
-    float: right;
+    font-size: 1.25em;
+    color: black;
 }
 
 #remark span.Equation-Number:after
