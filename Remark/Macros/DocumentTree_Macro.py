@@ -65,12 +65,12 @@ class DocumentTree_Macro(object):
         if text == ['']:
             return []
 
-        text = markdownRegion(text, {'class' : self.className})
-
-        return text
+        return markdownRegion(
+            remark.convert(text), 
+            {'class' : self.className})
 
     def expandOutput(self):
-        return True
+        return False
 
     def htmlHead(self, remark):
         return []                

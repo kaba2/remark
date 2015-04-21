@@ -67,7 +67,7 @@ class DocChildren_Macro(object):
         return text
 
     def expandOutput(self):
-        return True
+        return False
 
     def htmlHead(self, remark):
         return []                

@@ -61,12 +61,12 @@ class Index_Macro(object):
                     
         text.append('')
 
-        text = markdownRegion(text, {'class' : className})
-
-        return text
+        return markdownRegion(
+            remark.convert(text), 
+            {'class' : className})
 
     def expandOutput(self):
-        return True
+        return False
 
     def htmlHead(self, remark):
         return []                
