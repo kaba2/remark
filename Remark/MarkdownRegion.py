@@ -48,34 +48,36 @@ class MarkdownRegion_BlockProcessor(BlockProcessor):
 
     introPattern = r'(?:^|\n)!!!'
     whitespacePattern = r'[ \t]*'
-    namePattern = r'([\w\-]*?)'
-    commaPattern = whitespacePattern + r',' + whitespacePattern
-    tagNamePattern = namePattern
-    classNamePattern = namePattern
-    contentTypePattern = namePattern
+    namePattern = r'([\w\-]*)'
+    stringPattern = r'"([\w\- \t]*)"'
     trailingWhitespacePattern = r'[ \t]*\n?'
 
-    pattern = (
+    keyPattern = (
+        r'(?:' +
+        namePattern +
+        whitespacePattern + 
+        r'=' +
+        whitespacePattern +
+        stringPattern +
+        whitespacePattern +
+        r')')
+
+    regionPattern = (
         introPattern + 
         whitespacePattern + 
-        tagNamePattern + 
+        r'<' +
+        namePattern + 
         whitespacePattern + 
-        r'\(' +
-            whitespacePattern + 
-            classNamePattern +
-            r'(?:' + 
-              commaPattern +
-              contentTypePattern + 
-            r')?' + 
-            whitespacePattern +
-        r'\)' +
+        r'(' + keyPattern + r'*)' +
+        r'>' +
         trailingWhitespacePattern)
 
-    regex = re.compile(pattern)
+    regionRegex = re.compile(regionPattern)
+    keyRegex = re.compile(keyPattern)
 
     def test(self, parent, block):
         sibling = self.lastChild(parent)
-        return self.regex.search(block) or \
+        return self.regionRegex.search(block) or \
             (block.startswith(' ' * self.tab_length) and 
             sibling is not None and
             sibling.tag == 'region')
@@ -89,7 +91,7 @@ class MarkdownRegion_BlockProcessor(BlockProcessor):
         blocks[0 : 0] = parsedSet        
         block = blocks.pop(0)
 
-        match = self.regex.search(block)
+        match = self.regionRegex.search(block)
         if match:
             block = block[match.end():]
 
@@ -100,28 +102,23 @@ class MarkdownRegion_BlockProcessor(BlockProcessor):
             if tagName == '':
             	tagName = 'div'
 
-            className = match.group(2)
-
-            contentType = match.group(3)
-            if contentType == '':
-            	contentType = 'markdown'
-
             region = etree.SubElement(
                 parent, 'region',
                 {
                     'tag' : tagName,
-                    'content': contentType
                 })
 
-            if className != '':
-            	region.set('class', className)
-
+            keySet = match.group(2)
+            for keyMatch in self.keyRegex.finditer(keySet):
+                key = keyMatch.group(1)
+                value = keyMatch.group(2)
+                region.set(key, value)
         else:
             region = sibling
 
-        if region.get('content') == 'markdown':
+        if region.get('content', 'markdown') == 'markdown':
         	self.parser.parseChunk(region, block)
-        elif region.get('content') == 'text':
+        elif region.get('content', 'markdown') == 'text':
         	if region.text == None:
         		region.text = block
         	else:
@@ -139,7 +136,7 @@ class MarkdownRegion_BlockProcessor(BlockProcessor):
         # print 'PARSE'
         # print repr(block)
         # print len(block)
-        for match in re.finditer(self.regex, block):
+        for match in re.finditer(self.regionRegex, block):
             if match.start() != previousStart:
                 newBlock = block[previousStart : match.start()]
                 blockSet.append(newBlock)
@@ -172,5 +169,6 @@ class MarkdownRegion_TreeProcessor(Treeprocessor):
         for element in root.findall(".//region"):
             element.tag = element.get('tag', 'div')
             element.attrib.pop('tag')
-            element.attrib.pop('content')
+            if element.attrib.get('content') != None:
+                element.attrib.pop('content')
 
