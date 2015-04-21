@@ -142,10 +142,21 @@ def htmlDiv(enclosedText, className = '', elementName = 'div', contentType = 'ma
     '''
     text = []
 
-    regionText = '!!! ' + elementName + '(' + className
-    if contentType != 'markdown':
-    	regionText += ', ' + contentType
-    regionText += ')'
+    className = className.strip()
+    elementName = elementName.strip()
+    contentType = contentType.strip()
+
+    regionText = '!!! <' 
+
+    regionText += elementName
+    
+    if className != '':
+        regionText +=' class = "' + className + '"'
+
+    if contentType != '' and contentType != 'markdown':
+        regionText += ' content = "' + contentType + '"'
+
+    regionText += '>'
     
     text.append(regionText)
 
