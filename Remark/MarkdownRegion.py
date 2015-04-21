@@ -46,29 +46,29 @@ class MarkdownRegion_Extension(Extension):
 
 class MarkdownRegion_BlockProcessor(BlockProcessor):
 
-    introPattern = r"(?:^|\n)!!!"
+    introPattern = r'(?:^|\n)!!!'
     whitespacePattern = r'[ \t]*'
     namePattern = r'([\w\-]*?)'
+    commaPattern = whitespacePattern + r',' + whitespacePattern
     tagNamePattern = namePattern
     classNamePattern = namePattern
     contentTypePattern = namePattern
-    trailingWhitespacePattern = r'[ \t]*\n'
+    trailingWhitespacePattern = r'[ \t]*\n?'
 
     pattern = (
-    	introPattern + 
-    	whitespacePattern + 
-    	tagNamePattern + 
-    	whitespacePattern + 
-    	r'\(' + 
-    		classNamePattern + 
-    		r'(?:' + 
-    			whitespacePattern + 
-    			r',' + 
-    			whitespacePattern + 
-    			contentTypePattern + 
-    		r')?' + 
-    		whitespacePattern + 
-    	r'\)' +
+        introPattern + 
+        whitespacePattern + 
+        tagNamePattern + 
+        whitespacePattern + 
+        r'\(' +
+            whitespacePattern + 
+            classNamePattern +
+            r'(?:' + 
+              commaPattern +
+              contentTypePattern + 
+            r')?' + 
+            whitespacePattern +
+        r'\)' +
         trailingWhitespacePattern)
 
     regex = re.compile(pattern)
@@ -103,7 +103,7 @@ class MarkdownRegion_BlockProcessor(BlockProcessor):
             className = match.group(2)
 
             contentType = match.group(3)
-            if contentType == '' or contentType == None:
+            if contentType == '':
             	contentType = 'markdown'
 
             region = etree.SubElement(
@@ -136,15 +136,22 @@ class MarkdownRegion_BlockProcessor(BlockProcessor):
     def parseBlocks(self, block):
         previousStart = 0;
         blockSet = []
+        # print 'PARSE'
+        # print repr(block)
+        # print len(block)
         for match in re.finditer(self.regex, block):
-            if match:
-                if match.start() != previousStart:
-                    newBlock = block[previousStart : match.start()]
-                    blockSet.append(newBlock)
-                    previousStart = match.start()
+            if match.start() != previousStart:
+                newBlock = block[previousStart : match.start()]
+                blockSet.append(newBlock)
+                # print 'MATCH', previousStart, match.start()
+                # print repr(newBlock)
+                previousStart = match.start()
         
         if previousStart < len(block):
-            blockSet.append(block[previousStart : ])
+            newBlock = block[previousStart : ]
+            blockSet.append(newBlock)
+            # print 'LAST-MATCH', previousStart, len(block)
+            # print repr(newBlock)
 
         return blockSet
 
