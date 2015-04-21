@@ -46,7 +46,7 @@ class MarkdownRegion_Extension(Extension):
 
 class MarkdownRegion_BlockProcessor(BlockProcessor):
 
-    introPattern = r'(?:^|\n)!!!'
+    introPattern = r'(?:^|\n)(!!!)'
     whitespacePattern = r'[ \t]*'
     namePattern = r'([\w\-]*)'
     stringPattern = r'"([\w\- \t]*)"'
@@ -83,52 +83,121 @@ class MarkdownRegion_BlockProcessor(BlockProcessor):
             sibling.tag == 'region')
 
     def run(self, parent, blocks):
-        sibling = self.lastChild(parent)
         block = blocks.pop(0)
 
+        # A block is a Markdown concept, which means
+        # text without empty lines.
+
+        # Suppose we are given a block like this:
+        #
+        # !!! <div class = "A">
+        #     Stuff
+        # !!! <div class = "B">
+        # !!! <div class = "C">
+        #     !!! <div class = "C-A">
+        #
+        # Then we would like to handle the different
+        # <div>-regions separately. The parseBlacks()
+        # function separates the regions A, B and C 
+        # into a list of texts.
         parsedSet = self.parseBlocks(block)
 
+        # Push the separated regions back to the set
+        # of blocks to handle.
         blocks[0 : 0] = parsedSet        
+
+        # Pick the first separated block. In our example,
+        # this is
+        #
+        # !!! <div class = "A">
+        #     Stuff
         block = blocks.pop(0)
 
+        # Since there can be empty lines, a subsequent part 
+        # of the region may be denoted by indentation. Therefore,
+        # there are two cases:
+        #
+        # 1) Block begins with !!! <div class = "A">
+        # 2) Block begins with indentation, and is preceded
+        # by a case-1-block, or a case-2-block.
+        #
+        # Note that self.test() checks exactly for these
+        # conditions, and the self.run() is only run for
+        # blocks which pass self.test().
+
+        # Check whether we have case 1.
         match = self.regionRegex.search(block)
         if match:
-            block = block[match.end():]
+            # This is case 1.
 
-        block, theRest = self.detab(block)
+            # The !!! <div class = "A"> part contains
+            # all the data concerning the generated 
+            # html-element.
 
-        if match:
-            tagName = match.group(1)
+            # Extract the region tag.
+            tagName = match.group(2)
             if tagName == '':
             	tagName = 'div'
 
+            # Create a 'region' sub-element for the current 
+            # element-tree node. The 'region' element does not
+            # exist in html; we will change the tag later.
             region = etree.SubElement(
                 parent, 'region',
                 {
-                    'tag' : tagName,
+                    # The actual element-tag is stored as an attribute.
+                    'tag' : tagName
                 })
 
-            keySet = match.group(2)
+            # Set the key-value pairs as element attributes.
+            keySet = match.group(3)
             for keyMatch in self.keyRegex.finditer(keySet):
                 key = keyMatch.group(1)
                 value = keyMatch.group(2)
                 region.set(key, value)
+
+            # Remove the !!! <div class = "A">  part from the
+            # block, so that we get to the actual content in the 
+            # region.
+            block = block[match.end():]
         else:
-            region = sibling
+            # This is case 2.
+
+            # Rather than creating a new html-element,
+            # we append the indented content into the
+            # previously created element.
+            region = self.lastChild(parent)
+
+        # In either case, we now have indented content.
+        # However, it may be followed by unindented content:
+        # 
+        #     Stuff
+        # Stuff ended, and now something else follows.
+
+        # Deindent one level from the block.
+        block, theRest = self.detab(block)
+
+        # The unindented stuff following the indented stuff
+        # is stored in 'theRest'. 
+        if theRest:
+            # Insert the unindented stuff back into the set
+            # of blocks to process.
+            blocks.insert(0, theRest)
+
+        # At this point, the block consists solely of the
+        # indented content, which has been deindented.
 
         if region.get('content', 'markdown') == 'markdown':
+            # The content is to be interpreted as Markdown.
+            # Parse the block recursively.
         	self.parser.parseChunk(region, block)
         elif region.get('content', 'markdown') == 'text':
-        	if region.text == None:
-        		region.text = block
-        	else:
-        		region.text += block
-
-        if theRest:
-            # This block contained unindented line(s) after the first indented
-            # line. Insert these lines as the first block of the master blocks
-            # list for future processing.
-            blocks.insert(0, theRest)
+            # The content is to be interpreted as raw text.
+            # Store or append it to the element's text field.
+            if region.text == None:
+                region.text = block
+            else:
+                region.text += block
 
     def parseBlocks(self, block):
         previousStart = 0;
@@ -138,11 +207,11 @@ class MarkdownRegion_BlockProcessor(BlockProcessor):
         # print len(block)
         for match in re.finditer(self.regionRegex, block):
             if match.start() != previousStart:
-                newBlock = block[previousStart : match.start()]
+                newBlock = block[previousStart : match.start(1)]
                 blockSet.append(newBlock)
-                # print 'MATCH', previousStart, match.start()
+                # print 'MATCH', previousStart, match.start(1)
                 # print repr(newBlock)
-                previousStart = match.start()
+                previousStart = match.start(1)
         
         if previousStart < len(block):
             newBlock = block[previousStart : ]
