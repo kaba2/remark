@@ -563,7 +563,8 @@ in the 'remark-footer' div. */
 
 #remark .Equation-Number
 {
-    /*display: none;*/
+    /* Remove the equation-number. */
+    display: none;
     padding: 0;
     margin: 0;
     font-size: 1.25em;
