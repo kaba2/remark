@@ -174,15 +174,10 @@ class MarkdownRegion_BlockProcessor(BlockProcessor):
         #     Stuff
         # Stuff ended, and now something else follows.
 
-        # Deindent one level from the block.
+        # Deindent one level from the block, and store the
+        # unindented stuff following the indented stuff
+        # in 'theRest'. 
         block, theRest = self.detab(block)
-
-        # The unindented stuff following the indented stuff
-        # is stored in 'theRest'. 
-        if theRest:
-            # Insert the unindented stuff back into the set
-            # of blocks to process.
-            blocks.insert(0, theRest)
 
         # At this point, the block consists solely of the
         # indented content, which has been deindented.
@@ -190,7 +185,9 @@ class MarkdownRegion_BlockProcessor(BlockProcessor):
         if region.get('content', 'markdown') == 'markdown':
             # The content is to be interpreted as Markdown.
             # Parse the block recursively.
-        	self.parser.parseChunk(region, block)
+            # print 'TO MARKDOWN'
+            # print block
+            self.parser.parseChunk(region, block)
         elif region.get('content', 'markdown') == 'text':
             # The content is to be interpreted as raw text.
             # Store or append it to the element's text field.
@@ -198,6 +195,11 @@ class MarkdownRegion_BlockProcessor(BlockProcessor):
                 region.text = block
             else:
                 region.text += block
+
+        if theRest:
+            # Insert the unindented stuff back into the set
+            # of blocks to process. 
+            blocks.insert(0, theRest)
 
     def parseBlocks(self, block):
         previousStart = 0;
@@ -223,7 +225,7 @@ class MarkdownRegion_BlockProcessor(BlockProcessor):
 
 
 def makeExtension(*args, **kwargs):
-    return RegionExtension(*args, **kwargs)
+    return MarkdownRegion_Extension(*args, **kwargs)
 
 class MarkdownRegion_TreeProcessor(Treeprocessor):
     """
