@@ -101,6 +101,33 @@ def addHtmlBoilerPlate(text, document, htmlHead):
 
     return htmlText
 
+def createMarkdownParser():
+    '''
+    Creates a Markdown-parser with
+    * some standard extensions,
+    * the Math extension, and
+    * the Region extension.
+    '''
+
+    from Remark.MarkdownRegion import MarkdownRegion_Extension
+    from Remark.MarkdownMath import MarkdownMath_Extension
+
+    markdownParser = markdown.Markdown(
+        extensions = [
+            'admonition',
+            'tables', 
+            'abbr', 
+            'def_list',
+            MarkdownRegion_Extension(),
+            MarkdownMath_Extension()
+        ])
+
+    # for item in markdownParser.inlinePatterns:
+    #     print item
+    # sys.exit(0)
+
+    return markdownParser
+
 def convertRemarkToMarkdown(remarkText, document, documentTree, 
                             outputRootDirectory, reporter = Reporter()):
     '''
@@ -124,63 +151,6 @@ def convertRemarkToMarkdown(remarkText, document, documentTree,
     # Return the resulting Markdown text.
     return markdownText, remark.htmlHeader()
 
-from markdown.inlinepatterns import Pattern
-from markdown.util import etree, AtomicString
-
-class Math_Pattern(Pattern):
-    def __init__(self, beginString, endString, scriptType, className):
-        self.className = className
-        self.scriptType = scriptType
-        self.pattern = (
-            r'^(.*?)' +
-            re.escape(beginString) +
-            r'(.*?)' +
-            re.escape(endString) +
-            r'(.*?)$'
-            )
-        self.regex = re.compile(self.pattern, re.DOTALL | re.UNICODE)
-
-    def getCompiledRegExp(self):
-        return self.regex
-
-    def handleMatch(self, match):
-        # We need a span-element to be able to assign
-        # a class-identifier for CSS-styling. Why not
-        # assign a class to the <script> element?
-        # Because MathJax gets rid of it, and so it
-        # cannot be used for styling.
-        spanElement = etree.Element(
-            'span', 
-            {
-                'class' : self.className
-            })
-
-        scriptElement = etree.SubElement(
-            spanElement,
-            'script', 
-            {
-                'type' : self.scriptType
-            })
-
-        # Inside a <script> element, the characters are interpreted
-        # as CDATA, and the first occurrence of </ is interpreted
-        # as the beginning of the end-tag </script>. Therefore,
-        # if the mathematics contains a </, we need to convert it
-        # to something else. We interpret </ as a combination of 
-        # less-than and division, and therefore replace it with < /.
-        escapedMatch = (
-            match.group(2)
-            .replace('</', '< /')
-        )
-
-        # The AtomicString makes sure that the expression will not
-        # be considered by the other inline patterns. 
-        scriptElement.text = AtomicString(escapedMatch)
-
-        return spanElement
-
-from Remark.MarkdownRegion import MarkdownRegion_Extension
-
 def convertMarkdownToHtml(
     markdownText, headText, 
     document, documentTree, 
@@ -198,63 +168,18 @@ def convertMarkdownToHtml(
     documentTree (DocumentTree):
     The underlying document tree.
 
-    outputRootDirectory
+    outputRootDirectory (string):
+    The root directory of the output.
 
     returns (list of strings):
     The converted html text.
     '''
 
+    # Create a Markdown parser with Remark extensions.
+    markdownParser = createMarkdownParser()
+
     # Convert Markdown to html.
-    markdownConverter = markdown.Markdown(
-        extensions = [
-            'tables', 
-            'abbr', 
-            'def_list',
-            MarkdownRegion_Extension()
-        ])
-
-    # Add math inline-patterns.
-
-    # Math in backticks should not be interpreted
-    # as math. Therefore, `backticks` inline-pattern
-    # should run before math.
-
-    # The `escape` inline-pattern does Markdown-escaping,
-    # and therefore should not run on math. Therefore,
-    # math inline-pattern must run before the `escape`
-    # inline-pattern.
-
-    # The math inline-patterns block future inline-patterns 
-    # from modifying the math (by using AtomicString in 
-    # Math_Pattern).
-
-    # First run latex display-math $$, because
-    # otherwise $ would incorrectly handle it.
-    # Notice how we use 'div' for display-math.
-    markdownConverter.inlinePatterns.add(
-        'display-latex-math', 
-        Math_Pattern('$$', '$$', 'math/tex; mode=display', 'display-latex-math'), 
-        '<escape' )
-
-    # Then run Latex inline-math $. 
-    # Notice how we use 'span' for inline-math.
-    markdownConverter.inlinePatterns.add(
-        'inline-latex-math', 
-        Math_Pattern('$', '$', 'math/tex', 'latex-math'), 
-        '>display-latex-math' )
-
-    # Finally run Asciimath inline-math ''.
-    # Notice how we use 'span' for inline-math.
-    markdownConverter.inlinePatterns.add(
-        'inline-ascii-math', 
-        Math_Pattern("''", "''", 'math/asciimath', 'ascii-math'), 
-        '>inline-latex-math' )
-
-    # for item in markdownConverter.inlinePatterns:
-    #     print item
-    # sys.exit(0)
-
-    htmlString = markdownConverter.convert(string.join(markdownText, '\n'))
+    htmlString = markdownParser.convert(string.join(markdownText, '\n'))
     htmlText = string.split(htmlString, '\n')
 
     # Remark injects html code directly into the 
@@ -316,6 +241,7 @@ def convertRemarkToHtml(remarkText, document, documentTree,
                                  remarkText, document, documentTree,
                                  outputRootDirectory, reporter)
 
+    # Convert Markdown to html.
     return convertMarkdownToHtml(
         markdownText, 
         headText, 
