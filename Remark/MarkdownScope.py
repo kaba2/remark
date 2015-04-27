@@ -174,8 +174,15 @@ class MarkdownScope_TreeProcessor(Treeprocessor):
             'li'
         }
 
+        # The set of elements which to remove if they
+        # become empty due to moving the link-definition.
+        emptyElementSet = {
+            'p'
+        }
+
         parentSet = {c:p for p in root.iter() for c in p}
 
+        removeSet = []
         while True:
             changed = False
             for child in root.findall('.//scoped-link-definition'):
@@ -186,8 +193,15 @@ class MarkdownScope_TreeProcessor(Treeprocessor):
                     grandParent.append(child)
                     parentSet[child] = grandParent
                     changed = True
+                    if (parent.tag in emptyElementSet and
+                        len(parent) == 0):
+                        removeSet.append((parent, grandParent))
+
             if not changed:
                 break
+
+        for (parent, grandParent) in removeSet:
+            grandParent.remove(parent)
 
     def gatherLinkSets(self, root):
         '''
