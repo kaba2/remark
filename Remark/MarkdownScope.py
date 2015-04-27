@@ -56,7 +56,7 @@ class Markdown_LinkDefinition_Pattern(Pattern):
     # form.
     linkDefinitionPattern = (
         r'^(.*?)' +
-        r'[ ]{0,3}\[([^\]]*)\]:\s*([^ ]*)[ ]*(%s)?' % titlePattern +
+        r'[ ]{0,3}\[([^\]]*)\]:\s*([^ \n]*)[ ]*(?:\n)?(%s)?' % titlePattern +
         r'(.*?)$'
         )
 
@@ -203,8 +203,6 @@ class MarkdownScope_TreeProcessor(Treeprocessor):
                 title = child.get('title')
                 url = child.get('url')
 
-                # print 'LINK: ', id, title, url
-
                 linkSet[id] = Link(title, url)
 
         if len(linkSet) > 0:
@@ -223,12 +221,8 @@ class MarkdownScope_TreeProcessor(Treeprocessor):
             if child.tag == 'scoped-reference':
                 child.tag = 'a'
                 id = child.get('id')
-                #print 'REFERENCE: ', id
-                #print scope
                 link = scope.get(id)
-                # print 'FINDING ', id
                 if link != None:
-                    # print 'FOUND'
                     child.set('href', link.url)
                     child.set('title', link.title)
                 child.attrib.pop('id')
