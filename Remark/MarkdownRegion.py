@@ -82,8 +82,8 @@ class MarkdownRegion_BlockProcessor(BlockProcessor):
             sibling is not None and
             sibling.tag == 'region')
 
-    def run(self, parent, blocks):
-        block = blocks.pop(0)
+    def run(self, parent, blockSet):
+        block = blockSet.pop(0)
 
         # A block is a Markdown concept, which means
         # text without empty lines.
@@ -104,14 +104,14 @@ class MarkdownRegion_BlockProcessor(BlockProcessor):
 
         # Push the separated regions back to the set
         # of blocks to handle.
-        blocks[0 : 0] = parsedSet        
+        blockSet[0 : 0] = parsedSet        
 
         # Pick the first separated block. In our example,
         # this is
         #
         # !!! <div class = "A">
         #     Stuff
-        block = blocks.pop(0)
+        block = blockSet.pop(0)
 
         # Since there can be empty lines, a subsequent part 
         # of the region may be denoted by indentation. Therefore,
@@ -199,7 +199,7 @@ class MarkdownRegion_BlockProcessor(BlockProcessor):
         if theRest:
             # Insert the unindented stuff back into the set
             # of blocks to process. 
-            blocks.insert(0, theRest)
+            blockSet.insert(0, theRest)
 
     def parseBlocks(self, block):
         previousStart = 0;
