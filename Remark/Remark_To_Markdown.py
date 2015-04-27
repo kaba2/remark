@@ -291,11 +291,12 @@ class Remark(object):
         # Form the Markdown link.
         text = '[' + description + '][' + name + ']'
         
-        # We defer defining the link because the link
-        # could be an inline link. Instead we store the
+        # To maintain pretty Markdown output, we store the
         # definitions so that we can output them to the
         # end of the document. 
         self.linkSet.append((name, unixDirectoryName(htmlLink)))
+
+        #text = '[' + description + ']<' + unixDirectoryName(htmlLink) + '>'
         
         return text
     

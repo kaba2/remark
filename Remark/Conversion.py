@@ -103,14 +103,16 @@ def addHtmlBoilerPlate(text, document, htmlHead):
 
 def createMarkdownParser():
     '''
-    Creates a Markdown-parser with
-    * some standard extensions,
-    * the Math extension, and
-    * the Region extension.
+    Creates a Markdown-parser, but
+    * remove the Reference preprocessor,
+    * add the Math extension,
+    * add the Region extension,
+    * add the Scope extension.
     '''
 
     from Remark.MarkdownRegion import MarkdownRegion_Extension
     from Remark.MarkdownMath import MarkdownMath_Extension
+    from Remark.MarkdownScope import Markdown_Scope_Extension
 
     markdownParser = markdown.Markdown(
         extensions = [
@@ -119,7 +121,8 @@ def createMarkdownParser():
             'abbr', 
             'def_list',
             MarkdownRegion_Extension(),
-            MarkdownMath_Extension()
+            MarkdownMath_Extension(),
+            Markdown_Scope_Extension()
         ])
 
     # for item in markdownParser.inlinePatterns:
