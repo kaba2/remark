@@ -24,9 +24,6 @@ Input syntax
 Output syntax
 :	Html
 
-AsciiMath interpretation
-: Disabled
-
 Generating Remark text
 :	
 

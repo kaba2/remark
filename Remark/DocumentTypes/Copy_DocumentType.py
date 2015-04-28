@@ -29,8 +29,5 @@ class Copy_DocumentType(object):
         return fileUpToDate(document.relativeName, documentTree.rootDirectory, 
                             self.outputName(document.relativeName), outputRootDirectory)
 
-    def mathEnabled(self):
-        return False
-
     def outputName(self, fileName):
         return fileName
