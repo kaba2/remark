@@ -1,5 +1,5 @@
 # Description: Markdown math extension
-# Documentation: markdown_math.txt
+# Documentation: math_syntax.txt
 
 from __future__ import absolute_import
 from __future__ import unicode_literals
