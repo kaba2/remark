@@ -1,0 +1,6 @@
+Markdown syntax
+===============
+
+[[Parent]]: remark_syntax.txt
+
+Here you can find information on the original Markdown syntax, and on our various extensions.

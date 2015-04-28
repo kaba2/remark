@@ -1,0 +1,138 @@
+Markdown scoped links - design notes
+====================================
+
+[[Parent]]: markdown_scoped_links.txt
+
+In this section I will argue that link-definitions should follow scoping rules to enable two important principles: the embedding principle and the encapsulation principle.
+
+History
+-------
+
+In April 2015, the Markdown specification was ambiguous on how link-definitions should work. Indeed, the only relevant pieces were that
+
+	Then, anywhere in the document, you define your link label like this, on a line by itself:
+
+	[id]: http://example.com/  "Optional Title Here"
+
+and
+
+	Link definitions can be placed anywhere in your Markdown document.
+
+The Markdown parsers interpreted this to mean that links should always be defined at the global scope. That is, they did not parse link-definitions inside blocks, such as in list items.
+
+Principles
+----------
+
+We study the link-definitions by establishing two important principles.
+
+### Embedding principle
+
+Suppose A and B are valid texts of Markdown, and A contains a sub-element I (e.g. a list item). Then the text formed by copying B into A under I is valid Markdown. In addition, the content of B is faithfully embedded into I; it contains the same information as B does.
+
+### Encapsulation principle
+
+Suppose A is a valid text of Markdown, and A contains a sub-element I (e.g a list item). Then changes to the content of I only affect I and its sub-elements. 
+
+Embedding example
+-----------------
+
+Here is an example of embedding B into A under I.
+
+### Text A
+
+	Things to buy
+
+	* apples
+	* milk
+
+	Also, look up foobar from [Google][].
+
+	[Google]: https://www.google.fi
+
+### Text B
+
+	Foo-Milk. Contains 100 calories, according to [Google][].
+
+	[Google]: https://www.google.com
+
+### Text B embedded into a sub-element I of A
+
+	Things to buy
+
+	* apples
+	* Foo-Milk. Contains 100 calories, according to [Google][].
+
+		[Google]: https://www.google.com
+
+	Also, look up foobar from [Google][].
+
+	[Google]: https://www.google.fi
+
+Where should link-definitions be allowed in Markdown?
+-----------------------------------------------------
+
+We can now evaluate the different design-choices in terms of the two principles.
+
+### Link-definitions only at the top level
+
+In this case, a link-definition is only parsed at the top level. This is how things were in Markdown parsers in April 2015. 
+
+The embedding principle does _not_ hold, because a nested link-definition is not handled.
+
+The encapsulation principle holds, because a nested  link-definitions is not handled at all; there is no leakage of information upwards.
+
+### Link-definitions at any element, without scoping
+
+In this case, a link-definition is parsed at every element, but every link-definition refers to the same global name. That is, all the link-definitions reside in the same scope. To our knowledge, this was not adopted by any parser; it is listed here for completeness.
+
+The embedding principle holds.
+
+The encapsulation principle does _not_ hold. This is because link-definitions in the sub-elements can collide with link-definitions at upper-levels, or indeed with link-definitions in arbitrary elements. As I understand it, the failure of the encapsulation covers the problems you mentioned.
+
+### Link-definitions at any element, with scoping
+
+In this case, a link-definition is parsed at every element. Each element (e.g. a list item) creates a local link-definition-scope. If a link is not defined locally, then it is looked up recursively at the parent scope. This is analogous to how variables are scoped in programming languages. This is how we propose the link-definitions should work.
+
+The embedding principle holds.
+
+The encapsulation principle holds.
+
+Real-life example
+-----------------
+
+The embedding principle is especially important in the presence of [regions][Region]. Consider:
+	
+	!!! <div class="note">
+
+		Things to buy
+
+		* apples
+		* milk
+
+		There is also the Finnish [Google][].
+
+		[Google]: https://www.google.fi
+
+To make the content work exactly as without the wrapping, the embedding principle must hold. As discussed, the Markdown parsers of April 2015 fail the embedding principle.
+
+To demonstrate the encapsulation principle, and the importance of scoping, consider:
+
+	There is the international [Google][].
+
+	[Google]: https://www.google.com
+
+	!!! <div class="note">
+
+		There is also the Finnish [Google][].
+
+		[Google]: https://www.google.fi
+
+Under the proposed design, the link-definition inside the div-region will not leak to the upper levels due to the scoping rules; the encapsulation principle holds.
+
+Conclusion
+----------
+
+We proposed the link-definitions to be allowed to be defined everywhere, with each sub-element creating a local link-definition-scope. This fulfills the embedding principle, and the encapsulation principle.
+
+This proposal is not in contradiction with the (vague) specification. In the long term, the specification itself should be updated and improved to make it more useful and less ambiguous. This is one of such proposals to do so.
+

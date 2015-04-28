@@ -1,3 +1,6 @@
+# Description: Markdown scoped links
+# Documentation: markdown_scoped_links.txt
+
 from __future__ import absolute_import
 from __future__ import unicode_literals
 
