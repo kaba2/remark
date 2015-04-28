@@ -31,4 +31,5 @@ The region extension provides a robust way to wrap content into html-elements. I
 History
 -------
 
-The region extension was written because, in April 2015, Python Markdown had problems interleaving Markdown and html. While this worked reasonably well in old versions of Python Markdown, it did not work anymore in newer versions. We solved this by extending Python Markdown with regions.
+The region extension was written because, in April 2015, Python Markdown had problems interleaving Markdown and html. While this worked reasonably well in old versions of Python Markdown, it did not work anymore in newer versions. We solved this by extending Python Markdown with regions. The `!!!` notation was chosen because the admonition extension already used it.
+
