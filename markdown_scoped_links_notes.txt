@@ -87,7 +87,7 @@ In this case, a link-definition is parsed at every element, but every link-defin
 
 The embedding principle holds.
 
-The encapsulation principle does _not_ hold. This is because link-definitions in the sub-elements can collide with link-definitions at upper-levels, or indeed with link-definitions in arbitrary elements. As I understand it, the failure of the encapsulation covers the problems you mentioned.
+The encapsulation principle does _not_ hold. This is because link-definitions in the sub-elements can collide with link-definitions at upper-levels, or indeed with link-definitions in arbitrary elements. 
 
 ### Link-definitions at any element, with scoping
 
@@ -97,42 +97,10 @@ The embedding principle holds.
 
 The encapsulation principle holds.
 
-Real-life example
------------------
-
-The embedding principle is especially important in the presence of [regions][Region]. Consider:
-	
-	!!! <div class="note">
-
-		Things to buy
-
-		* apples
-		* milk
-
-		There is also the Finnish [Google][].
-
-		[Google]: https://www.google.fi
-
-To make the content work exactly as without the wrapping, the embedding principle must hold. As discussed, the Markdown parsers of April 2015 fail the embedding principle.
-
-To demonstrate the encapsulation principle, and the importance of scoping, consider:
-
-	There is the international [Google][].
-
-	[Google]: https://www.google.com
-
-	!!! <div class="note">
-
-		There is also the Finnish [Google][].
-
-		[Google]: https://www.google.fi
-
-Under the proposed design, the link-definition inside the div-region will not leak to the upper levels due to the scoping rules; the encapsulation principle holds.
-
 Conclusion
 ----------
 
-We proposed the link-definitions to be allowed to be defined everywhere, with each sub-element creating a local link-definition-scope. This fulfills the embedding principle, and the encapsulation principle.
+We proposed the link-definitions to be allowed to be defined everywhere, with some of the elements creating a local link-definition-scope. This fulfills the embedding principle and the encapsulation principle.
 
-This proposal is not in contradiction with the (vague) specification. In the long term, the specification itself should be updated and improved to make it more useful and less ambiguous. This is one of such proposals to do so.
+This proposal is not in contradiction with the (vague) specification of link-definitions in the Markdown specification. In the long term, the Markdown specification should be updated to make it more useful and less ambiguous. This is one of such proposals to do so.
 
