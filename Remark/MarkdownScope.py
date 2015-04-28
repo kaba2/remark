@@ -173,8 +173,14 @@ class MarkdownScope_TreeProcessor(Treeprocessor):
         # The set of elements which create a new scope
         # for the link-definitions.
         scopeElementSet = {
+            # Block
             'div',
-            'li'
+            # List item
+            'li',
+            # Definition
+            'dd',
+            # Table item
+            'td'
         }
 
         # The set of elements which to remove if they
