@@ -25,7 +25,3 @@ Input syntax:
 
 Output syntax:
 :	Same as input syntax.
-
-AsciiMath interpretation
-:	Disabled
-

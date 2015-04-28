@@ -41,8 +41,5 @@ class RemarkPage_DocumentType(object):
         return fileUpToDate(document.relativeName, documentTree.rootDirectory, 
                             self.outputName(document.relativeName), outputRootDirectory)
 
-    def mathEnabled(self):
-        return True
-
     def outputName(self, fileName):
         return changeExtension(fileName, '.htm')

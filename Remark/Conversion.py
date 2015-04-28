@@ -59,8 +59,18 @@ from Remark.DocumentType_Registry import documentType, outputDocumentName
 from Remark.DocumentTree import createDocumentTree
 from Remark_To_Markdown import Remark
 
+mathPattern = r'<script[ \t]+type[ \t]*=[ \t]*"math'
+mathRegex = re.compile(mathPattern)
+
 def addHtmlBoilerPlate(text, document, htmlHead):
     remarkDirectory = os.path.relpath('remark_files', document.relativeDirectory)
+
+    # Check whether the document contains mathematics.
+    includeMath = False
+    for line in text:
+        if mathRegex.search(line) != None:
+            includeMath = True
+            break
     
     # Add boilerplate code.
    
@@ -70,7 +80,7 @@ def addHtmlBoilerPlate(text, document, htmlHead):
     remarkCss = unixDirectoryName(os.path.normpath(os.path.join(remarkDirectory, 'remark.css')))
     pygmentsCss = unixDirectoryName(os.path.normpath(os.path.join(remarkDirectory, 'pygments.css')))
     mathJaxConfig = unixDirectoryName(os.path.normpath(os.path.join(remarkDirectory, 'mathjax-config.js')))
-            
+
     htmlText = []
     htmlText.append('<!DOCTYPE html>')
     htmlText.append('<html>')
@@ -81,8 +91,9 @@ def addHtmlBoilerPlate(text, document, htmlHead):
     htmlText.append('<link rel="stylesheet" type="text/css" href="' + remarkCss + '"/>')
     htmlText.append('<link rel="stylesheet" type="text/css" href="' + pygmentsCss + '"/>')
 
-    htmlText.append('<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?delayStartupUntilConfig"></script>')
-    htmlText.append('<script type="text/javascript" src="' + mathJaxConfig + '"></script>')
+    if includeMath:
+        htmlText.append('<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?delayStartupUntilConfig"></script>')
+        htmlText.append('<script type="text/javascript" src="' + mathJaxConfig + '"></script>')
 
     htmlText += htmlHead
 

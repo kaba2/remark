@@ -29,8 +29,5 @@ class DirectoryView_DocumentType(object):
     def upToDate(self, document, documentTree, outputRootDirectory):
         return False
 
-    def mathEnabled(self):
-        return False
-
     def outputName(self, fileName):
         return changeExtension(fileName, '.htm')
