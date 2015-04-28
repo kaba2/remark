@@ -3,7 +3,7 @@ Markdown scoped links - design notes
 
 [[Parent]]: markdown_scoped_links.txt
 
-In this section I will argue that link-definitions should follow scoping rules to enable two important principles: the embedding principle and the encapsulation principle.
+In this section I will argue that Markdown link-definitions should follow scoping rules to enable two important principles: the embedding principle and the encapsulation principle.
 
 History
 -------
