@@ -52,7 +52,7 @@ Example
 History
 -------
 
-The [region extension][Region] extended Markdown with new kinds of blocks where it is very natural that link-definitions are encapsulated in them. Surprisingly, in April 2015, Python Markdown ignored link-definitions inside regions. The reason for this was simple: Python Markdown only supported link-definitions at the _global scope_. According to the maintainer of Python Markdown, this was also the behavior in other Markdown parsers. Since, in April 2015, he did not have an interest on implementing scoped links, we wrote an extension ourselves.
+The [region extension][Region] extended Markdown with new kinds of blocks where it was natural for link-definitions to be embedded in them. Surprisingly, in April 2015, Python Markdown ignored link-definitions inside regions. This was because it only supported link-definitions at the _global scope_. According to the maintainer of Python Markdown, this was also the behavior in other Markdown parsers. Since he declared not wanting to implement scoped links, we wrote an extension ourselves.
 
 [Region]: [[Ref]]: markdown_region.txt
 [BugReport]: https://github.com/waylan/Python-Markdown/issues/406
