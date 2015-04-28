@@ -18,8 +18,9 @@ Disabled.
 
 ### Parameters
 
-As a macro: None. As a tag: used to deduce parent-child
-relations.
+As a macro: None. 
+
+As a tag: used to deduce parent-child relations.
 
 ### Variables
 
