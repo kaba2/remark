@@ -112,7 +112,7 @@ def createMarkdownParser():
 
     from Remark.MarkdownRegion import MarkdownRegion_Extension
     from Remark.MarkdownMath import MarkdownMath_Extension
-    from Remark.MarkdownScope import Markdown_Scope_Extension
+    from Remark.MarkdownScope import MarkdownScope_Extension
 
     markdownParser = markdown.Markdown(
         extensions = [
@@ -122,7 +122,7 @@ def createMarkdownParser():
             'def_list',
             MarkdownRegion_Extension(),
             MarkdownMath_Extension(),
-            Markdown_Scope_Extension()
+            MarkdownScope_Extension()
         ])
 
     # for item in markdownParser.inlinePatterns:
