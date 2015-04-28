@@ -19,6 +19,7 @@ Release date 20.04.2015.
 * Bypassed nested Markdown-html handling in Python Markdown. This was needed to upgrade to the latest Python Markdown.
 * Changed to use Python Markdown 2.6. 
 * Extended Python Markdown to parse mathematics directly as a new inline-pattern.
+* Fixed indentation macro from being too eager.
 
 ### Mathematics
 
