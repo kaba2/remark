@@ -3,10 +3,7 @@ Html macro
 
 [[Parent]]: available_macros.txt
 
-The Html macro copies its input as it is. Its purpose is to embed 
-html directly into the generated html page. While the Markdown syntax 
-also allows embedding html directly, the problem with that approach is 
-that newlines are interpreted as ending the html block. 
+The Html macro copies its input as it is. Its purpose is to embed html directly into the generated html page. While the Markdown syntax also allows embedding html directly, the problem with that approach is that newlines are interpreted as ending the html block.
 
 Properties
 ----------
@@ -29,5 +26,5 @@ Examples
 [[Example]]:
 	[[Html]]:
 		<p>Some text</p>
-		
+
 		<p>Some more text</p>

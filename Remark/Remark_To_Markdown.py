@@ -745,13 +745,25 @@ class Remark(object):
             line = ' ' * column + text[row][column :]
             
             # The indentation macro is invoked if and only if
-            # * a non-empty line starts with a tab, and
-            # * the line in 1 is preceded by a row of whitespace.
-            indentationMacro = (len(line) > 0 and 
-                                line[0] == '\t' and 
-                                line.strip() != '' and
-                                row > 0 and
-                                text[row - 1].strip() == '')
+            # 1) a non-empty line starts with a tab, and
+            tabbedNonEmpty = (
+                len(line) > 0 and 
+                line[0] == '\t' and 
+                line.strip() != '')
+
+            # 2) the line in 1 is preceded by a row of whitespace, and
+            precededByWhitespace = (
+                row == 0 or
+                text[row - 1].strip() == '')
+
+            # 3) the line in 2 is not preceded by a tabbed non-empty line.
+            indentationMacro = False
+            if tabbedNonEmpty and precededByWhitespace:
+                indentationMacro = True
+                for i in range(row - 2, -1, -1):
+                    if text[i].strip() != '' and text[i][0] == '\t':
+                        indentationMacro = False
+                        break
 
             if indentationMacro:
                 # There is an indentation-macro invocation here.
