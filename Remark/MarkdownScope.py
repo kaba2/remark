@@ -1,4 +1,4 @@
-# Description: Markdown scoped links
+# Description: Markdown scoped links extension
 # Documentation: markdown_scoped_links.txt
 
 from __future__ import absolute_import
