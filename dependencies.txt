@@ -3,35 +3,47 @@ Dependencies
 
 [[Parent]]: remark.txt
 
-This section describes the dependencies of Remark. You do not need this information to install Remark; the `pip` handles the installation of the dependencies as part of the installation of Remark.
+In this section we provide the dependencies of Remark. 
+
+You do not need this information to install Remark; `pip` handles the installation of the dependencies as part of the installation of Remark.
 
 Python
 ------
 
-Remark was programmed in Python 2.7. Thus it should run in any Python 2.x interpreter, where x is at least 7. The syntaxes of Python 3.x and Python 2.x are not compatible. For instructions on installing Python 2.7, see [here][PythonInstall].
+Remark was programmed in Python 2.7. Thus it should run in any Python 2.x interpreter, where x is at least 7. See [here][PythonInstall] for instructions on installing Python 2.7.
+
+The syntaxes of Python 3.x and Python 2.x are not compatible. 
 
 [PythonInstall]: http://docs.python-guide.org/en/latest/starting/installation/
 
 Python dependencies
 -------------------
 
-The dependencies to other Python libraries are as follows:
+The dependencies to other Python libraries are as follows.
  
 ### [Python Markdown][PythonMarkdown]
 
 The Python Markdown library is used to convert Markdown to Html. 
 
+It is licensed under the [BSD license][BSD]. 
+
 ### [Pygments][Pygments]
 
 The Pygments library is used to highlight source code. 
- 
+
+It is licensed under the [BSD license][BSD].
+
 ### [Pillow][Pillow]
 
 The Pillow library is used to create thumbnails for image galleries. 
 
+It is licensed under the [Python Imaging Library license][PIL license].
+
 [PythonMarkdown]: https://pythonhosted.org/Markdown/
 [Pygments]: http://pygments.org/
-[Pillow]: https://pypi.python.org/pypi/Pillow
+[Pillow]: https://python-pillow.github.io/
+[BSD]: http://en.wikipedia.org/wiki/BSD_licenses
+[PIL license]: http://www.pythonware.com/products/pil/license.htm
 
 Javascript dependencies
 -----------------------
@@ -40,18 +52,30 @@ The Javascript dependencies are on a per-page basis depending on which features 
 
 ### [Highslide][]
 
-The Highslide library is used to view image galleries. We distribute it with Remark.
- 
-### [MathJax][]
+The Highslide library is used to view images in Remark by the [[Link: Gallery_Macro.txt]]. We distribute it with Remark. 
 
-The MathJax library is used to interpret and render mathematics in Latex and AsciiMath. It is automatically downloaded from the MathJax CDN by the browser.
+For non-commerical applications, it is licensed under the [Creative Commons Attribution-NonCommerical 3.0 license ][Creative]. It is _not_ free for commercial use. 
+
+* Highslide JS is included in the html code if and only if one invokes the Gallery-macro to generate that page.
+* Highslide JS is copied to the output directory if and only if it is included in some html-page.
 
 [Highslide]: http://highslide.com/
+[Creative]: http://creativecommons.org/licenses/by-nc/3.0/
+
+### [MathJax][]
+
+The MathJax library is used to interpret and render mathematics in Latex and AsciiMath.
+
+It is licensed under the [Apache license][Apache].
+
+* MathJax is automatically downloaded from the MathJax CDN by the browser.
+* MathJax is included in the html code if and only if mathematics is used in the page.
+
 [MathJax]: https://www.mathjax.org/
+[Apache]: http://en.wikipedia.org/wiki/Apache_License
 
 See also
 --------
 
 [[Link]]: license_matters.txt
-
 
