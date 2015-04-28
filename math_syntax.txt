@@ -4,10 +4,10 @@ Math syntax
 [[Parent]]: remark_syntax.txt
 
 Mathematics can be written in Remark using either the [AsciiMath syntax][AsciiMath], or the [Latex syntax][MathJaxLatex]. Inline mathematics in AsciiMath and Latex are enclosed in `''` and `$`, respectively. Display mathematics in Latex is enclosed in `$$`. Here we provide a brief tutorial to both syntaxes. Complete list of commands for the syntaxes can be found from the above links. 
- 
+
 [MathJax]: http://www.mathjax.org
 [MathJaxLatex]: http://docs.mathjax.org/en/latest/tex.html#supported-latex-commands
-[AsciiMath]: http://www1.chapman.edu/~jipsen/mathml/asciimathsyntax.html
+[AsciiMath]: http://asciimath.org
 [MathJaxConfig]: [[Ref]]: mathjax-config.js
  
 Complex constructs

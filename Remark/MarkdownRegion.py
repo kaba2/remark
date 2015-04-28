@@ -1,4 +1,4 @@
-# Description: Markdown regions
+# Description: Markdown region extension
 # Documentation: markdown_region.txt
 
 """
