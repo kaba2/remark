@@ -747,22 +747,31 @@ class Remark(object):
             # The indentation macro is invoked if and only if
             # 1) a non-empty line starts with a tab, and
             tabbedNonEmpty = (
-                len(line) > 0 and 
-                line[0] == '\t' and 
-                line.strip() != '')
+                line.strip() != '' and 
+                line[0] == '\t')
 
             # 2) the line in 1 is preceded by a row of whitespace, and
             precededByWhitespace = (
                 row == 0 or
                 text[row - 1].strip() == '')
 
-            # 3) the line in 2 is not preceded by a tabbed non-empty line.
+            # 3) the first non-empty line preceding line in 1 does
+            # not start with a tab.
             indentationMacro = False
             if tabbedNonEmpty and precededByWhitespace:
+                # The first two conditions are satisfied.
+                # This line possible starts an indentation macro.
+
+                # Check the third condition.
                 indentationMacro = True
                 for i in range(row - 2, -1, -1):
-                    if text[i].strip() != '' and text[i][0] == '\t':
-                        indentationMacro = False
+                    if text[i].strip() != '':
+                        # The line is non-empty.
+                        if text[i][0] == '\t':
+                            # The first non-empty line starts
+                            # with a tab. Therefore this line
+                            # does not start an indentation macro.
+                            indentationMacro = False
                         break
 
             if indentationMacro:
