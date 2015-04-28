@@ -1,7 +1,7 @@
-Markdown syntax
-===============
+Markdown tutorial
+=================
 
-[[Parent]]: remark_syntax.txt
+[[Parent]]: markdown_syntax.txt
 
 Here we provide a brief tutorial to the Markdown syntax which is the basis on which Remark syntax has been built. We provide an external link to complete documentation below.
 

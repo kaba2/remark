@@ -1,0 +1,34 @@
+Markdown regions
+================
+
+[[Parent]]: markdown_syntax.txt
+
+A _region_ is a block of Markdown text, together with the type of an html-element to wrap the block in. 
+
+Remark extends Markdown to support regions.
+
+Defining regions
+----------------
+
+A region is defined by starting a line with `!!!`, and then writing a start-tag of an html-element. This begins a block whose content is denoted by indentation &mdash; exactly as with list items. 
+
+### Example
+
+[[Example]]:
+	!!! <div class = "test" id = "some id">
+		This is in the region.
+
+		This is too.
+
+		* All nested Markdown is contained in the region, no matter how complex.
+		* Another list item.
+
+Uses
+----
+
+The region extension provides a robust way to wrap content into html-elements. In particular, the region extension allows Remark to wrap content in `<div>` elements, so that they can be styled via CSS. 
+
+History
+-------
+
+The region extension was written because, in April 2015, Python Markdown had problems interleaving Markdown and html. While this worked reasonably well in old versions of Python Markdown, it did not work anymore in newer versions. We solved this by extending Python Markdown with regions.

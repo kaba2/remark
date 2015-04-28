@@ -1,3 +1,6 @@
+# Description: Markdown regions
+# Documentation: markdown_region.txt
+
 """
 Region extension for Python-Markdown
 ========================================
