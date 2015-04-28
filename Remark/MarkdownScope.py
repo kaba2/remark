@@ -10,11 +10,11 @@ from markdown.util import etree, AtomicString
 from markdown import Extension
 from markdown.treeprocessors import Treeprocessor
 
-class Markdown_Scope_Extension(Extension):
+class MarkdownScope_Extension(Extension):
     """ Scope extension for Python-Markdown. """
 
     def extendMarkdown(self, md, md_globals):
-        """ Add Markdown_Scope to Markdown instance. """
+        """ Add MarkdownScope to Markdown instance. """
         md.registerExtension(self)
 
         # Add scoped references.
