@@ -53,6 +53,8 @@ class MarkdownMath_Extension(Extension):
             MarkdownMath_Pattern("''", "''", 'math/asciimath', 'ascii-math'), 
             '>inline-latex-math' )
 
+def makeExtension(*args, **kwargs):
+    return MarkdownMath_Extension(*args, **kwargs)
 
 class MarkdownMath_Pattern(Pattern):
     def __init__(self, beginString, endString, scriptType, className):

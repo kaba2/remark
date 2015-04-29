@@ -3,7 +3,7 @@ Dependencies
 
 [[Parent]]: remark.txt
 
-In this section we provide the dependencies of Remark. 
+In this section we list the dependencies of Remark. 
 
 You do not need this information to install Remark; `pip` handles the installation of the dependencies as part of the installation of Remark.
 

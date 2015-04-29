@@ -17,9 +17,10 @@ Release date 29.04.2015.
 ### Core
 
 * Changed to use Python Markdown 2.6. 
-* Extended Markdown to parse mathematics.
-* Extended Markdown to parse regions.
-* Extended Markdown to parse scoped links.
+* Extended Markdown with mathematics.
+* Extended Markdown with regions.
+* Extended Markdown with scoped links.
+* Extended Markdown with dashes, quotes, and ellipses using the SmartyPants extension.
 * Fixed indentation macro from being too eager.
 
 ### Mathematics
