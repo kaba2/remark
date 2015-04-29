@@ -498,6 +498,9 @@ in the 'remark-footer' div. */
 
 #remark-footer 
 {
+    /* Use this to hide the footer. */ 
+    /* display: none; */
+
     /* Separate the footer from the content with a line. */
     border-top: 1px dotted #aca899;
     /* Add some space for the footer. */
