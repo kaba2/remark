@@ -3,10 +3,7 @@ Pattern matching
 
 [[Parent]]: understanding.txt
 
-_Pattern matching_ is the process of testing whether a given string
-belongs to a given set of strings, called a _pattern_. Remark uses
-two traditional forms of pattern matching, called globs and regular
-expressions.
+_Pattern matching_ is the process of testing whether a given string belongs to a given set of strings, called a _pattern_. Remark uses two traditional forms of pattern matching, called globs and regular expressions.
 
 Globs
 -----
@@ -19,9 +16,7 @@ A _glob_ defines a pattern by a string in which:
   * `[seq]` matches any character in string `seq`, and 
   * `[!seq]` matches any character not in string `seq`.
  
-For example, `?at.png` matches `at.png`, `bat.png`, and `cat.png`.
-Globs are commonly used in file systems. They capture a reasonable
-amount of patterns, while still being intuitive. 
+For example, `?at.png` matches `at.png`, `bat.png`, and `cat.png`. Globs are commonly used in file systems. They capture a reasonable amount of patterns, while still being intuitive.
 
 Regular expressions
 -------------------
