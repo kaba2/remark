@@ -59,7 +59,7 @@ class Markdown_LinkDefinition_Pattern(Pattern):
     # form.
     linkDefinitionPattern = (
         r'^(.*?)' +
-        r'[ ]{0,3}\[([^\]]*)\]:\s*([^ \n]*)[ ]*(?:\n)?(%s)?' % titlePattern +
+        r'[ ]{0,3}\[([^\]]*)\]:\s*([^ \n]*)[ \t]*(?:\n)?[ \t]*(%s)?' % titlePattern +
         r'(.*?)$'
         )
 
@@ -109,18 +109,29 @@ class Markdown_ScopedReference_Pattern(Pattern):
 
     NEWLINE_CLEANUP_RE = re.compile(r'[ ]?\n', re.MULTILINE)
 
+    imagePattern = r'(\!?)'
+
     NOBRACKET = r'[^\]\[]*'
-    BRK = (
+    textPattern = (
         r'\[(' +
         (NOBRACKET + r'(\[')*6 +
         (NOBRACKET + r'\])*')*6 +
-        NOBRACKET + r')\]'
+        NOBRACKET + 
+        r')\]'
     )
-    NOIMG = r'(?<!\!)'
-    REFERENCE_RE = NOIMG + BRK + r'\s?\[([^\]]*)\]'
+
+    idPattern = r'\[([^\]]*)\]'
+    referencePattern = (
+        r'^(.*?)' +
+        imagePattern + 
+        textPattern + 
+        r'\s?' + 
+        idPattern +
+        r'(.*?)$'
+        )
 
     referenceRegex = re.compile(
-        "^(.*?)%s(.*?)$" % REFERENCE_RE,
+        referencePattern,
         re.DOTALL | re.UNICODE)
 
     def __init__(self):
@@ -133,7 +144,7 @@ class Markdown_ScopedReference_Pattern(Pattern):
         try:
             # The link has an explicit
             # link-id. Use that.
-            id = match.group(9).lower()
+            id = match.group(10).lower()
         except IndexError:
             id = None
 
@@ -143,20 +154,30 @@ class Markdown_ScopedReference_Pattern(Pattern):
             # we use the link-description as the link-id.
             # The link-id is case-insensitive by the
             # Markdown specification.
-            id = match.group(2).lower()
+            id = match.group(3).lower()
 
         # Clean up linebreaks in id
         id = self.NEWLINE_CLEANUP_RE.sub(' ', id)
+
+        imageTag = match.group(2)
+
+        #print 'LINK', imageTag, id
+
+        referenceType = 'link'
+        if imageTag != '':
+            referenceType = 'image'
+
+        description = match.group(3)
 
         # Create an element for the link,
         # and store the link-id in it.
         element = etree.Element(
             'scoped-reference',
             {
-                'id' : id
+                'id' : id,
+                'type' : referenceType,
+                'description' : description
             })
-
-        element.text = match.group(2)
 
         return element
 
@@ -241,14 +262,65 @@ class MarkdownScope_TreeProcessor(Treeprocessor):
 
         # Resolve the links at this level.
         for child in root:
-            if child.tag == 'scoped-reference':
-                child.tag = 'a'
-                id = child.get('id')
-                link = scope.get(id)
-                if link != None:
-                    child.set('href', link.url)
-                    child.set('title', link.title)
-                child.attrib.pop('id')
+            if child.tag != 'scoped-reference':
+                continue
+
+            # There are two kinds of references:
+            # links and images.
+            referenceType = child.get('type')
+            child.attrib.pop('type')
+
+            if referenceType == 'link':
+                # For a link, we create an <a> element.
+                elementTag = 'a'
+                urlAttribute = 'href'
+            elif referenceType == 'image':
+                # For an image, we create an <img> element.
+                elementTag = 'img'
+                urlAttribute = 'src'
+            else:
+                # The type of the reference is unknown.
+                # Skip it.
+                continue
+
+            # Change the current element tag to
+            # the desired tag.
+            child.tag = elementTag
+
+            # Get the reference id, 
+            # and remove it from the attbributes.
+            id = child.get('id')
+            child.attrib.pop('id')
+
+            # Get the reference description, 
+            # and remove it from the attbributes.
+            description = child.get('description')
+            child.attrib.pop('description')
+
+            if referenceType == 'link':
+                # For a link, the description is the
+                # text in the link.
+                child.text = description
+            else:
+                # For an image, the description is the
+                # alternative text for the image.
+                child.set('alt', description)
+
+            # Get the link-definition based on its id.
+            link = scope.get(id)
+            if link == None:
+                # The link id is unknown. 
+                continue
+
+            # Set the url of the reference.
+            url = link.url.strip()
+            if url != '':
+                child.set(urlAttribute, url)
+
+            # Set the tool-tip of the reference.
+            title = link.title.strip()
+            if title != '':
+                child.set('title', title)
 
         # Resolve the links at the child elements.
         for child in root:
@@ -276,9 +348,6 @@ class MarkdownScope_TreeProcessor(Treeprocessor):
         
         for (key, value) in root.items():
             print key, '=', '"' + str(value) + '"',
-        if root.text != None:
-            print 'TEXT', root.text,
-        print
 
         for child in root:
             self.printIt(child, level + 1)

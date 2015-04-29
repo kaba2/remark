@@ -125,11 +125,32 @@ The explanation for the abbreviation can be seen by hovering the mouse over it.
 [[Example]]:
 	[Remark syntax][]
 
-	[Remark syntax][Remark syntax]
+	[Indirect reference][Remark syntax]
 
-	[Remark syntax](remark_syntax.htm)
+	[Indirect reference with tool-tip][IndirectTip]
+
+	[Direct reference](remark_syntax.htm)
 	
+	[Direct reference with tool-tip](remark_syntax.htm "Tool-tip B")
+
 	[Remark syntax]: remark_syntax.htm
+	
+	[IndirectTip]: remark_syntax.htm "Tool-tip A"
+
+### Images in Markdown
+
+[[Example]]:
+	![Colors in HSV space][Image]
+
+	![Colors in HSV space][ImageTip]
+
+	![Colors in HSV space]([[Ref: hsv.png]])
+
+	![Colors in HSV space](inexistent.png "Tool-tip B")
+
+	[Image]: [[Ref: hsv.png]]
+
+	[ImageTip]: [[Ref: hsv.png]] "Tool-tip A"
 
 ### Links in Remark
 
