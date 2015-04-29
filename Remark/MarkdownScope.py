@@ -5,7 +5,7 @@ from __future__ import absolute_import
 from __future__ import unicode_literals
 
 import re
-from markdown.inlinepatterns import Pattern
+from markdown.inlinepatterns import LinkPattern
 from markdown.util import etree, AtomicString
 from markdown import Extension
 from markdown.treeprocessors import Treeprocessor
@@ -20,7 +20,7 @@ class MarkdownScope_Extension(Extension):
         # Add scoped references.
         md.inlinePatterns.add(
             'scoped-reference',
-            Markdown_ScopedReference_Pattern(),
+            Markdown_ScopedReference_Pattern(md),
             '>reference')
 
         # Remove standard references.
@@ -29,8 +29,8 @@ class MarkdownScope_Extension(Extension):
         # Add scoped link-definitions.
         md.inlinePatterns.add(
             'scoped-link-definition',
-            Markdown_LinkDefinition_Pattern(),
-            '<escape')
+            Markdown_LinkDefinition_Pattern(md),
+            '>escape')
 
         # for line in md.inlinePatterns:
         #     print line
@@ -47,42 +47,37 @@ class MarkdownScope_Extension(Extension):
             MarkdownScope_TreeProcessor(md.parser),
             '>inline')
 
-class Markdown_LinkDefinition_Pattern(Pattern):
-    # These regexes have been copied from Markdown's
+class Markdown_LinkDefinition_Pattern(LinkPattern):
+    # The regexes follow those in Markdown's
     # ReferencePreprocessor, for compatibility.
 
+    idPattern = r'\[([^\]]*)\]'
+    urlPattern = r'([^ \n]*)'
     titlePattern = r'[ ]*(\"(.*)\"|\'(.*)\'|\((.*)\))[ ]*'
-    titleRegex = re.compile(r'^%s$' % titlePattern)
 
     # The only change here is that we allow the optional 
     # newline directly, since we have the block in string 
     # form.
     linkDefinitionPattern = (
-        r'^(.*?)' +
-        r'[ ]{0,3}\[([^\]]*)\]:\s*([^ \n]*)[ \t]*(?:\n)?[ \t]*(%s)?' % titlePattern +
-        r'(.*?)$'
+        r'[ ]{0,3}' + 
+        idPattern +
+        r':\s*' + 
+        urlPattern +
+        r'[ \t]*(?:\n)?[ \t]*' +
+        r'(%s)?' % titlePattern
         )
 
-    linkDefinitionRegex = re.compile(
-        linkDefinitionPattern, 
-        re.DOTALL)
+    def __init__(self, markdown):
+        super(Markdown_LinkDefinition_Pattern, self).__init__(
+            self.linkDefinitionPattern, markdown)
 
-    def __init__(self):
-        None
-
-    def getCompiledRegExp(self):
-        #assert self.linkDefinitionRegex.match('[A]: asd.txt\n [B]: asd.txt') != None
-        return self.linkDefinitionRegex
-            
     def handleMatch(self, match):
-        # This part has been copied from Markdown's
-        # ReferencePreprocessor, for compatibility.
-
         id = match.group(2).strip().lower()
 
         url = match.group(3).lstrip('<').rstrip('>')
         if not url:
             url = ''
+        url = self.sanitize_url(url)
 
         title = match.group(6) or match.group(7) or match.group(8)
         if not title:
@@ -102,7 +97,7 @@ class Markdown_LinkDefinition_Pattern(Pattern):
 
         return element
 
-class Markdown_ScopedReference_Pattern(Pattern):
+class Markdown_ScopedReference_Pattern(LinkPattern):
     # These regular expressions were directly copied
     # from Python Markdown's implementation, for
     # compatibility.
@@ -122,23 +117,15 @@ class Markdown_ScopedReference_Pattern(Pattern):
 
     idPattern = r'\[([^\]]*)\]'
     referencePattern = (
-        r'^(.*?)' +
         imagePattern + 
         textPattern + 
         r'\s?' + 
-        idPattern +
-        r'(.*?)$'
+        idPattern
         )
 
-    referenceRegex = re.compile(
-        referencePattern,
-        re.DOTALL | re.UNICODE)
-
-    def __init__(self):
-        None
-
-    def getCompiledRegExp(self):
-        return self.referenceRegex
+    def __init__(self, markdown):
+        super(Markdown_ScopedReference_Pattern, self).__init__(
+            self.referencePattern, markdown)
 
     def handleMatch(self, match):
         try:
