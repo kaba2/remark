@@ -30,7 +30,7 @@ class MarkdownScope_Extension(Extension):
         md.inlinePatterns.add(
             'scoped-link-definition',
             Markdown_LinkDefinition_Pattern(md),
-            '>escape')
+            '<scoped-reference')
 
         # for line in md.inlinePatterns:
         #     print line
@@ -77,7 +77,7 @@ class Markdown_LinkDefinition_Pattern(LinkPattern):
         url = match.group(3).lstrip('<').rstrip('>')
         if not url:
             url = ''
-        url = self.sanitize_url(url)
+        url = self.sanitize_url(self.unescape(url))
 
         title = match.group(6) or match.group(7) or match.group(8)
         if not title:
@@ -154,7 +154,7 @@ class Markdown_ScopedReference_Pattern(LinkPattern):
         if imageTag != '':
             referenceType = 'image'
 
-        description = match.group(3)
+        description = self.unescape(match.group(3))
 
         # Create an element for the link,
         # and store the link-id in it.
