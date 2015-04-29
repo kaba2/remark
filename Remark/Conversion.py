@@ -127,10 +127,10 @@ def createMarkdownParser():
 
     markdownParser = markdown.Markdown(
         extensions = [
-            'admonition',
             'tables', 
             'abbr', 
             'def_list',
+            'smarty',
             MarkdownRegion_Extension(),
             MarkdownMath_Extension(),
             MarkdownScope_Extension()

@@ -109,12 +109,27 @@ In Remark, the indentation is used invoke the indentation macro, which defaults 
 
 The explanation for the abbreviation can be seen by hovering the mouse over it.
 
+### Punctuation
+
+[[Example]]:
+	Input        | Output     | Html
+	-------------|------------|-------------------------
+	`'apple'`    | 'apple'    | `&lsquo;apple&rsquo;`
+	`"apple"`    | "apple"    | `&ldquo;apple&rdquo;`
+	`apple...`   | apple...   | `apple&hellip;`
+	`pages 2--5` | pages 2--5 | `pages 2&ndash;5`
+	`ab --- cd`  | ab --- cd  | `ab &mdash; cd`
+
 ### Links in Markdown
 
 [[Example]]:
-	[Remark syntax][Syntax]
+	[Remark syntax][]
+
+	[Remark syntax][Remark syntax]
+
+	[Remark syntax](remark_syntax.htm)
 	
-	[Syntax]: remark_syntax.htm
+	[Remark syntax]: remark_syntax.htm
 
 ### Links in Remark
 
