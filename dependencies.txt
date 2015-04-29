@@ -12,7 +12,7 @@ Python
 
 Remark was programmed in Python 2.7. Thus it should run in any Python 2.x interpreter, where x is at least 7. See [here][PythonInstall] for instructions on installing Python 2.7.
 
-The syntaxes of Python 3.x and Python 2.x are not compatible. 
+Remark does not currently run under Python 3.
 
 [PythonInstall]: http://docs.python-guide.org/en/latest/starting/installation/
 
