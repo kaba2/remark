@@ -14,12 +14,12 @@ Globs
 A _glob_ defines a pattern by a string in which:
 
   * a character matches itself, except that
-  * \* matches anything any number of times, 
-  * ? matches anything at most one time, 
-  * \[seq\] matches any character in string seq, and 
-  * \[!seq\] matches any character not in string seq.
+  * `*` matches anything any number of times, 
+  * `?` matches anything at most one time, 
+  * `[seq]` matches any character in string `seq`, and 
+  * `[!seq]` matches any character not in string `seq`.
  
-For example, ?at.png matches at.png, bat.png, and cat.png.
+For example, `?at.png` matches `at.png`, `bat.png`, and `cat.png`.
 Globs are commonly used in file systems. They capture a reasonable
 amount of patterns, while still being intuitive. 
 
@@ -30,21 +30,14 @@ A _regular expression_, or a regex, defines a pattern by a string
 constructed using the following kind of rules:
 
  * a character matches itself, except that
- * . matches any single character except the newline,
- * E? matches E at most one time,
- * E* matches E any number of times,
- * E+ matches E at least one time,
- * AB matches A and B in a sequence,
- * A|B matches either A or B,
- * (E) matches E,
+ * `.` matches any single character except the newline,
+ * `E?` matches `E` at most one time,
+ * `E*` matches `E` any number of times,
+ * `E+` matches `E` at least one time,
+ * `AB` matches `A` and `B` in a sequence,
+ * `A|B` matches either `A` or `B`,
+ * `(E)` matches `E`,
 
-where E, A, and B are regular expressions. The backslash \\ is used
-to escape the meta-characters. This list is
-incomplete; the regular expressions are given using the 
-[Python's regular expression syntax][PythonRegex]. For example, 
-(ab)*\\.txt matches .txt, ab.txt, abab.txt, and so on. In Remark, the 
-regex is automatically appended \\Z at the end so that it must match 
-the whole string. Regular expressions are strictly more powerful than 
-globs, but they are also less intuitive.
+where `E`, `A`, and `B` are regular expressions. The backslash `\` is used to escape the meta-characters. This list is incomplete; the regular expressions are given using the [Python's regular expression syntax][PythonRegex]. For example, `(ab)*.txt` matches `.txt`, `ab.txt`, `abab.txt`, and so on. In Remark, the regex is automatically appended `\Z` at the end so that it must match the whole string. Regular expressions are strictly more powerful than globs, but they are also less intuitive.
 
 [PythonRegex]: http://docs.python.org/library/re.html
