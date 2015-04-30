@@ -22,6 +22,7 @@ Release date 29.04.2015.
 * Extended Markdown with scoped links.
 * Extended Markdown with dashes, quotes, and ellipses using the SmartyPants extension.
 * Fixed indentation macro from being too eager.
+* Removed the abbreviation extension, because it did not work well with regions.
 
 ### Mathematics
 

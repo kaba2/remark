@@ -25,6 +25,7 @@ class MarkdownScope_Extension(Extension):
 
         # Remove standard references.
         del md.inlinePatterns['reference']
+        del md.inlinePatterns['image_reference']
 
         # Add scoped link-definitions.
         md.inlinePatterns.add(

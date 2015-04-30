@@ -99,16 +99,6 @@ In Remark, the indentation is used invoke the indentation macro, which defaults 
 	Orange
 	:   The fruit of an evergreen tree of the genus Citrus.
 
-### Abbreviations
-
-[[Example]]:
-	The HTML specification is maintained by the W3C.
-	
-	*[HTML]: Hyper Text Markup Language
-	*[W3C]:  World Wide Web Consortium
-
-The explanation for the abbreviation can be seen by hovering the mouse over it.
-
 ### Punctuation
 
 [[Example]]:
