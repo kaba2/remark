@@ -128,7 +128,6 @@ def createMarkdownParser():
     markdownParser = markdown.Markdown(
         extensions = [
             'tables', 
-            'abbr', 
             'def_list',
             'smarty',
             MarkdownRegion_Extension(),
