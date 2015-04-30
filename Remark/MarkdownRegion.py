@@ -182,16 +182,21 @@ class MarkdownRegion_BlockProcessor(BlockProcessor):
         # in 'theRest'. 
         block, theRest = self.detab(block)
 
+        # The standard ParagraphProcessor block-processor
+        # works specially depending on parse.state. If
+        # it isn't 'list', then it wraps the content in
+        # the <p> element, which we do not want.
+        self.parser.state.set('list')
+
         # At this point, the block consists solely of the
         # indented content, which has been deindented.
 
-        if region.get('content', 'markdown') == 'markdown':
+        contentType = region.get('content', 'markdown')
+        if contentType == 'markdown':
             # The content is to be interpreted as Markdown.
             # Parse the block recursively.
-            # print 'TO MARKDOWN'
-            # print block
             self.parser.parseChunk(region, block)
-        elif region.get('content', 'markdown') == 'text':
+        elif contentType == 'text':
             # The content is to be interpreted as raw text.
             # Store or append it to the element's text field.
             if region.text == None:
@@ -203,6 +208,8 @@ class MarkdownRegion_BlockProcessor(BlockProcessor):
             # Insert the unindented stuff back into the set
             # of blocks to process. 
             blockSet.insert(0, theRest)
+
+        self.parser.state.reset()
 
     def parseBlocks(self, block):
         previousStart = 0;
