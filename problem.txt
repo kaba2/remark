@@ -13,7 +13,7 @@ Indentation macro is too eager
 
 ### Problem
 
-In the following, the list content is meant to continue with the second row. However, Remark interprets this as a list-item followed by an invocation of the indentation macro.
+In the following, the content of the list-item is meant to continue after the empty line. However, Remark interprets this as a list-item followed by an invocation of the indentation macro.
 
 [[Example]]:
 	* This is in the list-item.
@@ -33,7 +33,13 @@ Indent the first non-empty row preceding the invocation of the indentation macro
 SVG-images that do not get loaded
 ---------------------------------
 
-If an SVG-image does not get loaded when you run a Remark-generated html-file from a server, but it does get loaded when you run it from the hard-disk, then the probable cause is that the server does not have the MIME-type correctly assigned for the .svg files. For example, for the `lighttpd` web-server, you should modify the configuration file `/etc/lighttpd/mime-types.conf` to contain the line
+### Problem
+
+An SVG-image does not get loaded when a Remark-generated html-file is run from a server, but does get loaded when it is run from the hard-disk.
+
+### Solution (probable)
+
+The probable cause is that the server does not have the MIME-type correctly assigned for the `.svg` files. For example, for the `lighttpd` web-server, the configuration file `/etc/lighttpd/mime-types.conf` should be modified to contain the line
 
 	".svg"          =>      "image/svg+xml"
 
@@ -46,6 +52,12 @@ If you pass Remark a file that is not a valid UTF-8 encoding, Remark replaces ea
 
 Indentation-macro invocation after a multi-line parameter
 ---------------------------------------------------------
+
+### Problem
+
+It is wanted to write an indentation macro after invoking a macro with a multi-line parameter. However, Remark interprets the parameter for the indentation macro to be part of the preceding macro-invocation.
+
+### Solution
 
 Indentation has a double role. It is used both to denote the [invocation][MacroInvocation] of the indentation macro, and to denote the range of a multi-line parameter for a macro. Therefore, if one wants to write an indentation macro-invocation directly after a multi-line parameter, there must be some way to tell Remark where the multi-line parameter ends and the indentation macro-invocation starts.
 
