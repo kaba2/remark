@@ -81,13 +81,15 @@ def addHtmlBoilerPlate(text, document, htmlHead):
     pygmentsCss = unixDirectoryName(os.path.normpath(os.path.join(remarkDirectory, 'pygments.css')))
     mathJaxConfig = unixDirectoryName(os.path.normpath(os.path.join(remarkDirectory, 'mathjax-config.js')))
 
+    title = document.tagString('description')
+
     htmlText = []
     htmlText.append('<!DOCTYPE html>')
     htmlText.append('<html>')
     htmlText.append('<head>')
     htmlText.append('<meta http-equiv="Content-Type" content="text/html; charset=utf-8">')
     htmlText.append('<meta name="viewport" content="width=device-width, initial-scale=1">')
-    htmlText.append('<title>' + document.linkDescription() + '</title>')
+    htmlText.append('<title>' + title + '</title>')
     htmlText.append('<link rel="stylesheet" type="text/css" href="' + remarkCss + '"/>')
     htmlText.append('<link rel="stylesheet" type="text/css" href="' + pygmentsCss + '"/>')
 
