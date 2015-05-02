@@ -167,6 +167,12 @@ class Markdown_ScopedReference_Pattern(LinkPattern):
                 'description' : description
             })
 
+        if referenceType == 'link':
+            # Store the description in the text argument,
+            # to parse it further. For example, it may 
+            # contain an emphasis.
+            element.text = description
+
         return element
 
 class Link(object):
@@ -287,8 +293,9 @@ class MarkdownScope_TreeProcessor(Treeprocessor):
 
             if referenceType == 'link':
                 # For a link, the description is the
-                # text in the link.
-                child.text = description
+                # text in the link; it is already in
+                # place.
+                None
             else:
                 # For an image, the description is the
                 # alternative text for the image.
