@@ -7,7 +7,7 @@ import string
 import re
 
 from Remark.Macro_Registry import registerMacro
-from Remark.FileSystem import unixRelativePath, unixDirectoryName, globalOptions
+from Remark.FileSystem import unixRelativePath, unixDirectoryName, globalOptions, htmlRegion
 
 from pygments import highlight
 from pygments.lexers import CppLexer
@@ -35,7 +35,7 @@ class CppCode_Macro(object):
             # Replace include file names with links to source files.
             text.append(re.sub(includeRegex, replacer, line))
         
-        return text
+        return htmlRegion(text)
 
     def expandOutput(self):
         return False
