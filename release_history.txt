@@ -14,6 +14,13 @@ Release date 29.04.2015.
 
 [Remark-1.7.0]: http://kaba.hilvi.org/remark-1.7.0
 
+### Acknowledgments
+
+* David P. Cervone helped to [debug MathJax rendering][MathJaxColors]. The lack of localization in the Pygments CSS-file caused it to leak into MathJax rendering.
+* Waylan Limberg helped with understanding the html-stash internals in Python Markdown.
+
+[MathJaxColors]: https://github.com/mathjax/MathJax/issues/1169
+
 ### Core
 
 * Changed to use Python Markdown 2.6. 
@@ -42,7 +49,9 @@ Release date 29.04.2015.
 
 ### CSS
 
+* Made the Pygments CSS be more specific on 
 * Made Example-div to scroll on overflow.
+* Made Example-div to zero top- and bottom-margins of first- and last-child `<div>`s.
 
 ### Interface
 
