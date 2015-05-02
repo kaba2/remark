@@ -3,7 +3,7 @@ Markdown regions
 
 [[Parent]]: markdown_syntax.txt
 
-A _region_ is a block of Markdown text, together with the type of an html-element to wrap the block in. 
+A _region_ is a block of Remark text, together with the type of an html-element to wrap the block in. 
 
 Remark extends Markdown to support regions.
 
