@@ -6,7 +6,7 @@
 from Remark.Macro_Registry import registerMacro
 from Remark.FileSystem import unixRelativePath, unixDirectoryName, changeExtension
 from Remark.FileSystem import fileExtension, copyIfNecessary, createDirectories, copyTree
-from Remark.FileSystem import pathExists, fileModificationTime, remarkDirectory, addDummyHtmlNewLines
+from Remark.FileSystem import pathExists, fileModificationTime, remarkDirectory, htmlRegion
 
 import sys
 import os.path
@@ -231,7 +231,7 @@ class Gallery_Macro(object):
 
         text.append('</div>')
         
-        return addDummyHtmlNewLines(text)
+        return htmlRegion(text)
 
     def expandOutput(self):
         return False
