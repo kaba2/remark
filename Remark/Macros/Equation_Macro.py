@@ -37,7 +37,7 @@ class Equation_Macro(object):
             [str(equationNumber)], 
             {
                 'class' : numberClassName,
-                'content' : 'text'
+                'remark-content' : 'text'
             }, 
             'span')
 

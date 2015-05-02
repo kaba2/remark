@@ -27,8 +27,8 @@ Release date 29.04.2015.
 ### Mathematics
 
 * Changed to use MathJax for improved parsing and rendering of mathematics.
-* Removed dependency to `ASCIIMathMLwFallback.js`.
 * Added support for Latex mathematics.
+* Removed dependency to `ASCIIMathMLwFallback.js`.
 
 ### Indentation macro
 
