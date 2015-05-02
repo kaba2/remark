@@ -3,10 +3,7 @@ EquationSet macro
 
 [[Parent]]: available_macros.txt
 
-The EquationSet macro presents mathematics given in the AsciiMathML syntax.
-It passes each line of the parameter to the [Equation][EquationMacro] macro
-and groups the resulting items into an ordered list. The list is then wrapped
-into an equation-set html-div.
+The EquationSet macro presents mathematics given in the AsciiMath syntax. It passes each line of the parameter to the [Equation][EquationMacro] macro and groups the resulting items into an ordered list. The list is then wrapped into an equation-set html-div.
 
 [EquationMacro]: [[Ref]]: Equation_Macro.txt
 
@@ -19,7 +16,7 @@ Enabled.
 
 ### Parameters
 
-An expression in AsciiMathML.
+An expression in AsciiMath.
 
 ### Variables
 
