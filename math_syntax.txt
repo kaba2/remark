@@ -240,13 +240,20 @@ Basic constructs
 
 	$\mathbb{ABCDEFGHIJKLMNOPQRSTUVWXYZ}$
 
-#### Calligraphic
+#### Script
 	
 [[Example]]:
 	''cc("abcdefghijklmnopqrstuvwxyz")''
 
 	''cc("ABCDEFGHIJKLMNOPQRSTUVWXYZ")''
 
+	$\mathscr{abcdefghijklmnopqrstuvwxyz}$
+
+	$\mathscr{ABCDEFGHIJKLMNOPQRSTUVWXYZ}$
+
+#### Calligraphic
+	
+[[Example]]:
 	$\mathcal{abcdefghijklmnopqrstuvwxyz}$
 
 	$\mathcal{ABCDEFGHIJKLMNOPQRSTUVWXYZ}$
@@ -268,6 +275,10 @@ Basic constructs
 	''fr("abcdefghijklmnopqrstuvwxyz")''
 
 	''fr("ABCDEFGHIJKLMNOPQRSTUVWXYZ")''
+
+	$\mathfrak{abcdefghijklmnopqrstuvwxyz}$
+
+	$\mathfrak{ABCDEFGHIJKLMNOPQRSTUVWXYZ}$
 	
 #### Sans-serif
 
