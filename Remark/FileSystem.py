@@ -130,9 +130,10 @@ def htmlInject(text):
     # as html as they are. The RemarkInject
     # is a keyword which Remark uses to remove
     # the comments later from the generated html.
-    injectedText = text
-    injectedText[0] = '<!--RemarkInject' + injectedText[0]
-    injectedText[-1] = injectedText[-1] + 'RemarkInject-->'
+
+    injectedText = []
+    for line in text:
+        injectedText.append(injectString(line))
 
     # Why not pass html as text? Because the Python
     # Markdown postprocessor converts symbols to
