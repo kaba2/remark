@@ -595,14 +595,19 @@ in the 'remark-footer' div. */
     overflow: auto;
 }
 
-/* The Example-box already contains padding. Zero margin-top from the first child to avoid heavy margins. */
-#remark .Example > *:first-child
+/* 
+The Example-box already contains padding. 
+Zero margin-top from the first child to avoid heavy margins. 
+*/
+#remark .Example > *:first-child,
+#remark .Example > div:first-child > *:first-child
 {
     margin-top: 0em;
 }
 
-/* The same for the margin-bttom of the last child. */
-#remark .Example > *:last-child
+/* The same for the margin-bottom of the last child. */
+#remark .Example > *:last-child,
+#remark .Example > div:last-child > *:last-child
 {
     margin-bottom: 0em;
 }
