@@ -132,7 +132,7 @@ def htmlInject(text):
         dummyText.append(injectString(line))
     return dummyText
 
-def addDummyHtmlNewLines(htmlText):
+def htmlRegion(htmlText):
     # We need to wrap the html into a region to avoid
     # it being wrapped into a <p> element.
     keySet = {
