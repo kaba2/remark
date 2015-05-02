@@ -3,19 +3,17 @@
 
 """
 Region extension for Python-Markdown
-========================================
+====================================
 
-Adds regions, which wrap the content in a <div> element.
+Adds regions, which wrap the content in an html-element.
 
 A region declaration is of the form
 
-    !!! region(className)
-        * stuff here
+    !!! <element key1 = "value1" key2 = "value2" ...>
+        Stuff here
         * more stuff here
 
-This is similar to the form of admonitions, but without 
-the title. Indeed, this code was modified from the admonition 
-extension.
+This is similar to the form of admonitions.
 """
 
 from __future__ import absolute_import
