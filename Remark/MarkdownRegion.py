@@ -22,7 +22,7 @@ from __future__ import absolute_import
 from __future__ import unicode_literals
 from markdown import Extension
 from markdown.blockprocessors import BlockProcessor
-from markdown.util import etree
+from markdown.util import etree, AtomicString
 from markdown.treeprocessors import Treeprocessor
 import re
 
@@ -182,37 +182,45 @@ class MarkdownRegion_BlockProcessor(BlockProcessor):
         # in 'theRest'. 
         block, theRest = self.detab(block)
 
-        contentType = region.get('content', 'markdown')
+        contentType = region.get('remark-content', 'remark')
 
         # The standard ParagraphProcessor block-processor
         # works specially depending on parse.state. If
         # it isn't 'list', then it wraps the content in
         # the <p> element.
-        if contentType == 'markdown-no-p':
+        if contentType == 'remark-no-p':
             self.parser.state.set('list')
 
         # At this point, the block consists solely of the
         # indented content, which has been deindented.
 
-        if (contentType == 'markdown' or 
-            contentType == 'markdown-no-p'):
+        from Remark.FileSystem import htmlInject
+
+        if (contentType == 'remark' or 
+            contentType == 'remark-no-p'):
             # The content is to be interpreted as Markdown.
             # Parse the block recursively.
             self.parser.parseChunk(region, block)
         elif contentType == 'text':
             # The content is to be interpreted as raw text.
             # Store or append it to the element's text field.
+
             if region.text == None:
-                region.text = block
+                # One has to be careful when combining strings here;
+                # the string operations return a str-type, which
+                # loses the AtomicString super-class. So first do
+                # the operations, and then wrap them into an
+                # AtomicString.
+                region.text = AtomicString(block + '\n')
             else:
-                region.text += block
+                region.text = AtomicString(region.text + '\n' + block + '\n') 
 
         if theRest:
             # Insert the unindented stuff back into the set
             # of blocks to process. 
             blockSet.insert(0, theRest)
 
-        if contentType == 'markdown-no-p':
+        if contentType == 'remark-no-p':
             self.parser.state.reset()
 
     def parseBlocks(self, block):
@@ -254,5 +262,5 @@ class MarkdownRegion_TreeProcessor(Treeprocessor):
         for element in root.findall(".//region"):
             element.tag = element.get('tag', 'div')
             element.attrib.pop('tag')
-            if element.attrib.get('content') != None:
-                element.attrib.pop('content')
+            if element.attrib.get('remark-content') != None:
+                element.attrib.pop('remark-content')

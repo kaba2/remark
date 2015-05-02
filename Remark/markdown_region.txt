@@ -10,17 +10,55 @@ Remark extends Markdown to support regions.
 Defining regions
 ----------------
 
-A region is defined by starting a line with `!!!`, and then writing a start-tag of an html-element. This begins a block whose content is denoted by indentation &mdash; exactly as with list items. 
+A region is defined by starting a line with `!!!`, and then writing a start-tag of an html-element. This begins a block whose content is denoted by indentation --- exactly as with list items. 
 
-### Example
+### Content type
+
+The content-type can be set through the `remark-content` attribute. The possible values are:
+
+`remark`
+: The content is interpreted as Remark; the default.
+
+`remark-no-p`
+: The content is interpreted as Remark, without wrapping first-level paragraphs into `<p>` elements.
+
+`text`
+: The content is interpreted as pre-formatted text.
+
+Examples
+--------
+
+### Content as Remark
 
 [[Example]]:
-	!!! <div class = "test" id = "some id">
+	!!! <div class = "test">
 		This is in the region.
 
 		This is too.
 
-		* All nested Markdown is contained in the region, no matter how complex.
+		* All nested notation is contained in the region, no matter how complex.
+		* Another list item.
+
+### Content as Remark without first-level `<p>` elements
+
+[[Example]]:
+	!!! <div class = "test" remark-content = "remark-no-p">
+		This is in the region.
+
+		This is too.
+
+		* All nested notation is contained in the region, no matter how complex.
+		* Another list item.
+
+### Content as text
+
+[[Example]]:
+	!!! <div class = "test" remark-content = "text">
+		This is in the region.
+
+		This is too.
+
+		* All nested notation is contained in the region, no matter how complex.
 		* Another list item.
 
 Uses

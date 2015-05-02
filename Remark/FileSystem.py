@@ -115,23 +115,31 @@ def globalOptions():
     '''
     return globalOptions_;
 
-def addDummyHtmlNewLines(htmlText):
+def htmlInject(text):
+    def injectString(line):
+        return '<!--RemarkInject' + line + 'RemarkInject-->'
+
+    if type(text) == 'str' or type(text) == 'unicode':
+        return injectString(text)
+        
     dummyText = []
-    for line in htmlText:
+    for line in text:
         # Wrap each line into an html-comment.
         # This makes Python Markdown to pass them
         # as html as they are. The RemarkInject
         # is a keyword which Remark uses to remove
         # the comments later from the generated html.
-        dummyText.append('<!--RemarkInject' + line + 'RemarkInject-->')
+        dummyText.append(injectString(line))
+    return dummyText
 
+def addDummyHtmlNewLines(htmlText):
     # We need to wrap the html into a region to avoid
     # it being wrapped into a <p> element.
     keySet = {
         'class' : 'html', 
-        'content' : 'markdown-no-p'}
+        'remark-content' : 'remark-no-p'}
 
-    return markdownRegion(dummyText, keySet)
+    return markdownRegion(htmlInject(htmlText), keySet)
 
 def markdownRegion(enclosedText, keySet = dict(), elementName = 'div'):
     '''
