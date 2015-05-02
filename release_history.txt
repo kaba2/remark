@@ -20,8 +20,8 @@ Release date 29.04.2015.
 * Extended Markdown with mathematics.
 * Extended Markdown with regions.
 * Extended Markdown with scoped links.
-* Extended Markdown with dashes, quotes, and ellipses using the SmartyPants extension.
-* Fixed indentation macro from being too eager.
+* Extended Markdown with dashes, quotes, and ellipses --- using the SmartyPants extension.
+* Fixed html title from containing extraneous escaping-characters.
 * Removed the abbreviation extension, because it did not work well with regions.
 
 ### Mathematics
@@ -29,6 +29,16 @@ Release date 29.04.2015.
 * Changed to use MathJax for improved parsing and rendering of mathematics.
 * Removed dependency to `ASCIIMathMLwFallback.js`.
 * Added support for Latex mathematics.
+
+### Indentation macro
+
+* Fixed the macro invocation from being too eager.
+
+### Html macro
+
+* Disabled Markdown expansion.
+* Removed the production of extraneous `<span>` elements for empty lines.
+* Wrapped the produced content into a `<div>` element.
 
 ### CSS
 
@@ -54,7 +64,7 @@ Release date 14.12.2014.
 
 ### Example macro
 
-* Wrapped the produced content in a div.
+* Wrapped the produced content into a `<div>` element.
 * Separated the example from its surrounding by drawing a box around it.
 * Removed the preceding and following texts.
 

@@ -118,18 +118,20 @@ def globalOptions():
 def addDummyHtmlNewLines(htmlText):
     dummyText = []
     for line in htmlText:
-        if string.strip(line) == '':
-            # The Markdown syntax interprets
-            # empty lines as ending the html
-            # block. This tricks avoids that
-            # behaviour. Note that it is not
-            # equivalent to simply remove the 
-            # line.
-            dummyText.append('<span class="p"></span>')
-        else:
-            dummyText.append(line)
+        # Wrap each line into an html-comment.
+        # This makes Python Markdown to pass them
+        # as html as they are. The RemarkInject
+        # is a keyword which Remark uses to remove
+        # the comments later from the generated html.
+        dummyText.append('<!--RemarkInject' + line + 'RemarkInject-->')
 
-    return dummyText
+    # We need to wrap the html into a region to avoid
+    # it being wrapped into a <p> element.
+    keySet = {
+        'class' : 'html', 
+        'content' : 'markdown-no-p'}
+
+    return markdownRegion(dummyText, keySet)
 
 def markdownRegion(enclosedText, keySet = dict(), elementName = 'div'):
     '''
