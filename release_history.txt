@@ -66,6 +66,10 @@ Release date 14.12.2014.
 
 [Remark-1.6.5]: http://kaba.hilvi.org/remark-1.6.5
 
+### Acknowledgements
+
+* Programmed under funding from the [Finnish National Doctoral Programme in Mathematics and its Applications][GSMAA].
+
 ### CSS
 
 * Changed to use the Open Sans font for prose.
@@ -93,6 +97,10 @@ Release date 13.12.2014.
 [Original webpage][Remark-1.6.4]
 
 [Remark-1.6.4]: http://kaba.hilvi.org/remark-1.6.4
+
+### Acknowledgements
+
+* Programmed under funding from the [Finnish National Doctoral Programme in Mathematics and its Applications][GSMAA].
 
 ### Core
 
@@ -131,6 +139,10 @@ Release date 23.11.2014.
 
 [Remark-1.6.2]: http://kaba.hilvi.org/remark-1.6.2
 
+### Acknowledgements
+
+* Programmed under funding from the [Finnish National Doctoral Programme in Mathematics and its Applications][GSMAA].
+
 ### Macros
 
 * Code: Fixed a crash when the lexer could not be guessed from content.
@@ -143,6 +155,10 @@ Release date 18.04.2014.
 [Original webpage][Remark-1.6.1]
 
 [Remark-1.6.1]: http://kaba.hilvi.org/remark-1.6.1
+
+### Acknowledgements
+
+* Programmed under funding from the [Finnish National Doctoral Programme in Mathematics and its Applications][GSMAA].
 
 ### Interface
 
@@ -172,18 +188,14 @@ Release date 28.05.2013.
 
 [Remark-1.6.0]: http://kaba.hilvi.org/remark-1.6.0
 
+### Acknowledgements
+
+* Programmed under funding from the [Finnish National Doctoral Programme in Mathematics and its Applications][GSMAA].
+
 ### Breaking changes
 
-* Changed the command-line file inclusion to work by 
-relative-paths of files, rather than by filenames.
-This breaks the inclusion of multiple files with the
-same filename, but in different directories; the old behavior
-can be recovered by changing `"filename.txt"` to `"*filename.txt"`.
-* Changed the location of the Remark command-line
-script from the `Remark` directory to the Remark root directory.
-This had to be done so that `pip` packaging works correctly.
-However, this is also a more natural location for the command-line
-script.
+* Changed the command-line file inclusion to work by relative-paths of files, rather than by filenames. This breaks the inclusion of multiple files with the same filename, but in different directories; the old behavior can be recovered by changing `"filename.txt"` to `"*filename.txt"`. 
+* Changed the location of the Remark command-line script from the `Remark` directory to the Remark root directory. This had to be done so that `pip` packaging works correctly. However, this is also a more natural location for the command-line script.
 
 ### Interface
 
@@ -232,6 +244,8 @@ SourceChildren macro.
 * Added an issue tracker for Remark on BitBucket.
 * Made Remark installable from PyPI using `pip` and `easy_install`.
 * Changed to use Pillow instead of PIL.
+
+[GSMAA]: https://wiki.helsinki.fi/display/gsmaa
 
 Remark 1.5.1
 ------------
