@@ -28,10 +28,12 @@ Examples
 [[Example]]:
 	[[Html]]:
 		Banana
+
 		<p>_Apple_</p>
 
 ### Html embedded through Markdown
 
 [[Example]]:
 	Banana
+
 	<p>_Apple_</p>
