@@ -122,15 +122,11 @@ def htmlInject(text):
     if type(text) == 'str' or type(text) == 'unicode':
         return injectString(text)
 
-    if len(text) == 0:
-        return text
-        
-    # Wrap the text into an html-comment.
+    # Wrap each line into an html-comment.
     # This makes Python Markdown to pass them
     # as html as they are. The RemarkInject
     # is a keyword which Remark uses to remove
     # the comments later from the generated html.
-
     injectedText = []
     for line in text:
         injectedText.append(injectString(line))
@@ -141,7 +137,7 @@ def htmlInject(text):
     # this by replacing embedded html with placeholders,
     # and then expanding those placeholders after entity
     # replacement. We cannot currently use the same technique,
-    # since it requires access to Markdown parsers
+    # since it requires access to Markdown parser's
     # self.htmlStash. So instead we turn the data to
     # an embedded html-comment.
 
