@@ -121,16 +121,30 @@ def htmlInject(text):
 
     if type(text) == 'str' or type(text) == 'unicode':
         return injectString(text)
+
+    if len(text) == 0:
+        return text
         
-    dummyText = []
-    for line in text:
-        # Wrap each line into an html-comment.
-        # This makes Python Markdown to pass them
-        # as html as they are. The RemarkInject
-        # is a keyword which Remark uses to remove
-        # the comments later from the generated html.
-        dummyText.append(injectString(line))
-    return dummyText
+    # Wrap the text into an html-comment.
+    # This makes Python Markdown to pass them
+    # as html as they are. The RemarkInject
+    # is a keyword which Remark uses to remove
+    # the comments later from the generated html.
+    injectedText = text
+    injectedText[0] = '<!--RemarkInject' + injectedText[0]
+    injectedText[-1] = injectedText[-1] + 'RemarkInject-->'
+
+    # Why not pass html as text? Because the Python
+    # Markdown postprocessor converts symbols to
+    # html entities. Python Markdown itself circumvents
+    # this by replacing embedded html with placeholders,
+    # and then expanding those placeholders after entity
+    # replacement. We cannot currently use the same technique,
+    # since it requires access to Markdown parsers
+    # self.htmlStash. So instead we turn the data to
+    # an embedded html-comment.
+
+    return injectedText
 
 def htmlRegion(htmlText):
     # We need to wrap the html into a region to avoid
