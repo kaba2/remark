@@ -65,48 +65,93 @@ mathRegex = re.compile(mathPattern)
 def addHtmlBoilerPlate(text, document, htmlHead):
     remarkDirectory = os.path.relpath('remark_files', document.relativeDirectory)
 
+    timeText = datetime.datetime.now().strftime("%d.%m.%Y %H:%M")
+    
+    remarkCss = unixDirectoryName(os.path.normpath(
+        os.path.join(remarkDirectory, 'remark.css')))
+    pygmentsCss = unixDirectoryName(os.path.normpath(
+        os.path.join(remarkDirectory, 'pygments.css')))
+
+    cssSet = []
+    cssSet.append(remarkCss)
+    cssSet.append(pygmentsCss)
+
+    scriptSet = []
+
     # Check whether the document contains mathematics.
     includeMath = False
     for line in text:
         if mathRegex.search(line) != None:
             includeMath = True
             break
-    
-    # Add boilerplate code.
-   
-    now = datetime.datetime.now()
-    timeText = now.strftime("%d.%m.%Y %H:%M")
-    
-    remarkCss = unixDirectoryName(os.path.normpath(os.path.join(remarkDirectory, 'remark.css')))
-    pygmentsCss = unixDirectoryName(os.path.normpath(os.path.join(remarkDirectory, 'pygments.css')))
-    mathJaxConfig = unixDirectoryName(os.path.normpath(os.path.join(remarkDirectory, 'mathjax-config.js')))
 
-    title = document.tagString('description')
+    if includeMath:
+        # The page contains mathematics. 
+
+        # Add the Mathjax script, but delay configuration.
+        mathJax = 'http://cdn.mathjax.org/mathjax/latest/MathJax.js?delayStartupUntilConfig'
+        scriptSet.append(mathJax)
+
+        # Add the MathJax configuration script.
+        mathJaxConfig = unixDirectoryName(os.path.normpath(
+            os.path.join(remarkDirectory, 'mathjax-config.js')))
+        scriptSet.append(mathJaxConfig)
 
     htmlText = []
+
+    # We aim to produce html5.
     htmlText.append('<!DOCTYPE html>')
+
     htmlText.append('<html>')
     htmlText.append('<head>')
     htmlText.append('<meta http-equiv="Content-Type" content="text/html; charset=utf-8">')
+
+    # This is necessary for mobile devices to scale the content correctly (i.e. no scaling).
     htmlText.append('<meta name="viewport" content="width=device-width, initial-scale=1">')
+
+    # Add the title.
+    title = document.tagString('description')
     htmlText.append('<title>' + title + '</title>')
-    htmlText.append('<link rel="stylesheet" type="text/css" href="' + remarkCss + '"/>')
-    htmlText.append('<link rel="stylesheet" type="text/css" href="' + pygmentsCss + '"/>')
 
-    if includeMath:
-        htmlText.append('<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?delayStartupUntilConfig"></script>')
-        htmlText.append('<script type="text/javascript" src="' + mathJaxConfig + '"></script>')
+    # Link to the CSS stylesheets.
+    for css in cssSet:
+        htmlText.append('<link rel="stylesheet" type="text/css" href="' + css + '"/>')
 
+    # Link to the JavaScript libraries.
+    for script in scriptSet:
+        htmlText.append('<script type="text/javascript" src="' + script + '"></script>')
+
+    # Add the html-head content from the page.
     htmlText += htmlHead
 
     htmlText.append('</head>')
+
     htmlText.append('<body>')
+
+    # Wrap everything into the 'remark-all' div.
     htmlText.append('<div id = "remark-all">')
+
+    # Wrap the actual content in the 'remark' div.
     htmlText.append('<div id = "remark">')
+
+    # Add the actual content.
     htmlText += text
+
     htmlText.append('</div>')
+
+    # Wrap the footer in the 'remark-footer' div.
     htmlText.append('<div id="remark-footer">')
-    htmlText.append('<p><a href="http://kaba.hilvi.org/remark">Remark ' + remarkVersion() + '</a> - Page generated ' + timeText + '.</p>')
+
+    # Add the footer text.
+    footerText = (
+        '<p>' +
+        '<a href="http://kaba.hilvi.org/remark">' + 
+        'Remark ' + remarkVersion() + 
+        '</a>' + ' - ' + 
+        'Page generated ' + timeText + '.' + 
+        '</p>')
+    htmlText.append(footerText)
+    
     htmlText.append('</div>')
     htmlText.append('</div>')
     htmlText.append('</body>')
