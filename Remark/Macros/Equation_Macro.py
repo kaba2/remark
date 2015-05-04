@@ -7,6 +7,10 @@ from Remark.Macro_Registry import registerMacro
 from Remark.FileSystem import markdownRegion
 
 class Equation_Macro(object):
+    def __init__(self, leftSymbol, rightSymbol):
+        self.leftSymbol = leftSymbol
+        self.rightSymbol = rightSymbol
+
     def name(self):
         return 'Equation'
 
@@ -29,10 +33,10 @@ class Equation_Macro(object):
         numberClassName = scope.getString('Equation.number_class_name', 'Equation-Number')
 
         if len(parameter) >  0:
-            parameter[0] = "''" + parameter[0]
-            parameter[-1] += "''"
+            parameter[0] = self.leftSymbol + parameter[0]
+            parameter[-1] += self.rightSymbol
 
-        text = markdownRegion(parameter, {'class' : bodyClassName})
+        text = markdownRegion(parameter, {'class' : bodyClassName, 'remark-content' : 'remark-no-p'})
         text += markdownRegion(
             [str(equationNumber)], 
             {
@@ -52,7 +56,8 @@ class Equation_Macro(object):
     def postConversion(self, remark):
         None
 
-registerMacro('Equation', Equation_Macro())
+registerMacro('Equation', Equation_Macro("''", "''"))
+registerMacro('EquationLatex', Equation_Macro('$', '$'))
 
 
 
