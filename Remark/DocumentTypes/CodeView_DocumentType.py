@@ -5,6 +5,7 @@
 from Remark.FileSystem import escapeMarkdown, globalOptions, fileUpToDate
 from Remark.Conversion import saveRemarkToHtml
 from Remark.TagParsers.Dictionary_TagParser import Dictionary_TagParser 
+from Remark.DocumentType_Registry import registerDocumentType
 
 from pygments.lexers import get_lexer_for_filename, get_lexer_by_name
 
@@ -67,3 +68,5 @@ class CodeView_DocumentType(object):
 
     def outputName(self, fileName):
         return fileName + '.htm'
+
+registerDocumentType('CodeView', CodeView_DocumentType())

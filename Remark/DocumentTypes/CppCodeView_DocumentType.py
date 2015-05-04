@@ -5,6 +5,7 @@
 from Remark.FileSystem import escapeMarkdown, globalOptions, fileUpToDate
 from Remark.Conversion import saveRemarkToHtml
 from Remark.TagParsers.Dictionary_TagParser import Dictionary_TagParser 
+from Remark.DocumentType_Registry import registerDocumentType
 
 class CppCodeView_DocumentType(object):
     def __init__(self):
@@ -49,4 +50,4 @@ class CppCodeView_DocumentType(object):
     def outputName(self, fileName):
         return fileName + '.htm'
 
-    
+registerDocumentType('CppCodeView', CppCodeView_DocumentType())

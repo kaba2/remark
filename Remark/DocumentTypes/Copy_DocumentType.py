@@ -2,10 +2,9 @@
 
 # Description: Copy document-type
 
-import re
-
 from Remark.FileSystem import escapeMarkdown, fileUpToDate, copyIfNecessary
 from Remark.TagParsers.Dictionary_TagParser import Dictionary_TagParser 
+from Remark.DocumentType_Registry import registerDocumentType
 
 class Copy_DocumentType(object):
     def name(self):
@@ -31,3 +30,5 @@ class Copy_DocumentType(object):
 
     def outputName(self, fileName):
         return fileName
+
+registerDocumentType('Copy', Copy_DocumentType())
