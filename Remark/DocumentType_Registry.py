@@ -5,8 +5,9 @@
 
 from Remark.FileSystem import fileExtension, unixDirectoryName
 
-_documentTypeMap = dict()
+_associationSet = dict()
 _defaultDocumentType = None
+_documentTypeSet = dict()
 
 def setDefaultDocumentType(documentType):
     '''
@@ -15,15 +16,24 @@ def setDefaultDocumentType(documentType):
     This document-type will be returned by documentType()
     in case an associated document-type can not be found.
 
-    documentType (DocumentType):
+    documentType (DocumentType or string):
     The document-type object to use as a default 
     document-type.
 
     See also:
     documentType()
     '''
+    if isinstance(documentType, basestring):
+        documentType = findDocumentType(documentType)
+
     global _defaultDocumentType
     _defaultDocumentType = documentType
+
+def registerDocumentType(name, documentType):
+    _documentTypeSet[name] = documentType
+
+def findDocumentType(name):
+    return _documentTypeSet.get(name)
 
 def associateDocumentType(inputExtension, documentType):
     '''
@@ -34,15 +44,19 @@ def associateDocumentType(inputExtension, documentType):
     inputExtension (string or list-of-strings):
     The file-extensions to associate to the given document-type.
 
-    documentType (DocumentType):
+    documentType (DocumentType or string):
     The document-type object to associate to the file-extensions.
     '''
-    global _documentTypeMap
+    if isinstance(documentType, basestring):
+        documentType = findDocumentType(documentType)
+
+    global _associationSet
     if isinstance(inputExtension, basestring):
-        _documentTypeMap[inputExtension.lower()] = documentType
-    else:
-        for extension in inputExtension:
-            associateDocumentType(extension, documentType)            
+        _associationSet[inputExtension.lower()] = documentType
+        return
+        
+    for extension in inputExtension:
+        associateDocumentType(extension, documentType)            
 
 def strictDocumentType(inputExtension):
     '''
@@ -58,7 +72,7 @@ def strictDocumentType(inputExtension):
     The associated document-type object, if such can be
     found. Otherwise None.
     '''
-    return _documentTypeMap.get(inputExtension.lower())
+    return _associationSet.get(inputExtension.lower())
 
 def documentType(inputExtension):
     '''
@@ -74,7 +88,7 @@ def documentType(inputExtension):
     The associated document-type object, if such can be
     found. Otherwise the default document-type object.
     '''
-    return _documentTypeMap.get(inputExtension.lower(), _defaultDocumentType)
+    return _associationSet.get(inputExtension.lower(), _defaultDocumentType)
 
 def outputDocumentName(inputPath):
     '''

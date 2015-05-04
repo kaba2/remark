@@ -7,6 +7,7 @@ import re
 from Remark.TagParsers.Remark_TagParser import Remark_TagParser
 from Remark.FileSystem import changeExtension, globalOptions, fileUpToDate
 from Remark.Conversion import saveRemarkToHtml
+from Remark.DocumentType_Registry import registerDocumentType
 
 class RemarkPage_DocumentType(object):
     def __init__(self):
@@ -43,3 +44,5 @@ class RemarkPage_DocumentType(object):
 
     def outputName(self, fileName):
         return changeExtension(fileName, '.htm')
+
+registerDocumentType('RemarkPage', RemarkPage_DocumentType())

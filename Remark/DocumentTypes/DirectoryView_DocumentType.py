@@ -2,8 +2,9 @@
 
 # Description: DirectoryView document-type
 
-from Remark.FileSystem import changeExtension, fileExists
+from Remark.FileSystem import changeExtension
 from Remark.Conversion import saveRemarkToHtml
+from Remark.DocumentType_Registry import registerDocumentType
 
 class DirectoryView_DocumentType(object):
     def name(self):
@@ -31,3 +32,5 @@ class DirectoryView_DocumentType(object):
 
     def outputName(self, fileName):
         return changeExtension(fileName, '.htm')
+
+registerDocumentType('DirectoryView', DirectoryView_DocumentType())

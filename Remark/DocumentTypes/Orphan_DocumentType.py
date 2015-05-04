@@ -4,6 +4,7 @@
 
 from Remark.FileSystem import changeExtension 
 from Remark.Conversion import saveRemarkToHtml
+from Remark.DocumentType_Registry import registerDocumentType
 
 class Orphan_DocumentType(object):
     def name(self):
@@ -32,3 +33,5 @@ class Orphan_DocumentType(object):
 
     def outputName(self, fileName):
         return changeExtension(fileName, '.htm')
+
+registerDocumentType('Orphan', Orphan_DocumentType())

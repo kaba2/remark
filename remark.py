@@ -36,6 +36,9 @@ from Remark.Reporting import Reporter, ScopeGuard
 # library.
 from Remark.Macros import *
 
+# Similarly for DocumentTypes.
+from Remark.DocumentTypes import *
+
 if os.name == 'nt':
     # Apply the bug-fix for the os.path.split() to
     # support UNC-paths (bug present in Python 2.7.3).
@@ -281,30 +284,16 @@ Exclusion takes priority over inclusion.""",
 
 from Remark.DocumentType_Registry import setDefaultDocumentType, associateDocumentType
 
-from Remark.DocumentTypes.CppCodeView_DocumentType import CppCodeView_DocumentType
-from Remark.DocumentTypes.CodeView_DocumentType import CodeView_DocumentType
-from Remark.DocumentTypes.RemarkPage_DocumentType import RemarkPage_DocumentType
-from Remark.DocumentTypes.DirectoryView_DocumentType import DirectoryView_DocumentType
-from Remark.DocumentTypes.Orphan_DocumentType import Orphan_DocumentType
-from Remark.DocumentTypes.Copy_DocumentType import Copy_DocumentType
-
-remarkPageType = RemarkPage_DocumentType()
-cppCodeViewType = CppCodeView_DocumentType()
-directoryViewType = DirectoryView_DocumentType()
-codeViewType= CodeView_DocumentType()
-orphanType = Orphan_DocumentType()
-copyType = Copy_DocumentType()
-
 remarkPageSet = ['.txt']
 cppCodeViewSet = ['.cpp', '.cc', '.h', '.hh', '.hpp']
-codeViewSet = ['.py', '.m', '.pm', '.pl', '.css', '.js', '.lua']
-       
-setDefaultDocumentType(copyType)
-associateDocumentType(remarkPageSet, remarkPageType)
-associateDocumentType(cppCodeViewSet, cppCodeViewType)
-associateDocumentType(codeViewSet, codeViewType)
-associateDocumentType('.remark-index', directoryViewType)
-associateDocumentType('.remark-orphan', orphanType)
+codeViewSet = ['.py', '.m', '.pm', '.pl', '.css', '.js', '.json', '.lua']
+
+setDefaultDocumentType('Copy')
+associateDocumentType(remarkPageSet, 'RemarkPage')
+associateDocumentType(cppCodeViewSet, 'CppCodeView')
+associateDocumentType(codeViewSet, 'CodeView')
+associateDocumentType('.remark-index', 'DirectoryView')
+associateDocumentType('.remark-orphan', 'Orphan')
 
 # Create a reporter for progress, error, and warning reporting.
 reporter = Reporter()
