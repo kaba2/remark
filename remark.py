@@ -111,6 +111,18 @@ If the file path is relative, it is relative to the input directory.
 The file `remark_options` is always included as an option-file.""",
         metavar = 'FILEPATH')
 
+    optionParser.add_option('-c', '--config',
+        dest = 'configFileSet',
+        type = 'string',
+        action = 'append',
+        default = ['remark_config.json'],
+        help = """reads a JSON configuration file (if it exists).
+If the file path is relative, it is relative to the input directory.
+The file `remark_config.json` is always included as an option-file. If
+it does not exist, it will be copied from the default-config to the 
+input-directory.""",
+        metavar = 'FILEPATH')
+
     optionParser.add_option('-q', '--quick',
         action="store_true", dest="quick", default=False,
         help = """regenerates only modified documents and their parents. Note: only use for quick previews of edits; this process leaves many documents out-of-date. """)
@@ -303,6 +315,55 @@ reporter.openScope('Remark ' + remarkVersion())
 
 # Parse the command-line arguments.
 argumentSet = parseArguments(reporter)
+
+from Remark.FileSystem import remarkDirectory, copyIfNecessary
+
+copySet = \
+    [
+        './remark_files/remark_config_default.json', 
+        remarkDirectory(), 
+        './remark_config.json', 
+        argumentSet.inputDirectory,
+    ],
+
+with ScopeGuard(reporter, 'Updating input files'):
+    for (fromName, fromDirectory, toName, toDirectory) in copySet:
+        copied = copyIfNecessary(
+            fromName, fromDirectory, 
+            toName, toDirectory)
+        if copied:
+            reporter.report([fromName, '=> ' + toName], 'verbose')
+
+# Parse configuration files.
+
+import json
+from Remark.FileSystem import openFileUtf8, unixDirectoryName
+
+for configFile in argumentSet.configFileSet:
+    if not fileExists(configFile, argumentSet.inputDirectory):
+        reporter.reportWarning(
+            "Config file " + configFile + " does not exist.", 
+            'missing-config')
+        continue
+
+    reporter.report('Reading config ' + configFile + '...', 'verbose')
+
+    with ScopeGuard(reporter, configFile + ' (config)'):
+        configText = readFile(
+            unixDirectoryName(os.path.join(argumentSet.inputDirectory, configFile)))
+
+        config = None
+        try:
+            config = json.loads(''.join(configText))
+        except (TypeError, ValueError) as error:
+            reporter.reportError(
+                str(error), 
+                'invalid-config')
+            sys.exit(0)
+
+        # for line in config.iteritems():
+        #     print line
+        # sys.exit(0)
 
 # Set the global options. 
 # I should get get rid of this, and pass
