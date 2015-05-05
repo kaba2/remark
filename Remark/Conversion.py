@@ -418,19 +418,35 @@ def convertDirectory(argumentSet, reporter):
     # It is also important that these files are copied as early as
     # possible, since we want to see the changes in the .css files
     # as early as possible.
-    copyNameSet = [
-        './remark_files/remark.css',
-        './remark_files/pygments.css',
-        './remark_files/mathjax-config.js'
+    copySet = \
+        [
+            [
+                './remark_files/remark_default.css', 
+                remarkDirectory(), 
+                './remark_files/remark.css', 
+                argumentSet.outputDirectory,
+            ],
+            [
+                './remark_files/pygments_default.css', 
+                remarkDirectory(), 
+                './remark_files/pygments.css', 
+                argumentSet.outputDirectory,
+            ],
+            [
+                './remark_files/mathjax-config.js', 
+                remarkDirectory(), 
+                './remark_files/mathjax-config.js', 
+                argumentSet.outputDirectory,
+            ],
         ]
 
-    with ScopeGuard(reporter, 'Updating files'):
-        for name in copyNameSet:
+    with ScopeGuard(reporter, 'Updating output files'):
+        for (fromName, fromDirectory, toName, toDirectory) in copySet:
             copied = copyIfNecessary(
-                            name, remarkDirectory(), 
-                            name, argumentSet.outputDirectory)
+                fromName, fromDirectory, 
+                toName, toDirectory)
             if copied:
-                reporter.report(name, 'verbose')
+                reporter.report([fromName, '=> ' + toName], 'verbose')
 
     # Parse the tags.
     with ScopeGuard(reporter, 'Parsing tags'):
