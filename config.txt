@@ -3,7 +3,7 @@ Configuration files
 
 [[Parent]]: user_documentation.txt
 
-A _configuration file_ is a JSON-file which specifies Remark options. The `remark_config.json` file is automatically read as a configuration file, if it exists in the input root directory. Additional configuration files can be specified with the `-c` command-line option. The configuration properties mirror those of the command-line options.
+A _configuration file_ is a JSON-file which specifies Remark options. The `remark_config.json` file is automatically read as a configuration file --- provided it exists in the input root directory. Additional configuration files can be specified with the `-c` command-line option. The configuration properties mirror those of the command-line options.
 
 Example
 -------
@@ -13,16 +13,11 @@ Example
 	{
 		"disable" : 
 		[
-			"missing-description"
 		],
 
 		"flags" :
 		[
-			"verbose"
 		],
-
-		"lines" : 100,
-		"max-file-size" : 262144,
 
 		"include" :
 		[
