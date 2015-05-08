@@ -37,20 +37,20 @@ from Remark.Reporting import Reporter, ScopeGuard
 
 from Remark.FileSystem import (
     remarkDirectory, 
-    copyIfNecessary)
+    copyIfNecessary,
+    findMatchingFiles,
+    fileExtension,
+    setGlobalOptions)
 
 from Remark.Command_Line import parseArguments
 from Remark.Config import parseConfig
+from Remark.Version import remarkVersion
 
 # Note that Remark.Conversion must be imported after
 # setting the location of the remark.py script. This
 # is because Remark.Conversion relies on that path
 # to work around the Markdown import bug.
 from Remark.Conversion import convertDirectory
-
-from Remark.FileSystem import setGlobalOptions
-
-from Remark.Version import remarkVersion
 
 # Associate the document-types
 # ----------------------------
@@ -124,7 +124,7 @@ reporter.disable('debug-implicit')
 for reportType in argumentSet.disableSet:
     reporter.disable(reportType)
 
-if argumentSet.unknown:
+if argumentSet.unknowns:
     relativeNameSet = findMatchingFiles(
         argumentSet.inputDirectory,
         ["*"],

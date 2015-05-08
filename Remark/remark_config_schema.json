@@ -28,41 +28,11 @@
 	"type" : "object",
 	"properties" : 
 	{
-		"generators" : 
+		"disable" :
 		{
-			"type" : "array",
-			"items" : 
-			{
-				"type": "object",
-				"properties" :
-				{
-					"name" : { "type" : "string" },
-					"type" : { "type" : "string" },
-					"arguments" :
-					{
-						"type" : "object",
-						"properties" :
-						{
-							"template" : {"type" : "string"}
-						}
-					},
-					"tags" :
-					{
-						"$ref" : "#/definitions/string_to_string"
-					}
-				},
-				"required" : 
-				[
-					"name", 
-					"type"
-				]
-			}
+			"$ref" : "#/definitions/string_set"
 		},
-		"associations" :
-		{
-			"$ref" : "#/definitions/string_to_string"
-		},
-		"disable-warning" :
+		"flags" :
 		{
 			"$ref" : "#/definitions/string_set"
 		},
@@ -71,10 +41,6 @@
 			"$ref" : "#/definitions/string_set"
 		},
 		"exclude" :
-		{
-			"$ref" : "#/definitions/string_set"
-		},
-		"flags" :
 		{
 			"$ref" : "#/definitions/string_set"
 		}
