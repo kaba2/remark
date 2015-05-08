@@ -17,6 +17,16 @@ configSchema = {
         },
         "exclude" : {
             "$ref" : "#/definitions/string_set"
+        },
+        "lines" : 
+        {
+            "type" : "integer",
+            "minimum" : 0
+        },
+        "max-file-size" : 
+        {
+            "type" : "integer",
+            "minimum" : 0
         }
     },
 

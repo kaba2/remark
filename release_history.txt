@@ -23,7 +23,6 @@ Release date 29.04.2015.
 
 ### Core
 
-* Changed to use Python Markdown 2.6. 
 * Extended Markdown with mathematics.
 * Extended Markdown with regions.
 * Extended Markdown with scoped links.
@@ -33,9 +32,7 @@ Release date 29.04.2015.
 
 ### Mathematics
 
-* Changed to use MathJax for improved parsing and rendering of mathematics.
 * Added support for Latex mathematics.
-* Removed dependency to `ASCIIMathMLwFallback.js`.
 
 ### Indentation macro
 
@@ -49,13 +46,21 @@ Release date 29.04.2015.
 
 ### CSS
 
-* Made the Pygments CSS be more specific on 
+* Made the Pygments CSS more specific, so that it does not interfere with MathJax rendering.
 * Made Example-div to scroll on overflow.
 * Made Example-div to zero top- and bottom-margins of first- and last-child `<div>`s.
 
 ### Interface
 
 * Added the option `-g` to generate the Markdown source for each file. This is useful for debugging.
+* Added the option `-c` for specifying JSON configuration files.
+
+### Dependencies
+
+* Changed to use the latest Python Markdown. 
+* Changed to use MathJax for improved parsing and rendering of mathematics.
+* Added dependency to the `jsonschema` Python library, for JSON validation.
+* Removed dependency to `ASCIIMathMLwFallback.js`.
 
 Remark 1.6.5
 ------------

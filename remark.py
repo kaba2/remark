@@ -83,29 +83,13 @@ reporter.openScope('Remark ' + remarkVersion())
 # Parse the command-line arguments.
 argumentSet = parseArguments(sys.argv, reporter)
 
-# Update input files.
-copySet = \
-    [
-        (
-            './remark_files/remark_config_default.json', 
-            remarkDirectory(), 
-            './remark_config.json', 
-            argumentSet.inputDirectory,
-        )
-    ]
-
-with ScopeGuard(reporter, 'Updating input files'):
-    for (fromName, fromDirectory, toName, toDirectory) in copySet:
-        copied = copyIfNecessary(
-            fromName, fromDirectory, 
-            toName, toDirectory)
-        if copied:
-            reporter.report([fromName, '=> ' + toName], 'verbose')
-
 reporter.enable('verbose', argumentSet.verbose)
 
 # Parse the configuration files.
 argumentSet = parseConfig(argumentSet, reporter)
+
+if argumentSet == None:
+    sys.exit(1)
 
 # Act on options
 # --------------
