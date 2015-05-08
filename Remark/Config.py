@@ -77,6 +77,6 @@ def parseConfig(argumentSet, reporter):
                         'invalid-config')
                     continue
 
-                argumentSet.__dict__[flag] = flagSet[flag]
+                argumentSet.__dict__[flagSet[flag]] = True
 
     return argumentSet
