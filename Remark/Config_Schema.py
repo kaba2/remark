@@ -4,24 +4,6 @@
 configSchema = {
     "$schema": "http://json-schema.org/draft-04/schema#",
 
-    "definitions" : {
-        "string_to_string" : {
-            "type" : "object",
-            "properties" : {
-                "/" : {}
-            },
-            "patternProperties" : {
-                "^.*$" : {"type" : "string"}
-            }
-        },
-        "string_set" : {
-            "type" : "array",
-            "items" : {
-                "type" : "string"
-            }
-        }
-    },
-
     "type" : "object",
     "properties" : {
         "disable" : {
@@ -35,6 +17,15 @@ configSchema = {
         },
         "exclude" : {
             "$ref" : "#/definitions/string_set"
+        }
+    },
+
+    "definitions" : {
+        "string_set" : {
+            "type" : "array",
+            "items" : {
+                "type" : "string"
+            }
         }
     }
 }
