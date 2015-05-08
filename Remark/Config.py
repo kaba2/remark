@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 # Description: Configuration file parsing
-# Documentation: command_line.txt
+# Documentation: config.txt
 
 from Remark.Reporting import Reporter, ScopeGuard
 from Remark.Config_Schema import configSchema
@@ -21,10 +21,11 @@ import jsonschema
 def parseConfig(argumentSet, reporter):
     for configFile in argumentSet.configFileSet:
         if not fileExists(configFile, argumentSet.inputDirectory):
-            reporter.reportWarning(
-                "Config file " + configFile + " does not exist.", 
-                'missing-config')
-            continue
+            if configFile != 'remark_config.json':
+                reporter.reportError(
+                    "Config file " + configFile + " does not exist.", 
+                    'missing-config')
+                return None
 
         with ScopeGuard(reporter, configFile + ' (config)'):
             configPath = unixDirectoryName(
@@ -44,7 +45,7 @@ def parseConfig(argumentSet, reporter):
                 reporter.reportError(
                     str(error), 
                     'invalid-config-syntax')
-                sys.exit(1)
+                return None
 
             # Validate the config file.
             try:
@@ -53,7 +54,7 @@ def parseConfig(argumentSet, reporter):
                 reporter.reportError(
                     error.message, 
                     'invalid-config')
-                sys.exit(1)
+                return None
 
             # Extract the data.
             argumentSet.includeSet += configJson.get('include', [])

@@ -70,7 +70,7 @@ as follows:
 
 -l or --lines
 :	Sets maximum number of lines for a tag-parser to scan a file
-	for tags (default 100).
+	for tags (default 200).
 
 -m or --max-file-size
 :	Sets maximum file-size to load (in bytes, default 262144).
