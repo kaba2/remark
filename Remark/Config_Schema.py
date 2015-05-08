@@ -1,5 +1,5 @@
 # Description: Config file JSON-schema
-# Documentation: command_line.txt
+# Documentation: config.txt
 
 configSchema = {
     "$schema": "http://json-schema.org/draft-04/schema#",
