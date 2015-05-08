@@ -4,6 +4,7 @@
 # Documentation: command_line.txt
 
 from Remark.Reporting import Reporter, ScopeGuard
+from Remark.Config_Schema import configSchema
 from Remark.FileSystem import (
     unixDirectoryName,
     openFileUtf8, 
@@ -18,30 +19,6 @@ import json
 import jsonschema
 
 def parseConfig(argumentSet, reporter):
-    configSchemaPath = unixDirectoryName(
-            os.path.join(
-                remarkDirectory(), 
-                'remark_config_schema.json'
-            )
-        )
-
-    if not fileExists('remark_config_schema.json', remarkDirectory()):
-        reporter.reportError(
-            'Remark config schema is missing. Re-install Remark.', 
-            'broken-installation')
-        sys.exit(1)
-
-    reporter.report('Reading config JSON-schema...', 'verbose')
-
-    schemaText = readFile(configSchemaPath)
-    try:
-        schemaJson = json.loads(''.join(schemaText))
-    except (TypeError, ValueError) as error:
-        reporter.reportError(
-            str(error), 
-            'invalid-config-schema-syntax')
-        sys.exit(1)
-
     for configFile in argumentSet.configFileSet:
         if not fileExists(configFile, argumentSet.inputDirectory):
             reporter.reportWarning(
@@ -71,7 +48,7 @@ def parseConfig(argumentSet, reporter):
 
             # Validate the config file.
             try:
-                jsonschema.validate(configJson, schemaJson)
+                jsonschema.validate(configJson, configSchema)
             except (jsonschema.ValidationError, jsonschema.SchemaError) as error:
                 reporter.reportError(
                     error.message, 
