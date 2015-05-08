@@ -1,0 +1,58 @@
+{
+	"$schema": "http://json-schema.org/draft-04/schema#",
+
+	"definitions" :
+	{
+		"string_to_string" :
+		{
+			"type" : "object",
+			"properties" : 
+			{
+				"/" : {}
+			},
+			"patternProperties" : 
+			{
+				"^.*$" : {"type" : "string"}
+			}
+		}
+	},
+
+	"type" : "object",
+	"properties" : 
+	{
+		"generators" : 
+		{
+			"type" : "array",
+			"items" : 
+			{
+				"type": "object",
+				"properties" :
+				{
+					"name" : { "type" : "string" },
+					"type" : { "type" : "string" },
+					"arguments" :
+					{
+						"type" : "object",
+						"properties" :
+						{
+							"template" : {"type" : "string"}
+						}
+					},
+					"tags" :
+					{
+						"$ref" : "#/definitions/string_to_string"
+					}
+				},
+				"required" : 
+				[
+					"name", 
+					"type"
+				]
+			}
+		},
+		"associations" :
+		{
+			"$ref" : "#/definitions/string_to_string"
+		}
+	}
+}
