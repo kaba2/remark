@@ -86,11 +86,13 @@ argumentSet = parseArguments(sys.argv, reporter)
 # Update input files.
 copySet = \
     [
-        './remark_files/remark_config_default.json', 
-        remarkDirectory(), 
-        './remark_config.json', 
-        argumentSet.inputDirectory,
-    ],
+        (
+            './remark_files/remark_config_default.json', 
+            remarkDirectory(), 
+            './remark_config.json', 
+            argumentSet.inputDirectory,
+        )
+    ]
 
 with ScopeGuard(reporter, 'Updating input files'):
     for (fromName, fromDirectory, toName, toDirectory) in copySet:
@@ -100,8 +102,62 @@ with ScopeGuard(reporter, 'Updating input files'):
         if copied:
             reporter.report([fromName, '=> ' + toName], 'verbose')
 
+reporter.enable('verbose', argumentSet.verbose)
+
 # Parse the configuration files.
 argumentSet = parseConfig(argumentSet, reporter)
+
+# Act on options
+# --------------
+
+reporter.enable('verbose', argumentSet.verbose)
+
+argumentSet.tabSize = 4;
+if argumentSet.maxTagLines <= 0:
+    reporter.reportError('The maximum number of lines to scan for tags must be at least 1.',
+                         'invalid-input')
+    sys.exit(1)
+
+reporter.disable('debug-implicit')
+
+# Disable the report-types given by the -d switch.
+for reportType in argumentSet.disableSet:
+    reporter.disable(reportType)
+
+if argumentSet.unknown:
+    relativeNameSet = findMatchingFiles(
+        argumentSet.inputDirectory,
+        ["*"],
+        argumentSet.includeSet + argumentSet.excludeSet)
+
+    # Sort to an alphabetical order by relative-path.
+    relativeNameSet.sort()
+
+    # Print the unknown files.
+    print
+    for relativeName in relativeNameSet:
+        print relativeName
+
+    sys.exit(0)
+
+if argumentSet.extensions:
+    extensionSet = {}
+    for pathName, directorySet, filenameSet in os.walk(argumentSet.inputDirectory):
+        for filename in filenameSet:
+            extension = fileExtension(filename)
+            if not extension in extensionSet:
+                extensionSet[extension] = filename
+
+    # Sort to an alphabetical order by extension.
+    sortedSet = extensionSet.keys()
+    sortedSet.sort()
+
+    # Print the extensions and their example files.
+    print
+    for extension in sortedSet:
+        print extension, extensionSet[extension]
+
+    sys.exit(0)
 
 # Set the global options. 
 # I should get get rid of this, and pass
