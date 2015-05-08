@@ -10,7 +10,8 @@ import optparse
 from Remark.FileSystem import (
     fileExists, 
     unixDirectoryName, 
-    readFile)
+    readFile,
+    fileExtension)
 
 def parseArguments(argv, reporter):
     '''
@@ -152,13 +153,6 @@ Exclusion takes priority over inclusion.""",
     # as the -i option.
     argumentSet.includeSet += args[2:]
 
-    # Act on options before parsing option files
-    # ------------------------------------------
-
-    if not argumentSet.verbose:
-        # Disable the verbose reports.
-        reporter.disable('verbose')
-
     # Option files
     # ------------
 
@@ -193,64 +187,9 @@ Exclusion takes priority over inclusion.""",
                 # An option-file path is relative to the input directory.
                 optionFilePath = unixDirectoryName(os.path.join(argumentSet.inputDirectory, optionFile))
                 # Read the option file.
-                reporter.report('Reading option file ' + optionFilePath + '...', 'verbose')
                 optionText = readFile(optionFilePath, maxOptionFileSize)
                 # Parse the new command-line arguments.
                 argumentSet, args = optionParser.parse_args(optionText, argumentSet)
                 argumentSet.includeSet += args
-
-    # Act on options
-    # --------------
-
-    argumentSet.tabSize = 4;
-    if argumentSet.maxTagLines <= 0:
-        reporter.reportError('The maximum number of lines to scan for tags must be at least 1.',
-                             'invalid-input')
-        sys.exit(1)
-
-    if not argumentSet.verbose:
-        # Disable the verbose reports.
-        reporter.disable('verbose')
-
-    reporter.disable('debug-implicit')
-
-    # Disable the report-types given by the -d switch.
-    for reportType in argumentSet.disableSet:
-        reporter.disable(reportType)
-
-    if argumentSet.unknown:
-        relativeNameSet = findMatchingFiles(
-            argumentSet.inputDirectory,
-            ["*"],
-            argumentSet.includeSet + argumentSet.excludeSet)
-
-        # Sort to an alphabetical order by relative-path.
-        relativeNameSet.sort()
-
-        # Print the unknown files.
-        print
-        for relativeName in relativeNameSet:
-            print relativeName
-
-        sys.exit(0)
-
-    if argumentSet.extensions:
-        extensionSet = {}
-        for pathName, directorySet, filenameSet in os.walk(argumentSet.inputDirectory):
-            for filename in filenameSet:
-                extension = fileExtension(filename)
-                if not extension in extensionSet:
-                    extensionSet[extension] = filename
-
-        # Sort to an alphabetical order by extension.
-        sortedSet = extensionSet.keys()
-        sortedSet.sort()
-
-        # Print the extensions and their example files.
-        print
-        for extension in sortedSet:
-            print extension, extensionSet[extension]
-
-        sys.exit(0)
 
     return argumentSet

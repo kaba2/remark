@@ -66,18 +66,19 @@ class Reporter(object):
         assert len(self.scopeSet) > 0 and name == self.scopeSet[-1].name
         self.scopeSet.pop()
 
-    def enable(self, type):
-        if type in self.disabledSet:
-            self.disabledSet.remove(type)
+    def enable(self, type, value = True):
+        if value:
+            if type in self.disabledSet:
+                self.disabledSet.remove(type)
+        else:
+            if not type in self.disabledSet:
+                self.disabledSet.add(type)
 
     def disable(self, type):
-        self.disabledSet.add(type)
+        self.enable(type, False)        
 
     def enabled(self, type):
-        return not self.disabled(type)
-
-    def disabled(self, type):
-        return type in self.disabledSet
+        return type not in self.disabledSet
 
     def report(self, text, type, lazy = False):
         if isinstance(text, basestring):

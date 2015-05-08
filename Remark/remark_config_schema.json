@@ -14,6 +14,14 @@
 			{
 				"^.*$" : {"type" : "string"}
 			}
+		},
+		"string_set" :
+		{
+			"type" : "array",
+			"items" :
+			{
+				"type" : "string"
+			}
 		}
 	},
 
@@ -53,6 +61,22 @@
 		"associations" :
 		{
 			"$ref" : "#/definitions/string_to_string"
+		},
+		"disable-warning" :
+		{
+			"$ref" : "#/definitions/string_set"
+		},
+		"include" :
+		{
+			"$ref" : "#/definitions/string_set"
+		},
+		"exclude" :
+		{
+			"$ref" : "#/definitions/string_set"
+		},
+		"flags" :
+		{
+			"$ref" : "#/definitions/string_set"
 		}
 	}
 }
