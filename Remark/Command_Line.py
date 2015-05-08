@@ -100,7 +100,7 @@ input-directory.""",
         help = """treats warnings as errors.""")
 
     optionParser.add_option('-u', '--unknowns',
-        action="store_true", dest="unknown", default=False,
+        action="store_true", dest="unknowns", default=False,
         help = """lists all files which are neither included or excluded.""")
 
     optionParser.add_option('-v', '--verbose',

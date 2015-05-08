@@ -72,26 +72,26 @@ def parseConfig(argumentSet, reporter):
             # Validate the config file.
             try:
                 jsonschema.validate(configJson, schemaJson)
-            except jsonschema.ValidationError as error:
+            except (jsonschema.ValidationError, jsonschema.SchemaError) as error:
                 reporter.reportError(
                     error.message, 
                     'invalid-config')
-            except jsonschema.SchemaError as error:
-                reporter.reportError(
-                    error.message, 
-                    'invalid-config')
+                sys.exit(1)
 
             # Extract the data.
             argumentSet.includeSet += configJson.get('include', [])
             argumentSet.excludeSet += configJson.get('exclude', [])
-            argumentSet.disableSet += configJson.get('disable-warning', [])
+            argumentSet.disableSet += configJson.get('disable', [])
 
             # Extract flags
-            flagSet = set([
-                'verbose',
-                'strict',
-                'quick'
-                ])
+            flagSet = {
+                'extensions' : 'extensions',
+                'generate-markdown' : 'generateMarkdown',
+                'quick' : 'quick',
+                'strict' : 'strict',
+                'unknowns' : 'unknowns',
+                'verbose' : 'verbose',
+                }
             for flag in configJson.get('flags', []):
                 if flag not in flagSet:
                     reporter.reportWarning(
@@ -99,7 +99,6 @@ def parseConfig(argumentSet, reporter):
                         'invalid-config')
                     continue
 
-                print flag
-                argumentSet.__dict__[flag] = True
+                argumentSet.__dict__[flag] = flagSet[flag]
 
     return argumentSet
