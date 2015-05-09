@@ -284,7 +284,7 @@ html, body
 #remark dt
 {
     /* Make the font of the defined thing larger. */
-    font-size: 18px;
+    font-size: 1.1em;
     color: rgb(0, 51, 140);
     padding-bottom: 0em;
 }
