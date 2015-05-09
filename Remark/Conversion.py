@@ -59,7 +59,7 @@ from Remark.DocumentType_Registry import documentType, outputDocumentName
 from Remark.DocumentTree import createDocumentTree
 from Remark_To_Markdown import Remark
 
-mathPattern = r'<script[ \t]+type[ \t]*=[ \t]*"math'
+mathPattern = r'<script.*?type[ \t]*=[ \t]*".*?math.*?".*?>'
 mathRegex = re.compile(mathPattern)
 
 def addHtmlBoilerPlate(text, document, htmlHead):
