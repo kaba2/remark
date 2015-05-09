@@ -39,11 +39,20 @@ The Pillow library is used to create thumbnails for image galleries.
 
 It is licensed under the [Python Imaging Library license][PIL license].
 
+### [jsonschema][JsonSchema]
+
+The jsonschema library is used to validate JSON config files.
+
+It is licensed under the [MIT license][MIT].
+
+
 [PythonMarkdown]: https://pythonhosted.org/Markdown/
 [Pygments]: http://pygments.org/
 [Pillow]: https://python-pillow.github.io/
 [BSD]: http://en.wikipedia.org/wiki/BSD_licenses
 [PIL license]: http://www.pythonware.com/products/pil/license.htm
+[MIT]: http://opensource.org/licenses/MIT
+[JsonSchema]: https://github.com/Julian/jsonschema/
 
 Javascript dependencies
 -----------------------
