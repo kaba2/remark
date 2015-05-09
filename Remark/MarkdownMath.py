@@ -22,10 +22,12 @@ class MarkdownMath_Extension(Extension):
         # as math. Therefore, `backticks` inline-pattern
         # should run before math.
 
-        # The `escape` inline-pattern does Markdown-escaping,
-        # and therefore should not run on math. Therefore,
-        # math inline-pattern must run before the `escape`
-        # inline-pattern.
+        # The `html` inline-pattern must run before math,
+        # since otherwise math is interpreted inside 
+        # html-comments. We need to avoid this, since
+        # we use html-comments to inject raw-html.
+        # Note that math is still interpreted inside non-comment 
+        # html elements, just as Markdown _emphasis_ is.
 
         # The math inline-patterns block future inline-patterns 
         # from modifying the math (by using AtomicString in 
@@ -33,21 +35,18 @@ class MarkdownMath_Extension(Extension):
 
         # First run latex display-math $$, because
         # otherwise $ would incorrectly handle it.
-        # Notice how we use 'div' for display-math.
         md.inlinePatterns.add(
             'display-latex-math', 
             MarkdownMath_Pattern('$$', '$$', 'math/tex; mode=display', 'display-latex-math'), 
-            '<escape' )
+            '_end' )
 
         # Then run Latex inline-math $. 
-        # Notice how we use 'span' for inline-math.
         md.inlinePatterns.add(
             'inline-latex-math', 
             MarkdownMath_Pattern('$', '$', 'math/tex', 'latex-math'), 
             '>display-latex-math' )
 
         # Finally run Asciimath inline-math ''.
-        # Notice how we use 'span' for inline-math.
         md.inlinePatterns.add(
             'inline-ascii-math', 
             MarkdownMath_Pattern("''", "''", 'math/asciimath', 'ascii-math'), 

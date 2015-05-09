@@ -29,11 +29,11 @@ Examples
 	[[Html]]:
 		Banana
 
-		<p>_Apple_</p>
+		<p> **Apple** $x^2 + y^2 = 1$ </p>
 
 ### Html embedded through Markdown
 
 [[Example]]:
 	Banana
 
-	<p>_Apple_</p>
+	<p> **Apple** $x^2 + y^2 = 1$ </p>
