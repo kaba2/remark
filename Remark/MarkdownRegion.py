@@ -47,7 +47,18 @@ class MarkdownRegion_Extension(Extension):
 
 class MarkdownRegion_BlockProcessor(BlockProcessor):
 
-    introPattern = r'(?:^|\n)(!!!)'
+    # A region declaration is of the form
+    # !!! <tag aKey = "aValue" bKey = "bValue">
+
+    # We allow the region to be preceded by
+    # stuff inside a block, as in
+    # 
+    # preceding stuff !!! <tag...>
+    #
+    # It can be anything provided it isn't indented.
+    precedingPattern = r'((?:^|\n)(?!    ).*?)'
+
+    introPattern = r'!!!'
     whitespacePattern = r'[ \t]*'
     namePattern = r'([\w\-]*)'
     stringPattern = r'"([\w\- \t]*)"'
@@ -64,6 +75,7 @@ class MarkdownRegion_BlockProcessor(BlockProcessor):
         r')')
 
     regionPattern = (
+        precedingPattern +
         introPattern + 
         whitespacePattern + 
         r'<' +
@@ -85,6 +97,16 @@ class MarkdownRegion_BlockProcessor(BlockProcessor):
 
     def run(self, parent, blockSet):
         block = blockSet.pop(0)
+
+        match = self.regionRegex.search(block)
+        if match != None and match.group(1).strip() != '':
+            # The block may capture preceding stuff like this:
+            #
+            # Preceding stuff !!! <div class = "A">
+            #     Stuff
+
+            # Parse the preceding stuff.
+            self.parser.parseChunk(parent, match.group(1))
 
         # A block is a Markdown concept, which means
         # text without empty lines.
@@ -127,7 +149,6 @@ class MarkdownRegion_BlockProcessor(BlockProcessor):
         # blocks which pass self.test().
 
         # Check whether we have case 1.
-        match = self.regionRegex.search(block)
         if match:
             # This is case 1.
 
