@@ -183,6 +183,15 @@ def markdownRegion(enclosedText, keySet = dict(), elementName = 'div'):
     for line in enclosedText:
         text.append('\t' + line)
 
+    # When the text is enclosed in a region inline,
+    # as in [[Verbatim: like this]], we need
+    # the new-line to avoid the succeeding 
+    # content being appended inside the region.
+    # Otherwise this new-line is extraneous,
+    # and looks a bit ugly in the Markdown 
+    # source output.
+    text.append('')
+
     return text
 
 def globToRegex(glob):
