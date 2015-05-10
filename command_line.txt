@@ -22,32 +22,6 @@ the current directory). Therefore, the globs should always be
 provided in the form `"*.txt"`, to defer the glob-expansion from
 the shell to Remark.
 
-### Option-files
-
-Command-line options can be factored into option-files. An option-file is 
-a plain-text file which contains one option per line. Using an option-file 
-is advantageous because
-
- * its options are not affected by the command-line glob-expansion,
- * it reduces repetitive specification of the files and options.
-
-The `remark_options` file is always read as an option-file if it exists. 
-Additional option-files can be specified with the `-o` option. For example,
-instead of running
-
-	remark.py . docs "*.txt" "*.py" "*.png" -x "docs/*"
-
-one can run
-	
-	remark.py . docs
-
-where the `remark_options` file contains
-
-	*.txt
-	*.py
-	*.png
-	-x docs/*
-
 Options
 -------
 
