@@ -54,6 +54,9 @@ Options
 The command-line options control the way Remark operates. They are
 as follows:
 
+-c or --config
+: 	Reads a JSON configuration file (if it exists). If the file path is relative, it is relative to the input directory. The file `remark_config.json` is always included as a config-file, if it exists.
+
 -d or --disable
 :	Disables a specific warning (e.g. `-dinvalid-input`).
 
@@ -76,15 +79,10 @@ as follows:
 :	Sets maximum file-size to load (in bytes, default 262144).
 
 -o or --options
-:	Reads command-line options from an option-file (if it exists).
-	An option-file is a plain-text file, with one option per line.
-	If the file path is relative, it is relative to the input directory.
-	The file `remark_options` is always included as an option-file.
+:	Reads command-line options from an option-file (if it exists). An option-file is a plain-text file, with one option per line. If the file path is relative, it is relative to the input directory. The file `remark_options` is always included as an option-file, if it exists. This option is available for compatibility; use config files instead.
 
 -q or --quick
-:	Regenerates only modified documents and their parents. 
-	Note: only use for quick previews of edits; this process leaves 
-	many documents out-of-date. 
+:	Regenerates only modified documents and their parents. Note: only use for quick previews of edits; this process leaves many documents out-of-date.
 
 -s or --strict
 :	Treats warnings as errors.
@@ -96,5 +94,4 @@ as follows:
 :	Prints additional progress information.
 
 -x or --exclude
-:	Excludes files by their relative-paths (e.g `"*CMake*"`).
-	Exclusion takes priority over inclusion.
+:	Excludes files by their relative-paths (e.g `"*CMake*"`). Exclusion takes priority over inclusion.
