@@ -19,6 +19,8 @@ Realistic constructs
 
 [[Example]]:
 	The solution to the quadratic equation is ''x = (-b +- sqrt(b^2 - 4ac)) / (2a)''.
+
+[[Example]]:
 	The solution to the quadratic equation is $x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}$.
 
 ### Equation labels
@@ -29,30 +31,45 @@ Realistic constructs
 	The solution to Equation $\ref{Quadratic}$ is given by 
 	$$x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}.$$
 
-### Relations
+### Reflexivity
 
 [[Example]]:
 	''R " is reflexive" <=> forall x: x R x''
 
+[[Example]]:
 	$R \textrm{ is reflexive} \iff \forall x: x R x$
+
+### Transitivity
 
 [[Example]]:	
 	''R " is transitive" <=> forall x, y, z: (xRy ^^ yRz) => xRz''
 
+[[Example]]:	
 	$R \textrm{ is transitive} \iff \forall x, y, z: (xRy \land yRz) \implies xRz$
 
 ### Continuity
 
 [[Example]]:
-	''forall epsilon in RR^{> 0}: exists delta in RR^{> 0}: forall y in X: d_1(x, y) < delta => d_2(f(x), f(y)) < epsilon''
+	A function $f : \mathbb{R}^n \to \mathbb{R}^m$ is _continuous_ at $p \in \mathbb{R}^n$, if
+	$$\forall \varepsilon \in \mathbb{R}^{> 0}: \exists \delta \in \mathbb{R}^{> 0}: \forall x \in \mathbb{R}^n : \left\lVert x - p \right\rVert < \delta \implies \left\lVert f(x) - f(p) \right\rVert < \varepsilon.$$
 
-	$\forall \varepsilon \in \mathbb{R}^{> 0}: \exists \delta \in \mathbb{R}^{> 0}: \forall y \in X: d_1(x, y) < \delta \implies d_2(f(x), f(y)) < \varepsilon$
+[[Example]]:
+	A function ''f : RR^n -> RR^m'' is _continuous_ at ''p in RR^n'', if
+
+	''forall epsilon in RR^{> 0}: exists delta in RR^{> 0}: forall x in RR^n: ||x - p|| < delta => ||f(x) - f(p)|| < epsilon''
+
+### Differentiability
+
+[[Example]]:
+	A function $f : \mathbb{R}^n \to \mathbb{R}^m$ is _differentiable_ at $p \in \mathbb{R}^n$, if
+	$$\frac{\left\lVert f(p + h) - \left[ f(p) + (D_p f)(h) \right] \right\rVert}{\left\lVert h \right\rVert} \xrightarrow{h \to 0} 0.$$
 
 ### Limit
 
 [[Example]]:
 	''1 / n stackrel(n -> infty)(->) 0''
 
+[[Example]]:
 	$\frac{1}{n} \xrightarrow{n \to \infty} 0$
 
 Basic constructs

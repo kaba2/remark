@@ -22,8 +22,6 @@ Examples
 --------
 
 [[Example]]:
-	[[set indent]]: Equation_Latex_D
-
 	The equation [[Equation: ax^2 + bx + c = 0]] is called the _quadratic equation_.
 	Use multiple rows [[Equation]]: 
 		ax^2 + 
@@ -31,11 +29,9 @@ Examples
 		c = 0
 	if you like.
 
+[[Example]]:
+	[[set indent]]: Equation_Latex_D
+
 	A function $f : \mathbb{R}^n \to \mathbb{R}^m$ is _differentiable_ at $p \in \mathbb{R}^n$, if
 
 		\frac{\left\lVert f(p + h) - \left[ f(p) + (D_p f)(h) \right] \right\rVert}{\left\lVert h \right\rVert} \xrightarrow{h \to 0} 0.	
-
-	A function $f : \mathbb{R}^n \to \mathbb{R}^m$ is _continuous_ at $p \in \mathbb{R}^n$, if
-
-		\forall \varepsilon \in \mathbb{R}^{> 0}: \exists \delta \in \mathbb{R}^{> 0}: \forall x \in \mathbb{R}^{d} : \left\lVert x - p \right\rVert < \delta \implies \left\lVert f(x) - f(p) \right\rVert < \varepsilon.
-
