@@ -76,7 +76,8 @@ This is equivalent to writing the file-glob directly as a positional argument.""
         help = """reads command-line options from an option-file (if it exists).
 An option-file is a plain-text file, with one option per line.
 If the file path is relative, it is relative to the input directory.
-The file `remark_options` is always included as an option-file.""",
+The file `remark_options` is always included as an option-file, 
+if it exists.""",
         metavar = 'FILEPATH')
 
     optionParser.add_option('-c', '--config',
@@ -86,9 +87,8 @@ The file `remark_options` is always included as an option-file.""",
         default = ['remark_config.json'],
         help = """reads a JSON configuration file (if it exists).
 If the file path is relative, it is relative to the input directory.
-The file `remark_config.json` is always included as an option-file. If
-it does not exist, it will be copied from the default-config to the 
-input-directory.""",
+The file `remark_config.json` is always included as a config-file, 
+if it exists.""",
         metavar = 'FILEPATH')
 
     optionParser.add_option('-q', '--quick',
