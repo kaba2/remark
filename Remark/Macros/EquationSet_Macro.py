@@ -7,6 +7,9 @@ from Remark.Macro_Registry import registerMacro
 from Remark.FileSystem import markdownRegion
 
 class EquationSet_Macro(object):
+    def __init__(self, wrapMacro):
+        self.wrapMacro = wrapMacro
+
     def name(self):
         return 'EquationSet'
 
@@ -21,7 +24,7 @@ class EquationSet_Macro(object):
             cleanLine = line.strip()
             if cleanLine != '':
                 # An ordered list of equations.
-                equationText = remark.macro('Equation', [cleanLine])
+                equationText = remark.macro(self.wrapMacro, [cleanLine])
                 if len(equationText) > 0:
                     equationText[0] = '1. ' + equationText[0]
                 text += equationText
@@ -39,7 +42,6 @@ class EquationSet_Macro(object):
     def postConversion(self, remark):
         None
 
-registerMacro('EquationSet', EquationSet_Macro())
-
-
-
+registerMacro('EquationSet', EquationSet_Macro('Equation'))
+registerMacro('EquationSet_Latex', EquationSet_Macro('Equation_Latex'))
+registerMacro('EquationSet_Latex_D', EquationSet_Macro('Equation_Latex_D'))
