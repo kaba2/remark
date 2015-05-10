@@ -30,3 +30,6 @@ Examples
 		Another line
 
 		Third line
+
+[[Example]]:
+	Something [[Verbatim: else]] here, and [[Verbatim: here too.]]

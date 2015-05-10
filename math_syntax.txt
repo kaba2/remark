@@ -3,26 +3,31 @@ Math syntax
 
 [[Parent]]: remark_syntax.txt
 
-Mathematics can be written in Remark using either the [AsciiMath syntax][AsciiMath], or the [Latex syntax][MathJaxLatex]. Inline mathematics in AsciiMath and Latex are enclosed in `''` and `$`, respectively. Display mathematics in Latex is enclosed in `$$`. Here we provide a brief tutorial to both syntaxes. Complete list of commands for the syntaxes can be found from the above links. 
+Mathematics can be written in Remark using either the [AsciiMath syntax][AsciiMath], or the [Latex syntax][MathJaxLatex]. Here we provide a brief tutorial to both syntaxes; complete list of commands for the syntaxes can be found from the above links. 
+
+Inline mathematics in AsciiMath and Latex are enclosed in `''` and `$`, respectively. Display mathematics in Latex is enclosed in `$$`. 
 
 [MathJax]: http://www.mathjax.org
 [MathJaxLatex]: http://docs.mathjax.org/en/latest/tex.html#supported-latex-commands
 [AsciiMath]: http://asciimath.org
 [MathJaxConfig]: [[Ref]]: mathjax-config.js
  
-Complex constructs
-------------------
+Realistic constructs
+--------------------
 
-### Quadratic equation (inline)
+### Quadratic equation
 
 [[Example]]:
 	The solution to the quadratic equation is ''x = (-b +- sqrt(b^2 - 4ac)) / (2a)''.
 	The solution to the quadratic equation is $x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}$.
 
-### Quadratic equation (display)
+### Equation labels
 
 [[Example]]:
-	The solution to the quadratic equation is $$x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}.$$
+	The quadratic equation is given by 
+	$$a x^2 + b x + c = 0 \label{Quadratic}.$$ 
+	The solution to Equation $\ref{Quadratic}$ is given by 
+	$$x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}.$$
 
 ### Relations
 
