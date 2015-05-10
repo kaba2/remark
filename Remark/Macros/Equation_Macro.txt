@@ -3,7 +3,9 @@ Equation macro
 
 [[Parent]]: available_macros.txt
 
-The Equation macro presents mathematics given in the AsciiMath syntax, together with a running number. The equation is wrapped into an html-span, which is then followed by an equation-number html-span. Finally, these two span elements are wrapped into an equation html-div.
+The Equation, Equation_Latex, and Equation_Latex_D macro wraps the parameter in AsciiMath delimiters `''`, Latex delimiters `$`, and Latex display-delimiters `$$`, respectively. 
+
+These macros are useful for specifying an indentation macro.
 
 Properties
 ----------
@@ -14,28 +16,26 @@ Disabled.
 
 ### Parameters
 
-An expression in AsciiMath.
-
-### Variables
-
-Equation.class_name
-:	The class-name to give to the equation html-div. Default: `Equation`.
-
-Equation.number_class_name
-:	The class-name to give to the equation-number html-span. Default: `Equation-Number`.
-
-### Tags
-
-Equation.number
-:	An integer specifying which number to give to the next equation. It is incremented after each Equation-macro invocation. If the tag does not exist when invoking Equation, it is created with the value of 1.
+An expression in AsciiMath (Equation), or Latex (Equation_Latex and Equation_Latex_D).
 
 Examples
 --------
 
 [[Example]]:
-	[[Equation]]: ax^2 + bx + c = 0
-	[[EquationLatex]]: ax^2 + bx + c = 0
-	[[Equation]]: sin(x) = pi
-	[[EquationLatex]]: \sin(x) = \pi
+	[[set indent]]: Equation_Latex_D
 
+	The equation [[Equation: ax^2 + bx + c = 0]] is called the _quadratic equation_.
+	Use multiple rows [[Equation]]: 
+		ax^2 + 
+		bx + 
+		c = 0
+	if you like.
+
+	A function $f : \mathbb{R}^n \to \mathbb{R}^m$ is _differentiable_ at $p \in \mathbb{R}^n$, if
+
+		\frac{\left\lVert f(p + h) - \left[ f(p) + (D_p f)(h) \right] \right\rVert}{\left\lVert h \right\rVert} \xrightarrow{h \to 0} 0.	
+
+	A function $f : \mathbb{R}^n \to \mathbb{R}^m$ is _continuous_ at $p \in \mathbb{R}^n$, if
+
+		\forall \varepsilon \in \mathbb{R}^{> 0}: \exists \delta \in \mathbb{R}^{> 0}: \forall x \in \mathbb{R}^{d} : \left\lVert x - p \right\rVert < \delta \implies \left\lVert f(x) - f(p) \right\rVert < \varepsilon.
 
