@@ -38,7 +38,11 @@ MathJax.Hub.Config({
             "AMSsymbols.js",
             "noErrors.js",
             "noUndefined.js"
-        ]
+        ],
+        equationNumbers: 
+        { 
+            autoNumber: "all" 
+        }    
     },
     asciimath2jax: 
     {
