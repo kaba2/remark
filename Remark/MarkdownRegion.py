@@ -213,8 +213,6 @@ class MarkdownRegion_BlockProcessor(BlockProcessor):
         # At this point, the block consists solely of the
         # indented content, which has been deindented.
 
-        from Remark.FileSystem import htmlInject
-
         if (contentType == 'remark' or 
             contentType == 'remark-no-p'):
             # The content is to be interpreted as Markdown.
