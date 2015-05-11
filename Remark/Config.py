@@ -26,6 +26,7 @@ def parseConfig(argumentSet, reporter):
                     "Config file " + configFile + " does not exist.", 
                     'missing-config')
                 return None
+            continue
 
         with ScopeGuard(reporter, configFile + ' (config)'):
             configPath = unixDirectoryName(
