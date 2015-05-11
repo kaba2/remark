@@ -1,0 +1,37 @@
+{
+	"disable" : 
+	[
+	],
+
+	"flags" :
+	[
+	],
+
+	"include" :
+	[
+		"*.txt",
+		"*.py",
+		"*.js",
+		"*.css",
+		"*.png",
+		"*.svg",
+		"index.htm"
+	],
+
+	"exclude" :
+	[
+		"remark_options",
+		"MANIFEST.in",
+		"license.txt",
+		"remark_license.txt",
+		"Remark/remark_files/highslide/*",
+		"Remark/remark_files/*template.txt",
+		"docs/*",
+		"MANIFEST",
+		"build/*",
+		"dist/*",
+		".hg*",
+		".DS*",
+		"*.pyc"
+	]
+}
