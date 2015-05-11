@@ -242,38 +242,10 @@ def convertMarkdownToHtml(
     htmlString = markdownParser.convert(string.join(markdownText, '\n'))
     htmlText = string.split(htmlString, '\n')
 
-    # Remark injects html code directly into the 
-    # Markdown source by enclosing it into html
-    # comments in the form
-    #
-    # <!--RemarkInject
-    # ...
-    # RemarkInject-->
-    #
-    # Python Markdown copies html-comments as they 
-    # are, and therefore they can be used to carry 
-    # the raw html code. The only step left is to 
-    # remove the comments.
-
-    # All of this is done because Python Markdown 
-    # cannot handle html nested with Markdown
-    # (the markdown="1" and similar options are 
-    # buggy).
-
-    # Remove html-injection comments.
-    cleanHtmlText = []
-    for i in range(0, len(htmlText)):
-        cleanLine = htmlText[i].replace('<!--RemarkInject', '');
-        cleanLine = cleanLine.replace('RemarkInject-->', '')
-        cleanHtmlText.append(cleanLine)
-
     # Add html boilerplate.
-    htmlText = addHtmlBoilerPlate(
-        cleanHtmlText, document, 
+    return addHtmlBoilerPlate(
+        htmlText, document, 
         headText + document.tag('html_head'))
-
-    # Return the resulting html-text. 
-    return htmlText
 
 def convertRemarkToHtml(remarkText, document, documentTree, 
                         outputRootDirectory,
