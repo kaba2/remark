@@ -23,7 +23,7 @@ The content-type can be set through the `remark-content` attribute. The possible
 : The content is interpreted as Remark, without wrapping first-level paragraphs into `<p>` elements.
 
 `text`
-: The content is interpreted as pre-formatted text.
+: The content is interpreted as raw text, embedded directly into html.
 
 Examples
 --------

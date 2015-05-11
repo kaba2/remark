@@ -222,15 +222,22 @@ class MarkdownRegion_BlockProcessor(BlockProcessor):
             # The content is to be interpreted as raw text.
             # Store or append it to the element's text field.
 
+            # Markdown's post-processor substitutes html-entities
+            # for & < >. To avoid this, all raw html must be stored
+            # in Markdown's htmlStash. The function returns a
+            # placeholder string, which is expanded by the html
+            # post-processor.
+            encodedBlock = self.parser.markdown.htmlStash.store(block)
+
             if region.text == None:
                 # One has to be careful when combining strings here;
                 # the string operations return a str-type, which
                 # loses the AtomicString super-class. So first do
                 # the operations, and then wrap them into an
                 # AtomicString.
-                region.text = AtomicString(block + '\n')
+                region.text = AtomicString(encodedBlock + '\n')
             else:
-                region.text = AtomicString(region.text + '\n' + block + '\n') 
+                region.text = AtomicString(region.text + '\n' + encodedBlock + '\n') 
 
         if theRest:
             # Insert the unindented stuff back into the set
