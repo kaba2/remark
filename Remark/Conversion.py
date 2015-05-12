@@ -178,6 +178,10 @@ def createMarkdownParser():
             'def_list',
             'smarty',
             MarkdownRegion_Extension(),
+            # The math-extension must occur after the
+            # region extension; otherwise it cannot
+            # find the <script> tags where the mathematics
+            # is embedded in.
             MarkdownMath_Extension(),
             MarkdownScope_Extension()
         ])

@@ -330,7 +330,7 @@ Basic constructs
 [[Example]]:
 	''[[a,b],[c,d]] ((1,0),(0,1))''
 
-	$\begin{bmatrix} a & b \\ c & d \end{bmatrix} \begin{pmatrix} 1 & 0 \\ 1 & 0 \end{pmatrix}$
+	$\begin{bmatrix} a & b \\ c & d \end{bmatrix} \begin{pmatrix} 1 & 0 \\ 0 & 1 \end{pmatrix}$
 
 ### Greek letters
 

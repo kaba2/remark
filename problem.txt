@@ -8,6 +8,32 @@ Remark, and the solutions of those problems.
 
 [[set Code.type]]: javascript
 
+Code and mathematics
+--------------------
+
+### Problem
+
+Consider the following example:
+
+[[Example]]:
+	$a + `b$ $c` + d$
+
+	`a + $b` `c$ + d`
+
+Ideally, the first paragraph would be interpreted as two subsequent math expressions with backtick-symbols, and the second paragraph as two subsequent code segments with dollar-symbols. While the latter works, the former is interpreted as a single math expression.
+
+### Diagnosis
+
+The problem lies deep in Python Markdown, which parses inline-patterns --- such as code and mathematics --- sequentially. This means that one or the other has to be parsed first --- there is no context-sensitivity. We chose to parse the backticks before mathematics, to not change the behaviour of Markdown backticks. 
+
+The backticks in the first paragraph creates a `<code>` tag around the content in the backticks --- embedded into a math expression. Since this does not make sense, we replace the `<code>` tag with its text. While this recovers the use of _paired_ backticks in math expressions, single backticks remain a problem, as demonstrated in the example.
+ 
+### Solution
+
+Ideally, the inline-patterns would be parsed recursively, from outside to inside. Then the outside pattern would get to decide how to treat its content (here as raw text). This is unlikely to be fixed in Python Markdown. 
+
+At some point we will replace Python Markdown with a dedicated parser for Remark, which solves this problem as well as many others.
+
 Indentation macro is too eager
 ------------------------------
 
@@ -30,8 +56,8 @@ Indent the first non-empty row preceding the invocation of the indentation macro
 
 		This is also meant to be in the list-item.
 
-SVG-images that do not get loaded
----------------------------------
+SVG-image does not get loaded
+-----------------------------
 
 ### Problem
 
@@ -39,7 +65,9 @@ An SVG-image does not get loaded when a Remark-generated html-file is run from a
 
 ### Solution (probable)
 
-The probable cause is that the server does not have the MIME-type correctly assigned for the `.svg` files. For example, for the `lighttpd` web-server, the configuration file `/etc/lighttpd/mime-types.conf` should be modified to contain the line
+The probable cause is that the server does not have the MIME-type correctly assigned for the `.svg` files. 
+
+For example, for the `lighttpd` web-server, the configuration file `/etc/lighttpd/mime-types.conf` should be modified to contain the line
 
 	".svg"          =>      "image/svg+xml"
 
