@@ -270,9 +270,6 @@ class MarkdownRegion_BlockProcessor(BlockProcessor):
         return blockSet
 
 
-def makeExtension(*args, **kwargs):
-    return MarkdownRegion_Extension(*args, **kwargs)
-
 class MarkdownRegion_TreeProcessor(Treeprocessor):
     """
     A Treeprocessor that traverses a tree, replacing 'region' tags
@@ -288,3 +285,6 @@ class MarkdownRegion_TreeProcessor(Treeprocessor):
             element.attrib.pop('tag')
             if element.attrib.get('remark-content') != None:
                 element.attrib.pop('remark-content')
+
+def makeExtension(*args, **kwargs):
+    return MarkdownRegion_Extension(*args, **kwargs)
