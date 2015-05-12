@@ -31,9 +31,10 @@ setup(name = 'remark',
         ],
       scripts = ['remark.py',],
       install_requires = [
+        'jsonschema>=2.4',
         'markdown>=2.6', 
-        'pygments>=1.5',
         'pillow>=2.0',
+        'pygments>=1.5',
         ],
       zip_safe = False,
      )
