@@ -11,7 +11,14 @@ import os
 try: 
     import pygments
 except ImportError:
-    print 'Error: Pygments library missing. Please install it first.'
+    print 'Error: pygments library missing; install it first.'
+    sys.exit(1)
+
+# Test that the jsonschema library is present.
+try: 
+    import jsonschema
+except ImportError:
+    print 'Error: jsonschema library missing; install it first.'
     sys.exit(1)
 
 # Store the location of this script (remark.py).

@@ -46,7 +46,7 @@ if remarkScriptPath() != '':
 try:
     import markdown
 except ImportError:
-    print 'Error: Python Markdown library missing. Please install it first.'
+    print 'Error: markdown library missing; install it first.'
     sys.exit(1)
 
 sys.path = oldSysPath
