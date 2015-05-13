@@ -5,5 +5,5 @@ def remarkVersion():
     '''
     Returns the version of Remark as a string.
     '''
-    return '1.7.0'
+    return '1.7.1'
 

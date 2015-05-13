@@ -89,7 +89,7 @@ def addHtmlBoilerPlate(text, document, htmlHead):
         # The page contains mathematics. 
 
         # Add the Mathjax script, but delay configuration.
-        mathJax = 'https://cdn.mathjax.org/mathjax/latest/MathJax.js?delayStartupUntilConfig'
+        mathJax = 'https://cdn.mathjax.org/mathjax/latest/MathJax.js?delayStartupUntil=configured'
         scriptSet.append(mathJax)
 
         # Add the MathJax configuration script.
