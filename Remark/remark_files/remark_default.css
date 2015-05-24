@@ -414,6 +414,7 @@ html, body
 
     /* Use two columns.*/
     min-width: 50%;
+    max-width: 50%;
 }
 
 /* Styling for links in DocChildren. */
