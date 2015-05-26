@@ -16,9 +16,16 @@ Release date xx.xx.2015.
 
 [Remark-1.7.2]: http://kaba.hilvi.org/remark-1.7.2
 
+### MathJax
+
+* Changed equation numbering from `"all"` to `"AMS"`, since with `"all"` MathJax [did not render binomial coefficients correctly][MathJaxBinomialBug].
+
+[MathJaxBinomialBug]: https://github.com/mathjax/MathJax/issues/1194
+
 ### CSS
 
 * Enforced two columns for `DocChildren` list-items by setting `max-width: 50%`.
+* Changed the color of level-4 headers.
 
 Remark 1.7.1
 ------------
