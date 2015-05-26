@@ -41,7 +41,7 @@ MathJax.Hub.Config({
         ],
         equationNumbers: 
         { 
-            autoNumber: "all" 
+            autoNumber: "AMS" 
         }    
     },
     asciimath2jax: 
