@@ -10,7 +10,7 @@ import string
 from Remark.DocumentType_Registry import documentType, strictDocumentType
 from Remark.FileSystem import unixDirectoryName, unixRelativePath, fileExtension
 from Remark.FileSystem import globalOptions, withoutFileExtension
-from Remark.FileSystem import pathSuffixSet, globToRegex, pathExists, findMatchingFiles
+from Remark.FileSystem import pathSuffixSet, globToRegex, directoryExists, findMatchingFiles
 from Remark.Reporting import Reporter, ScopeGuard
 from Remark.Document import Document
 
@@ -329,9 +329,8 @@ class DocumentTree(object):
                 parent, unique = self.findDocument(parentName, 
                                                    document.relativeDirectory)
                 if not unique:
-                    self.reporter.reportWarning('Parent is ambiguous for ' + 
-                                            document.relativeName + '. The search was for: ' + 
-                                            parentName,
+                    self.reporter.reportWarning('Parent "' + parentName + '" is ambiguous for ' + 
+                                            document.relativeName + '.',
                                             'ambiguous-parent')
 
                 if parent == None:
@@ -339,9 +338,8 @@ class DocumentTree(object):
                         # If a parent file can't be found, it can be
                         # because of a typo in the tag or a missing file. 
                         # In any case we warn the user.
-                        self.reporter.reportWarning('Parent was not found for ' + 
-                                               document.relativeName + '. The search was for: ' + 
-                                               parentName,
+                        self.reporter.reportWarning('Parent "' + parentName + '" was not found for ' + 
+                                               document.relativeName + '.',
                                                'missing-parent')
                 else:
                     # Parent file was found. Update parent-child pointers.
@@ -626,8 +624,8 @@ def createDocumentTree(argumentSet, reporter):
     The created document tree.
     '''
 
-    if not pathExists(argumentSet.inputDirectory):
-        reporter.reportError('Input directory ' + inputDirectory + ' does not exist.',
+    if not directoryExists(argumentSet.inputDirectory):
+        reporter.reportError('Input directory ' + argumentSet.inputDirectory + ' does not exist.',
                              'invalid-input')
         return None
 

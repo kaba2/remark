@@ -391,6 +391,12 @@ def pathExists(path):
     '''
     return os.path.exists(longPath(path))
 
+def directoryExists(path):
+    '''
+    Returns pathExists(path) and os.path.isdir(longPath(path))
+    '''
+    return pathExists(path) and os.path.isdir(longPath(path))
+
 def copyTree(inputDirectory, outputDirectory):
     '''
     Calls shutil.copytree(longPath(inputDirectory), longPath(outputDirectory)).
@@ -524,9 +530,10 @@ def fileModificationTime(filePath):
 
 def fileExists(inputRelativeName, inputDirectory):
     '''
-    Returns pathExists(os.path.join(inputDirectory, inputRelativeName)).
+    Returns pathExists(os.path.join(inputDirectory, inputRelativeName)) and os.path.isfile(longPath(path)).
     '''
-    return pathExists(os.path.join(inputDirectory, inputRelativeName))
+    path = os.path.join(inputDirectory, inputRelativeName)
+    return pathExists(path) and os.path.isfile(longPath(path))
 
 def fileUpToDate(inputRelativeName, inputDirectory,
                  outputRelativeName, outputDirectory):
