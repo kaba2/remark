@@ -26,14 +26,6 @@ From the command-line (Windows, Linux, Mac OS X, ...):
 
 The shells on Linux and Mac OS X expand the globs (e.g `*.txt`) _before_ running an executable (unless the globs do not match anything in the current directory). Therefore, on the command-line the globs should always be  provided in the form `"*.txt"`, to defer the glob-expansion from the shell to Remark.
 
-### Example
-
-Perhaps the best example is to build the documentation of Remark itself. After obtaining the source code for Remark --- assuming you are at the root directory of the source code --- run from the command-line
-
-	remark.py . docs -v
-
-The `-v` option produces additional progress information. The other used options can be found from the `remark_config.json` file. The resulting documentation can be read by opening `docs/remark.htm`.
-
 Installation
 ------------
 
@@ -59,6 +51,57 @@ From the command-line, run
 
 [InstallPython]: http://docs.python-guide.org/en/latest/starting/installation/
 [Pip]: https://pip.pypa.io/en/latest/installing.html
+
+Quick start
+-----------
+
+### Hello, world!
+
+* Create a dedicated directory for the example, say `~/hello`.
+
+* Write the following into `~/hello/hello.txt`:
+
+	Hello, world!
+	=============
+
+	Eat apples.
+
+* Type in console, in directory `~/hello`:
+
+	remark.py . docs "*.txt" "-xdocs/*"
+
+* Open `~/hello/docs/hello.htm` in a browser.
+
+### Configuration file
+
+To avoid specifying reoccuring command-line parameters, gather them into a configuration file. Write the following into `~/hello/remark_config.json`:
+
+[[set Code.type]]: json
+
+[[Code]]:
+	{
+		"disable" : 
+		[
+		],
+
+		"flags" :
+		[
+		],
+
+		"include" :
+		[
+			"*.txt"
+		],
+
+		"exclude" :
+		[
+			"docs/*"
+		]
+	}
+
+The example can now be built in directory `~/hello` by
+
+	remark.py . docs
 
 Source code
 -----------
