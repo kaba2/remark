@@ -80,23 +80,10 @@ To avoid specifying reoccuring command-line parameters, gather them into a confi
 
 [[Code]]:
 	{
-		"disable" : 
-		[
-		],
-
-		"flags" :
-		[
-		],
-
-		"include" :
-		[
-			"*.txt"
-		],
-
-		"exclude" :
-		[
-			"docs/*"
-		]
+		"disable" : [],
+		"flags" : [],
+		"include" : ["*.txt"],
+		"exclude" : ["docs/*"]
 	}
 
 The example can now be built in directory `~/hello` by
