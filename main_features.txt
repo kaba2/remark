@@ -12,7 +12,7 @@ The documentation in Remark is written in plain UTF-8 text files. UTF-8 is a (Un
 text encoding scheme which is compatible with ASCII encoding in the sense that ASCII 
 encoded text files are automatically valid UTF-8 text files. However,
 in contrast to ASCII text files, a UTF-8 text file can also represent
-the more exotic characters if needed. A UTF-8 text file consist of a sequence 
+the more exotic characters if needed. A UTF-8 text file consists of a sequence 
 of Unicode characters, which you can edit using any plain-text editor.
 
 Human-readable content description 

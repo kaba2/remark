@@ -97,6 +97,8 @@ The source code for Remark is hosted on [BitBucket][] in a [Mercurial][] reposit
 
 	hg clone https://bitbucket.org/kaba2/remark
 
+_The source code is neither necessary or sufficient to install Remark --- see above for installation instructions._
+
 [BitBucket]: http://bitbucket.org/kaba2/remark
 [Mercurial]: http://mercurial.selenic.com
 
