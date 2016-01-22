@@ -67,7 +67,7 @@ from Remark.Conversion import convertDirectory
 
 remarkPageSet = ['.txt']
 cppCodeViewSet = ['.cpp', '.cc', '.h', '.hh', '.hpp']
-codeViewSet = ['.py', '.m', '.pm', '.pl', '.css', '.js', '.json', '.lua']
+codeViewSet = ['.py', '.m', '.pm', '.pl', '.css', '.js', '.json', '.lua', '.cmake']
 
 from Remark.DocumentType_Registry import setDefaultDocumentType, associateDocumentType
 
