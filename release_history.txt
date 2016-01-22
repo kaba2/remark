@@ -10,11 +10,16 @@ The versioning of Remark is given in the form x.y.z, where x, y, and z are integ
 Remark 1.7.2
 ------------
 
-Release date xx.xx.2015.
+Release date 22.01.2016.
 
 [Original webpage][Remark-1.7.2]
 
 [Remark-1.7.2]: http://kaba.hilvi.org/remark-1.7.2
+
+### Core
+
+* Fixed a crash when specifying a non-existing input-directory.
+* Added a check that the input-directory really is a directory, and not a file.
 
 ### MathJax
 
@@ -26,6 +31,10 @@ Release date xx.xx.2015.
 
 * Enforced two columns for `DocChildren` list-items by setting `max-width: 50%`.
 * Changed the color of level-4 headers.
+
+### Documentation
+
+* Added a quick start example to main page.
 
 Remark 1.7.1
 ------------
