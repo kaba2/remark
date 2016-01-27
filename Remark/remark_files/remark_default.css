@@ -317,12 +317,10 @@ html, body
 /* Styling for ParentList lists. */
 #remark .ParentList ol
 {
+    /* Use display: none; to remove ParentList from flow.*/
     display: flex;
     flex-wrap: wrap;
-
-    /* Hide the parent-list from sight. */
-    /*visibility: hidden;*/
-   
+  
     /* Get rid of default-indentation for lists. */
     margin: 0em;
     padding: 0em;
