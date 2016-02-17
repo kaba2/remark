@@ -11,6 +11,7 @@ import fnmatch
 import re
 
 globalOptions_ = None
+emptyDict = object()
 
 def remarkDirectory():
     '''
@@ -125,7 +126,7 @@ def htmlRegion(htmlText):
             'remark-content' : 'text'
         })
 
-def markdownRegion(enclosedText, keySet = dict(), elementName = 'div'):
+def markdownRegion(enclosedText, keySet = emptyDict, elementName = 'div'):
     '''
     Encloses the given text in a Markdown region (Remark extension)
 
@@ -141,6 +142,7 @@ def markdownRegion(enclosedText, keySet = dict(), elementName = 'div'):
     elementName (string):
     The name of the region element.
     '''
+    if keySet is emptyDict: keySet = dict()
 
     regionText = '!!! <' 
     regionText += elementName
