@@ -21,6 +21,8 @@ from Remark.Reporting import Reporter, ScopeGuard
 from Remark.DocumentType_Registry import documentType, outputDocumentName
 from Remark.DocumentTree import createDocumentTree
 
+emptyList = object()
+
 class Scope(object):
     def __init__(self, parent, name):
         self.parent = parent
@@ -70,7 +72,8 @@ class Scope(object):
             return self.parent.searchScope(name)
         return self
 
-    def get(self, name, defaultValue = []):
+    def get(self, name, defaultValue = emptyList):
+        if defaultValue is emptyList: defaultValue = []
         variable = self.search(name)
         if variable == None:
             return defaultValue
