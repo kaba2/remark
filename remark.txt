@@ -64,7 +64,7 @@ Quick start
 	Hello, world!
 	=============
 
-	Eat apples.
+	Apples are great.
 
 * Type in console, in directory `~/hello`:
 
@@ -97,7 +97,7 @@ The source code for Remark is hosted on [BitBucket][] in a [Mercurial][] reposit
 
 	hg clone https://bitbucket.org/kaba2/remark
 
-_The source code is neither necessary or sufficient to install Remark --- see above for installation instructions._
+_The source code is meant for developers; it is not needed to install Remark._
 
 [BitBucket]: http://bitbucket.org/kaba2/remark
 [Mercurial]: http://mercurial.selenic.com

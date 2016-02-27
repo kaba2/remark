@@ -5,7 +5,7 @@ Dependencies
 
 In this section we list the dependencies of Remark. 
 
-_You do not need this information to install Remark; `pip` handles the installation of the dependencies as part of the installation of Remark._
+_This information is not needed to install Remark; `pip` handles the installation of the dependencies as part of the installation of Remark._
 
 Python
 ------
