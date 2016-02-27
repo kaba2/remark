@@ -154,7 +154,7 @@ class Reporter(object):
                 if self.enabled(type):
                     #print '(' + type + ')'
                     for line in text:
-                        print line
+                        print line.encode("ascii", "backslashreplace")
             scope.reportIndex = n
 
 

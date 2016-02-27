@@ -82,9 +82,6 @@ associateDocumentType('.remark-orphan', 'Orphan')
 from Remark.Reporting import Reporter
 reporter = Reporter()
 
-reporter.disable('debug-macro-invocation')
-reporter.disable('debug-macro-expansion')
-
 reporter.openScope('Remark ' + remarkVersion())
 
 # Parse the command-line arguments.
@@ -109,7 +106,10 @@ if argumentSet.maxTagLines <= 0:
                          'invalid-input')
     sys.exit(1)
 
-reporter.disable('debug-implicit')
+if not argumentSet.debug:
+    reporter.disable('debug-macro-invocation')
+    reporter.disable('debug-macro-expansion')
+    reporter.disable('debug-implicit')
 
 # Disable the report-types given by the -d switch.
 for reportType in argumentSet.disableSet:

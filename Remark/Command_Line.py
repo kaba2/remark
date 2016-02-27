@@ -95,6 +95,10 @@ if it exists.""",
         action="store_true", dest="quick", default=False,
         help = """regenerates only modified documents and their parents. Note: only use for quick previews of edits; this process leaves many documents out-of-date. """)
 
+    optionParser.add_option('-b', '--bug',
+        action="store_true", dest="debug", default=False,
+        help = """enables debug-reporting.""")
+
     optionParser.add_option('-s', '--strict',
         action="store_true", dest="strict", default=False,
         help = """treats warnings as errors.""")
