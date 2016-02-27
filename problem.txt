@@ -39,7 +39,7 @@ Indentation macro is too eager
 
 ### Problem
 
-In the following, the content of the list-item is meant to continue after the empty line. However, Remark interprets this as a list-item followed by an invocation of the indentation macro.
+In the following, the content of the list-item is meant to continue after the empty line. However, since the latter is indented _with a tab_, Remark interprets this as a list-item followed by an invocation of the indentation macro.
 
 [[Example]]:
 	* This is in the list-item.
@@ -48,7 +48,15 @@ In the following, the content of the list-item is meant to continue after the em
 
 ### Solution
 
-Indent the first non-empty row preceding the invocation of the indentation macro.
+Use _spaces_ instead of tabs for Markdown-related indentation.
+
+[[Example]]:
+	* This is in the list-item.
+
+	    This is also meant to be in the list-item.
+
+
+Or, indent the first non-empty row preceding the invocation of the indentation macro.
 
 [[Example]]:
 	* 
@@ -76,7 +84,7 @@ The former string is the file-extension of the SVG-image file format, while the 
 Files that are not UTF-8 encoded
 --------------------------------
 
-If you pass Remark a file that is not a valid UTF-8 encoding, Remark replaces each erroneous symbol with the U+FFFD REPLACEMENT CHARACTER.
+If you pass Remark a file that is not a valid UTF-8 encoding, Remark replaces each erroneous symbol with � (U+FFFD REPLACEMENT CHARACTER).
 
 Indentation-macro invocation after a multi-line parameter
 ---------------------------------------------------------
