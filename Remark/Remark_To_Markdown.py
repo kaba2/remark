@@ -424,21 +424,23 @@ class Remark(object):
                 string.strip(text[endRow]) != ''):
                 break
             endRow += 1
-            
+
+        # However, we do not include those whitespace-lines _at the end_
+        # that lack indentation. Excluding these lines is important;
+        # otherwise a following header-line could be interpreted as
+        # a paragraph followed by a separator-line, since there is no
+        # separating whitespace. It is also important to preserve those
+        # empty-lines which are indented; that whitespace may be significant
+        # for a macro.
+        while (endRow > startRow and 
+            _leadingTabs(text[endRow - 1], globalOptions().tabSize)[0] == 0 and
+            string.strip(text[endRow - 1]) == ''):
+            endRow -= 1
+
         # Copy the parameter and remove the indentation from it.
         parameterSet = [_removeLeadingTabs(line, globalOptions().tabSize, 1) 
             for line in text[startRow : endRow]]
     
-        # Remove the possible empty trailing parameter lines.
-        nonEmptyLines = len(parameterSet)
-        while nonEmptyLines > 0:
-            if string.strip(parameterSet[nonEmptyLines - 1]) == '':
-                nonEmptyLines -= 1
-            else:
-                break
-            
-        parameterSet[nonEmptyLines :] = []
-
         return parameterSet
 
     def expandBuiltInMacro(self, macroNameSet, parameterSet, scope):
@@ -763,7 +765,7 @@ class Remark(object):
             indentationMacro = False
             if tabbedNonEmpty and precededByWhitespace:
                 # The first two conditions are satisfied.
-                # This line possible starts an indentation macro.
+                # This line possibly starts an indentation macro.
 
                 # Check the third condition.
                 indentationMacro = True
@@ -826,10 +828,24 @@ class Remark(object):
                 if match == None:
                     # There is no macro on the line: 
                     # copy the line verbatim.
-                    newText[-1] += line[column :]
+
+                    if column == 0 and line.strip() == '':
+                        # The line is all whitespace. This
+                        # signifies a new-line.
+                        if newText[-1].strip() != '':
+                            # A new-line is to be started
+                            # only if there is already content
+                            # on the latest-line.
+                            newText.append('')
+                    else:
+                        # Concatenate the rest of the line to
+                        # the latest line.
+                        newText[-1] += line[column :]
+
+                    # In any case, start a new line.
                     newText.append('')
                     row += 1
-                    column = 0              
+                    column = 0
                     continue
     
                 #print 'I read:'
@@ -851,19 +867,20 @@ class Remark(object):
             invocationText.append(
                 macroInvocation.name + ' ' +
                 '(' + 
-                    str(macroInvocation.beginRow) + 
+                    str(macroInvocation.beginRow + 1) + 
                     ', ' +
-                    str(macroInvocation.beginColumn) + 
+                    str(macroInvocation.beginColumn + 1) + 
                 ')' +
                 ' -> ' +
                 '(' + 
-                    str(macroInvocation.endRow) + 
+                    str(macroInvocation.endRow + 1) + 
                     ', ' +
-                    str(macroInvocation.endColumn) + 
+                    str(macroInvocation.endColumn + 1) + 
                 ')')
-            invocationText.append(underlining)
-            invocationText += macroInvocation.parameterSet
-            invocationText.append(underlining)
+            if len(macroInvocation.parameterSet) > 0:
+                invocationText.append(underlining)
+                invocationText += macroInvocation.parameterSet
+                invocationText.append(underlining)
             self.reportDebug(invocationText, 'debug-macro-invocation')
 
             # See if the user requests the macro parameter to be 
@@ -878,7 +895,10 @@ class Remark(object):
             macroText = self.expandMacro(macroInvocation)
 
             # Debug-report the result of the macro-expansion.
-            self.reportDebug([underlining] + macroText + [underlining], 'debug-macro-expansion')
+            if len(macroText) > 0:
+                self.reportDebug([underlining] + macroText + [underlining], 'debug-macro-expansion')
+            else:
+                self.reportDebug('', 'debug-macro-expansion')
 
             # Append the first line of the macro expansion to 
             # the end of the latest line.
