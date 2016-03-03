@@ -61,7 +61,7 @@ class MarkdownRegion_BlockProcessor(BlockProcessor):
     introPattern = r'!!!'
     whitespacePattern = r'[ \t]*'
     namePattern = r'([\w\-]*)'
-    stringPattern = r'"([\w\- \t]*)"'
+    stringPattern = r'"([^"]*)"'
     trailingWhitespacePattern = r'[ \t]*\n?'
 
     keyPattern = (
