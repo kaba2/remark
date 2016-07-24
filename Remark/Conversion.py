@@ -377,10 +377,11 @@ def convertAll(documentTree, argumentSet, reporter = Reporter()):
 def convertDirectory(argumentSet, reporter):
     startTime = time.clock()
 
-    reporter.report(['',
-                     'Input directory: ' + argumentSet.inputDirectory,
+    reporter.report([None,
+                    'Input directory: ' + argumentSet.inputDirectory,
                      'Output directory: ' + argumentSet.outputDirectory,
-                     'Remark directory: ' + remarkDirectory(),],
+                     'Remark directory: ' + remarkDirectory(),
+                     None],
                     'verbose')
 
     # Create the document tree.
@@ -440,7 +441,7 @@ def convertDirectory(argumentSet, reporter):
                 reporter.reportWarning(document.relativeName + 
                                        ': Tag parsing failed because of a unicode decode error.')
 
-        reporter.report('Done.', 'verbose')
+        reporter.report([None, 'Done.', None], 'verbose')
 
     # Resolve parent links.
     documentTree.resolveParentLinks()
@@ -460,12 +461,12 @@ def convertDirectory(argumentSet, reporter):
             for document in documentTree:
                 document.setRegenerate(True)
 
-        reporter.report('Done.', 'verbose')
+        reporter.report([None, 'Done.', None], 'verbose')
 
     # Generate documents.
     with ScopeGuard(reporter, 'Generating documents'):
         convertAll(documentTree, argumentSet, reporter)
-        reporter.report('Done.', 'verbose')
+        reporter.report([None, 'Done.', None], 'verbose')
 
     # Find out statistics.
     seconds = round(time.clock() - startTime, 2)
@@ -474,10 +475,13 @@ def convertDirectory(argumentSet, reporter):
 
     # Report the statistics.
     with ScopeGuard(reporter, 'Summary'):
-        reporter.report([str(seconds) + ' seconds,',
-                         str(errors) + ' errors,',
-                         str(warnings) + ' warnings.'], 
-                        'summary')
+        reporter.report([
+            None,
+            str(seconds) + ' seconds,',
+             str(errors) + ' errors,',
+             str(warnings) + ' warnings.',
+             None], 
+            'summary')
 
     return errors, warnings
     

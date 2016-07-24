@@ -46,6 +46,7 @@ class Reporter(object):
         self.warnings_ = 0
         self.errors_ = 0
         self.scopeSet.append(Scope('global'))
+        self.spaceBeforeNext = False
 
     def errors(self):
         return self.errors_
@@ -57,9 +58,10 @@ class Reporter(object):
         scope = Scope(name)
         self.scopeSet.append(scope)
         
-        text = ['']
+        text = [None]
         text += self.heading(name, len(self.scopeSet) - 1)
-        #text.append('')
+        text.append(None)
+        
         self.report(text, 'heading', True)
 
     def closeScope(self, name):
@@ -81,7 +83,7 @@ class Reporter(object):
         return type not in self.disabledSet
 
     def report(self, text, type, lazy = False):
-        if isinstance(text, basestring):
+        if isinstance(text, basestring) or (text is None):
             self.report([text], type, lazy)
             return 
 
@@ -96,7 +98,7 @@ class Reporter(object):
             return 
 
         if len(text) > 0:
-            text = [''] + ['[' + type + ']'] + text;
+            text = [None, '[' + type + ']'] + text + [None];
             self.report(text, type, False)
             if self.enabled(type):
                self.warnings_ += 1
@@ -107,7 +109,7 @@ class Reporter(object):
             return 
 
         if len(text) > 0:
-            text = [''] + ['[' + type + ']'] + text;
+            text = [None, '[' + type + ']'] + text + [None];
             self.report(text, type, False)
 
     def reportError(self, text, type):
@@ -116,7 +118,7 @@ class Reporter(object):
             return 
 
         if len(text) > 0:
-            text = ['', '[' + type + ']!'] + text
+            text = [None, '[' + type + ']!'] + text + [None]
             self.report(text, type, False)
             self.errors_ += 1
 
@@ -140,7 +142,6 @@ class Reporter(object):
             text.append('-' * max(len(name), 3))
         else:
             text.append('#' * level + ' ' + name)
-        text.append('');
         return text
 
     def scope(self):
@@ -151,9 +152,18 @@ class Reporter(object):
             n = len(scope.textSet)
             for i in range(scope.reportIndex, n):
                 (text, type) = scope.textSet[i]
+
                 if self.enabled(type):
                     #print '(' + type + ')'
                     for line in text:
+                        if line is None:
+                            self.spaceBeforeNext = True
+                            continue
+                        
+                        if self.spaceBeforeNext:
+                            print
+                            self.spaceBeforeNext = False
+
                         print line.encode("ascii", "backslashreplace")
             scope.reportIndex = n
 
