@@ -21,6 +21,21 @@ Note: On Unix-based operating systems a glob must be placed in
 double quotes to prevent glob-expansion from taking place before
 reaching Remark; write "*.txt" instead of *.txt.""")
     
+    optionParser.add_option('-b', '--bug',
+        action="store_true", dest="debug", default=False,
+        help = """enables debug-reporting.""")
+
+    optionParser.add_option('-c', '--config',
+        dest = 'configFileSet',
+        type = 'string',
+        action = 'append',
+        default = ['remark_config.json'],
+        help = """reads a JSON configuration file (if it exists).
+If the file path is relative, it is relative to the input directory.
+The file `remark_config.json` is always included as a config-file, 
+if it exists.""",
+        metavar = 'FILEPATH')
+
     optionParser.add_option('-d', '--disable',
         dest = 'disableSet',
         type = 'string',
@@ -76,24 +91,13 @@ The file `remark_options` is always included as an option-file,
 if it exists.""",
         metavar = 'FILEPATH')
 
-    optionParser.add_option('-c', '--config',
-        dest = 'configFileSet',
-        type = 'string',
-        action = 'append',
-        default = ['remark_config.json'],
-        help = """reads a JSON configuration file (if it exists).
-If the file path is relative, it is relative to the input directory.
-The file `remark_config.json` is always included as a config-file, 
-if it exists.""",
-        metavar = 'FILEPATH')
-
     optionParser.add_option('-q', '--quick',
         action="store_true", dest="quick", default=False,
         help = """regenerates only modified documents and their parents. Note: only use for quick previews of edits; this process leaves many documents out-of-date. """)
 
-    optionParser.add_option('-b', '--bug',
-        action="store_true", dest="debug", default=False,
-        help = """enables debug-reporting.""")
+    optionParser.add_option('-r', '--version',
+        action="store_true", dest="version", default=False,
+        help = """prints the version number.""")
 
     optionParser.add_option('-s', '--strict',
         action="store_true", dest="strict", default=False,
@@ -102,10 +106,6 @@ if it exists.""",
     optionParser.add_option('-u', '--unknowns',
         action="store_true", dest="unknowns", default=False,
         help = """lists all files which are neither included or excluded.""")
-
-    optionParser.add_option('-r', '--version',
-        action="store_true", dest="version", default=False,
-        help = """prints the version number.""")
 
     optionParser.add_option('-v', '--verbose',
         action="store_true", dest="verbose", default=False,
