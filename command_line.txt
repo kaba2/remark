@@ -28,44 +28,50 @@ Options
 The command-line options control the way Remark operates. They are
 as follows:
 
--c or --config
+`-b` or `--bug`
+:	Enables debug-reporting.
+
+`-c` or `--config`
 : 	Reads a JSON configuration file (if it exists). If the file path is relative, it is relative to the input directory. The file `remark_config.json` is always included as a config-file, if it exists.
 
--d or --disable
+`-d` or `--disable`
 :	Disables a specific warning (e.g. `-dinvalid-input`).
 
--e or --extensions
+`-e` or `--extensions`
 :	Lists all file-extensions in the input-directory along with example files.
 
--g or --generate-markdown
+`-g` or `--generate-markdown`
 :	Generates the Markdown-source for each file, before the conversion to html. This is useful for debugging Remark. The file-name of the Markdown-source is the file-name of the input file, with the file-extension replaced with `.md.txt`.
 
--i or --include
+`-i` or `--include`
 :	Includes files by their relative-paths (e.g. `"*.txt"`).
 	This is equivalent to writing the file-glob directly as a 
 	positional argument.
 
--l or --lines
+`-l` or `--lines`
 :	Sets maximum number of lines for a tag-parser to scan a file
 	for tags (default 200).
 
--m or --max-file-size
+`-m` or `--max-file-size`
 :	Sets maximum file-size to load (in bytes, default 262144).
 
--o or --options
+`-o` or `--options`
 :	Reads command-line options from an option-file (if it exists). An option-file is a plain-text file, with one option per line. If the file path is relative, it is relative to the input directory. The file `remark_options` is always included as an option-file, if it exists. This option is available for compatibility; use config files instead.
 
--q or --quick
+`-q` or `--quick`
 :	Regenerates only modified documents and their parents. Note: only use for quick previews of edits; this process leaves many documents out-of-date.
 
--s or --strict
+`-r` or `--version`
+:	Prints the version number.
+
+`-s` or `--strict`
 :	Treats warnings as errors.
 
--u or --unknowns
+`-u` or `--unknowns`
 :	Lists all files which are neither included or excluded.
 
--v or --verbose
+`-v` or `--verbose`
 :	Prints additional progress information.
 
--x or --exclude
+`-x` or `--exclude`
 :	Excludes files by their relative-paths (e.g `"*CMake*"`). Exclusion takes priority over inclusion.
