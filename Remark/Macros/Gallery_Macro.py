@@ -222,7 +222,7 @@ class Gallery_Macro(object):
                         if pixelDocument != input:
                             message += ' from ' + pixelDocument.relativeName
                         message += '.'
-                        remark.report(['', message],
+                        remark.report([None, message],
                                      'verbose')
                 except IOError as err: 
                     remark.reportWarning('Cannot create a thumbnail for ' + input.relativeName + 

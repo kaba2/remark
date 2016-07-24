@@ -13,11 +13,7 @@ from Remark.FileSystem import (
     readFile,
     fileExtension)
 
-def parseArguments(argv, reporter):
-    '''
-    Parses the command-line arguments given to Remark.
-    '''
-
+def constructOptionParser():
     optionParser = optparse.OptionParser(usage = """\
 %prog inputDirectory outputDirectory (option|file-glob)*
 
@@ -107,6 +103,10 @@ if it exists.""",
         action="store_true", dest="unknowns", default=False,
         help = """lists all files which are neither included or excluded.""")
 
+    optionParser.add_option('-r', '--version',
+        action="store_true", dest="version", default=False,
+        help = """prints the version number.""")
+
     optionParser.add_option('-v', '--verbose',
         action="store_true", dest="verbose", default=False,
         help = """prints additional progress information.""")
@@ -120,18 +120,12 @@ if it exists.""",
 Exclusion takes priority over inclusion.""",
         metavar = 'GLOB')
 
-    # Parse the command-line arguments
-    # --------------------------------
+    return optionParser
 
-    argumentSet, args = optionParser.parse_args(argv[1:])
-
-    if len(args) < 2:
-        # There were not enough arguments;
-        # at least the input directory and the
-        # output directory must be given.
-        # Print the help and quit.
-        optionParser.print_help()
-        sys.exit(1)
+def parseArguments(argumentSet, args, reporter):
+    '''
+    Parses the command-line arguments given to Remark.
+    '''
 
     # Positional arguments
     # --------------------
@@ -139,15 +133,21 @@ Exclusion takes priority over inclusion.""",
     # Get the working directory.
     workingDirectory = os.getcwd()
 
-    # Get the input directory.
-    # It is given relative to the working directory.
-    argumentSet.inputDirectory = (
-        os.path.normpath(os.path.join(workingDirectory, args[0])))
+    if len(args) >= 1:
+        # Get the input directory.
+        # It is given relative to the working directory.
+        argumentSet.inputDirectory = (
+            os.path.normpath(os.path.join(workingDirectory, args[0])))
+    else:
+        argumentSet.inputDirectory = None
 
-    # Get the output directory.
-    # It is given relative to the working directory.
-    argumentSet.outputDirectory = (
-        os.path.normpath(os.path.join(workingDirectory, args[1])))
+    if len(args) >= 2:
+        # Get the output directory.
+        # It is given relative to the working directory.
+        argumentSet.outputDirectory = (
+            os.path.normpath(os.path.join(workingDirectory, args[1])))
+    else:
+        argumentSet.outputDirectory = None
 
     # This is the directory which contains 'remark.py'.
     argumentSet.scriptDirectory = os.path.normpath(sys.path[0])
@@ -156,6 +156,12 @@ Exclusion takes priority over inclusion.""",
     # as including files, i.e. the same
     # as the -i option.
     argumentSet.includeSet += args[2:]
+
+    if not argumentSet.inputDirectory:
+        # Option-files are relative to the input-directory.
+        # Since input-directory was not given, we cannot
+        # read option-files either.
+        return argumentSet
 
     # Option files
     # ------------

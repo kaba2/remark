@@ -10,7 +10,7 @@ The versioning of Remark is given in the form x.y.z, where x, y, and z are integ
 Remark 1.7.3
 ------------
 
-Release date xx.xx.2016.
+Release date 24.07.2016.
 
 [Original webpage][Remark-1.7.3]
 
@@ -19,6 +19,7 @@ Release date xx.xx.2016.
 ### Core
 
 * Fixed a bug where region-extension was too strict on what constitutes a value.
+* Made reporting avoid extraneous newlines.
 
 Remark 1.7.2
 ------------

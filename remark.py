@@ -49,7 +49,7 @@ from Remark.FileSystem import (
     fileExtension,
     setGlobalOptions)
 
-from Remark.Command_Line import parseArguments
+from Remark.Command_Line import constructOptionParser, parseArguments
 from Remark.Config import parseConfig
 from Remark.Version import remarkVersion
 
@@ -84,21 +84,32 @@ reporter = Reporter()
 
 reporter.openScope('Remark ' + remarkVersion())
 
+# Parse the command-line arguments
+# --------------------------------
+
+optionParser = constructOptionParser()
+argumentSet, args = optionParser.parse_args(sys.argv[1:])
+
 # Parse the command-line arguments.
-argumentSet = parseArguments(sys.argv, reporter)
-
-reporter.enable('verbose', argumentSet.verbose)
-
-# Parse the configuration files.
-argumentSet = parseConfig(argumentSet, reporter)
-
-if argumentSet == None:
-    sys.exit(1)
+argumentSet = parseArguments(argumentSet, args, reporter)
 
 # Act on options
 # --------------
 
 reporter.enable('verbose', argumentSet.verbose)
+
+if argumentSet.inputDirectory:
+    # Parse the configuration files.
+    argumentSet = parseConfig(argumentSet, reporter)
+    if not argumentSet:
+        sys.exit(1)
+
+reporter.enable('verbose', argumentSet.verbose)
+
+if argumentSet.version:
+    reporter.closeScope('Remark ' + remarkVersion())
+    reporter.report('Remark ' + remarkVersion(), 'version')
+    sys.exit(0)
 
 argumentSet.tabSize = 4;
 if argumentSet.maxTagLines <= 0:
@@ -115,6 +126,14 @@ if not argumentSet.debug:
 for reportType in argumentSet.disableSet:
     reporter.disable(reportType)
 
+if not argumentSet.inputDirectory or not argumentSet.outputDirectory:
+    # There were not enough arguments;
+    # at least the input directory and the
+    # output directory must be given.
+    # Print the help and quit.
+    optionParser.print_help()
+    sys.exit(1)
+
 if argumentSet.unknowns:
     relativeNameSet = findMatchingFiles(
         argumentSet.inputDirectory,
@@ -125,9 +144,8 @@ if argumentSet.unknowns:
     relativeNameSet.sort()
 
     # Print the unknown files.
-    print
-    for relativeName in relativeNameSet:
-        print relativeName
+    with ScopeGuard(reporter, 'Unknown files'):
+        reporter.report([None] + relativeNameSet + [None], 'unknown')
 
     sys.exit(0)
 
@@ -144,9 +162,9 @@ if argumentSet.extensions:
     sortedSet.sort()
 
     # Print the extensions and their example files.
-    print
-    for extension in sortedSet:
-        print extension, extensionSet[extension]
+    with ScopeGuard(reporter, 'File extensions'):
+        reporter.report([None] + ['%-30s' % 'Extension' + 'Example'] + [None], 'extensions')
+        reporter.report([None] + ['%-30s' % extension + extensionSet[extension] for extension in sortedSet] + [None], 'extensions')
 
     sys.exit(0)
 
@@ -159,7 +177,7 @@ setGlobalOptions(argumentSet)
 errors, warnings = convertDirectory(argumentSet, reporter)
 
 # Wrap things up.
-reporter.report(['', "That's all!"], 'verbose')
+reporter.report([None, "That's all!"], 'verbose')
 reporter.closeScope('Remark ' + remarkVersion())
 
 if errors > 0 or (warnings > 0 and argumentSet.strict):
