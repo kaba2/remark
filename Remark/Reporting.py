@@ -167,7 +167,8 @@ class Reporter(object):
                             print()
                             self.spaceBeforeNext = False
 
-                        print(line.encode("ascii", "backslashreplace"))
+                        print(line)
+                        #print(line.encode("ascii", "backslashreplace"))
             scope.reportIndex = n
 
 

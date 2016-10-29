@@ -10,11 +10,7 @@ _This information is not needed to install Remark; `pip` handles the installatio
 Python
 ------
 
-Remark was programmed in Python 2.7. Thus it should run in any Python 2.x interpreter, where x is at least 7. See [here][PythonInstall] for instructions on installing Python 2.7.
-
-Remark does not currently run under Python 3.
-
-[PythonInstall]: http://docs.python-guide.org/en/latest/starting/installation/
+Remark runs both under Python 2 and Python 3.
 
 Python dependencies
 -------------------
@@ -44,7 +40,6 @@ It is licensed under the [Python Imaging Library license][PIL license].
 The jsonschema library is used to validate JSON config files.
 
 It is licensed under the [MIT license][MIT].
-
 
 [PythonMarkdown]: https://pythonhosted.org/Markdown/
 [Pygments]: http://pygments.org/
