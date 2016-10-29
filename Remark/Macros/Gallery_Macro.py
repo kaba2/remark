@@ -152,7 +152,7 @@ class Gallery_Macro(object):
             # Find out thumbnail names.
             # The used hash does not matter, but it must always give the same
             # hash for the same relative-name.
-            hashString = hashlib.md5(input.relativeName).hexdigest()[0 : 16]
+            hashString = hashlib.md5(input.relativeName.encode('utf-8')).hexdigest()[0 : 16]
             thumbRelativeName = 'remark_files/thumbnails/' + changeExtension(input.fileName, '-' + hashString + '.png')
             thumbLinkName = unixRelativePath(document.relativeDirectory, thumbRelativeName)
             if pixelDocument == None:
