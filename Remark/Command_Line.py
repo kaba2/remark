@@ -3,6 +3,8 @@
 # Description: Command-line argument parsing
 # Documentation: command_line.txt
 
+from __future__ import print_function
+
 import sys
 import os
 import optparse

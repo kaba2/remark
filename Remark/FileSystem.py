@@ -3,6 +3,8 @@
 # Description: File-system abstractions
 # Documentation: algorithms.txt
 
+from __future__ import print_function
+
 import os.path
 import string
 import codecs
@@ -147,7 +149,7 @@ def markdownRegion(enclosedText, keySet = emptyDict, elementName = 'div'):
     regionText = '!!! <' 
     regionText += elementName
 
-    for (key, value) in keySet.iteritems():
+    for (key, value) in keySet.items():
         regionText += ' ' + key.strip() + ' = "' + value + '"'
 
     regionText += '>'
@@ -331,9 +333,9 @@ def readFile(fileName, maxSize = -1):
         # part of the Remark documentation. Refuse to read
         # such files.
         print
-        print 'Warning:', fileName, 
-        print 'is larger than', maxSize, 'bytes (it is', size, 'bytes).',
-        print 'Ignoring it.'
+        print('Warning:', fileName, end = ' ')
+        print('is larger than', maxSize, 'bytes (it is', size, 'bytes).', end = ' ')
+        print('Ignoring it.')
         return []
         
     # Read the file into memory
@@ -343,9 +345,9 @@ def readFile(fileName, maxSize = -1):
             text = file.readlines()
     except:
         print
-        print 'Warning:', fileName,
-        print ' could not be read for some reason.',
-        print ' Ignoring it.'
+        print('Warning:', fileName, end = ' ')
+        print('could not be read for some reason.', end = ' ')
+        print('Ignoring it.')
         return []
 
     for i in range(0, len(text)):
@@ -550,7 +552,7 @@ def fileUpToDate(inputRelativeName, inputDirectory,
     outputFilePath = os.path.join(outputDirectory, outputRelativeName)
 
     if not pathExists(inputFilePath):
-        print 'Error: fileUpToDate: the input file ' + inputRelativeName + ' does not exist.'
+        print('Error: fileUpToDate: the input file ' + inputRelativeName + ' does not exist.')
         return False
 
     # The output file is up-to-date if it exists and has a 
@@ -563,7 +565,7 @@ def unixDirectoryName(name):
     Returns a normalized unix-style directory-name of the given 
     directory-name (unix-style or not).
     '''
-    return string.replace(os.path.normpath(name), '\\', '/')                
+    return os.path.normpath(name).replace('\\', '/')                
 
 def fileExtension(fileName):
     '''

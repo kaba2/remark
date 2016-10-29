@@ -50,7 +50,7 @@ class Code_Macro(object):
         hilightedText = highlight(inputText, lexer, HtmlFormatter())
 
         # Prepare for Remark output.
-        hilightedText = string.split(hilightedText, '\n')
+        hilightedText = hilightedText.split('\n')
 
         return htmlRegion(hilightedText)
 

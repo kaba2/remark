@@ -3,6 +3,7 @@
 
 from __future__ import absolute_import
 from __future__ import unicode_literals
+from __future__ import print_function
 
 import re
 from markdown.inlinepatterns import Pattern
@@ -137,7 +138,7 @@ class MarkdownMath_TreeProcessor(Treeprocessor):
         None
 
     def printIt(self, element, level = 0):
-        print '\t' * level + element.tag
+        print('\t' * level + element.tag)
         for child in element:
             self.printIt(child, level + 1)
 

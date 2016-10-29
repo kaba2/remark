@@ -3,6 +3,8 @@
 # Description: Converts Remark to Markdown and html
 # Documentation: algorithms.txt
 
+from __future__ import print_function
+
 import re
 import string
 import os
@@ -33,7 +35,7 @@ class Scope(object):
         return self.name
     
     def insert(self, name, data):
-        #print 'Inserted', name, data
+        #print('Inserted', name, data)
         self.nameSet[name] = data
         
     def append(self, name, data):
@@ -55,7 +57,7 @@ class Scope(object):
         return self.nameSet.get(name)
     
     def search(self, name):
-        #print 'Recursive search for', name
+        #print('Recursive search for', name)
         result = self.shallowSearch(name)        
         if result != None:
             return result
@@ -64,7 +66,7 @@ class Scope(object):
         return None
     
     def searchScope(self, name):
-        #print 'Recursive search for', name
+        #print('Recursive search for', name)
         result = self.shallowSearch(name)        
         if result != None:
             return self
@@ -102,7 +104,7 @@ class Scope(object):
             value = defaultValue
         
         if value == None:
-            print 'Warning: Could not convert', name, 'to an integer. Using default.'
+            print('Warning: Could not convert', name, 'to an integer. Using default.')
             value = defaultValue
             
         return value
@@ -112,14 +114,14 @@ class ScopeStack(object):
         self.scopeStack = []
         
     def open(self, name):
-        #print 'Scope opened.'
+        #print('Scope opened.')
         parent = None
         if len(self.scopeStack) > 0:
             parent = self.top()                
         self.scopeStack.append(Scope(parent, name))
         
     def close(self):
-        #print 'Scope closed.'
+        #print('Scope closed.')
         self.scopeStack.pop()
         
     def top(self):
@@ -129,14 +131,14 @@ class ScopeStack(object):
         return self.scopeStack[0]
 
     def printScopes(self):
-        print len(self.scopeStack)
+        print(len(self.scopeStack))
         tabs = 0;
         for scope in self.scopeStack:
-            print '\t' * tabs
-            print scope.name, 'scope:'
+            print('\t' * tabs)
+            print(scope.name, 'scope:')
             print
-            for entry in scope.nameSet.iteritems():
-                print entry[0], ':', entry[1]
+            for entry in scope.nameSet.items():
+                print(entry[0], ':', entry[1])
             tabs += 1
 
 class MacroInvocation(object):
@@ -374,7 +376,7 @@ class Remark(object):
 
         # Extract an inline parameter.
         if hasInlineParameters:
-            parameter = string.strip(inlineParameter)
+            parameter = inlineParameter.strip()
             parameterSet.append(parameter)
 
         # Extract a one-line parameter.
@@ -383,7 +385,7 @@ class Remark(object):
             # If the parameter consists of all
             # whitespace, it is a multi-line parameter
             # so ignore that case here.
-            parameter = string.strip(onelineParameter)
+            parameter = onelineParameter.strip()
             if parameter != '':
                 # One-line parameter
                 hasOnelineParameter = True
@@ -421,7 +423,7 @@ class Remark(object):
             # is marked by a line which is not all whitespace
             # and has no indentation. 
             if (_leadingTabs(text[endRow], globalOptions().tabSize)[0] == 0 and 
-                string.strip(text[endRow]) != ''):
+                text[endRow].strip() != ''):
                 break
             endRow += 1
 
@@ -434,7 +436,7 @@ class Remark(object):
         # for a macro.
         while (endRow > startRow and 
             _leadingTabs(text[endRow - 1], globalOptions().tabSize)[0] == 0 and
-            string.strip(text[endRow - 1]) == ''):
+            text[endRow - 1].strip() == ''):
             endRow -= 1
 
         # Copy the parameter and remove the indentation from it.
@@ -639,7 +641,7 @@ class Remark(object):
         expandOutput = True
 
         # Retrieve the macro names and parameters.
-        macroNameSet = string.split(macroInvocation.name)
+        macroNameSet = macroInvocation.name.split()
         macroName = macroNameSet[0]
         parameterSet = macroInvocation.parameterSet
         
@@ -848,8 +850,8 @@ class Remark(object):
                     column = 0
                     continue
     
-                #print 'I read:'
-                #print match.group(0)
+                #print('I read:')
+                #print(match.group(0))
 
                 # Yes, there is a macro on the line.
                 # First copy the possible verbatim content.

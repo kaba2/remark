@@ -36,7 +36,7 @@ class DocumentTree_Macro(object):
         self._parse(self.includeRegex, self.includeMap, lambda x: x + r'\Z')
 
         self.includeFilter = {}
-        for tagName, regex in self.includeMap.iteritems():
+        for tagName, regex in self.includeMap.items():
             self.includeFilter[tagName] = re.compile(combineRegex(regex))
 
         self.excludeMap = {}
@@ -44,7 +44,7 @@ class DocumentTree_Macro(object):
         self._parse(self.excludeRegex, self.excludeMap, lambda x: x + r'\Z')
 
         self.excludeFilter = {}
-        for tagName, regex in self.excludeMap.iteritems():
+        for tagName, regex in self.excludeMap.items():
             self.excludeFilter[tagName] = re.compile(combineRegex(regex))
 
         rootDocument, unique = self.documentTree.findDocument(self.rootName, 
@@ -113,8 +113,8 @@ class DocumentTree_Macro(object):
             self.visitedSet.add(document)
 
         # Sort the children by link-description.
-        childSet = document.childSet.values()
-        childSet.sort(lambda x, y: cmp(x.linkDescription(), y.linkDescription()))        
+        childSet = list(document.childSet.values())
+        childSet.sort(key = lambda x: x.linkDescription())
 
         # Recurse to output the children, but only
         # if we have not visited this document before.
@@ -131,7 +131,7 @@ class DocumentTree_Macro(object):
 
         # Filter by exclusion.
         exclude = False
-        for tagName, tagRegex in self.excludeFilter.iteritems():
+        for tagName, tagRegex in self.excludeFilter.items():
             excludeValue = document.tagString(tagName).strip()
             if tagRegex.match(excludeValue) != None:
                 exclude = True
@@ -139,7 +139,7 @@ class DocumentTree_Macro(object):
 
         # Filter by inclusion.
         include = False
-        for tagName, tagRegex in self.includeFilter.iteritems():
+        for tagName, tagRegex in self.includeFilter.items():
             includeValue = document.tagString(tagName).strip()
             if tagRegex.match(includeValue) != None:
                 include = True

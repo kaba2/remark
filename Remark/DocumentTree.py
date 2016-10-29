@@ -3,6 +3,8 @@
 # Description: Document tree
 # Documentation: data_structures.txt
 
+from __future__ import print_function
+
 import re
 import os.path
 import string
@@ -59,7 +61,7 @@ class DocumentTree(object):
         self.reporter = reporter
 
     def __iter__(self):
-        return self.documentMap.itervalues()
+        return iter(self.documentMap.values())
         
     def insertDocument(self, relativeName):
         '''
@@ -313,7 +315,7 @@ class DocumentTree(object):
         Document objects in those cases where a document file 
         explicitly specifies a parent file using a tag.
         '''
-        for document in self.documentMap.itervalues():
+        for document in self.documentMap.values():
             # Documents which are not associated to a document
             # type are linked to orphan straight away.
             if strictDocumentType(document.extension) == None:
@@ -385,16 +387,13 @@ class DocumentTree(object):
         # us to find the prefix files. In addition
         # shorter filenames are listed before longer ones.
         
-        def documentCompare(left, right):
-            return cmp(left.relativeName, right.relativeName)
-        
         sortedMap = []
-        for document in self.documentMap.iteritems():
+        for document in self.documentMap.items():
             sortedMap.append(document[1])
-        sortedMap.sort(documentCompare)
+        sortedMap.sort(key = lambda x: x.relativeName)
         
         #for document in sortedMap:
-        #    print document.fileName
+        #    print(document.fileName)
         
         for i in range(0, len(sortedMap)):
             document = sortedMap[i]
@@ -466,7 +465,7 @@ class DocumentTree(object):
             
                             # Either the file must be a documentation file
                             # or it must have a parent.                                
-                            #print 'Candidate', thatDocument.relativeName
+                            #print('Candidate', thatDocument.relativeName)
                             if thatDocument.tagString('document_type') == 'RemarkPage':
                                 # We have found a match from a documentation
                                 # file! 
@@ -523,7 +522,7 @@ class DocumentTree(object):
         specifies a parent file as the parent file of 
         another file. 
         '''
-        for document in self.documentMap.itervalues():
+        for document in self.documentMap.values():
             # Reference linking is done only when no parent has been
             # found through explicit or implicit linking, and
             # a reference link has been specified.
@@ -563,7 +562,7 @@ class DocumentTree(object):
         turns the graph induced by parent-child
         relationships into a tree.
         '''
-        for document in self.documentMap.itervalues():
+        for document in self.documentMap.values():
             if document.parent == None:
                 self.orphan.insertChild(document)
 
