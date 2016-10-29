@@ -11,6 +11,7 @@ import codecs
 import shutil
 import fnmatch
 import re
+import six
 
 globalOptions_ = None
 emptyDict = object()
@@ -188,7 +189,7 @@ def globToRegex(glob):
     returns (string):
     The converted regular expression.
     '''
-    if not isinstance(glob, basestring):
+    if not isinstance(glob, six.string_types):
         regexSet = []
         for line in glob:
             regexSet.append(globToRegex(line))
@@ -217,7 +218,7 @@ def combineRegex(regex):
     The combined regular expression.
     '''
     regexString = ''
-    if isinstance(regex, basestring):
+    if isinstance(regex, six.string_types):
         regexString = regex.strip()
     else:
         regexSet = []

@@ -4,6 +4,7 @@
 # Documentation: data_structures.txt
 
 from Remark.FileSystem import fileExtension, unixDirectoryName
+import six
 
 _associationSet = dict()
 _defaultDocumentType = None
@@ -23,7 +24,7 @@ def setDefaultDocumentType(documentType):
     See also:
     documentType()
     '''
-    if isinstance(documentType, basestring):
+    if isinstance(documentType, six.string_types):
         documentType = findDocumentType(documentType)
 
     global _defaultDocumentType
@@ -47,11 +48,11 @@ def associateDocumentType(inputExtension, documentType):
     documentType (DocumentType or string):
     The document-type object to associate to the file-extensions.
     '''
-    if isinstance(documentType, basestring):
+    if isinstance(documentType, six.string_types):
         documentType = findDocumentType(documentType)
 
     global _associationSet
-    if isinstance(inputExtension, basestring):
+    if isinstance(inputExtension, six.string_types):
         _associationSet[inputExtension.lower()] = documentType
         return
         

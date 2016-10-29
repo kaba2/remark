@@ -5,6 +5,7 @@
 
 import os.path
 import string
+import six
 
 from Remark.FileSystem import unixDirectoryName, unixRelativePath, fileExtension
 from Remark.DocumentType_Registry import documentType
@@ -95,7 +96,7 @@ class Document(object):
         The text to associate to the tag-name.
         '''
         assert isinstance(text, list)
-        assert isinstance(tagName, basestring)
+        assert isinstance(tagName, six.string_types)
         self.tagSet[tagName.strip()] = text
         
     def tag(self, tagName, defaultText = ['']):
@@ -108,7 +109,7 @@ class Document(object):
         The tag-name to find. It will be stripped of
         surrounding whitespace.
         '''
-        assert isinstance(tagName, basestring)
+        assert isinstance(tagName, six.string_types)
         return self.tagSet.get(tagName.strip(), defaultText)
 
     def tagString(self, tagName, default = ''):
