@@ -14,6 +14,7 @@ import codecs
 import copy
 import traceback
 import time
+import six
 
 from Remark.Version import remarkVersion
 from Remark.Macro_Registry import findMacro
@@ -933,7 +934,7 @@ class Remark(object):
         The output of the macro.
         '''
         text = ['[[' + macroName + ']]']
-        if isinstance(macroParameter, basestring):
+        if isinstance(macroParameter, six.string_types):
             if macroParameter.strip() != '':
                 text[0] += ': ' + macroParameter
         elif len(macroParameter) > 0:

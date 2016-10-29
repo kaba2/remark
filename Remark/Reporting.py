@@ -2,6 +2,7 @@
 # Documentation: algorithms.txt
 
 from __future__ import print_function
+import six
 
 class Scope(object):
     def __init__(self, name):
@@ -85,7 +86,7 @@ class Reporter(object):
         return type not in self.disabledSet
 
     def report(self, text, type, lazy = False):
-        if isinstance(text, basestring) or (text is None):
+        if isinstance(text, six.string_types) or (text is None):
             self.report([text], type, lazy)
             return 
 
@@ -95,7 +96,7 @@ class Reporter(object):
                 self.updatePrint()
 
     def reportWarning(self, text, type):
-        if isinstance(text, basestring):
+        if isinstance(text, six.string_types):
             self.reportWarning([text], type)
             return 
 
@@ -106,7 +107,7 @@ class Reporter(object):
                self.warnings_ += 1
 
     def reportDebug(self, text, type):
-        if isinstance(text, basestring):
+        if isinstance(text, six.string_types):
             self.reportWarning([text], type)
             return 
 
@@ -115,7 +116,7 @@ class Reporter(object):
             self.report(text, type, False)
 
     def reportError(self, text, type):
-        if isinstance(text, basestring):
+        if isinstance(text, six.string_types):
             self.reportError([text], type)
             return 
 

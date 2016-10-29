@@ -49,7 +49,7 @@ class SourceChildren_Macro(object):
 
         # Sort the list alphabetically w.r.t. the relative file names.
         
-        sortedMap.sort(lambda x, y: cmp(x.relativeName, y.relativeName))
+        sortedMap.sort(key = lambda x: x.relativeName)
      
         # Given an alphabetically sorted list of source files,
         # group all files that have the same name without
@@ -146,7 +146,7 @@ class SourceChildren_Macro(object):
        
         # Order the groups in alphabetical order w.r.t.
         # their descriptions. 
-        groupSet.sort(lambda x, y: cmp(x[0], y[0]))
+        groupSet.sort(key = lambda x: x[0])
 
         # Move the unnamed group to the end.
         if len(groupSet) > 0 and groupSet[0][0] == '':
