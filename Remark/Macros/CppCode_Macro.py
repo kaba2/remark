@@ -22,10 +22,10 @@ class CppCode_Macro(object):
         text = self._extractDocumentation(parameter)
         
         # Hilight the text.
-        hilightedText = highlight(string.join(parameter, '\n'), CppLexer(), HtmlFormatter())
+        hilightedText = highlight('\n'.join(parameter), CppLexer(), HtmlFormatter())
 
         # Prepare for Remark output.
-        hilightedText = string.split(hilightedText, '\n')
+        hilightedText = hilightedText.split('\n')
 
         # Copy the source and replace the includes with links.
         includeRegex = re.compile(r'(#include[ \t]+(?:(?:&quot)|(?:&lt));)(.*)((?:(?:&quot)|(?:&gt));)')
@@ -82,6 +82,6 @@ class CppCode_Macro(object):
             return regexMatch.group(0)
 
         linkName = unixRelativePath(document.relativeDirectory, linkDocument.relativeName) + '.htm'
-        return regexMatch.group(1) + '<a href = "' + linkName + '">' + includeName + '</a>' + string.rstrip(regexMatch.group(3))
+        return regexMatch.group(1) + '<a href = "' + linkName + '">' + includeName + '</a>' + regexMatch.group(3).rstrip()
 
 registerMacro('CppCode', CppCode_Macro())

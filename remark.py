@@ -4,6 +4,8 @@
 # Description: Remark console-script
 # Documentation: command_line.txt 
 
+from __future__ import print_function
+
 import sys
 import os
 
@@ -11,14 +13,14 @@ import os
 try: 
     import pygments
 except ImportError:
-    print 'Error: pygments library missing; install it first.'
+    print('Error: pygments library missing; install it first.')
     sys.exit(1)
 
 # Test that the jsonschema library is present.
 try: 
     import jsonschema
 except ImportError:
-    print 'Error: jsonschema library missing; install it first.'
+    print('Error: jsonschema library missing; install it first.')
     sys.exit(1)
 
 # Store the location of this script (remark.py).

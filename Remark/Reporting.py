@@ -1,6 +1,8 @@
 # Description: Reporting
 # Documentation: algorithms.txt
 
+from __future__ import print_function
+
 class Scope(object):
     def __init__(self, name):
         self.name = name
@@ -154,17 +156,17 @@ class Reporter(object):
                 (text, type) = scope.textSet[i]
 
                 if self.enabled(type):
-                    #print '(' + type + ')'
+                    #print('(' + type + ')')
                     for line in text:
                         if line is None:
                             self.spaceBeforeNext = True
                             continue
                         
                         if self.spaceBeforeNext:
-                            print
+                            print()
                             self.spaceBeforeNext = False
 
-                        print line.encode("ascii", "backslashreplace")
+                        print(line.encode("ascii", "backslashreplace"))
             scope.reportIndex = n
 
 

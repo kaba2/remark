@@ -18,6 +18,8 @@ This is similar to the form of admonitions.
 
 from __future__ import absolute_import
 from __future__ import unicode_literals
+from __future__ import print_function
+
 from markdown import Extension
 from markdown.blockprocessors import BlockProcessor
 from markdown.util import etree, AtomicString
@@ -250,22 +252,22 @@ class MarkdownRegion_BlockProcessor(BlockProcessor):
     def parseBlocks(self, block):
         previousStart = 0;
         blockSet = []
-        # print 'PARSE'
-        # print repr(block)
-        # print len(block)
+        # print('PARSE')
+        # print(repr(block))
+        # print(len(block))
         for match in re.finditer(self.regionRegex, block):
             if match.start() != previousStart:
                 newBlock = block[previousStart : match.start(1)]
                 blockSet.append(newBlock)
-                # print 'MATCH', previousStart, match.start(1)
-                # print repr(newBlock)
+                # print('MATCH', previousStart, match.start(1))
+                # print(repr(newBlock))
                 previousStart = match.start(1)
         
         if previousStart < len(block):
             newBlock = block[previousStart : ]
             blockSet.append(newBlock)
-            # print 'LAST-MATCH', previousStart, len(block)
-            # print repr(newBlock)
+            # print('LAST-MATCH', previousStart, len(block))
+            # print(repr(newBlock))
 
         return blockSet
 

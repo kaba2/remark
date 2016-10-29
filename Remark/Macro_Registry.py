@@ -3,6 +3,8 @@
 # Description: Macro registry
 # Documentation: data_structures.txt
 
+from __future__ import print_function
+
 _macroMap = dict()
 
 def registerMacro(name, macro):
@@ -12,7 +14,7 @@ def registerMacro(name, macro):
     See also:
     findMacro()
     '''
-    #print "Macro '" + name + "' registered."
+    #print("Macro '" + name + "' registered.")
     _macroMap[name] = macro
 
 def findMacro(name):

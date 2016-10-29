@@ -4,6 +4,8 @@
 # Description: SourceChildren macro
 # Detail: Generates links to source code children.
 
+from __future__ import print_function
+
 import os.path
 import string
 
@@ -29,7 +31,7 @@ class SourceChildren_Macro(object):
         text = []
 
         def prefixOf(left, right):
-            return string.find(withoutFileExtension(right), 
+            return str.find(withoutFileExtension(right), 
                                withoutFileExtension(left)) == 0
         
         def same(left, right):
@@ -37,7 +39,7 @@ class SourceChildren_Macro(object):
 
         # Gather the list of source files.
         
-        sortedMap = [x for x in document.childSet.itervalues() 
+        sortedMap = [x for x in document.childSet.values() 
                     if (x.tagString('document_type') == 'CppCodeView' or
                         x.tagString('document_type') == 'CodeView')]
 
@@ -101,7 +103,7 @@ class SourceChildren_Macro(object):
             joined = False;
             for j in range(i - 1, -1, -1):
                 if groupSet[i][0] == '' and prefixOf(groupSet[j][2][0].relativeName, groupSet[i][2][0].relativeName):
-                    #print 'Join', groupSet[j][2][0].relativeName, groupSet[i][2][0].relativeName
+                    #print('Join', groupSet[j][2][0].relativeName, groupSet[i][2][0].relativeName)
                     groupSet[j][2] += groupSet[i][2]
                     groupSet[i : i + 1] = []
                     joined = True;
@@ -139,8 +141,8 @@ class SourceChildren_Macro(object):
         # Output the groups
         #for group in groupSet:
         #    for child in group[2]:
-        #        print child.relativeName
-        #    print ''
+        #        print(child.relativeName)
+        #    print('')
        
         # Order the groups in alphabetical order w.r.t.
         # their descriptions. 

@@ -3,6 +3,7 @@
 
 from __future__ import absolute_import
 from __future__ import unicode_literals
+from __future__ import print_function
 
 import re
 from markdown.inlinepatterns import LinkPattern
@@ -34,7 +35,7 @@ class MarkdownScope_Extension(Extension):
             '<scoped-reference')
 
         # for line in md.inlinePatterns:
-        #     print line
+        #     print(line)
 
         # Remove the Reference preprocessor.
         del md.preprocessors['reference']
@@ -94,7 +95,7 @@ class Markdown_LinkDefinition_Pattern(LinkPattern):
                 'title' : title
             })
 
-        #print 'DEFINITION', id, url
+        #print('DEFINITION', id, url)
 
         return element
 
@@ -149,7 +150,7 @@ class Markdown_ScopedReference_Pattern(LinkPattern):
 
         imageTag = match.group(2)
 
-        #print 'LINK', imageTag, id
+        #print('LINK', imageTag, id)
 
         referenceType = 'link'
         if imageTag != '':
@@ -339,10 +340,10 @@ class MarkdownScope_TreeProcessor(Treeprocessor):
             root.remove(child)
 
     def printIt(self, root, level = 0):
-        print '    ' * level + root.tag,
+        print('    ' * level + root.tag, end = ' ')
         
         for (key, value) in root.items():
-            print key, '=', '"' + str(value) + '"',
+            print(key, '=', '"' + str(value) + '"', end = ' ')
 
         for child in root:
             self.printIt(child, level + 1)

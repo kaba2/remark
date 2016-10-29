@@ -38,7 +38,7 @@ class Dictionary_TagParser(object):
                 
         # The tag-key (captured).
         regex += r'('
-        for tagKey in tagMap.itervalues():
+        for tagKey in tagMap.values():
             # The tag-name may contain characters that
             # are meta-characters in a regular expression.
             # Therefore we need to escape the tag-names.

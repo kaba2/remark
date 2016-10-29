@@ -3,6 +3,8 @@
 # Description: Conversions between Remark, Markdown, and html
 # Documentation: algorithms.txt
 
+from __future__ import print_function
+
 import string
 import os
 import os.path
@@ -39,14 +41,14 @@ if remarkScriptPath() != '':
         if not fileExists('markdown.py', path):
             newSysPath.append(path)
         else:
-            print 'Removed', sys.path[i], ' from Python path.'
+            print('Removed', sys.path[i], ' from Python path.')
             None
     sys.path = newSysPath
 
 try:
     import markdown
 except ImportError:
-    print 'Error: markdown library missing; install it first.'
+    print('Error: markdown library missing; install it first.')
     sys.exit(1)
 
 sys.path = oldSysPath
@@ -57,7 +59,7 @@ from Remark.FileSystem import globalOptions, unixRelativePath, writeFile
 from Remark.Reporting import Reporter, ScopeGuard
 from Remark.DocumentType_Registry import documentType, outputDocumentName
 from Remark.DocumentTree import createDocumentTree
-from Remark_To_Markdown import Remark
+from Remark.Remark_To_Markdown import Remark
 
 mathPattern = r'<script.*?type[ \t]*=[ \t]*".*?math.*?".*?>'
 mathRegex = re.compile(mathPattern)
@@ -187,7 +189,7 @@ def createMarkdownParser():
         ])
 
     # for item in markdownParser.inlinePatterns:
-    #     print item
+    #     print(item)
     # sys.exit(0)
 
     return markdownParser
@@ -243,8 +245,8 @@ def convertMarkdownToHtml(
     markdownParser = createMarkdownParser()
 
     # Convert Markdown to html.
-    htmlString = markdownParser.convert(string.join(markdownText, '\n'))
-    htmlText = string.split(htmlString, '\n')
+    htmlString = markdownParser.convert('\n'.join(markdownText))
+    htmlText = htmlString.split('\n')
 
     # Add html boilerplate.
     return addHtmlBoilerPlate(
@@ -347,8 +349,8 @@ def convertAll(documentTree, argumentSet, reporter = Reporter()):
 
     # We wish to convert the files in alphabetical order
     # by their relative-name (in the map they are in hashed order).
-    sortedDocumentSet = documentTree.documentMap.values()
-    sortedDocumentSet.sort(lambda x, y: cmp(x.relativeName, y.relativeName))
+    sortedDocumentSet = list(documentTree.documentMap.values())
+    sortedDocumentSet.sort(key = lambda x: x.relativeName)
    
     for document in sortedDocumentSet:
         if not document.regenerate():
