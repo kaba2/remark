@@ -44,7 +44,7 @@ def parseConfig(argumentSet, reporter):
                 configJson = json.loads(''.join(configText))
             except (TypeError, ValueError) as error:
                 reporter.reportError(
-                    unicode(error), 
+                    str(error), 
                     'invalid-config-syntax')
                 return None
 
@@ -53,7 +53,7 @@ def parseConfig(argumentSet, reporter):
                 jsonschema.validate(configJson, configSchema)
             except (jsonschema.ValidationError, jsonschema.SchemaError) as error:
                 reporter.reportError(
-                    unicode(error), 
+                    str(error), 
                     'invalid-config')
                 return None
 
