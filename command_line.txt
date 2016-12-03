@@ -53,7 +53,7 @@ as follows:
 	for tags (default 200).
 
 `-m` or `--max-file-size`
-:	Sets maximum file-size to load (in bytes, default 262144).
+:	Sets maximum file-size to load (in bytes, default -1 to ignore).
 
 `-o` or `--options`
 :	Reads command-line options from an option-file (if it exists). An option-file is a plain-text file, with one option per line. If the file path is relative, it is relative to the input directory. The file `remark_options` is always included as an option-file, if it exists. This option is available for compatibility; use config files instead.

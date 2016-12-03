@@ -77,8 +77,8 @@ This is equivalent to writing the file-glob directly as a positional argument.""
     optionParser.add_option('-m', '--max-file-size',
         dest = 'maxFileSize',
         type = 'int',
-        default = 2**18,
-        help = """sets maximum file-size to load (in bytes, default 262144).""",
+        default = -1,
+        help = """sets maximum file-size to load (in bytes, default -1 to ignore).""",
         metavar = 'SIZE')
 
     optionParser.add_option('-o', '--options',
