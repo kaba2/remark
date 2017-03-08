@@ -21,6 +21,10 @@ Release date xx.xx.2016.
 * Made maximum file-size command-line option opt-in, rather than opt-out.
 * Fixed a bug when providing invalid config file under Python 3.
 
+### CSS
+
+* Fixed a list-item displaying weirdly when containing a paragraph.
+
 Remark 1.7.3
 ------------
 
