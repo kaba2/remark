@@ -4,6 +4,7 @@
 # Documentation: command_line.txt
 
 from __future__ import print_function
+from Remark.Version import remarkVersion
 
 import sys
 import os
