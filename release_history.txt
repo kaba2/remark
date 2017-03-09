@@ -10,7 +10,7 @@ The versioning of Remark is given in the form x.y.z, where x, y, and z are integ
 Remark 1.7.4
 ------------
 
-Release date xx.xx.2016.
+Release date 09.03.2017.
 
 [Original webpage][Remark-1.7.4]
 
