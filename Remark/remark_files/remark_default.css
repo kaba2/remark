@@ -164,7 +164,7 @@ html, body
 /* Unordered lists */
 #remark ul 
 {
-    list-style: disk;
+    list-style-type: disc;
     /* Be careful if you decide to make this inside;
     in particular, paragraphs <p> have block-display,
     and so out-of-the-box display under the bullet.*/
