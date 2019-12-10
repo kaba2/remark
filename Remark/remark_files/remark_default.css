@@ -6,10 +6,10 @@ Documentation: style.txt
 /* Note that @import statements must be located at the top of the CSS-file. */
 
 /* Import 'Open Sans' font from Google Fonts. */
-@import url(http://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,400,700&subset=latin,greek,latin-ext);
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,400,700&subset=latin,greek,latin-ext);
 
 /* Import 'Inconsolata' font from Google Fonts. */
-@import url(http://fonts.googleapis.com/css?family=Inconsolata:400,700&subset=latin,latin-ext);
+@import url(https://fonts.googleapis.com/css?family=Inconsolata:400,700&subset=latin,latin-ext);
 
 html, body 
 {
