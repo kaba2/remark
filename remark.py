@@ -28,12 +28,6 @@ from Remark.FileSystem import setRemarkScriptPath
 scriptDirectory = os.path.dirname(os.path.realpath(__file__))
 setRemarkScriptPath(scriptDirectory)
 
-if os.name == 'nt':
-    # Apply the bug-fix for the os.path.split() to
-    # support UNC-paths (bug present in Python 2.7.3).
-    from Remark.FileSystem import splitPath
-    os.path.split = splitPath
-
 # This must be done to make Macros register themselves.
 # I should get rid of this to make Remark usable as a
 # library.
@@ -93,7 +87,7 @@ optionParser = constructOptionParser()
 argumentSet, args = optionParser.parse_args(sys.argv[1:])
 
 # Parse the command-line arguments.
-argumentSet = parseArguments(argumentSet, args, reporter)
+argumentSet = parseArguments(argumentSet, args, reporter, optionParser)
 
 # Act on options
 # --------------

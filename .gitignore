@@ -1,0 +1,9 @@
+*.pyc
+*.suo
+*.sdf
+.DS_Store
+dist/
+remark.egg-info
+*.egg
+build/
+docs/

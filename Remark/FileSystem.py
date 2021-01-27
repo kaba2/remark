@@ -82,28 +82,12 @@ def splitPath(p):
     '''
     Splits a pathname.
 
-    This is a bug-fixed version of os.path.split() from
-    Python 2.7.3. It used os.path.splitdrive() which does not correctly
-    handle long-UNC paths. This is fixed by using os.path.splitunc()
-    instead.
-
     returns: 
     tuple (head, tail) where tail is everything after the final slash.
     Either part may be empty.
     '''
 
-    d, p = os.path.splitunc(p)
-    # set i to index beyond p's last slash
-    i = len(p)
-    while i and p[i-1] not in '/\\':
-        i = i - 1
-    head, tail = p[:i], p[i:]  # now tail has no slashes
-    # remove trailing slashes from head, unless it's all slashes
-    head2 = head
-    while head2 and head2[-1] in '/\\':
-        head2 = head2[:-1]
-    head = head2 or head
-    return d + head, tail
+    return os.path.split(p)
 
 def setGlobalOptions(options):
     '''

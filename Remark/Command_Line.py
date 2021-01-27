@@ -125,7 +125,7 @@ Exclusion takes priority over inclusion.""",
 
     return optionParser
 
-def parseArguments(argumentSet, args, reporter):
+def parseArguments(argumentSet, args, reporter, optionParser):
     '''
     Parses the command-line arguments given to Remark.
     '''

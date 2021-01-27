@@ -377,7 +377,7 @@ def convertAll(documentTree, argumentSet, reporter = Reporter()):
                                  'exception')
 
 def convertDirectory(argumentSet, reporter):
-    startTime = time.clock()
+    startTime = time.perf_counter()
 
     reporter.report([None,
                     'Input directory: ' + argumentSet.inputDirectory,
@@ -471,7 +471,7 @@ def convertDirectory(argumentSet, reporter):
         reporter.report([None, 'Done.', None], 'verbose')
 
     # Find out statistics.
-    seconds = round(time.clock() - startTime, 2)
+    seconds = round(time.perf_counter() - startTime, 2)
     errors = reporter.errors()
     warnings = reporter.warnings()
 
