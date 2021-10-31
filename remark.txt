@@ -92,33 +92,9 @@ The example can now be built in directory `~/hello` by
 Source code
 -----------
 
-The source code for Remark is hosted on [BitBucket][] in a [Mercurial][] repository. Assuming you have Mercurial installed, the repository can be cloned from the command-line by
-
-	hg clone https://bitbucket.org/kaba2/remark
+The source code for Remark is hosted on [GitHub][] in a [Git][] repository.
 
 _The source code is meant for developers; it is not needed to install Remark._
 
-[BitBucket]: http://bitbucket.org/kaba2/remark
-[Mercurial]: http://mercurial.selenic.com
-
-Issue tracker
--------------
-
-The issue tracker for Remark is hosted on Bitbucket in [here][RemarkBugs].
-
-[RemarkBugs]: https://bitbucket.org/kaba2/remark/issues
-
-[[Comment]]:
-	The following is a javascript for Google Analytics by which we can monitor the visitor statistics of the Remark homepage.
-
-[[Html]]:
-	<script type="text/javascript">
-	var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
-	document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
-	</script>
-	<script type="text/javascript">
-	try {
-	var pageTracker = _gat._getTracker("UA-15174506-4");
-	pageTracker._trackPageview();
-	} catch(err) {}</script>
-
+[GitHub]: http://github.com/kaba2/remark
+[Git]: https://git-scm.com/
