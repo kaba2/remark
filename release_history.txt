@@ -7,6 +7,19 @@ This section summarizes the release history of Remark. Previous versions can be 
 
 The versioning of Remark is given in the form x.y.z, where x, y, and z are integers. The x increments only for major changes, the y increments for feature changes, and the z increments for bug fixes or documentation updates. Whenever y is incremented, z is zeroed, and whenever x is incremented, both y and z are zeroed. The x, y, and z need not consist of a single digit, and, for example, 1.12.0 is a much later version than 1.1.3.
 
+Remark 1.7.8
+------------
+
+Release date 31.10.2021.
+
+[Original webpage][Remark-1.7.8]
+
+[Remark-1.7.8]: http://kaba.hilvi.org/remark-1.7.8
+
+### Libraries
+
+* Fixed broken library dependence to Markdown by downgrading its version.
+
 Remark 1.7.7
 ------------
 

@@ -30,6 +30,8 @@
 		"MANIFEST",
 		"build/*",
 		"dist/*",
+		"bin/*",
+		"lib/*",
 		".hg*",
 		".DS*",
 		"*.pyc"
