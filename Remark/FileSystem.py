@@ -283,7 +283,7 @@ def openFileUtf8(fileName):
     A handle to the opened file.
     '''
     file = codecs.open(longPath(fileName),
-                       mode = 'rU', encoding = 'utf-8-sig', 
+                       mode = 'r', encoding = 'utf-8-sig', 
                        errors = 'replace')
 
     return file    
@@ -328,7 +328,8 @@ def readFile(fileName, maxSize = -1):
     try:
         with openFileUtf8(fileName) as file:
             text = file.readlines()
-    except:
+    except Exception as e:
+        print(e)
         print
         print('Warning:', fileName, end = ' ')
         print('could not be read for some reason.', end = ' ')
